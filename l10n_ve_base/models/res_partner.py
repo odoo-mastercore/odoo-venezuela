@@ -1,0 +1,74 @@
+# -*- coding: utf-8 -*-
+################################################################################
+# Author: SINPASYS GLOBAL SA || MASTERCORE SAS
+# Copyleft: 2020-Present.
+# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
+#
+#
+################################################################################
+from odoo import models, fields, api, _
+from odoo.exceptions import UserError
+
+
+class ResPartner(models.Model):
+    _inherit = 'res.partner'
+    country_id = fields.Many2one(
+        'res.country',
+        string=u'País',
+        ondelete='restrict',
+        help=u"País",
+        default=lambda self: self.env['res.country'].search(
+            [('name', '=', 'Venezuela')]
+        )[0].id
+    )
+    state_id = fields.Many2one(
+        "res.country.state",
+        string='Estado',
+        ondelete='restrict',
+        help=u"Estado"
+    )
+    municipality_id = fields.Many2one(
+        "res.country.state.municipality",
+        string="Municipio",
+        domain="[('state_id', '=', state_id)]",
+        ondelete='restrict',
+        help=u"Municipio"
+    )
+    parish_id = fields.Many2one(
+        "res.country.state.municipality.parish",
+        string="Parroquia",
+        ondelete='restrict',
+        domain="[('municipality_id', '=', municipality_id)]",
+        help=u"Parroquia"
+    )
+    vat_type = fields.Selection(
+        [('V', 'Persona Natural'), ('J', 'Persona Juridica'),
+        ('G', 'Gobierno'), ('E','Extranjero'), ('D', 'Pasaporte')], 
+        string='Identification Type',
+        required=True,
+        default='V'
+    )
+    vat = fields.Char(string='Identification Number',
+                      help="Identification Number for selected type")
+
+    @api.onchange('state_id')
+    def _onchange_state_id(self):
+        if self.state_id:
+            return {
+                'value': {
+                    'municipality_id': '',
+                    'parish_id': ''
+                },
+                'domain': {
+                    'municipality_id': [
+                        ('state_id', '=', self.state_id.id)
+                    ]
+                },
+            }
+        else:
+            return {'domain': {'state_id': []}}
+
+    @api.onchange('municipality_id')
+    def _onchange_municipality_id(self):
+        if self.municipality_id:
+            return {'value': {'parish_id': ''}}

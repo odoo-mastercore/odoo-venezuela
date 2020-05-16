@@ -1,0 +1,64 @@
+<!--?xml version="1.0" encoding="UTF-8"?-->
+<section class="oe_container">
+  <div class="oe_row oe_spaced">
+    <table>
+      <tbody>
+        <tr>
+          <td><img src="icon.png" alt="" /></td>
+          <td>
+            <h2 class="oe_slogan" style="color: #875a7b; text-align: left;">Municipalities and Parishes</h2>
+            <h3 class="oe_slogan" style="text-align: left;">For deeper political division of Country and State</h3>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+<section class="oe_container oe_dark">
+  <div class="oe_row oe_spaced">
+    <h2 class="oe_slogan" style="color: #875a7b; text-align: left;">All federal states, municipalities and parishes of Venezuela</h2>
+    <ul>
+      <li>24 federal states</li>
+      <li>335 municipalities</li>
+      <li>1136 parishes</li>
+    </ul>
+    <h3 class="oe_slogan" style="text-align: left;">Get more done in less time</h3>
+  </div>
+</section>
+<section class="oe_container">
+  <div class="oe_row oe_spaced">
+    <h3 class="oe_slogan" style="text-align: left;">It's integrated with the base models res.country<br /> and res.country.state</h3>
+    <ul>
+      <li>res.country</li>
+      <li>res.country.state</li>
+      <li>res.country.state.municipality</li>
+      <li>res.country.base.municipality.parish</li>
+    </ul>
+    <p>Each model contains the char fields of <strong> <em>name</em> </strong> and <em> <strong>code</strong> </em> of each Municipality and Parish</p>
+    <p><strong>Relational fields</strong>:</p>
+    <ul>
+      <li><strong>res.country.state</strong>:&nbsp;
+        <ul>
+          <li><strong>municipality_ids</strong> --&gt;&nbsp;<em>id of the state's municipalities</em></li>
+        </ul>
+      </li>
+      <li><strong>res.country.state.municipality</strong>
+        <ul>
+          <li><strong>state_id</strong> --&gt; <em>id of the State to which the municipality belongs</em></li>
+          <li><strong>parish_ids</strong><em> --&gt; id of the municilapity's parishes</em></li>
+        </ul>
+      </li>
+      <li><strong>res.country.state.municipality.parish</strong>
+        <ul>
+          <li><strong>municipality_id</strong> --&gt; id of the Municipality to which the parish belongs</li>
+        </ul>
+      </li>
+    </ul>
+    <h2><strong>UPGRADE</strong>:</h2>
+    <p>This module also contains the nationalities associated with each country (for the Americas, Asia and Europe continents)</p>
+    <p>Nationality was added as field <strong>nationality</strong> of model <strong>res.country</strong></p>
+    <h3 class="oe_slogan" style="color: #875a7b; text-align: left;">Very thanks to <a title="SINAPSYS" href="http://sinapsys.global" target="_blank">Sinapsys Global SA</a>&nbsp;</h3>
+    <h1 style="text-align: left;">Use it!</h1>
+  </div>
+</section>
+<section class="oe_container oe_separator"></section>
