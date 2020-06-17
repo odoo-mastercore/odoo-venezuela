@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_res_country_state_municipality_form" model="ir.ui.view">
+        <field name="name">res.country.state.municipality.form</field>
+        <field name="model">res.country.state.municipality</field>
+        <field name="arch" type="xml">
+            <form string="municipalities">
+                <group>
+                    <field name="name"/>
+                    <field name="code"/>
+                    <field name="state_id" options="{'no_create': True}"/>
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_res_country_state_municipality_tree" model="ir.ui.view">
+        <field name="name">res.country.state.municipality.tree</field>
+        <field name="model">res.country.state.municipality</field>
+        <field name="arch" type="xml">
+            <tree string="municipalities">
+                <field name="name"/>
+                <field name="code"/>
+                <field name="state_id" options="{'no_create': True}"/>
+            </tree>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="action_municipality">
+        <field name="name">municipalities</field>
+        <field name="res_model">res.country.state.municipality</field>
+    </record>
+
+    <menuitem 
+        name="municipalities" 
+        action="action_municipality" 
+        id="menu_municipality" 
+        sequence="4" parent="contacts.menu_localisation"/>
+
+</odoo>

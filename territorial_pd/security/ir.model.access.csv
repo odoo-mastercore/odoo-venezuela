@@ -1,3 +1,3 @@
-"id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
-"access_res_country_state_municipality_group_all","res_country_state_municipality group_user_all","model_res_country_state_municipality",,1,0,0,0
-"access_res_country_state_municipality_parish_group_all","res_country_state_municipality_parish group_user_all","model_res_country_state_municipality_parish",,1,0,0,0
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_res_country_state_municipality_group_all,res_country_state_municipality group_user_all,model_res_country_state_municipality,,1,0,0,0
+access_res_country_state_municipality_parish_group_all,res_country_state_municipality_parish group_user_all,model_res_country_state_municipality_parish,,1,0,0,0

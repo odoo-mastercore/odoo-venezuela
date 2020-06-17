@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <odoo>
+    <data>
+      <!-- View form of res_company -->
+      <record id="view_res_company_form_inherit" model="ir.ui.view">
+        <field name="name">res_company_form_inherit</field>
+        <field name="model">res.company</field>
+        <field name="inherit_id" ref="base.view_company_form" />
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+          <xpath expr="//div[hasclass('o_address_format')]" position="replace">
+            <div class="o_address_format">
+                <field 
+                  name="country_id" 
+                  placeholder="Country" 
+                  class="o_address_country" 
+                  options='{"no_open": True, "no_create": True}'/>
+                <field name="state_id" 
+                  class="o_address_state" 
+                  placeholder="State" 
+                  options='{"no_open": True, "no_create": True}'
+                  context="{'country_id': country_id, 'zip': zip}"/>
+                <field name="municipality_id"
+                  placeholder="Municipio"
+                  class="o_address_city" 
+                  options='{"no_open": True, "no_create": True}'
+                  domain="[('state_id', '=', state_id)]" />
+                <field name="city" 
+                  placeholder="Ciudad" 
+                  class="o_address_city"/>
+                <field name="parish_id"
+                  placeholder="Parroquia"
+                  options='{"no_open": True, "no_create": True}'
+                  class="o_address_state"
+                  domain="[('municipality_id', '=', municipality_id)]" />
+                <field name="zip" placeholder="ZIP" class="o_address_zip"/>
+                <field name="street" placeholder="Calle..." class="o_address_street"/>
+                <field name="street2" placeholder="Calle 2..." class="o_address_street"/>
+            </div>
+          </xpath>
+          <field name="vat" position="after">
+                <field 
+                  name="l10n_ve_responsibility_type_id" 
+                  string="SENIAT Responsibility" 
+                  options="{'no_open': True, 'no_create': True}" 
+                  attrs="{'readonly': [('parent_id','!=',False)]}"/>
+          </field>
+        </field>
+      </record>
+    </data>
+  </odoo>

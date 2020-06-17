@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 ################################################################################
-# Author: SINPASYS GLOBAL SA || MASTERCORE SAS
+# Author: SINAPSYS GLOBAL SA || MASTERCORE SAS
 # Copyleft: 2020-Present.
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 #
@@ -14,7 +14,7 @@ class res_partner_bank(models.Model):
     """inherit for res_partner_bank"""
 
     _inherit = 'res.partner.bank'
-    acc_type = fields.Selection(
+    l10n_ve_acc_type = fields.Selection(
         [
             ('ahorro', 'Cuenta Corriente'),
             ('corriente', 'Cuenta de Ahorro'),
@@ -43,7 +43,7 @@ class res_partner_bank(models.Model):
             raise exceptions.UserError(
                 _(u'Debe Seleccionar la Entidad Bancaria.')
             )
-        if not vals['acc_type']:
+        if not vals['l10n_ve_acc_type']:
             raise exceptions.UserError(
                 _(u'Debe seleccionar el tipo de Cuenta.')
             )
@@ -61,8 +61,8 @@ class res_partner_bank(models.Model):
                 raise exceptions.UserError(
                     _(u'Debe indicar el numero de cuenta.')
                 )
-        if 'acc_type' in vals:
-            if not vals.get('acc_type', False):
+        if 'l10n_ve_acc_type' in vals:
+            if not vals.get('l10n_ve_acc_type', False):
                 raise exceptions.UserError(
                     _(u'Debe seleccionar el tipo de Cuenta.')
                 )

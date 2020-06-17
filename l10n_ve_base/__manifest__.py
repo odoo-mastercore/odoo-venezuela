@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
-################################################################################
-# Author: SINPASYS GLOBAL SA || MASTERCORE SAS
+###############################################################################
+# Author: SINAPSYS GLOBAL SA || MASTERCORE SAS
 # Copyleft: 2020-Present.
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 #
 #
-################################################################################
+###############################################################################
 {
     'name': "Localización Venezuela Base",
     'description': """
@@ -22,15 +22,22 @@
         Modelos.
     """,
 
-    'author': "SINPASYS GLOBAL SA || MASTERCORE SAS",
+    'author': "SINAPSYS GLOBAL SA || MASTERCORE SAS",
     'website': "http://sinapsys.global",
-    'version': '1.0',
+    'version': '13.0.1',
     'category': 'Localization',
     'license': 'AGPL-3',
-    'depends': ['base','contacts'],
+    'depends': ['base','contacts','l10n_ve','territorial_pd','l10n_latam_base'],
     'data': [
+        'security/ir.model.access.csv',
+        'data/l10n_latam_identification_type_data.xml',
+        'data/l10n_ve_responsibility_type_data.xml',
+        'data/res_bank.xml',
+        'views/seniat_menuitem.xml',
+        'views/l10n_ve_responsibility_type_view.xml',
         'views/res_partner_view.xml',
         'views/res_partner_bank_view.xml',
+        'views/res_company_view.xml',
     ],
 
 }
