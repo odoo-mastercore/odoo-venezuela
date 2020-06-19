@@ -73,3 +73,11 @@ class ResPartner(models.Model):
     def _onchange_municipality_id(self):
         if self.municipality_id:
             return {'value': {'parish_id': ''}}
+
+    @api.onchange('country_id')
+    def _onchange_country(self):
+        return {
+            'value': {
+                'l10n_ve_responsibility_type_id': ''
+            },
+        }

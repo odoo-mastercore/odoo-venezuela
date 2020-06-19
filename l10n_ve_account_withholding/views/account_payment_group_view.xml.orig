@@ -6,7 +6,11 @@
         <record id="view_account_payment_group_form" model="ir.ui.view">
             <field name="name">account.payment.group.form</field>
             <field name="model">account.payment.group</field>
+<<<<<<< HEAD
+            <field name="inherit_id" ref="account_payment_group.view_account_payment_group_form"/>
+=======
             <field name="inherit_id" ref="l10n_ve_account_payment.view_account_payment_group_form"/>
+>>>>>>> unstable
             <field name="arch" type="xml">
                 <!-- ahora hacemos que en borrador tmb se puedan computar las retenciones -->
                 <field name="unreconciled_amount" position="attributes">

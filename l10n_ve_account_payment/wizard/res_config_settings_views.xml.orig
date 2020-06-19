@@ -14,9 +14,13 @@
                     <div class="o_setting_right_pane">
                         <label for="group_account_use_financial_amounts"/>
                         <div class="text-muted" id="use_financial_amounts">
+<<<<<<< HEAD
+                            Display Financial amounts on partner debts views and reports. Financial amounts are amounts on other currency converted to company currency on todays exchange
+=======
                             Display Financial amounts on partner debts views and reports. 
                             Financial amounts are amounts on other currency converted to 
                             company currency on todays exchange
+>>>>>>> unstable
                         </div>
                     </div>
                 </div>

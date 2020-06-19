@@ -7,9 +7,12 @@
 ###############################################################################
 from odoo import models, api, fields, _
 from odoo.exceptions import ValidationError
+<<<<<<< HEAD
+=======
 import logging
 
 _logger = logging.getLogger(__name__)
+>>>>>>> unstable
 
 
 class AccountPaymentGroup(models.Model):
