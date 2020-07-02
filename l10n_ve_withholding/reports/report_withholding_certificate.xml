@@ -108,7 +108,7 @@
         <t t-call="web.html_container">
             <t t-foreach="docs" t-as="o">
                 <t t-set="lang" t-value="o.partner_id.lang"/>
-                <t t-call="l10n_ve_account_withholding_tax.report_withholding_certificate_document" t-lang="lang"/>
+                <t t-call="l10n_ve_withholding.report_withholding_certificate_document" t-lang="lang"/>
             </t>
         </t>
     </template>
@@ -118,8 +118,8 @@
         id="action_report_withholding_certificate"
         model="account.payment"
         report_type="qweb-pdf"
-        name="l10n_ve_account_withholding_tax.report_withholding_certificate"
-        file="l10n_ve_account_withholding_tax.report_withholding_certificate"
+        name="l10n_ve_withholding.report_withholding_certificate"
+        file="l10n_ve_withholding.report_withholding_certificate"
         print_report_name="'Certificado de Retención - %s' % (object.withholding_number or '')"
     />
 
