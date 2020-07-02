@@ -22,3 +22,4 @@ Odoo Venezuela
 
 ### Colaboradores:
 - Reydi Hernández <rhe@mastercore.net>
+- Freddy Arraez <far@mastercore.net>
