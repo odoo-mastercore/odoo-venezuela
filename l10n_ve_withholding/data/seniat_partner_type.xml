@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <data>
+        <record id="seniat_partner_type_pnr" model="seniat.partner.type">
+            <field name="name">Persona Natural Residente</field>
+            <field name="code">PNR</field>
+        </record>
+        <record id="seniat_partner_type_pnnr" model="seniat.partner.type">
+            <field name="name">Persona Natural No Residente</field>
+            <field name="code">PNNR</field>
+        </record>
+        <record id="seniat_partner_type_pjd" model="seniat.partner.type">
+            <field name="name">Persona Jurídica Domiciliada</field>
+            <field name="code">PJD</field>
+        </record>
+        <record id="seniat_partner_type_pjnd" model="seniat.partner.type">
+            <field name="name">Persona Jurídica No Domiciliada</field>
+            <field name="code">PJND</field>
+        </record>
+        <record id="seniat_partner_type_pjncd" model="seniat.partner.type">
+            <field name="name">Persona Jurídica No Constituida Domiciliada</field>
+            <field name="code">PJNCD</field>
+        </record>
+
+  </data>
+</odoo>

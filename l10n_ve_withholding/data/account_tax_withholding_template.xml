@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <data noupdate="1">
+    <!-- secuencia para las Retenciones -->
+        <record id="sequence_tax_retencion_iva" model="ir.sequence">
+            <field name="name">Retención IVA</field>
+            <field name="code">account.tax.withholding</field>
+            <field name="implementation">no_gap</field>
+            <field name="prefix">%(year)s%(month)s</field>
+            <field name="padding">8</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+            <field name="company_id" eval="False"/>
+        </record>
+    <!-- secuencia para las Retenciones -->
+        <record id="sequence_tax_retencion_islr" model="ir.sequence">
+            <field name="name">Retención ISLR</field>
+            <field name="code">account.tax.withholding</field>
+            <field name="implementation">no_gap</field>
+            <field name="prefix">%(year)s%(month)s</field>
+            <field name="padding">8</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+    <!-- Retenciones iva -->
+        <record id="tax_retencion_iva" model="account.tax">
+            <!-- <field name="chart_template_id" ref="l10n_ve.ve_chart_template_amd"/> -->
+            <field name="name">Retención IVA</field>
+            <field name="description">16%</field>
+            <field name="sequence">4</field>
+            <field name="withholding_sequence_id" ref="sequence_tax_retencion_iva"/>
+            <field name="amount_type">fixed</field>
+            <field name="withholding_type">partner_tax</field>
+            <field name="withholding_amount_type">untaxed_amount</field>
+            <field eval="0.0" name="amount"/>
+            <field name="invoice_repartition_line_ids" eval="[(5, 0, 0),
+                (0,0, {
+                    'factor_percent': 100,
+                    'repartition_type': 'base',
+                }),
+
+                (0,0, {
+                    'factor_percent': 100,
+                    'repartition_type': 'tax',
+                }),
+            ]"/>
+            <field name="refund_repartition_line_ids" eval="[(5, 0, 0),
+                (0,0, {
+                    'factor_percent': 100,
+                    'repartition_type': 'base',
+                }),
+
+                (0,0, {
+                    'factor_percent': 100,
+                    'repartition_type': 'tax',
+                }),
+            ]"/>
+            <field name="type_tax_use">supplier</field>
+        </record>
+
+        <!-- Retenciones ISLR -->
+        <record id="tax_retencion_islr" model="account.tax">
+            <field name="name">Retención ISLR</field>
+            <field name="description">Retención ISLR</field>
+            <field name="sequence">4</field>
+            <field name="withholding_sequence_id" ref="sequence_tax_retencion_islr"/>
+            <field name="amount_type">fixed</field>
+            <field name="withholding_type">tabla_islr</field>
+            <field name="withholding_amount_type">untaxed_amount</field>
+            <field eval="0.0" name="amount"/>
+            <field name="invoice_repartition_line_ids" eval="[(5, 0, 0),
+                (0,0, {
+                    'factor_percent': 100,
+                    'repartition_type': 'base',
+                }),
+
+                (0,0, {
+                    'factor_percent': 100,
+                    'repartition_type': 'tax',
+                }),
+            ]"/>
+            <field name="refund_repartition_line_ids" eval="[(5, 0, 0),
+                (0,0, {
+                    'factor_percent': 100,
+                    'repartition_type': 'base',
+                }),
+
+                (0,0, {
+                    'factor_percent': 100,
+                    'repartition_type': 'tax',
+                }),
+            ]"/>
+            <field name="type_tax_use">supplier</field>
+        </record>
+  </data>
+</odoo>

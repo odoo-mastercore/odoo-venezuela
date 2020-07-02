@@ -1,25 +1,25 @@
 "id","country_id:id","name","code"
-state_ve_1,base.ve,DISTRITO CAPITAL,DC
-state_ve_2,base.ve,ANZOATEGUI,AZ
-state_ve_3,base.ve,AMAZONAS,AM
-state_ve_4,base.ve,APURE,AP
-state_ve_5,base.ve,ARAGUA,AR
-state_ve_6,base.ve,BARINAS,BA
-state_ve_7,base.ve,BOLIVAR,BO
-state_ve_8,base.ve,CARABOBO,CA
-state_ve_9,base.ve,COJEDES,CO
-state_ve_10,base.ve,FALCON,FA
-state_ve_11,base.ve,GUARICO,GU
-state_ve_12,base.ve,LARA,LA
-state_ve_13,base.ve,MERIDA,ME
-state_ve_14,base.ve,MIRANDA,MI
-state_ve_15,base.ve,MONAGAS,MO
-state_ve_16,base.ve,NUEVA ESPARTA,NE
-state_ve_17,base.ve,PORTUGUESA,PO
-state_ve_18,base.ve,SUCRE,SU
-state_ve_19,base.ve,TACHIRA,TA
-state_ve_20,base.ve,TRUJILLO,TR
-state_ve_21,base.ve,YARACUY,YA
-state_ve_22,base.ve,ZULIA,ZU
-state_ve_23,base.ve,DELTA AMACURO,DA
-state_ve_24,base.ve,VARGAS,VA
+state_ve_1,base.ve,Distrito Capital,DC
+state_ve_2,base.ve,Anzoategui,AZ
+state_ve_3,base.ve,Amazonas,AM
+state_ve_4,base.ve,Apure,AP
+state_ve_5,base.ve,Aragua,AR
+state_ve_6,base.ve,Barinas,BA
+state_ve_7,base.ve,Bolivar,BO
+state_ve_8,base.ve,Carabobo,CA
+state_ve_9,base.ve,Cojedes,CO
+state_ve_10,base.ve,Falcon,FA
+state_ve_11,base.ve,Guarico,GU
+state_ve_12,base.ve,Lara,LA
+state_ve_13,base.ve,Merida,ME
+state_ve_14,base.ve,Miranda,MI
+state_ve_15,base.ve,Monagas,MO
+state_ve_16,base.ve,Nueva Esparta,NE
+state_ve_17,base.ve,Portuguesa,PO
+state_ve_18,base.ve,Sucre,SU
+state_ve_19,base.ve,Tachira,TA
+state_ve_20,base.ve,Trujillo,TR
+state_ve_21,base.ve,Yaracuy,YA
+state_ve_22,base.ve,Zulia,ZU
+state_ve_23,base.ve,Delta Amacuro,DA
+state_ve_24,base.ve,La Guaira,LG

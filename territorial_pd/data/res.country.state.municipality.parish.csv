@@ -1,1137 +1,1137 @@
 "id","municipality_id:id","name","code"
-parroquia_10101,territorial_pd.municipio_101,ALTAGRACIA,10101
-parroquia_10102,territorial_pd.municipio_101,CANDELARIA,10102
-parroquia_10103,territorial_pd.municipio_101,CATEDRAL,10103
-parroquia_10104,territorial_pd.municipio_101,LA PASTORA,10104
-parroquia_10105,territorial_pd.municipio_101,SAN AGUSTÍN,10105
-parroquia_10106,territorial_pd.municipio_101,SAN JOSÉ,10106
-parroquia_10107,territorial_pd.municipio_101,SAN JUAN,10107
-parroquia_10108,territorial_pd.municipio_101,SANTA ROSALÍA,10108
-parroquia_10109,territorial_pd.municipio_101,SANTA TERESA,10109
-parroquia_10110,territorial_pd.municipio_101,SUCRE,10110
-parroquia_10111,territorial_pd.municipio_101,23 DE ENERO,10111
-parroquia_10112,territorial_pd.municipio_101,ANTÍMANO,10112
-parroquia_10113,territorial_pd.municipio_101,EL RECREO,10113
-parroquia_10114,territorial_pd.municipio_101,EL VALLE,10114
-parroquia_10115,territorial_pd.municipio_101,LA VEGA,10115
-parroquia_10116,territorial_pd.municipio_101,MACARAO,10116
-parroquia_10117,territorial_pd.municipio_101,CARICUAO,10117
-parroquia_10118,territorial_pd.municipio_101,EL JUNQUITO,10118
-parroquia_10119,territorial_pd.municipio_101,COCHE,10119
-parroquia_10120,territorial_pd.municipio_101,SAN PEDRO,10120
-parroquia_10121,territorial_pd.municipio_101,SAN BERNARDINO,10121
-parroquia_10122,territorial_pd.municipio_101,EL PARAÍSO,10122
-parroquia_20101,territorial_pd.municipio_201,ANACO,20101
-parroquia_20102,territorial_pd.municipio_201,SAN JOAQUÍN,20102
-parroquia_20201,territorial_pd.municipio_202,ARAGUA,20201
-parroquia_20202,territorial_pd.municipio_202,CACHIPO,20202
-parroquia_20301,territorial_pd.municipio_203,EL CARMEN,20301
-parroquia_20302,territorial_pd.municipio_203,SAN CRISTÓBAL,20302
-parroquia_20303,territorial_pd.municipio_203,BERGANTÍN,20303
-parroquia_20304,territorial_pd.municipio_203,CAIGUA,20304
-parroquia_20305,territorial_pd.municipio_203,EL PILAR,20305
-parroquia_20306,territorial_pd.municipio_203,NARICUAL,20306
-parroquia_20401,territorial_pd.municipio_204,CLARINES,20401
-parroquia_20402,territorial_pd.municipio_204,GUANAPE,20402
-parroquia_20403,territorial_pd.municipio_204,SABANA DE UCHIRE,20403
-parroquia_20501,territorial_pd.municipio_205,ONOTO,20501
-parroquia_20502,territorial_pd.municipio_205,SAN PABLO,20502
-parroquia_20601,territorial_pd.municipio_206,CANTAURA,20601
-parroquia_20602,territorial_pd.municipio_206,LIBERTADOR,20602
-parroquia_20603,territorial_pd.municipio_206,SANTA ROSA,20603
-parroquia_20604,territorial_pd.municipio_206,URICA,20604
-parroquia_20701,territorial_pd.municipio_207,SOLEDAD,20701
-parroquia_20702,territorial_pd.municipio_207,MAMO,20702
-parroquia_20801,territorial_pd.municipio_208,SAN MATEO,20801
-parroquia_20802,territorial_pd.municipio_208,EL CARITO,20802
-parroquia_20803,territorial_pd.municipio_208,SANTA INÉS,20803
-parroquia_20804,territorial_pd.municipio_208,LA ROMEREÑA,20804
-parroquia_20901,territorial_pd.municipio_209,PARIAGUÁN,20901
-parroquia_20902,territorial_pd.municipio_209,ATAPIRIRE,20902
-parroquia_20903,territorial_pd.municipio_209,BOCA DEL PAO,20903
-parroquia_20904,territorial_pd.municipio_209,EL PAO,20904
-parroquia_21001,territorial_pd.municipio_210,MAPIRE,21001
-parroquia_21002,territorial_pd.municipio_210,PIAR,21002
-parroquia_21003,territorial_pd.municipio_210,SAN DIEGO DE CABRUTICA,21003
-parroquia_21004,territorial_pd.municipio_210,SANTA CLARA,21004
-parroquia_21005,territorial_pd.municipio_210,UVERITO,21005
-parroquia_21006,territorial_pd.municipio_210,ZUATA,21006
-parroquia_21101,territorial_pd.municipio_211,PUERTO PÍRITU,21101
-parroquia_21102,territorial_pd.municipio_211,SAN MIGUEL,21102
-parroquia_21103,territorial_pd.municipio_211,SUCRE,21103
-parroquia_21201,territorial_pd.municipio_212,EDMUNDO BARRIOS,21201
-parroquia_21202,territorial_pd.municipio_212,MIGUEL OTERO SILVA,21202
-parroquia_21301,territorial_pd.municipio_213,POZUELOS,21301
-parroquia_21302,territorial_pd.municipio_213,PUERTO LA CRUZ,21302
-parroquia_21401,territorial_pd.municipio_214,SAN JOSÉ DE GUANIPA,21401
-parroquia_21501,territorial_pd.municipio_215,GUANTA,21501
-parroquia_21502,territorial_pd.municipio_215,CHORRERÓN,21502
-parroquia_21601,territorial_pd.municipio_216,PÍRITU,21601
-parroquia_21602,territorial_pd.municipio_216,SAN FRANCISCO,21602
-parroquia_21701,territorial_pd.municipio_217,LECHERÍAS,21701
-parroquia_21702,territorial_pd.municipio_217,EL MORRO,21702
-parroquia_21801,territorial_pd.municipio_218,VALLE DE GUANAPE,21801
-parroquia_21802,territorial_pd.municipio_218,SANTA BÁRBARA,21802
-parroquia_21901,territorial_pd.municipio_219,SANTA  ANA,21901
-parroquia_21902,territorial_pd.municipio_219,PUEBLO NUEVO,21902
-parroquia_22001,territorial_pd.municipio_220,EL CHAPARRO,22001
-parroquia_22002,territorial_pd.municipio_220,TOMÁS ALFARO,22002
-parroquia_22003,territorial_pd.municipio_220,CALATRAVA,22003
-parroquia_22101,territorial_pd.municipio_221,BOCA DE UCHIRE,22101
-parroquia_22102,territorial_pd.municipio_221,BOCA DE CHÁVEZ,22102
-parroquia_30101,territorial_pd.municipio_301,FERNÁNDO GIRÓN TOVAR,30101
-parroquia_30102,territorial_pd.municipio_301,LUIS ALBERTO GÓMEZ,30102
-parroquia_30103,territorial_pd.municipio_301,PARHUEÑA,30103
-parroquia_30104,territorial_pd.municipio_301,PLATANILLAL,30104
-parroquia_30201,territorial_pd.municipio_302,ATABAPO,30201
-parroquia_30202,territorial_pd.municipio_302,UCATA LAJA LISA,30202
-parroquia_30203,territorial_pd.municipio_302,YAPACANA MACURUCO,30203
-parroquia_30204,territorial_pd.municipio_302,CANAME GUARINUMA,30204
-parroquia_30301,territorial_pd.municipio_303,MAROA,30301
-parroquia_30302,territorial_pd.municipio_303,VICTORINO,30302
-parroquia_30303,territorial_pd.municipio_303,COMUNIDAD,30303
-parroquia_30401,territorial_pd.municipio_304,CASIQUIARE,30401
-parroquia_30402,territorial_pd.municipio_304,COCUY,30402
-parroquia_30403,territorial_pd.municipio_304,SAN CARLOS DE RÍO NEGRO,30403
-parroquia_30404,territorial_pd.municipio_304,SOLANO,30404
-parroquia_30501,territorial_pd.municipio_305,SAMARIAPO,30501
-parroquia_30502,territorial_pd.municipio_305,SIPAPO,30502
-parroquia_30503,territorial_pd.municipio_305,MUNDUAPO,30503
-parroquia_30504,territorial_pd.municipio_305,GUAYAPO,30504
-parroquia_30505,territorial_pd.municipio_305,ISLA RATÓN,30505
-parroquia_30601,territorial_pd.municipio_306,MANAPIARE,30601
-parroquia_30602,territorial_pd.municipio_306,ALTO VENTUARI,30602
-parroquia_30603,territorial_pd.municipio_306,MEDIO VENTUARI,30603
-parroquia_30604,territorial_pd.municipio_306,BAJO VENTUARI,30604
-parroquia_30701,territorial_pd.municipio_307,ALTO ORINOCO,30701
-parroquia_30702,territorial_pd.municipio_307,HUACHAMACARE ACANAÑA,30702
-parroquia_30703,territorial_pd.municipio_307,MARAWAKA TOKY SHAMANAÑA,30703
-parroquia_30704,territorial_pd.municipio_307,MAVACA,30704
-parroquia_30705,territorial_pd.municipio_307,SIERRA PARIMA,30705
-parroquia_40101,territorial_pd.municipio_401,ACHAGUAS,40101
-parroquia_40102,territorial_pd.municipio_401,APURITO,40102
-parroquia_40103,territorial_pd.municipio_401,EL YAGUAL,40103
-parroquia_40104,territorial_pd.municipio_401,GUACHARA,40104
-parroquia_40105,territorial_pd.municipio_401,MUCURITAS,40105
-parroquia_40106,territorial_pd.municipio_401,QUESERAS DEL MEDIO,40106
-parroquia_40201,territorial_pd.municipio_402,BRUZUAL,40201
-parroquia_40202,territorial_pd.municipio_402,MANTECAL,40202
-parroquia_40203,territorial_pd.municipio_402,QUINTERO,40203
-parroquia_40204,territorial_pd.municipio_402,RINCÓN HONDO,40204
-parroquia_40205,territorial_pd.municipio_402,SAN VICENTE,40205
-parroquia_40301,territorial_pd.municipio_403,GUASDUALITO,40301
-parroquia_40302,territorial_pd.municipio_403,ARAMENDI,40302
-parroquia_40303,territorial_pd.municipio_403,EL AMPARO,40303
-parroquia_40304,territorial_pd.municipio_403,SAN CAMILO,40304
-parroquia_40305,territorial_pd.municipio_403,URDANETA,40305
-parroquia_40401,territorial_pd.municipio_404,SAN JUAN DE PAYARA,40401
-parroquia_40402,territorial_pd.municipio_404,CODAZZI,40402
-parroquia_40403,territorial_pd.municipio_404,CUNAVICHE,40403
-parroquia_40501,territorial_pd.municipio_405,ELORZA,40501
-parroquia_40502,territorial_pd.municipio_405,LA TRINIDAD,40502
-parroquia_40601,territorial_pd.municipio_406,SAN FERNANDO DE APURE,40601
-parroquia_40602,territorial_pd.municipio_406,PEÑALVER,40602
-parroquia_40603,territorial_pd.municipio_406,EL RECREO,40603
-parroquia_40604,territorial_pd.municipio_406,SAN RAFAEL DE ATAMAICA,40604
-parroquia_40701,territorial_pd.municipio_407,BIRUACA,40701
-parroquia_50101,territorial_pd.municipio_501,LAS DELICIAS,50101
-parroquia_50102,territorial_pd.municipio_501,CHORONÍ,50102
-parroquia_50103,territorial_pd.municipio_501,MADRE MARÍA DE SAN JOSÉ,50103
-parroquia_50104,territorial_pd.municipio_501,JOAQUÍN CRESPO,50104
-parroquia_50105,territorial_pd.municipio_501,PEDRO JOSÉ OVALLES,50105
-parroquia_50106,territorial_pd.municipio_501,JOSÉ CASANOVA GODOY,50106
-parroquia_50107,territorial_pd.municipio_501,ANDRÉS ELOY BLANCO,50107
-parroquia_50108,territorial_pd.municipio_501,LOS TACARIGUAS,50108
-parroquia_50201,territorial_pd.municipio_502,SANTIAGO MARIÑO,50201
-parroquia_50202,territorial_pd.municipio_502,SAMÁN DE GÜERE,50202
-parroquia_50203,territorial_pd.municipio_502,ALFREDO PACHECO MIRANDA,50203
-parroquia_50204,territorial_pd.municipio_502,CHUAO,50204
-parroquia_50205,territorial_pd.municipio_502,ARÉVALO APONTE,50205
-parroquia_50301,territorial_pd.municipio_503,JOSÉ FÉLIX RIBAS,50301
-parroquia_50302,territorial_pd.municipio_503,ZUATA,50302
-parroquia_50303,territorial_pd.municipio_503,PAO DE ZÁRATE,50303
-parroquia_50304,territorial_pd.municipio_503,CASTOR NIEVES RÍOS,50304
-parroquia_50305,territorial_pd.municipio_503,LAS GUACAMAYAS,50305
-parroquia_50401,territorial_pd.municipio_504,SAN CASIMIRO,50401
-parroquia_50402,territorial_pd.municipio_504,VALLE MORÍN,50402
-parroquia_50403,territorial_pd.municipio_504,GÜIRIPA,50403
-parroquia_50404,territorial_pd.municipio_504,OLLAS DE CARAMACATE,50404
-parroquia_50501,territorial_pd.municipio_505,SAN SEBASTIÁN,50501
-parroquia_50601,territorial_pd.municipio_506,SUCRE,50601
-parroquia_50602,territorial_pd.municipio_506,BELLA VISTA,50602
-parroquia_50701,territorial_pd.municipio_507,URDANETA,50701
-parroquia_50702,territorial_pd.municipio_507,SAN FRANCISCO DE CARA,50702
-parroquia_50703,territorial_pd.municipio_507,TAGUAY,50703
-parroquia_50704,territorial_pd.municipio_507,LAS PEÑITAS,50704
-parroquia_50801,territorial_pd.municipio_508,ZAMORA,50801
-parroquia_50802,territorial_pd.municipio_508,MAGDALENO,50802
-parroquia_50803,territorial_pd.municipio_508,SAN FRANCISCO DE ASÍS,50803
-parroquia_50804,territorial_pd.municipio_508,VALLES DE TUCUTUNEMO,50804
-parroquia_50805,territorial_pd.municipio_508,AUGUSTO MIJARES,50805
-parroquia_50901,territorial_pd.municipio_509,LIBERTADOR,50901
-parroquia_50902,territorial_pd.municipio_509,SAN MARTÍN DE PORRES,50902
-parroquia_51001,territorial_pd.municipio_510,SANTA CRUZ,51001
-parroquia_51101,territorial_pd.municipio_511,BOLÍVAR,51101
-parroquia_51201,territorial_pd.municipio_512,SANTOS MICHELENA,51201
-parroquia_51202,territorial_pd.municipio_512,TIARA,51202
-parroquia_51301,territorial_pd.municipio_513,MARIO BRICEÑO IRAGORRY,51301
-parroquia_51302,territorial_pd.municipio_513,CAÑA DE AZÚCAR,51302
-parroquia_51401,territorial_pd.municipio_514,TOVAR,51401
-parroquia_51501,territorial_pd.municipio_515,CAMATAGUA,51501
-parroquia_51502,territorial_pd.municipio_515,NO URBANA CARMEN DE CURA,51502
-parroquia_51601,territorial_pd.municipio_516,JOSÉ RAFAEL REVENGA,51601
-parroquia_51701,territorial_pd.municipio_517,SANTA RITA,51701
-parroquia_51702,territorial_pd.municipio_517,FRANCISCO DE MIRANDA,51702
-parroquia_51703,territorial_pd.municipio_517,MONSEÑOR FELICIANO GONZÁLEZ,51703
-parroquia_51801,territorial_pd.municipio_518,OCUMARE DE LA COSTA DE ORO,51801
-parroquia_60101,territorial_pd.municipio_601,ARISMENDI,60101
-parroquia_60102,territorial_pd.municipio_601,GUADARRAMA,60102
-parroquia_60103,territorial_pd.municipio_601,LA UNIÓN,60103
-parroquia_60104,territorial_pd.municipio_601,SAN ANTONIO,60104
-parroquia_60201,territorial_pd.municipio_602,ALFREDO ARVELO LARRIVA,60201
-parroquia_60202,territorial_pd.municipio_602,BARINAS,60202
-parroquia_60203,territorial_pd.municipio_602,SAN SILVESTRE,60203
-parroquia_60204,territorial_pd.municipio_602,SANTA INÉS,60204
-parroquia_60205,territorial_pd.municipio_602,SANTA LUCÍA,60205
-parroquia_60206,territorial_pd.municipio_602,TORUNOS,60206
-parroquia_60207,territorial_pd.municipio_602,EL CARMEN,60207
-parroquia_60208,territorial_pd.municipio_602,RÓMULO BETANCOURT,60208
-parroquia_60209,territorial_pd.municipio_602,CORAZÓN DE JESÚS,60209
-parroquia_60210,territorial_pd.municipio_602,RAMÓN IGNACIO MÉNDEZ,60210
-parroquia_60211,territorial_pd.municipio_602,ALTO BARINAS,60211
-parroquia_60212,territorial_pd.municipio_602,MANUEL PALACIO FAJARDO,60212
-parroquia_60213,territorial_pd.municipio_602,JUAN ANTONIO RODRÍGUEZ DOMÍNGUEZ,60213
-parroquia_60214,territorial_pd.municipio_602,DOMINGA ORTIZ DE PÁEZ,60214
-parroquia_60301,territorial_pd.municipio_603,ALTAMIRA,60301
-parroquia_60302,territorial_pd.municipio_603,BARINITAS,60302
-parroquia_60303,territorial_pd.municipio_603,CALDERAS,60303
-parroquia_60401,territorial_pd.municipio_604,SANTA BÁRBARA,60401
-parroquia_60402,territorial_pd.municipio_604,JOSÉ IGNACIO DEL PUMAR,60402
-parroquia_60403,territorial_pd.municipio_604,RAMÓN IGNACIO MÉNDEZ,60403
-parroquia_60404,territorial_pd.municipio_604,PEDRO BRICEÑO MÉNDEZ,60404
-parroquia_60501,territorial_pd.municipio_605,EL REAL,60501
-parroquia_60502,territorial_pd.municipio_605,LA LUZ,60502
-parroquia_60503,territorial_pd.municipio_605,OBISPOS,60503
-parroquia_60504,territorial_pd.municipio_605,LOS GUASIMITOS,60504
-parroquia_60601,territorial_pd.municipio_606,CIUDAD BOLIVIA,60601
-parroquia_60602,territorial_pd.municipio_606,IGNACIO BRICEÑO,60602
-parroquia_60603,territorial_pd.municipio_606,PÁEZ,60603
-parroquia_60604,territorial_pd.municipio_606,JOSÉ FÉLIX RIBAS,60604
-parroquia_60701,territorial_pd.municipio_607,DOLORES,60701
-parroquia_60702,territorial_pd.municipio_607,LIBERTAD,60702
-parroquia_60703,territorial_pd.municipio_607,PALACIOS FAJARDO,60703
-parroquia_60704,territorial_pd.municipio_607,SANTA ROSA,60704
-parroquia_60801,territorial_pd.municipio_608,CIUDAD DE NUTRIAS,60801
-parroquia_60802,territorial_pd.municipio_608,EL REGALO,60802
-parroquia_60803,territorial_pd.municipio_608,PUERTO DE NUTRIAS,60803
-parroquia_60804,territorial_pd.municipio_608,SANTA CATALINA,60804
-parroquia_60901,territorial_pd.municipio_609,RODRÍGUEZ DOMÍNGUEZ,60901
-parroquia_60902,territorial_pd.municipio_609,SABANETA,60902
-parroquia_61001,territorial_pd.municipio_610,TICOPORO,61001
-parroquia_61002,territorial_pd.municipio_610,NICOLÁS PULIDO,61002
-parroquia_61003,territorial_pd.municipio_610,ANDRÉS BELLO,61003
-parroquia_61101,territorial_pd.municipio_611,BARRANCAS,61101
-parroquia_61102,territorial_pd.municipio_611,EL SOCORRO,61102
-parroquia_61103,territorial_pd.municipio_611,MASPARRITO,61103
-parroquia_61201,territorial_pd.municipio_612,EL CANTÓN,61201
-parroquia_61202,territorial_pd.municipio_612,SANTA CRUZ DE GUACAS,61202
-parroquia_61203,territorial_pd.municipio_612,PUERTO VIVAS,61203
-parroquia_70101,territorial_pd.municipio_701,SIMÓN BOLÍVAR,70101
-parroquia_70102,territorial_pd.municipio_701,ONCE DE ABRIL,70102
-parroquia_70103,territorial_pd.municipio_701,VISTA AL SOL,70103
-parroquia_70104,territorial_pd.municipio_701,CHIRICA,70104
-parroquia_70105,territorial_pd.municipio_701,DALLA COSTA,70105
-parroquia_70106,territorial_pd.municipio_701,CACHAMAY,70106
-parroquia_70107,territorial_pd.municipio_701,UNIVERSIDAD,70107
-parroquia_70108,territorial_pd.municipio_701,UNARE,70108
-parroquia_70109,territorial_pd.municipio_701,YOCOIMA,70109
-parroquia_70110,territorial_pd.municipio_701,POZO VERDE,70110
-parroquia_70201,territorial_pd.municipio_702,SECCIÓN CAPITAL CEDEÑO,70201
-parroquia_70202,territorial_pd.municipio_702,ASCENSIÓN FARRERAS,70202
-parroquia_70203,territorial_pd.municipio_702,ALTAGRACIA,70203
-parroquia_70204,territorial_pd.municipio_702,LA URBANA,70204
-parroquia_70205,territorial_pd.municipio_702,GUANIAMO,70205
-parroquia_70206,territorial_pd.municipio_702,PIJIGUAOS,70206
-parroquia_70301,territorial_pd.municipio_703,CATEDRAL,70301
-parroquia_70302,territorial_pd.municipio_703,AGUA SALADA,70302
-parroquia_70303,territorial_pd.municipio_703,LA SABANITA,70303
-parroquia_70304,territorial_pd.municipio_703,VISTA HERMOSA,70304
-parroquia_70305,territorial_pd.municipio_703,MARHUANTA,70305
-parroquia_70306,territorial_pd.municipio_703,JOSÉ ANTONIO PÁEZ,70306
-parroquia_70307,territorial_pd.municipio_703,ORINOCO,70307
-parroquia_70308,territorial_pd.municipio_703,PANAPANA,70308
-parroquia_70309,territorial_pd.municipio_703,ZEA,70309
-parroquia_70401,territorial_pd.municipio_704,SECCIÓN CAPITAL PIAR,70401
-parroquia_70402,territorial_pd.municipio_704,ANDRÉS ELOY BLANCO,70402
-parroquia_70403,territorial_pd.municipio_704,PEDRO COVA,70403
-parroquia_70501,territorial_pd.municipio_705,SECCIÓN CAPITAL ROSCIO,70501
-parroquia_70502,territorial_pd.municipio_705,SALOM,70502
-parroquia_70601,territorial_pd.municipio_706,SECCIÓN CAPITAL SUCRE,70601
-parroquia_70602,territorial_pd.municipio_706,ARIPAO,70602
-parroquia_70603,territorial_pd.municipio_706,LAS MAJADAS,70603
-parroquia_70604,territorial_pd.municipio_706,MOITACO,70604
-parroquia_70605,territorial_pd.municipio_706,GUARATARO,70605
-parroquia_70701,territorial_pd.municipio_707,SECCIÓN CAPITAL SIFONTES,70701
-parroquia_70702,territorial_pd.municipio_707,DALLA COSTA,70702
-parroquia_70703,territorial_pd.municipio_707,SAN ISIDRO,70703
-parroquia_70801,territorial_pd.municipio_708,SECCIÓN CAPITAL RAÚL LEONI,70801
-parroquia_70802,territorial_pd.municipio_708,SAN FRANCISCO,70802
-parroquia_70803,territorial_pd.municipio_708,BARCELONETA,70803
-parroquia_70804,territorial_pd.municipio_708,SANTA BÁRBARA,70804
-parroquia_70901,territorial_pd.municipio_709,SECCIÓN CAPITAL GRAN SABANA,70901
-parroquia_70902,territorial_pd.municipio_709,IKABARÚ,70902
-parroquia_71001,territorial_pd.municipio_710,EL CALLAO,71001
-parroquia_71101,territorial_pd.municipio_711,PADRE PEDRO CHIEN,71101
-parroquia_80101,territorial_pd.municipio_801,BEJUMA,80101
-parroquia_80102,territorial_pd.municipio_801,CANOABO,80102
-parroquia_80103,territorial_pd.municipio_801,SIMÓN BOLÍVAR,80103
-parroquia_80201,territorial_pd.municipio_802,GÜIGÜE,80201
-parroquia_80202,territorial_pd.municipio_802,BELÉN,80202
-parroquia_80203,territorial_pd.municipio_802,TACARIGUA,80203
-parroquia_80301,territorial_pd.municipio_803,MARIARA,80301
-parroquia_80302,territorial_pd.municipio_803,AGUAS CALIENTES,80302
-parroquia_80401,territorial_pd.municipio_804,GUACARA,80401
-parroquia_80402,territorial_pd.municipio_804,CIUDAD ALIANZA,80402
-parroquia_80403,territorial_pd.municipio_804,YAGUA,80403
-parroquia_80501,territorial_pd.municipio_805,MONTALBÁN,80501
-parroquia_80601,territorial_pd.municipio_806,MORÓN,80601
-parroquia_80602,territorial_pd.municipio_806,URAMA,80602
-parroquia_80701,territorial_pd.municipio_807,DEMOCRACIA,80701
-parroquia_80702,territorial_pd.municipio_807,FRATERNIDAD,80702
-parroquia_80703,territorial_pd.municipio_807,GOAIGOAZA,80703
-parroquia_80704,territorial_pd.municipio_807,JUAN JOSÉ FLORES,80704
-parroquia_80705,territorial_pd.municipio_807,BARTOLOMÉ SALOM,80705
-parroquia_80706,territorial_pd.municipio_807,UNIÓN,80706
-parroquia_80707,territorial_pd.municipio_807,BORBURATA,80707
-parroquia_80708,territorial_pd.municipio_807,PATANEMO,80708
-parroquia_80801,territorial_pd.municipio_808,SAN JOAQUÍN,80801
-parroquia_80901,territorial_pd.municipio_809,CANDELARIA,80901
-parroquia_80902,territorial_pd.municipio_809,CATEDRAL,80902
-parroquia_80903,territorial_pd.municipio_809,EL SOCORRO,80903
-parroquia_80904,territorial_pd.municipio_809,MIGUEL PEÑA,80904
-parroquia_80905,territorial_pd.municipio_809,SAN BLAS,80905
-parroquia_80906,territorial_pd.municipio_809,SAN JOSÉ,80906
-parroquia_80907,territorial_pd.municipio_809,SANTA ROSA,80907
-parroquia_80908,territorial_pd.municipio_809,RAFAEL URDANETA,80908
-parroquia_80909,territorial_pd.municipio_809,NEGRO PRIMERO,80909
-parroquia_81001,territorial_pd.municipio_810,MIRANDA,81001
-parroquia_81101,territorial_pd.municipio_811,LOS GUAYOS,81101
-parroquia_81201,territorial_pd.municipio_812,NAGUANAGUA,81201
-parroquia_81301,territorial_pd.municipio_813,SAN DIEGO,81301
-parroquia_81401,territorial_pd.municipio_814,TOCUYITO,81401
-parroquia_81402,territorial_pd.municipio_814,INDEPENDENCIA,81402
-parroquia_90101,territorial_pd.municipio_901,COJEDES,90101
-parroquia_90102,territorial_pd.municipio_901,JUAN DE MATA SUÁREZ,90102
-parroquia_90201,territorial_pd.municipio_902,TINAQUILLO,90201
-parroquia_90301,territorial_pd.municipio_903,EL BAÚL,90301
-parroquia_90302,territorial_pd.municipio_903,SUCRE,90302
-parroquia_90401,territorial_pd.municipio_904,EL PAO,90401
-parroquia_90501,territorial_pd.municipio_905,LIBERTAD DE COJEDES,90501
-parroquia_90502,territorial_pd.municipio_905,EL AMPARO,90502
-parroquia_90601,territorial_pd.municipio_906,SAN CARLOS DE AUSTRIA,90601
-parroquia_90602,territorial_pd.municipio_906,JUAN ANGEL BRAVO,90602
-parroquia_90603,territorial_pd.municipio_906,MANUEL MANRIQUE,90603
-parroquia_90701,territorial_pd.municipio_907,GENERAL EN JEFE JOSÉ LAURENCIO SILVA,90701
-parroquia_90801,territorial_pd.municipio_908,MACAPO,90801
-parroquia_90802,territorial_pd.municipio_908,LA AGUADITA,90802
-parroquia_90901,territorial_pd.municipio_909,RÓMULO GALLEGOS,90901
-parroquia_100101,territorial_pd.municipio_1001,SAN JUAN DE LOS CAYOS,100101
-parroquia_100102,territorial_pd.municipio_1001,CAPADARE,100102
-parroquia_100103,territorial_pd.municipio_1001,LA PASTORA,100103
-parroquia_100104,territorial_pd.municipio_1001,LIBERTADOR,100104
-parroquia_100201,territorial_pd.municipio_1002,SAN LUIS,100201
-parroquia_100202,territorial_pd.municipio_1002,ARACUA,100202
-parroquia_100203,territorial_pd.municipio_1002,LA PEÑA,100203
-parroquia_100301,territorial_pd.municipio_1003,CAPATÁRIDA,100301
-parroquia_100302,territorial_pd.municipio_1003,BOROJÓ,100302
-parroquia_100303,territorial_pd.municipio_1003,SEQUE,100303
-parroquia_100304,territorial_pd.municipio_1003,ZAZÁRIDA,100304
-parroquia_100305,territorial_pd.municipio_1003,BARIRO,100305
-parroquia_100306,territorial_pd.municipio_1003,GUAJIRO,100306
-parroquia_100401,territorial_pd.municipio_1004,NORTE,100401
-parroquia_100402,territorial_pd.municipio_1004,CARIRUBANA,100402
-parroquia_100403,territorial_pd.municipio_1004,PUNTA CARDÓN,100403
-parroquia_100404,territorial_pd.municipio_1004,SANTA ANA,100404
-parroquia_100501,territorial_pd.municipio_1005,LA VELA DE CORO,100501
-parroquia_100502,territorial_pd.municipio_1005,ACURIGUA,100502
-parroquia_100503,territorial_pd.municipio_1005,GUAIBACOA,100503
-parroquia_100504,territorial_pd.municipio_1005,MACORUCA,100504
-parroquia_100505,territorial_pd.municipio_1005,LAS CALDERAS,100505
-parroquia_100601,territorial_pd.municipio_1006,PEDREGAL,100601
-parroquia_100602,territorial_pd.municipio_1006,AGUA CLARA,100602
-parroquia_100603,territorial_pd.municipio_1006,AVARIA,100603
-parroquia_100604,territorial_pd.municipio_1006,PIEDRA GRANDE,100604
-parroquia_100605,territorial_pd.municipio_1006,PURURECHE,100605
-parroquia_100701,territorial_pd.municipio_1007,PUEBLO NUEVO,100701
-parroquia_100702,territorial_pd.municipio_1007,ADÍCORA,100702
-parroquia_100703,territorial_pd.municipio_1007,BARAIVED,100703
-parroquia_100704,territorial_pd.municipio_1007,BUENA VISTA,100704
-parroquia_100705,territorial_pd.municipio_1007,JADACAQUIVA,100705
-parroquia_100706,territorial_pd.municipio_1007,MORUY,100706
-parroquia_100707,territorial_pd.municipio_1007,EL VÍNCULO,100707
-parroquia_100708,territorial_pd.municipio_1007,EL HATO,100708
-parroquia_100709,territorial_pd.municipio_1007,ADAURE,100709
-parroquia_100801,territorial_pd.municipio_1008,CHURUGUARA,100801
-parroquia_100802,territorial_pd.municipio_1008,AGUA LARGA,100802
-parroquia_100803,territorial_pd.municipio_1008,INDEPENDENCIA,100803
-parroquia_100804,territorial_pd.municipio_1008,MAPARARÍ,100804
-parroquia_100805,territorial_pd.municipio_1008,EL PAUJÍ,100805
-parroquia_100901,territorial_pd.municipio_1009,MENE DE MAUROA,100901
-parroquia_100902,territorial_pd.municipio_1009,CASIGUA,100902
-parroquia_100903,territorial_pd.municipio_1009,SAN FÉLIX,100903
-parroquia_101001,territorial_pd.municipio_1010,SAN ANTONIO,101001
-parroquia_101002,territorial_pd.municipio_1010,SAN GABRIEL,101002
-parroquia_101004,territorial_pd.municipio_1010,GUZMÁN GUILLERMO,101004
-parroquia_101005,territorial_pd.municipio_1010,MITARE,101005
-parroquia_101006,territorial_pd.municipio_1010,SABANETA,101006
-parroquia_101007,territorial_pd.municipio_1010,RÍO SECO,101007
-parroquia_101101,territorial_pd.municipio_1011,CABURE,101101
-parroquia_101102,territorial_pd.municipio_1011,CURIMAGUA,101102
-parroquia_101103,territorial_pd.municipio_1011,COLINA,101103
-parroquia_101201,territorial_pd.municipio_1012,TUCACAS,101201
-parroquia_101202,territorial_pd.municipio_1012,BOCA DE AROA,101202
-parroquia_101301,territorial_pd.municipio_1013,PUERTO CUMAREBO,101301
-parroquia_101302,territorial_pd.municipio_1013,LA CIÉNAGA,101302
-parroquia_101303,territorial_pd.municipio_1013,LA SOLEDAD,101303
-parroquia_101304,territorial_pd.municipio_1013,PUEBLO CUMAREBO,101304
-parroquia_101305,territorial_pd.municipio_1013,ZAZARIDA,101305
-parroquia_101401,territorial_pd.municipio_1014,CAPITAL DABAJURO,101401
-parroquia_101501,territorial_pd.municipio_1015,CHICHIRIVICHE,101501
-parroquia_101502,territorial_pd.municipio_1015,BOCA DE TOCUYO,101502
-parroquia_101503,territorial_pd.municipio_1015,TOCUYO DE LA COSTA,101503
-parroquia_101601,territorial_pd.municipio_1016,LOS TAQUES,101601
-parroquia_101602,territorial_pd.municipio_1016,JUDIBANA,101602
-parroquia_101701,territorial_pd.municipio_1017,PÍRITU,101701
-parroquia_101702,territorial_pd.municipio_1017,SAN JOSÉ DE LA COSTA,101702
-parroquia_101801,territorial_pd.municipio_1018,SANTA CRUZ DE BUCARAL,101801
-parroquia_101802,territorial_pd.municipio_1018,EL CHARAL,101802
-parroquia_101803,territorial_pd.municipio_1018,LAS VEGAS DEL TUY,101803
-parroquia_101901,territorial_pd.municipio_1019,SAN FRANCISCO,101901
-parroquia_102001,territorial_pd.municipio_1020,JACURA,102001
-parroquia_102002,territorial_pd.municipio_1020,AGUA LINDA,102002
-parroquia_102003,territorial_pd.municipio_1020,ARAURIMA,102003
-parroquia_102101,territorial_pd.municipio_1021,CACIQUE MANAURE,102101
-parroquia_102201,territorial_pd.municipio_1022,PALMASOLA,102201
-parroquia_102301,territorial_pd.municipio_1023,SUCRE,102301
-parroquia_102302,territorial_pd.municipio_1023,PECAYA,102302
-parroquia_102401,territorial_pd.municipio_1024,URUMACO,102401
-parroquia_102402,territorial_pd.municipio_1024,URBANA BRUZUAL,102402
-parroquia_102501,territorial_pd.municipio_1025,TOCÓPERO,102501
-parroquia_110101,territorial_pd.municipio_1101,VALLE DE LA PASCUA,110101
-parroquia_110102,territorial_pd.municipio_1101,ESPINO,110102
-parroquia_110201,territorial_pd.municipio_1102,EL SOMBRERO,110201
-parroquia_110202,territorial_pd.municipio_1102,SOSA,110202
-parroquia_110301,territorial_pd.municipio_1103,CALABOZO,110301
-parroquia_110302,territorial_pd.municipio_1103,EL CALVARIO,110302
-parroquia_110303,territorial_pd.municipio_1103,EL RASTRO,110303
-parroquia_110304,territorial_pd.municipio_1103,GUARDATINAJAS,110304
-parroquia_110401,territorial_pd.municipio_1104,ALTAGRACIA DE ORITUCO,110401
-parroquia_110402,territorial_pd.municipio_1104,LEZAMA,110402
-parroquia_110403,territorial_pd.municipio_1104,LIBERTAD DE ORITUCO,110403
-parroquia_110404,territorial_pd.municipio_1104,SAN FRANCISCO DE MACAIRA,110404
-parroquia_110405,territorial_pd.municipio_1104,SAN RAFAEL DE ORITUCO,110405
-parroquia_110406,territorial_pd.municipio_1104,SOUBLETTE,110406
-parroquia_110407,territorial_pd.municipio_1104,PASO REAL DE MACAIRA,110407
-parroquia_110501,territorial_pd.municipio_1105,TUCUPIDO,110501
-parroquia_110502,territorial_pd.municipio_1105,SAN RAFAEL DE LAYA,110502
-parroquia_110601,territorial_pd.municipio_1106,SAN JUAN DE LOS MORROS,110601
-parroquia_110602,territorial_pd.municipio_1106,PARAPARA,110602
-parroquia_110603,territorial_pd.municipio_1106,CANTAGALLO,110603
-parroquia_110701,territorial_pd.municipio_1107,ZARAZA,110701
-parroquia_110702,territorial_pd.municipio_1107,SAN JOSÉ DE UNARE,110702
-parroquia_110801,territorial_pd.municipio_1108,CAMAGUÁN,110801
-parroquia_110802,territorial_pd.municipio_1108,PUERTO MIRANDA,110802
-parroquia_110803,territorial_pd.municipio_1108,UVERITO,110803
-parroquia_110901,territorial_pd.municipio_1109,SAN JOSÉ DE GUARIBE,110901
-parroquia_111001,territorial_pd.municipio_1110,LAS MERCEDES,111001
-parroquia_111002,territorial_pd.municipio_1110,SANTA RITA DE MANAPIRE,111002
-parroquia_111003,territorial_pd.municipio_1110,CABRUTA,111003
-parroquia_111101,territorial_pd.municipio_1111,EL SOCORRO,111101
-parroquia_111201,territorial_pd.municipio_1112,ORTIZ,111201
-parroquia_111202,territorial_pd.municipio_1112,SAN FRANCISCO DE TIZNADOS,111202
-parroquia_111203,territorial_pd.municipio_1112,SAN JOSÉ DE TIZNADOS,111203
-parroquia_111204,territorial_pd.municipio_1112,SAN LORENZO DE TIZNADOS,111204
-parroquia_111301,territorial_pd.municipio_1113,SANTA MARÍA DE IPIRE,111301
-parroquia_111302,territorial_pd.municipio_1113,ALTAMIRA,111302
-parroquia_111401,territorial_pd.municipio_1114,CHAGUARAMAS,111401
-parroquia_111501,territorial_pd.municipio_1115,SAN GERÓNIMO DE GUAYABAL,111501
-parroquia_111502,territorial_pd.municipio_1115,CAZORLA,111502
-parroquia_120101,territorial_pd.municipio_1201,FREITEZ,120101
-parroquia_120102,territorial_pd.municipio_1201,JOSÉ MARÍA BLANCO,120102
-parroquia_120201,territorial_pd.municipio_1202,CATEDRAL,120201
-parroquia_120202,territorial_pd.municipio_1202,CONCEPCIÓN,120202
-parroquia_120203,territorial_pd.municipio_1202,SANTA ROSA,120203
-parroquia_120204,territorial_pd.municipio_1202,UNIÓN,120204
-parroquia_120205,territorial_pd.municipio_1202,EL CUJÍ,120205
-parroquia_120206,territorial_pd.municipio_1202,TAMACA,120206
-parroquia_120207,territorial_pd.municipio_1202,JUAN DE VILLEGAS,120207
-parroquia_120208,territorial_pd.municipio_1202,AGUEDO FELIPE ALVARADO,120208
-parroquia_120209,territorial_pd.municipio_1202,BUENA VISTA,120209
-parroquia_120210,territorial_pd.municipio_1202,JUÁREZ,120210
-parroquia_120301,territorial_pd.municipio_1203,JUAN BAUTISTA RODRÍGUEZ,120301
-parroquia_120302,territorial_pd.municipio_1203,DIEGO DE LOZADA,120302
-parroquia_120303,territorial_pd.municipio_1203,SAN MIGUEL,120303
-parroquia_120304,territorial_pd.municipio_1203,CUARA,120304
-parroquia_120305,territorial_pd.municipio_1203,PARAÍSO DE SAN JOSÉ,120305
-parroquia_120306,territorial_pd.municipio_1203,TINTORERO,120306
-parroquia_120307,territorial_pd.municipio_1203,JOSÉ BERNARDO DORANTE,120307
-parroquia_120308,territorial_pd.municipio_1203,CORONEL MARIANO PERAZA,120308
-parroquia_120401,territorial_pd.municipio_1204,BOLÍVAR,120401
-parroquia_120402,territorial_pd.municipio_1204,ANZOÁTEGUI,120402
-parroquia_120403,territorial_pd.municipio_1204,GUÁRICO,120403
-parroquia_120404,territorial_pd.municipio_1204,HUMOCARO ALTO,120404
-parroquia_120405,territorial_pd.municipio_1204,HUMOCARO BAJO,120405
-parroquia_120406,territorial_pd.municipio_1204,MORÁN,120406
-parroquia_120407,territorial_pd.municipio_1204,HILARIO LUNA Y LUNA,120407
-parroquia_120408,territorial_pd.municipio_1204,LA CANDELARIA,120408
-parroquia_120501,territorial_pd.municipio_1205,CABUDARE,120501
-parroquia_120502,territorial_pd.municipio_1205,JOSÉ GREGORIO BASTIDAS,120502
-parroquia_120503,territorial_pd.municipio_1205,AGUA VIVA,120503
-parroquia_120601,territorial_pd.municipio_1206,TRINIDAD SAMUEL,120601
-parroquia_120602,territorial_pd.municipio_1206,ANTONIO DÍAZ,120602
-parroquia_120603,territorial_pd.municipio_1206,CAMACARO,120603
-parroquia_120604,territorial_pd.municipio_1206,CASTAÑEDA,120604
-parroquia_120605,territorial_pd.municipio_1206,CHIQUINQUIRÁ,120605
-parroquia_120606,territorial_pd.municipio_1206,ESPINOZA DE LOS MONTEROS,120606
-parroquia_120607,territorial_pd.municipio_1206,LARA,120607
-parroquia_120608,territorial_pd.municipio_1206,MANUEL MORILLO,120608
-parroquia_120609,territorial_pd.municipio_1206,MONTES DE OCA,120609
-parroquia_120610,territorial_pd.municipio_1206,TORRES,120610
-parroquia_120611,territorial_pd.municipio_1206,EL BLANCO,120611
-parroquia_120612,territorial_pd.municipio_1206,MONTAÑA VERDE,120612
-parroquia_120614,territorial_pd.municipio_1206,LAS MERCEDES,120614
-parroquia_120615,territorial_pd.municipio_1206,CECILIO ZUBILLAGA,120615
-parroquia_120616,territorial_pd.municipio_1206,REYES VARGAS,120616
-parroquia_120617,territorial_pd.municipio_1206,ALTAGRACIA,120617
-parroquia_120701,territorial_pd.municipio_1207,SIQUISIQUE,120701
-parroquia_120702,territorial_pd.municipio_1207,SAN MIGUEL,120702
-parroquia_120703,territorial_pd.municipio_1207,XAGUAS,120703
-parroquia_120704,territorial_pd.municipio_1207,MOROTURO,120704
-parroquia_120801,territorial_pd.municipio_1208,PÍO TAMAYO,120801
-parroquia_120802,territorial_pd.municipio_1208,YACAMBÚ,120802
-parroquia_120803,territorial_pd.municipio_1208,QUEBRADA HONDA DE GUACHE,120803
-parroquia_120901,territorial_pd.municipio_1209,SARARE,120901
-parroquia_120902,territorial_pd.municipio_1209,GUSTAVO VEGAS LEÓN,120902
-parroquia_120903,territorial_pd.municipio_1209,BURÍA,120903
-parroquia_130101,territorial_pd.municipio_1301,GABRIEL PICÓN GONZÁLEZ,130101
-parroquia_130102,territorial_pd.municipio_1301,HÉCTOR AMABLE MORA,130102
-parroquia_130103,territorial_pd.municipio_1301,JOSÉ NUCETE SARDI,130103
-parroquia_130104,territorial_pd.municipio_1301,PULIDO MÉNDEZ,130104
-parroquia_130105,territorial_pd.municipio_1301,PRESIDENTE RÓMULO GALLEGOS,130105
-parroquia_130106,territorial_pd.municipio_1301,PRESIDENTE BETANCOURT,130106
-parroquia_130107,territorial_pd.municipio_1301,PRESIDENTE PÁEZ,130107
-parroquia_130201,territorial_pd.municipio_1302,LA AZULITA,130201
-parroquia_130301,territorial_pd.municipio_1303,CANAGUÁ,130301
-parroquia_130302,territorial_pd.municipio_1303,CAPURÍ,130302
-parroquia_130303,territorial_pd.municipio_1303,CHACANTÁ,130303
-parroquia_130304,territorial_pd.municipio_1303,EL MOLINO,130304
-parroquia_130305,territorial_pd.municipio_1303,GUAIMARAL,130305
-parroquia_130306,territorial_pd.municipio_1303,MUCUTUY,130306
-parroquia_130307,territorial_pd.municipio_1303,MUCUCHACHÍ,130307
-parroquia_130401,territorial_pd.municipio_1304,ACEQUIAS,130401
-parroquia_130402,territorial_pd.municipio_1304,JAJÍ,130402
-parroquia_130403,territorial_pd.municipio_1304,LA MESA,130403
-parroquia_130404,territorial_pd.municipio_1304,SAN JOSÉ DEL SUR,130404
-parroquia_130405,territorial_pd.municipio_1304,MONTALBÁN,130405
-parroquia_130406,territorial_pd.municipio_1304,MATRIZ,130406
-parroquia_130407,territorial_pd.municipio_1304,FERNÁNDEZ PEÑA,130407
-parroquia_130501,territorial_pd.municipio_1305,GUARAQUE,130501
-parroquia_130502,territorial_pd.municipio_1305,MESA DE QUINTERO,130502
-parroquia_130503,territorial_pd.municipio_1305,RÍO NEGRO,130503
-parroquia_130601,territorial_pd.municipio_1306,ARAPUEY,130601
-parroquia_130602,territorial_pd.municipio_1306,PALMIRA,130602
-parroquia_130701,territorial_pd.municipio_1307,TORONDOY,130701
-parroquia_130702,territorial_pd.municipio_1307,SAN CRISTÓBAL DE TORONDOY,130702
-parroquia_130801,territorial_pd.municipio_1308,ARIAS,130801
-parroquia_130802,territorial_pd.municipio_1308,SAGRARIO,130802
-parroquia_130803,territorial_pd.municipio_1308,MILLA,130803
-parroquia_130804,territorial_pd.municipio_1308,EL LLANO,130804
-parroquia_130805,territorial_pd.municipio_1308,JUAN RODRÍGUEZ SUÁREZ,130805
-parroquia_130806,territorial_pd.municipio_1308,JACINTO PLAZA,130806
-parroquia_130807,territorial_pd.municipio_1308,DOMINGO PEÑA,130807
-parroquia_130808,territorial_pd.municipio_1308,GONZALO PICÓN FEBRES,130808
-parroquia_130809,territorial_pd.municipio_1308,OSUNA RODRÍGUEZ,130809
-parroquia_130810,territorial_pd.municipio_1308,LASSO DE LA VEGA,130810
-parroquia_130811,territorial_pd.municipio_1308,CARACCIOLO PARRA PÉREZ,130811
-parroquia_130812,territorial_pd.municipio_1308,MARIANO PICÓN SALAS,130812
-parroquia_130813,territorial_pd.municipio_1308,ANTONIO SPINETTI DINI,130813
-parroquia_130814,territorial_pd.municipio_1308,EL MORRO,130814
-parroquia_130815,territorial_pd.municipio_1308,LOS NEVADOS,130815
-parroquia_130901,territorial_pd.municipio_1309,TABAY,130901
-parroquia_131001,territorial_pd.municipio_1310,TIMOTES,131001
-parroquia_131002,territorial_pd.municipio_1310,ANDRÉS ELOY BLANCO,131002
-parroquia_131003,territorial_pd.municipio_1310,PIÑANGO,131003
-parroquia_131004,territorial_pd.municipio_1310,LA VENTA,131004
-parroquia_131101,territorial_pd.municipio_1311,SANTA CRUZ DE MORA,131101
-parroquia_131102,territorial_pd.municipio_1311,MESA BOLÍVAR,131102
-parroquia_131103,territorial_pd.municipio_1311,MESA DE LAS PALMAS,131103
-parroquia_131201,territorial_pd.municipio_1312,SANTA ELENA DE ARENALES,131201
-parroquia_131202,territorial_pd.municipio_1312,ELOY PAREDES,131202
-parroquia_131203,territorial_pd.municipio_1312,SAN RAFAEL DE ALCÁZAR,131203
-parroquia_131301,territorial_pd.municipio_1313,TUCANI,131301
-parroquia_131302,territorial_pd.municipio_1313,FLORENCIO RAMÍREZ,131302
-parroquia_131401,territorial_pd.municipio_1314,SANTO DOMINGO,131401
-parroquia_131402,territorial_pd.municipio_1314,LAS PIEDRAS,131402
-parroquia_131501,territorial_pd.municipio_1315,PUEBLO LLANO,131501
-parroquia_131601,territorial_pd.municipio_1316,MUCUCHÍES,131601
-parroquia_131602,territorial_pd.municipio_1316,MUCURUBÁ,131602
-parroquia_131603,territorial_pd.municipio_1316,SAN RAFAEL,131603
-parroquia_131604,territorial_pd.municipio_1316,CACUTE,131604
-parroquia_131605,territorial_pd.municipio_1316,LA TOMA,131605
-parroquia_131701,territorial_pd.municipio_1317,BAILADORES,131701
-parroquia_131702,territorial_pd.municipio_1317,GERÓNIMO MALDONADO,131702
-parroquia_131801,territorial_pd.municipio_1318,CAPITAL SUCRE,131801
-parroquia_131802,territorial_pd.municipio_1318,CHIGUARÁ,131802
-parroquia_131803,territorial_pd.municipio_1318,ESTÁNQUEZ,131803
-parroquia_131804,territorial_pd.municipio_1318,SAN JUAN,131804
-parroquia_131805,territorial_pd.municipio_1318,PUEBLO NUEVO DEL SUR,131805
-parroquia_131806,territorial_pd.municipio_1318,LA TRAMPA,131806
-parroquia_131901,territorial_pd.municipio_1319,EL LLANO,131901
-parroquia_131902,territorial_pd.municipio_1319,TOVAR,131902
-parroquia_131903,territorial_pd.municipio_1319,EL AMPARO,131903
-parroquia_131904,territorial_pd.municipio_1319,SAN FRANCISCO,131904
-parroquia_132001,territorial_pd.municipio_1320,NUEVA BOLIVIA,132001
-parroquia_132002,territorial_pd.municipio_1320,INDEPENDENCIA,132002
-parroquia_132003,territorial_pd.municipio_1320,MARÍA DE LA CONCEPCIÓN PALACIOS BLANCO,132003
-parroquia_132004,territorial_pd.municipio_1320,SANTA APOLONIA,132004
-parroquia_132101,territorial_pd.municipio_1321,PADRE NOGUERA,132101
-parroquia_132201,territorial_pd.municipio_1322,ARICAGUA,132201
-parroquia_132202,territorial_pd.municipio_1322,SAN ANTONIO,132202
-parroquia_132301,territorial_pd.municipio_1323,ZEA,132301
-parroquia_132302,territorial_pd.municipio_1323,CAÑO EL TIGRE,132302
-parroquia_140101,territorial_pd.municipio_1401,CAUCAGUA,140101
-parroquia_140102,territorial_pd.municipio_1401,ARAGÜITA,140102
-parroquia_140103,territorial_pd.municipio_1401,ARÉVALO GONZÁLEZ,140103
-parroquia_140104,territorial_pd.municipio_1401,CAPAYA,140104
-parroquia_140105,territorial_pd.municipio_1401,PANAQUIRE,140105
-parroquia_140106,territorial_pd.municipio_1401,RIBAS,140106
-parroquia_140107,territorial_pd.municipio_1401,EL CAFÉ,140107
-parroquia_140108,territorial_pd.municipio_1401,MARIZAPA,140108
-parroquia_140201,territorial_pd.municipio_1402,HIGUEROTE,140201
-parroquia_140202,territorial_pd.municipio_1402,CURIEPE,140202
-parroquia_140203,territorial_pd.municipio_1402,TACARIGUA,140203
-parroquia_140301,territorial_pd.municipio_1403,LOS TEQUES,140301
-parroquia_140302,territorial_pd.municipio_1403,CECILIO ACOSTA,140302
-parroquia_140303,territorial_pd.municipio_1403,PARACOTOS,140303
-parroquia_140304,territorial_pd.municipio_1403,SAN PEDRO,140304
-parroquia_140305,territorial_pd.municipio_1403,TÁCATA,140305
-parroquia_140306,territorial_pd.municipio_1403,EL JARILLO,140306
-parroquia_140307,territorial_pd.municipio_1403,ALTAGRACIA DE LA MONTAÑA,140307
-parroquia_140401,territorial_pd.municipio_1404,SANTA TERESA DEL TUY,140401
-parroquia_140402,territorial_pd.municipio_1404,EL CARTANAL,140402
-parroquia_140501,territorial_pd.municipio_1405,OCUMARE DEL TUY,140501
-parroquia_140502,territorial_pd.municipio_1405,LA DEMOCRACIA,140502
-parroquia_140503,territorial_pd.municipio_1405,SANTA BÁRBARA,140503
-parroquia_140601,territorial_pd.municipio_1406,RÍO CHICO,140601
-parroquia_140602,territorial_pd.municipio_1406,EL GUAPO,140602
-parroquia_140603,territorial_pd.municipio_1406,TACARIGUA DE LA LAGUNA,140603
-parroquia_140604,territorial_pd.municipio_1406,PAPARO,140604
-parroquia_140605,territorial_pd.municipio_1406,SAN FERNANDO DEL GUAPO,140605
-parroquia_140701,territorial_pd.municipio_1407,SANTA LUCÍA,140701
-parroquia_140801,territorial_pd.municipio_1408,GUARENAS,140801
-parroquia_140901,territorial_pd.municipio_1409,PETARE,140901
-parroquia_140902,territorial_pd.municipio_1409,LEONCIO MARTÍNEZ,140902
-parroquia_140903,territorial_pd.municipio_1409,CAUCAGÜITA,140903
-parroquia_140904,territorial_pd.municipio_1409,FILA DE MARICHES,140904
-parroquia_140905,territorial_pd.municipio_1409,LA DOLORITA,140905
-parroquia_141001,territorial_pd.municipio_1410,CÚA,141001
-parroquia_141002,territorial_pd.municipio_1410,NUEVA CÚA,141002
-parroquia_141101,territorial_pd.municipio_1411,GUATIRE,141101
-parroquia_141102,territorial_pd.municipio_1411,BOLÍVAR,141102
-parroquia_141201,territorial_pd.municipio_1412,CHARALLAVE,141201
-parroquia_141202,territorial_pd.municipio_1412,LAS BRISAS,141202
-parroquia_141301,territorial_pd.municipio_1413,SAN ANTONIO DE LOS ALTOS,141301
-parroquia_141401,territorial_pd.municipio_1414,SAN JOSÉ DE BARLOVENTO,141401
-parroquia_141402,territorial_pd.municipio_1414,CUMBO,141402
-parroquia_141501,territorial_pd.municipio_1415,SAN FRANCISCO DE YARE,141501
-parroquia_141502,territorial_pd.municipio_1415,SAN ANTONIO DE YARE,141502
-parroquia_141601,territorial_pd.municipio_1416,BARUTA,141601
-parroquia_141602,territorial_pd.municipio_1416,EL CAFETAL,141602
-parroquia_141603,territorial_pd.municipio_1416,LAS MINAS DE BARUTA,141603
-parroquia_141701,territorial_pd.municipio_1417,CARRIZAL,141701
-parroquia_141801,territorial_pd.municipio_1418,CHACAO,141801
-parroquia_141901,territorial_pd.municipio_1419,EL HATILLO,141901
-parroquia_142001,territorial_pd.municipio_1420,MAMPORAL,142001
-parroquia_142101,territorial_pd.municipio_1421,CÚPIRA,142101
-parroquia_142102,territorial_pd.municipio_1421,MACHURUCUTO,142102
-parroquia_150101,territorial_pd.municipio_1501,SAN ANTONIO,150101
-parroquia_150102,territorial_pd.municipio_1501,SAN FRANCISCO,150102
-parroquia_150201,territorial_pd.municipio_1502,BOLÍVAR,150201
-parroquia_150301,territorial_pd.municipio_1503,CARIPE,150301
-parroquia_150302,territorial_pd.municipio_1503,TERESÉN,150302
-parroquia_150303,territorial_pd.municipio_1503,EL GUÁCHARO,150303
-parroquia_150304,territorial_pd.municipio_1503,SAN AGUSTÍN,150304
-parroquia_150305,territorial_pd.municipio_1503,LA GUANOTA,150305
-parroquia_150306,territorial_pd.municipio_1503,SABANA DE PIEDRA,150306
-parroquia_150401,territorial_pd.municipio_1504,CAPITAL CEDEÑO,150401
-parroquia_150402,territorial_pd.municipio_1504,AREO,150402
-parroquia_150403,territorial_pd.municipio_1504,SAN FÉLIX,150403
-parroquia_150404,territorial_pd.municipio_1504,VIENTO FRESCO,150404
-parroquia_150501,territorial_pd.municipio_1505,EZEQUIEL ZAMORA,150501
-parroquia_150502,territorial_pd.municipio_1505,EL TEJERO,150502
-parroquia_150601,territorial_pd.municipio_1506,LIBERTADOR,150601
-parroquia_150602,territorial_pd.municipio_1506,TABASCA,150602
-parroquia_150603,territorial_pd.municipio_1506,LAS ALHUACAS,150603
-parroquia_150604,territorial_pd.municipio_1506,CHAGUARAMAS,150604
-parroquia_150701,territorial_pd.municipio_1507,EL FURRIAL,150701
-parroquia_150702,territorial_pd.municipio_1507,JUSEPÍN,150702
-parroquia_150703,territorial_pd.municipio_1507,EL COROZO,150703
-parroquia_150704,territorial_pd.municipio_1507,SAN VICENTE,150704
-parroquia_150705,territorial_pd.municipio_1507,LA PICA,150705
-parroquia_150706,territorial_pd.municipio_1507,ALTO DE LOS GODOS,150706
-parroquia_150707,territorial_pd.municipio_1507,BOQUERÓN,150707
-parroquia_150708,territorial_pd.municipio_1507,LAS COCUIZAS,150708
-parroquia_150709,territorial_pd.municipio_1507,SANTA CRUZ,150709
-parroquia_150710,territorial_pd.municipio_1507,SAN SIMÓN,150710
-parroquia_150801,territorial_pd.municipio_1508,CAPITAL PIAR,150801
-parroquia_150802,territorial_pd.municipio_1508,CHAGUARAMAL,150802
-parroquia_150803,territorial_pd.municipio_1508,GUANAGUANA,150803
-parroquia_150804,territorial_pd.municipio_1508,APARICIO,150804
-parroquia_150805,territorial_pd.municipio_1508,TAGUAYA,150805
-parroquia_150806,territorial_pd.municipio_1508,EL PINTO,150806
-parroquia_150807,territorial_pd.municipio_1508,LA TOSCANA,150807
-parroquia_150901,territorial_pd.municipio_1509,CAPITAL PUNCERES,150901
-parroquia_150902,territorial_pd.municipio_1509,CACHIPO,150902
-parroquia_151001,territorial_pd.municipio_1510,CAPITAL SOTILLO,151001
-parroquia_151002,territorial_pd.municipio_1510,LOS BARRANCOS DE FAJARDO,151002
-parroquia_151101,territorial_pd.municipio_1511,AGUASAY,151101
-parroquia_151201,territorial_pd.municipio_1512,SANTA BÁRBARA,151201
-parroquia_151301,territorial_pd.municipio_1513,URACOA,151301
-parroquia_160101,territorial_pd.municipio_1601,ARISMENDI,160101
-parroquia_160201,territorial_pd.municipio_1602,DÍAZ,160201
-parroquia_160202,territorial_pd.municipio_1602,ZABALA,160202
-parroquia_160301,territorial_pd.municipio_1603,CAPITAL GÓMEZ,160301
-parroquia_160302,territorial_pd.municipio_1603,GUEVARA,160302
-parroquia_160303,territorial_pd.municipio_1603,MATASIETE,160303
-parroquia_160304,territorial_pd.municipio_1603,BOLÍVAR,160304
-parroquia_160305,territorial_pd.municipio_1603,SUCRE,160305
-parroquia_160401,territorial_pd.municipio_1604,MANEIRO,160401
-parroquia_160402,territorial_pd.municipio_1604,AGUIRRE,160402
-parroquia_160501,territorial_pd.municipio_1605,MARCANO,160501
-parroquia_160502,territorial_pd.municipio_1605,ADRIÁN,160502
-parroquia_160601,territorial_pd.municipio_1606,MARIÑO,160601
-parroquia_160701,territorial_pd.municipio_1607,PENÍNSULA DE MACANAO,160701
-parroquia_160702,territorial_pd.municipio_1607,SAN FRANCISCO,160702
-parroquia_160801,territorial_pd.municipio_1608,VILLALBA,160801
-parroquia_160802,territorial_pd.municipio_1608,VICENTE FUENTES,160802
-parroquia_160901,territorial_pd.municipio_1609,TUBORES,160901
-parroquia_160902,territorial_pd.municipio_1609,LOS BARALES,160902
-parroquia_161001,territorial_pd.municipio_1610,ANTOLÍN DEL CAMPO,161001
-parroquia_161101,territorial_pd.municipio_1611,GARCÍA,161101
-parroquia_161102,territorial_pd.municipio_1611,FRANCISCO FAJARDO,161102
-parroquia_170101,territorial_pd.municipio_1701,ARAURE,170101
-parroquia_170102,territorial_pd.municipio_1701,RÍO ACARIGUA,170102
-parroquia_170201,territorial_pd.municipio_1702,ESTELLER,170201
-parroquia_170202,territorial_pd.municipio_1702,UVERAL,170202
-parroquia_170301,territorial_pd.municipio_1703,GUANARE,170301
-parroquia_170302,territorial_pd.municipio_1703,CÓRDOBA,170302
-parroquia_170303,territorial_pd.municipio_1703,SAN JUAN DE GUANAGUANARE,170303
-parroquia_170304,territorial_pd.municipio_1703,VIRGEN DE LA COROMOTO,170304
-parroquia_170305,territorial_pd.municipio_1703,SAN JOSÉ DE LA MONTAÑA,170305
-parroquia_170401,territorial_pd.municipio_1704,GUANARITO,170401
-parroquia_170402,territorial_pd.municipio_1704,TRINIDAD DE LA CAPILLA,170402
-parroquia_170403,territorial_pd.municipio_1704,DIVINA PASTORA,170403
-parroquia_170501,territorial_pd.municipio_1705,OSPINO,170501
-parroquia_170502,territorial_pd.municipio_1705,APARICIÓN,170502
-parroquia_170503,territorial_pd.municipio_1705,LA ESTACIÓN,170503
-parroquia_170601,territorial_pd.municipio_1706,PÁEZ,170601
-parroquia_170602,territorial_pd.municipio_1706,PAYARA,170602
-parroquia_170603,territorial_pd.municipio_1706,PIMPINELA,170603
-parroquia_170604,territorial_pd.municipio_1706,RAMÓN PERAZA,170604
-parroquia_170701,territorial_pd.municipio_1707,SUCRE,170701
-parroquia_170702,territorial_pd.municipio_1707,CONCEPCIÓN,170702
-parroquia_170703,territorial_pd.municipio_1707,SAN RAFAEL DE PALO ALZADO,170703
-parroquia_170704,territorial_pd.municipio_1707,UVENCIO ANTONIO VELÁSQUEZ,170704
-parroquia_170705,territorial_pd.municipio_1707,SAN JOSÉ DE SAGUAZ,170705
-parroquia_170706,territorial_pd.municipio_1707,VILLA ROSA,170706
-parroquia_170801,territorial_pd.municipio_1708,TURÉN,170801
-parroquia_170802,territorial_pd.municipio_1708,CANELONES,170802
-parroquia_170803,territorial_pd.municipio_1708,SANTA CRUZ,170803
-parroquia_170804,territorial_pd.municipio_1708,SAN ISIDRO LABRADOR,170804
-parroquia_170901,territorial_pd.municipio_1709,MONSEÑOR JOSÉ VICENTE DE UNDA,170901
-parroquia_170902,territorial_pd.municipio_1709,PEÑA BLANCA,170902
-parroquia_171001,territorial_pd.municipio_1710,AGUA BLANCA,171001
-parroquia_171101,territorial_pd.municipio_1711,PAPELÓN,171101
-parroquia_171102,territorial_pd.municipio_1711,CAÑO DELGADITO,171102
-parroquia_171201,territorial_pd.municipio_1712,SAN GENARO DE BOCONOITO,171201
-parroquia_171202,territorial_pd.municipio_1712,ANTOLÍN TOVAR,171202
-parroquia_171301,territorial_pd.municipio_1713,SAN RAFAEL DE ONOTO,171301
-parroquia_171302,territorial_pd.municipio_1713,SANTA FE,171302
-parroquia_171303,territorial_pd.municipio_1713,THERMO MORLES,171303
-parroquia_171401,territorial_pd.municipio_1714,SANTA ROSALÍA,171401
-parroquia_171402,territorial_pd.municipio_1714,FLORIDA,171402
-parroquia_180101,territorial_pd.municipio_1801,RÍO CARIBE,180101
-parroquia_180102,territorial_pd.municipio_1801,SAN JUAN DE LAS GALDONAS,180102
-parroquia_180103,territorial_pd.municipio_1801,PUERTO SANTO,180103
-parroquia_180104,territorial_pd.municipio_1801,EL MORRO DE PUERTO SANTO,180104
-parroquia_180105,territorial_pd.municipio_1801,ANTONIO JOSÉ DE SUCRE,180105
-parroquia_180201,territorial_pd.municipio_1802,EL PILAR,180201
-parroquia_180202,territorial_pd.municipio_1802,EL RINCÓN,180202
-parroquia_180203,territorial_pd.municipio_1802,GUARAÚNOS,180203
-parroquia_180204,territorial_pd.municipio_1802,TUNAPUICITO,180204
-parroquia_180205,territorial_pd.municipio_1802,UNIÓN,180205
-parroquia_180206,territorial_pd.municipio_1802,GENERAL FRANCISCO ANTONIO VÁSQUEZ,180206
-parroquia_180301,territorial_pd.municipio_1803,SANTA CATALINA,180301
-parroquia_180302,territorial_pd.municipio_1803,SANTA ROSA,180302
-parroquia_180303,territorial_pd.municipio_1803,SANTA TERESA,180303
-parroquia_180304,territorial_pd.municipio_1803,BOLÍVAR,180304
-parroquia_180305,territorial_pd.municipio_1803,MACARAPANA,180305
-parroquia_180401,territorial_pd.municipio_1804,YAGUARAPARO,180401
-parroquia_180402,territorial_pd.municipio_1804,LIBERTAD,180402
-parroquia_180403,territorial_pd.municipio_1804,EL PAUJIL,180403
-parroquia_180501,territorial_pd.municipio_1805,IRAPA,180501
-parroquia_180502,territorial_pd.municipio_1805,CAMPO CLARO,180502
-parroquia_180503,territorial_pd.municipio_1805,SORO,180503
-parroquia_180504,territorial_pd.municipio_1805,SAN ANTONIO DE IRAPA,180504
-parroquia_180505,territorial_pd.municipio_1805,MARABAL,180505
-parroquia_180601,territorial_pd.municipio_1806,CAPITAL MEJÍA,180601
-parroquia_180701,territorial_pd.municipio_1807,CUMANACOA,180701
-parroquia_180702,territorial_pd.municipio_1807,ARENAS,180702
-parroquia_180703,territorial_pd.municipio_1807,ARICAGUA,180703
-parroquia_180704,territorial_pd.municipio_1807,COCOLLAR,180704
-parroquia_180705,territorial_pd.municipio_1807,SAN FERNANDO,180705
-parroquia_180706,territorial_pd.municipio_1807,SAN LORENZO,180706
-parroquia_180801,territorial_pd.municipio_1808,VILLA FRONTADO (MUELLE DE CARIACO),180801
-parroquia_180802,territorial_pd.municipio_1808,CATUARO,180802
-parroquia_180803,territorial_pd.municipio_1808,RENDÓN,180803
-parroquia_180804,territorial_pd.municipio_1808,SANTA CRUZ,180804
-parroquia_180805,territorial_pd.municipio_1808,SANTA MARÍA,180805
-parroquia_180901,territorial_pd.municipio_1809,ALTAGRACIA,180901
-parroquia_180902,territorial_pd.municipio_1809,AYACUCHO,180902
-parroquia_180903,territorial_pd.municipio_1809,SANTA INÉS,180903
-parroquia_180904,territorial_pd.municipio_1809,VALENTÍN VALIENTE,180904
-parroquia_180905,territorial_pd.municipio_1809,SAN JUAN,180905
-parroquia_180906,territorial_pd.municipio_1809,SANTA FE,180906
-parroquia_180907,territorial_pd.municipio_1809,RAÚL LEONI,180907
-parroquia_181001,territorial_pd.municipio_1810,GÜIRIA,181001
-parroquia_181002,territorial_pd.municipio_1810,CRISTÓBAL COLÓN,181002
-parroquia_181003,territorial_pd.municipio_1810,PUNTA DE PIEDRAS,181003
-parroquia_181004,territorial_pd.municipio_1810,BIDEAU,181004
-parroquia_181101,territorial_pd.municipio_1811,MARIÑO,181101
-parroquia_181102,territorial_pd.municipio_1811,RÓMULO GALLEGOS,181102
-parroquia_181201,territorial_pd.municipio_1812,TUNAPUY,181201
-parroquia_181202,territorial_pd.municipio_1812,CAMPO ELÍAS,181202
-parroquia_181301,territorial_pd.municipio_1813,SAN JOSÉ DE AEROCUAR,181301
-parroquia_181302,territorial_pd.municipio_1813,TAVERA ACOSTA,181302
-parroquia_181401,territorial_pd.municipio_1814,CAPITAL BOLÍVAR,181401
-parroquia_181501,territorial_pd.municipio_1815,ARAYA,181501
-parroquia_181502,territorial_pd.municipio_1815,MANICUARE,181502
-parroquia_181503,territorial_pd.municipio_1815,CHACOPATA,181503
-parroquia_190101,territorial_pd.municipio_1901,AYACUCHO,190101
-parroquia_190102,territorial_pd.municipio_1901,RIVAS BERTI,190102
-parroquia_190103,territorial_pd.municipio_1901,SAN PEDRO DEL RÍO,190103
-parroquia_190201,territorial_pd.municipio_1902,BOLÍVAR,190201
-parroquia_190202,territorial_pd.municipio_1902,PALOTAL,190202
-parroquia_190203,territorial_pd.municipio_1902,JUAN VICENTE GÓMEZ,190203
-parroquia_190204,territorial_pd.municipio_1902,ISAÍAS MEDINA ANGARITA,190204
-parroquia_190302,territorial_pd.municipio_1903,JUAN GERMÁN ROSCIO,190302
-parroquia_190301,territorial_pd.municipio_1903,INDEPENDENCIA,190301
-parroquia_190303,territorial_pd.municipio_1903,ROMÁN CÁRDENAS,190303
-parroquia_190401,territorial_pd.municipio_1904,CÁRDENAS,190401
-parroquia_190402,territorial_pd.municipio_1904,LA FLORIDA,190402
-parroquia_190403,territorial_pd.municipio_1904,AMENODORO RANGEL LAMÚS,190403
-parroquia_190501,territorial_pd.municipio_1905,JÁUREGUI,190501
-parroquia_190502,territorial_pd.municipio_1905,EMILIO CONSTANTINO GUERRERO,190502
-parroquia_190503,territorial_pd.municipio_1905,MONSEÑOR MIGUEL ANTONIO SALAS,190503
-parroquia_190601,territorial_pd.municipio_1906,JUNÍN,190601
-parroquia_190602,territorial_pd.municipio_1906,BRAMÓN,190602
-parroquia_190603,territorial_pd.municipio_1906,LA PETRÓLIA,190603
-parroquia_190604,territorial_pd.municipio_1906,QUINIMARÍ,190604
-parroquia_190701,territorial_pd.municipio_1907,LOBATERA,190701
-parroquia_190702,territorial_pd.municipio_1907,CONSTITUCIÓN,190702
-parroquia_190801,territorial_pd.municipio_1908,LA CONCORDIA,190801
-parroquia_190802,territorial_pd.municipio_1908,PEDRO MARÍA MORANTES,190802
-parroquia_190803,territorial_pd.municipio_1908,SAN JUAN BAUTISTA,190803
-parroquia_190804,territorial_pd.municipio_1908,SAN SEBASTIÁN,190804
-parroquia_190805,territorial_pd.municipio_1908,DR. FRANCISCO ROMERO LOBO,190805
-parroquia_190901,territorial_pd.municipio_1909,CAPITAL URIBANTE,190901
-parroquia_190902,territorial_pd.municipio_1909,CÁRDENAS,190902
-parroquia_190903,territorial_pd.municipio_1909,POTOSÍ,190903
-parroquia_190904,territorial_pd.municipio_1909,JUAN PABLO PEÑALOZA,190904
-parroquia_191001,territorial_pd.municipio_1910,CÓRDOBA,191001
-parroquia_191101,territorial_pd.municipio_1911,GARCÍA DE HEVIA,191101
-parroquia_191102,territorial_pd.municipio_1911,BOCA DE GRITA,191102
-parroquia_191103,territorial_pd.municipio_1911,JOSÉ ANTONIO PÁEZ,191103
-parroquia_191201,territorial_pd.municipio_1912,GUÁSIMOS,191201
-parroquia_191301,territorial_pd.municipio_1913,MICHELENA,191301
-parroquia_191401,territorial_pd.municipio_1914,LIBERTADOR,191401
-parroquia_191402,territorial_pd.municipio_1914,SAN JOAQUÍN DE NAVAY,191402
-parroquia_191403,territorial_pd.municipio_1914,DORADAS,191403
-parroquia_191404,territorial_pd.municipio_1914,EMETERIO OCHOA,191404
-parroquia_191501,territorial_pd.municipio_1915,PANAMERICANO,191501
-parroquia_191502,territorial_pd.municipio_1915,LA PALMITA,191502
-parroquia_191601,territorial_pd.municipio_1916,PEDRO MARÍA UREÑA,191601
-parroquia_191602,territorial_pd.municipio_1916,NUEVA ARCADIA,191602
-parroquia_191701,territorial_pd.municipio_1917,SUCRE,191701
-parroquia_191702,territorial_pd.municipio_1917,SAN PABLO,191702
-parroquia_191703,territorial_pd.municipio_1917,ELEAZAR LÓPEZ CONTRERAS,191703
-parroquia_191801,territorial_pd.municipio_1918,ANDRÉS BELLO,191801
-parroquia_191901,territorial_pd.municipio_1919,FERNÁNDEZ FEO,191901
-parroquia_191902,territorial_pd.municipio_1919,SANTO DOMINGO,191902
-parroquia_191903,territorial_pd.municipio_1919,ALBERTO ADRIANI,191903
-parroquia_192001,territorial_pd.municipio_1920,LIBERTAD,192001
-parroquia_192002,territorial_pd.municipio_1920,CIPRIANO CASTRO,192002
-parroquia_192003,territorial_pd.municipio_1920,MANUEL FELIPE RUGELES,192003
-parroquia_192101,territorial_pd.municipio_1921,SAMUEL DARÍO MALDONADO,192101
-parroquia_192102,territorial_pd.municipio_1921,BOCONÓ,192102
-parroquia_192103,territorial_pd.municipio_1921,HERNÁNDEZ,192103
-parroquia_192201,territorial_pd.municipio_1922,SEBORUCO,192201
-parroquia_192301,territorial_pd.municipio_1923,ANTONIO RÓMULO COSTA,192301
-parroquia_192401,territorial_pd.municipio_1924,FRANCISCO DE MIRANDA,192401
-parroquia_192501,territorial_pd.municipio_1925,JOSÉ MARÍA VARGAS,192501
-parroquia_192601,territorial_pd.municipio_1926,RAFAEL URDANETA,192601
-parroquia_192701,territorial_pd.municipio_1927,SIMÓN RODRÍGUEZ,192701
-parroquia_192801,territorial_pd.municipio_1928,TORBES,192801
-parroquia_192901,territorial_pd.municipio_1929,SAN JUDAS TADEO,192901
-parroquia_200101,territorial_pd.municipio_2001,BETIJOQUE,200101
-parroquia_200102,territorial_pd.municipio_2001,JOSÉ GREGORIO HERNÁNDEZ,200102
-parroquia_200103,territorial_pd.municipio_2001,LA PUEBLITA,200103
-parroquia_200104,territorial_pd.municipio_2001,LOS CEDROS,200104
-parroquia_200201,territorial_pd.municipio_2002,BOCONÓ,200201
-parroquia_200202,territorial_pd.municipio_2002,EL CARMEN,200202
-parroquia_200203,territorial_pd.municipio_2002,MOSQUEY,200203
-parroquia_200204,territorial_pd.municipio_2002,AYACUCHO,200204
-parroquia_200205,territorial_pd.municipio_2002,BURBUSAY,200205
-parroquia_200206,territorial_pd.municipio_2002,GENERAL RIVAS,200206
-parroquia_200207,territorial_pd.municipio_2002,MONSEÑOR JÁUREGUI,200207
-parroquia_200208,territorial_pd.municipio_2002,RAFAEL RANGEL,200208
-parroquia_200209,territorial_pd.municipio_2002,SAN JOSÉ,200209
-parroquia_200210,territorial_pd.municipio_2002,SAN MIGUEL,200210
-parroquia_200211,territorial_pd.municipio_2002,GUARAMACAL,200211
-parroquia_200212,territorial_pd.municipio_2002,VEGA DE GUARAMACAL,200212
-parroquia_200301,territorial_pd.municipio_2003,CARACHE,200301
-parroquia_200302,territorial_pd.municipio_2003,LA CONCEPCIÓN,200302
-parroquia_200303,territorial_pd.municipio_2003,CUICAS,200303
-parroquia_200304,territorial_pd.municipio_2003,PANAMERICANA,200304
-parroquia_200305,territorial_pd.municipio_2003,SANTA CRUZ,200305
-parroquia_200401,territorial_pd.municipio_2004,ESCUQUE,200401
-parroquia_200402,territorial_pd.municipio_2004,SABANA LIBRE,200402
-parroquia_200403,territorial_pd.municipio_2004,LA UNIÓN,200403
-parroquia_200404,territorial_pd.municipio_2004,SANTA RITA,200404
-parroquia_200501,territorial_pd.municipio_2005,CRISTÓBAL MENDOZA,200501
-parroquia_200502,territorial_pd.municipio_2005,CHIQUINQUIRÁ,200502
-parroquia_200503,territorial_pd.municipio_2005,MATRIZ,200503
-parroquia_200504,territorial_pd.municipio_2005,MONSEÑOR CARRILLO,200504
-parroquia_200505,territorial_pd.municipio_2005,CRUZ CARRILLO,200505
-parroquia_200506,territorial_pd.municipio_2005,ANDRÉS LINARES,200506
-parroquia_200507,territorial_pd.municipio_2005,TRES ESQUINAS,200507
-parroquia_200601,territorial_pd.municipio_2006,LA QUEBRADA,200601
-parroquia_200602,territorial_pd.municipio_2006,JAJÓ,200602
-parroquia_200603,territorial_pd.municipio_2006,LA MESA,200603
-parroquia_200604,territorial_pd.municipio_2006,SANTIAGO,200604
-parroquia_200605,territorial_pd.municipio_2006,CABIMBÚ,200605
-parroquia_200606,territorial_pd.municipio_2006,TUÑAME,200606
-parroquia_200701,territorial_pd.municipio_2007,MERCEDES DÍAZ,200701
-parroquia_200702,territorial_pd.municipio_2007,JUAN IGNACIO MONTILLA,200702
-parroquia_200703,territorial_pd.municipio_2007,LA BEATRIZ,200703
-parroquia_200704,territorial_pd.municipio_2007,MENDOZA,200704
-parroquia_200705,territorial_pd.municipio_2007,LA PUERTA,200705
-parroquia_200706,territorial_pd.municipio_2007,SAN LUIS,200706
-parroquia_200801,territorial_pd.municipio_2008,CHEJENDÉ,200801
-parroquia_200802,territorial_pd.municipio_2008,CARRILLO,200802
-parroquia_200803,territorial_pd.municipio_2008,CEGARRA,200803
-parroquia_200804,territorial_pd.municipio_2008,BOLIVIA,200804
-parroquia_200805,territorial_pd.municipio_2008,MANUEL SALVADOR ULLOA,200805
-parroquia_200806,territorial_pd.municipio_2008,SAN JOSÉ,200806
-parroquia_200807,territorial_pd.municipio_2008,ARNOLDO GABALDÓN,200807
-parroquia_200901,territorial_pd.municipio_2009,EL DIVIDIVE,200901
-parroquia_200902,territorial_pd.municipio_2009,AGUA CALIENTE,200902
-parroquia_200903,territorial_pd.municipio_2009,EL CENIZO,200903
-parroquia_200904,territorial_pd.municipio_2009,AGUA SANTA,200904
-parroquia_200905,territorial_pd.municipio_2009,VALERITA,200905
-parroquia_201001,territorial_pd.municipio_2010,MONTE CARMELO,201001
-parroquia_201002,territorial_pd.municipio_2010,BUENA VISTA,201002
-parroquia_201003,territorial_pd.municipio_2010,SANTA MARÍA DEL HORCÓN,201003
-parroquia_201101,territorial_pd.municipio_2011,MOTATÁN,201101
-parroquia_201102,territorial_pd.municipio_2011,EL BAÑO,201102
-parroquia_201103,territorial_pd.municipio_2011,JALISCO,201103
-parroquia_201201,territorial_pd.municipio_2012,PAMPÁN,201201
-parroquia_201202,territorial_pd.municipio_2012,SANTA ANA,201202
-parroquia_201203,territorial_pd.municipio_2012,LA PAZ,201203
-parroquia_201204,territorial_pd.municipio_2012,FLOR DE PATRIA,201204
-parroquia_201301,territorial_pd.municipio_2013,CARVAJAL,201301
-parroquia_201302,territorial_pd.municipio_2013,ANTONIO NICOLÁS BRICEÑO,201302
-parroquia_201303,territorial_pd.municipio_2013,CAMPO ALEGRE,201303
-parroquia_201304,territorial_pd.municipio_2013,JOSÉ LEONARDO SUÁREZ,201304
-parroquia_201401,territorial_pd.municipio_2014,SABANA DE MENDOZA,201401
-parroquia_201402,territorial_pd.municipio_2014,JUNÍN,201402
-parroquia_201403,territorial_pd.municipio_2014,VALMORE RODRÍGUEZ,201403
-parroquia_201404,territorial_pd.municipio_2014,EL PARAÍSO,201404
-parroquia_201501,territorial_pd.municipio_2015,SANTA ISABEL,201501
-parroquia_201502,territorial_pd.municipio_2015,ARAGUANEY,201502
-parroquia_201503,territorial_pd.municipio_2015,EL JAGÜITO,201503
-parroquia_201504,territorial_pd.municipio_2015,LA ESPERANZA,201504
-parroquia_201601,territorial_pd.municipio_2016,SABANA GRANDE,201601
-parroquia_201602,territorial_pd.municipio_2016,CHEREGÜÉ,201602
-parroquia_201603,territorial_pd.municipio_2016,GRANADOS,201603
-parroquia_201701,territorial_pd.municipio_2017,EL SOCORRO,201701
-parroquia_201702,territorial_pd.municipio_2017,LOS CAPRICHOS,201702
-parroquia_201703,territorial_pd.municipio_2017,ANTONIO JOSÉ DE SUCRE,201703
-parroquia_201801,territorial_pd.municipio_2018,CAMPO ELÍAS,201801
-parroquia_201802,territorial_pd.municipio_2018,ARNOLDO GABALDÓN,201802
-parroquia_201901,territorial_pd.municipio_2019,SANTA APOLONIA,201901
-parroquia_201902,territorial_pd.municipio_2019,LA CEIBA,201902
-parroquia_201903,territorial_pd.municipio_2019,EL PROGRESO,201903
-parroquia_201904,territorial_pd.municipio_2019,TRES DE FEBRERO,201904
-parroquia_202001,territorial_pd.municipio_2020,PAMPANITO,202001
-parroquia_202002,territorial_pd.municipio_2020,PAMPANITO II,202002
-parroquia_202003,territorial_pd.municipio_2020,LA CONCEPCIÓN,202003
-parroquia_210101,territorial_pd.municipio_2101,BOLÍVAR,210101
-parroquia_210201,territorial_pd.municipio_2102,BRUZUAL,210201
-parroquia_210202,territorial_pd.municipio_2102,CAMPO ELÍAS,210202
-parroquia_210301,territorial_pd.municipio_2103,NIRGUA,210301
-parroquia_210302,territorial_pd.municipio_2103,SALOM,210302
-parroquia_210303,territorial_pd.municipio_2103,TEMERLA,210303
-parroquia_210401,territorial_pd.municipio_2104,SAN FELIPE,210401
-parroquia_210402,territorial_pd.municipio_2104,ALBARICO,210402
-parroquia_210403,territorial_pd.municipio_2104,SAN JAVIER,210403
-parroquia_210501,territorial_pd.municipio_2105,SUCRE,210501
-parroquia_210601,territorial_pd.municipio_2106,URACHICHE,210601
-parroquia_210701,territorial_pd.municipio_2107,PEÑA,210701
-parroquia_210702,territorial_pd.municipio_2107,SAN ANDRÉS,210702
-parroquia_210801,territorial_pd.municipio_2108,JOSÉ ANTONIO PÁEZ,210801
-parroquia_210901,territorial_pd.municipio_2109,LA TRINIDAD,210901
-parroquia_211001,territorial_pd.municipio_2110,COCOROTE,211001
-parroquia_211101,territorial_pd.municipio_2111,INDEPENDENCIA,211101
-parroquia_211201,territorial_pd.municipio_2112,ARÍSTIDES BASTIDAS,211201
-parroquia_211301,territorial_pd.municipio_2113,MANUEL MONGE,211301
-parroquia_211401,territorial_pd.municipio_2114,VEROES,211401
-parroquia_211402,territorial_pd.municipio_2114,EL GUAYABO,211402
-parroquia_220101,territorial_pd.municipio_2201,GENERAL URDANETA,220101
-parroquia_220102,territorial_pd.municipio_2201,LIBERTADOR,220102
-parroquia_220103,territorial_pd.municipio_2201,MANUEL GUANIPA MATOS,220103
-parroquia_220104,territorial_pd.municipio_2201,MARCELINO BRICEÑO,220104
-parroquia_220105,territorial_pd.municipio_2201,SAN TIMOTEO,220105
-parroquia_220106,territorial_pd.municipio_2201,PUEBLO NUEVO,220106
-parroquia_220201,territorial_pd.municipio_2202,PEDRO LUCAS URRIBARRI,220201
-parroquia_220202,territorial_pd.municipio_2202,SANTA RITA,220202
-parroquia_220203,territorial_pd.municipio_2202,JOSÉ CENOVIO URRIBARRI,220203
-parroquia_220204,territorial_pd.municipio_2202,EL MENE,220204
-parroquia_220301,territorial_pd.municipio_2203,SANTA CRUZ DEL ZULIA,220301
-parroquia_220302,territorial_pd.municipio_2203,URRIBARRI,220302
-parroquia_220303,territorial_pd.municipio_2203,MORALITO,220303
-parroquia_220304,territorial_pd.municipio_2203,SAN CARLOS DEL ZULIA,220304
-parroquia_220305,territorial_pd.municipio_2203,SANTA BÁRBARA,220305
-parroquia_220401,territorial_pd.municipio_2204,LUIS DE VICENTE,220401
-parroquia_220402,territorial_pd.municipio_2204,RICAURTE,220402
-parroquia_220403,territorial_pd.municipio_2204,MONSEÑOR MARCOS SERGIO GODOY,220403
-parroquia_220404,territorial_pd.municipio_2204,SAN RAFAEL,220404
-parroquia_220405,territorial_pd.municipio_2204,LAS PARCELAS,220405
-parroquia_220406,territorial_pd.municipio_2204,TAMARE,220406
-parroquia_220407,territorial_pd.municipio_2204,LA SIERRITA,220407
-parroquia_220501,territorial_pd.municipio_2205,BOLÍVAR,220501
-parroquia_220502,territorial_pd.municipio_2205,COQUIVACOA,220502
-parroquia_220503,territorial_pd.municipio_2205,CRISTO DE ARANZA,220503
-parroquia_220504,territorial_pd.municipio_2205,CHIQUINQUIRÁ,220504
-parroquia_220505,territorial_pd.municipio_2205,SANTA LUCÍA,220505
-parroquia_220506,territorial_pd.municipio_2205,OLEGARIO VILLALOBOS,220506
-parroquia_220507,territorial_pd.municipio_2205,JUANA DE AVILA,220507
-parroquia_220508,territorial_pd.municipio_2205,CARACCIOLO PARRA PÉREZ,220508
-parroquia_220509,territorial_pd.municipio_2205,IDELFONSO VÁSQUEZ,220509
-parroquia_220510,territorial_pd.municipio_2205,CACIQUE MARA,220510
-parroquia_220511,territorial_pd.municipio_2205,CECILIO ACOSTA,220511
-parroquia_220512,territorial_pd.municipio_2205,RAÚL LEONI,220512
-parroquia_220513,territorial_pd.municipio_2205,FRANCISCO EUGENIO BUSTAMANTE,220513
-parroquia_220514,territorial_pd.municipio_2205,MANUEL DAGNINO,220514
-parroquia_220515,territorial_pd.municipio_2205,LUIS HURTADO HIGUERA,220515
-parroquia_220516,territorial_pd.municipio_2205,VENANCIO PULGAR,220516
-parroquia_220517,territorial_pd.municipio_2205,ANTONIO BORJAS ROMERO,220517
-parroquia_220518,territorial_pd.municipio_2205,SAN ISIDRO,220518
-parroquia_220601,territorial_pd.municipio_2206,FARÍA,220601
-parroquia_220602,territorial_pd.municipio_2206,SAN ANTONIO,220602
-parroquia_220603,territorial_pd.municipio_2206,ANA MARÍA CAMPOS,220603
-parroquia_220604,territorial_pd.municipio_2206,SAN JOSÉ,220604
-parroquia_220605,territorial_pd.municipio_2206,ALTAGRACIA,220605
-parroquia_220701,territorial_pd.municipio_2207,GUAJIRA,220701
-parroquia_220702,territorial_pd.municipio_2207,ELÍAS SÁNCHEZ RUBIO,220702
-parroquia_220703,territorial_pd.municipio_2207,SINAMAICA,220703
-parroquia_220704,territorial_pd.municipio_2207,ALTA GUAJIRA,220704
-parroquia_220801,territorial_pd.municipio_2208,SAN JOSÉ DE PERIJÁ,220801
-parroquia_220802,territorial_pd.municipio_2208,BARTOLOMÉ DE LAS CASAS,220802
-parroquia_220803,territorial_pd.municipio_2208,LIBERTAD,220803
-parroquia_220804,territorial_pd.municipio_2208,RÍO NEGRO,220804
-parroquia_220901,territorial_pd.municipio_2209,GIBRALTAR,220901
-parroquia_220902,territorial_pd.municipio_2209,HERAS,220902
-parroquia_220903,territorial_pd.municipio_2209,MONSEÑOR ARTURO CELESTINO ALVAREZ,220903
-parroquia_220904,territorial_pd.municipio_2209,RÓMULO GALLEGOS,220904
-parroquia_220905,territorial_pd.municipio_2209,BOBURES,220905
-parroquia_220906,territorial_pd.municipio_2209,EL BATEY,220906
-parroquia_221001,territorial_pd.municipio_2210,ANDRÉS BELLO,221001
-parroquia_221002,territorial_pd.municipio_2210,POTRERITOS,221002
-parroquia_221003,territorial_pd.municipio_2210,EL CARMELO,221003
-parroquia_221004,territorial_pd.municipio_2210,CHIQUINQUIRÁ,221004
-parroquia_221005,territorial_pd.municipio_2210,CONCEPCIÓN,221005
-parroquia_221101,territorial_pd.municipio_2211,ELEAZAR LÓPEZ CONTRERAS,221101
-parroquia_221102,territorial_pd.municipio_2211,ALONSO DE OJEDA,221102
-parroquia_221103,territorial_pd.municipio_2211,VENEZUELA,221103
-parroquia_221104,territorial_pd.municipio_2211,CAMPO LARA,221104
-parroquia_221105,territorial_pd.municipio_2211,LIBERTAD,221105
-parroquia_221201,territorial_pd.municipio_2212,UDÓN PÉREZ,221201
-parroquia_221202,territorial_pd.municipio_2212,ENCONTRADOS,221202
-parroquia_221301,territorial_pd.municipio_2213,DONALDO GARCÍA,221301
-parroquia_221302,territorial_pd.municipio_2213,SIXTO ZAMBRANO,221302
-parroquia_221303,territorial_pd.municipio_2213,EL ROSARIO,221303
-parroquia_221401,territorial_pd.municipio_2214,AMBROSIO,221401
-parroquia_221402,territorial_pd.municipio_2214,GERMÁN RÍOS LINARES,221402
-parroquia_221403,territorial_pd.municipio_2214,JORGE HERNÁNDEZ,221403
-parroquia_221404,territorial_pd.municipio_2214,LA ROSA,221404
-parroquia_221405,territorial_pd.municipio_2214,PUNTA GORDA,221405
-parroquia_221406,territorial_pd.municipio_2214,CARMEN HERRERA,221406
-parroquia_221407,territorial_pd.municipio_2214,SAN BENITO,221407
-parroquia_221408,territorial_pd.municipio_2214,RÓMULO BETANCOURT,221408
-parroquia_221409,territorial_pd.municipio_2214,ARÍSTIDES CALVANI,221409
-parroquia_221501,territorial_pd.municipio_2215,RAÚL CUENCA,221501
-parroquia_221502,territorial_pd.municipio_2215,LA VICTORIA,221502
-parroquia_221503,territorial_pd.municipio_2215,RAFAEL URDANETA,221503
-parroquia_221601,territorial_pd.municipio_2216,JOSÉ RAMÓN YEPES,221601
-parroquia_221602,territorial_pd.municipio_2216,LA CONCEPCIÓN,221602
-parroquia_221603,territorial_pd.municipio_2216,SAN JOSÉ,221603
-parroquia_221604,territorial_pd.municipio_2216,MARIANO PARRA LEÓN,221604
-parroquia_221701,territorial_pd.municipio_2217,MONAGAS,221701
-parroquia_221702,territorial_pd.municipio_2217,ISLA DE TOAS,221702
-parroquia_221801,territorial_pd.municipio_2218,MARCIAL HERNÁNDEZ,221801
-parroquia_221802,territorial_pd.municipio_2218,FRANCISCO OCHOA,221802
-parroquia_221803,territorial_pd.municipio_2218,SAN FRANCISCO,221803
-parroquia_221804,territorial_pd.municipio_2218,EL BAJO,221804
-parroquia_221805,territorial_pd.municipio_2218,DOMITILA FLORES,221805
-parroquia_221806,territorial_pd.municipio_2218,LOS CORTIJOS,221806
-parroquia_221901,territorial_pd.municipio_2219,BARÍ,221901
-parroquia_221902,territorial_pd.municipio_2219,JESÚS MARÍA SEMPRÚN,221902
-parroquia_222001,territorial_pd.municipio_2220,SIMÓN RODRÍGUEZ,222001
-parroquia_222002,territorial_pd.municipio_2220,CARLOS QUEVEDO,222002
-parroquia_222003,territorial_pd.municipio_2220,FRANCISCO JAVIER PULGAR,222003
-parroquia_222101,territorial_pd.municipio_2221,RAFAEL MARÍA BARALT,222101
-parroquia_222102,territorial_pd.municipio_2221,MANUEL MANRIQUE,222102
-parroquia_222103,territorial_pd.municipio_2221,RAFAEL URDANETA,222103
-parroquia_230101,territorial_pd.municipio_2301,SAN JOSÉ,230101
-parroquia_230102,territorial_pd.municipio_2301,VIRGEN DEL VALLE,230102
-parroquia_230103,territorial_pd.municipio_2301,SAN RAFAEL,230103
-parroquia_230104,territorial_pd.municipio_2301,JOSÉ VIDAL MARCANO,230104
-parroquia_230105,territorial_pd.municipio_2301,LEONARDO RUÍZ PINEDA,230105
-parroquia_230106,territorial_pd.municipio_2301,MONSEÑOR ARGIMIRO GARCÍA,230106
-parroquia_230107,territorial_pd.municipio_2301,MARISCAL ANTONIO JOSÉ DE SUCRE,230107
-parroquia_230108,territorial_pd.municipio_2301,JUAN MILLÁN,230108
-parroquia_230201,territorial_pd.municipio_2302,PEDERNALES,230201
-parroquia_230202,territorial_pd.municipio_2302,LUIS BELTRÁN PRIETO FIGUEROA,230202
-parroquia_230301,territorial_pd.municipio_2303,CURIAPO,230301
-parroquia_230302,territorial_pd.municipio_2303,SANTOS DE ABELGAS,230302
-parroquia_230303,territorial_pd.municipio_2303,MANUEL RENAUD,230303
-parroquia_230304,territorial_pd.municipio_2303,PADRE BARRAL,230304
-parroquia_230305,territorial_pd.municipio_2303,FRANCISCO ANICETO LUGO,230305
-parroquia_230306,territorial_pd.municipio_2303,ALMIRANTE LUIS BRIÓN,230306
-parroquia_230401,territorial_pd.municipio_2304,IMATACA,230401
-parroquia_230402,territorial_pd.municipio_2304,RÓMULO GALLEGOS,230402
-parroquia_230403,territorial_pd.municipio_2304,JUAN BAUTISTA ARISMENDI,230403
-parroquia_230404,territorial_pd.municipio_2304,MANUEL PIAR,230404
-parroquia_230405,territorial_pd.municipio_2304,CINCO DE JULIO,230405
-parroquia_240101,territorial_pd.municipio_2401,CARABALLEDA,240101
-parroquia_240102,territorial_pd.municipio_2401,CARAYACA,240102
-parroquia_240103,territorial_pd.municipio_2401,CARUAO,240103
-parroquia_240104,territorial_pd.municipio_2401,CATIA LA MAR,240104
-parroquia_240105,territorial_pd.municipio_2401,LA GUAIRA,240105
-parroquia_240106,territorial_pd.municipio_2401,MACUTO,240106
-parroquia_240107,territorial_pd.municipio_2401,MAIQUETÍA,240107
-parroquia_240108,territorial_pd.municipio_2401,NAIGUATÁ,240108
-parroquia_240109,territorial_pd.municipio_2401,EL JUNKO,240109
-parroquia_240110,territorial_pd.municipio_2401,URIMARE,240110
-parroquia_240111,territorial_pd.municipio_2401,CARLOS SOUBLETTE,240111
+parroquia_10101,territorial_pd.municipio_101,Altagracia,10101
+parroquia_10102,territorial_pd.municipio_101,Candelaria,10102
+parroquia_10103,territorial_pd.municipio_101,Catedral,10103
+parroquia_10104,territorial_pd.municipio_101,La Pastora,10104
+parroquia_10105,territorial_pd.municipio_101,San Agustín,10105
+parroquia_10106,territorial_pd.municipio_101,San José,10106
+parroquia_10107,territorial_pd.municipio_101,San Juan,10107
+parroquia_10108,territorial_pd.municipio_101,Santa Rosalía,10108
+parroquia_10109,territorial_pd.municipio_101,Santa Teresa,10109
+parroquia_10110,territorial_pd.municipio_101,Sucre,10110
+parroquia_10111,territorial_pd.municipio_101,23 De Enero,10111
+parroquia_10112,territorial_pd.municipio_101,Antímano,10112
+parroquia_10113,territorial_pd.municipio_101,El Recreo,10113
+parroquia_10114,territorial_pd.municipio_101,El Valle,10114
+parroquia_10115,territorial_pd.municipio_101,La Vega,10115
+parroquia_10116,territorial_pd.municipio_101,Macarao,10116
+parroquia_10117,territorial_pd.municipio_101,Caricuao,10117
+parroquia_10118,territorial_pd.municipio_101,El Junquito,10118
+parroquia_10119,territorial_pd.municipio_101,Coche,10119
+parroquia_10120,territorial_pd.municipio_101,San Pedro,10120
+parroquia_10121,territorial_pd.municipio_101,San Bernardino,10121
+parroquia_10122,territorial_pd.municipio_101,El Paraíso,10122
+parroquia_20101,territorial_pd.municipio_201,Anaco,20101
+parroquia_20102,territorial_pd.municipio_201,San Joaquín,20102
+parroquia_20201,territorial_pd.municipio_202,Aragua,20201
+parroquia_20202,territorial_pd.municipio_202,Cachipo,20202
+parroquia_20301,territorial_pd.municipio_203,El Carmen,20301
+parroquia_20302,territorial_pd.municipio_203,San Cristóbal,20302
+parroquia_20303,territorial_pd.municipio_203,Bergantín,20303
+parroquia_20304,territorial_pd.municipio_203,Caigua,20304
+parroquia_20305,territorial_pd.municipio_203,El Pilar,20305
+parroquia_20306,territorial_pd.municipio_203,Naricual,20306
+parroquia_20401,territorial_pd.municipio_204,Clarines,20401
+parroquia_20402,territorial_pd.municipio_204,Guanape,20402
+parroquia_20403,territorial_pd.municipio_204,Sabana De Uchire,20403
+parroquia_20501,territorial_pd.municipio_205,Onoto,20501
+parroquia_20502,territorial_pd.municipio_205,San Pablo,20502
+parroquia_20601,territorial_pd.municipio_206,Cantaura,20601
+parroquia_20602,territorial_pd.municipio_206,Libertador,20602
+parroquia_20603,territorial_pd.municipio_206,Santa Rosa,20603
+parroquia_20604,territorial_pd.municipio_206,Urica,20604
+parroquia_20701,territorial_pd.municipio_207,Soledad,20701
+parroquia_20702,territorial_pd.municipio_207,Mamo,20702
+parroquia_20801,territorial_pd.municipio_208,San Mateo,20801
+parroquia_20802,territorial_pd.municipio_208,El Carito,20802
+parroquia_20803,territorial_pd.municipio_208,Santa Inés,20803
+parroquia_20804,territorial_pd.municipio_208,La Romereña,20804
+parroquia_20901,territorial_pd.municipio_209,Pariaguán,20901
+parroquia_20902,territorial_pd.municipio_209,Atapirire,20902
+parroquia_20903,territorial_pd.municipio_209,Boca Del Pao,20903
+parroquia_20904,territorial_pd.municipio_209,El Pao,20904
+parroquia_21001,territorial_pd.municipio_210,Mapire,21001
+parroquia_21002,territorial_pd.municipio_210,Piar,21002
+parroquia_21003,territorial_pd.municipio_210,San Diego De Cabrutica,21003
+parroquia_21004,territorial_pd.municipio_210,Santa Clara,21004
+parroquia_21005,territorial_pd.municipio_210,Uverito,21005
+parroquia_21006,territorial_pd.municipio_210,Zuata,21006
+parroquia_21101,territorial_pd.municipio_211,Puerto Píritu,21101
+parroquia_21102,territorial_pd.municipio_211,San Miguel,21102
+parroquia_21103,territorial_pd.municipio_211,Sucre,21103
+parroquia_21201,territorial_pd.municipio_212,Edmundo Barrios,21201
+parroquia_21202,territorial_pd.municipio_212,Miguel Otero Silva,21202
+parroquia_21301,territorial_pd.municipio_213,Pozuelos,21301
+parroquia_21302,territorial_pd.municipio_213,Puerto La Cruz,21302
+parroquia_21401,territorial_pd.municipio_214,San José De Guanipa,21401
+parroquia_21501,territorial_pd.municipio_215,Guanta,21501
+parroquia_21502,territorial_pd.municipio_215,Chorrerón,21502
+parroquia_21601,territorial_pd.municipio_216,Píritu,21601
+parroquia_21602,territorial_pd.municipio_216,San Francisco,21602
+parroquia_21701,territorial_pd.municipio_217,Lecherías,21701
+parroquia_21702,territorial_pd.municipio_217,El Morro,21702
+parroquia_21801,territorial_pd.municipio_218,Valle De Guanape,21801
+parroquia_21802,territorial_pd.municipio_218,Santa Bárbara,21802
+parroquia_21901,territorial_pd.municipio_219,Santa  Ana,21901
+parroquia_21902,territorial_pd.municipio_219,Pueblo Nuevo,21902
+parroquia_22001,territorial_pd.municipio_220,El Chaparro,22001
+parroquia_22002,territorial_pd.municipio_220,Tomás Alfaro,22002
+parroquia_22003,territorial_pd.municipio_220,Calatrava,22003
+parroquia_22101,territorial_pd.municipio_221,Boca De Uchire,22101
+parroquia_22102,territorial_pd.municipio_221,Boca De Chávez,22102
+parroquia_30101,territorial_pd.municipio_301,Fernándo Girón Tovar,30101
+parroquia_30102,territorial_pd.municipio_301,Luis Alberto Gómez,30102
+parroquia_30103,territorial_pd.municipio_301,Parhueña,30103
+parroquia_30104,territorial_pd.municipio_301,Platanillal,30104
+parroquia_30201,territorial_pd.municipio_302,Atabapo,30201
+parroquia_30202,territorial_pd.municipio_302,Ucata Laja Lisa,30202
+parroquia_30203,territorial_pd.municipio_302,Yapacana Macuruco,30203
+parroquia_30204,territorial_pd.municipio_302,Caname Guarinuma,30204
+parroquia_30301,territorial_pd.municipio_303,Maroa,30301
+parroquia_30302,territorial_pd.municipio_303,Victorino,30302
+parroquia_30303,territorial_pd.municipio_303,Comunidad,30303
+parroquia_30401,territorial_pd.municipio_304,Casiquiare,30401
+parroquia_30402,territorial_pd.municipio_304,Cocuy,30402
+parroquia_30403,territorial_pd.municipio_304,San Carlos De Río Negro,30403
+parroquia_30404,territorial_pd.municipio_304,Solano,30404
+parroquia_30501,territorial_pd.municipio_305,Samariapo,30501
+parroquia_30502,territorial_pd.municipio_305,Sipapo,30502
+parroquia_30503,territorial_pd.municipio_305,Munduapo,30503
+parroquia_30504,territorial_pd.municipio_305,Guayapo,30504
+parroquia_30505,territorial_pd.municipio_305,Isla Ratón,30505
+parroquia_30601,territorial_pd.municipio_306,Manapiare,30601
+parroquia_30602,territorial_pd.municipio_306,Alto Ventuari,30602
+parroquia_30603,territorial_pd.municipio_306,Medio Ventuari,30603
+parroquia_30604,territorial_pd.municipio_306,Bajo Ventuari,30604
+parroquia_30701,territorial_pd.municipio_307,Alto Orinoco,30701
+parroquia_30702,territorial_pd.municipio_307,Huachamacare Acanaña,30702
+parroquia_30703,territorial_pd.municipio_307,Marawaka Toky Shamanaña,30703
+parroquia_30704,territorial_pd.municipio_307,Mavaca,30704
+parroquia_30705,territorial_pd.municipio_307,Sierra Parima,30705
+parroquia_40101,territorial_pd.municipio_401,Achaguas,40101
+parroquia_40102,territorial_pd.municipio_401,Apurito,40102
+parroquia_40103,territorial_pd.municipio_401,El Yagual,40103
+parroquia_40104,territorial_pd.municipio_401,Guachara,40104
+parroquia_40105,territorial_pd.municipio_401,Mucuritas,40105
+parroquia_40106,territorial_pd.municipio_401,Queseras Del Medio,40106
+parroquia_40201,territorial_pd.municipio_402,Bruzual,40201
+parroquia_40202,territorial_pd.municipio_402,Mantecal,40202
+parroquia_40203,territorial_pd.municipio_402,Quintero,40203
+parroquia_40204,territorial_pd.municipio_402,Rincón Hondo,40204
+parroquia_40205,territorial_pd.municipio_402,San Vicente,40205
+parroquia_40301,territorial_pd.municipio_403,Guasdualito,40301
+parroquia_40302,territorial_pd.municipio_403,Aramendi,40302
+parroquia_40303,territorial_pd.municipio_403,El Amparo,40303
+parroquia_40304,territorial_pd.municipio_403,San Camilo,40304
+parroquia_40305,territorial_pd.municipio_403,Urdaneta,40305
+parroquia_40401,territorial_pd.municipio_404,San Juan De Payara,40401
+parroquia_40402,territorial_pd.municipio_404,Codazzi,40402
+parroquia_40403,territorial_pd.municipio_404,Cunaviche,40403
+parroquia_40501,territorial_pd.municipio_405,Elorza,40501
+parroquia_40502,territorial_pd.municipio_405,La Trinidad,40502
+parroquia_40601,territorial_pd.municipio_406,San Fernando De Apure,40601
+parroquia_40602,territorial_pd.municipio_406,Peñalver,40602
+parroquia_40603,territorial_pd.municipio_406,El Recreo,40603
+parroquia_40604,territorial_pd.municipio_406,San Rafael De Atamaica,40604
+parroquia_40701,territorial_pd.municipio_407,Biruaca,40701
+parroquia_50101,territorial_pd.municipio_501,Las Delicias,50101
+parroquia_50102,territorial_pd.municipio_501,Choroní,50102
+parroquia_50103,territorial_pd.municipio_501,Madre María De San José,50103
+parroquia_50104,territorial_pd.municipio_501,Joaquín Crespo,50104
+parroquia_50105,territorial_pd.municipio_501,Pedro José Ovalles,50105
+parroquia_50106,territorial_pd.municipio_501,José Casanova Godoy,50106
+parroquia_50107,territorial_pd.municipio_501,Andrés Eloy Blanco,50107
+parroquia_50108,territorial_pd.municipio_501,Los Tacariguas,50108
+parroquia_50201,territorial_pd.municipio_502,Santiago Mariño,50201
+parroquia_50202,territorial_pd.municipio_502,Samán De Güere,50202
+parroquia_50203,territorial_pd.municipio_502,Alfredo Pacheco Miranda,50203
+parroquia_50204,territorial_pd.municipio_502,Chuao,50204
+parroquia_50205,territorial_pd.municipio_502,Arévalo Aponte,50205
+parroquia_50301,territorial_pd.municipio_503,José Félix Ribas,50301
+parroquia_50302,territorial_pd.municipio_503,Zuata,50302
+parroquia_50303,territorial_pd.municipio_503,Pao De Zárate,50303
+parroquia_50304,territorial_pd.municipio_503,Castor Nieves Ríos,50304
+parroquia_50305,territorial_pd.municipio_503,Las Guacamayas,50305
+parroquia_50401,territorial_pd.municipio_504,San Casimiro,50401
+parroquia_50402,territorial_pd.municipio_504,Valle Morín,50402
+parroquia_50403,territorial_pd.municipio_504,Güiripa,50403
+parroquia_50404,territorial_pd.municipio_504,Ollas De Caramacate,50404
+parroquia_50501,territorial_pd.municipio_505,San Sebastián,50501
+parroquia_50601,territorial_pd.municipio_506,Sucre,50601
+parroquia_50602,territorial_pd.municipio_506,Bella Vista,50602
+parroquia_50701,territorial_pd.municipio_507,Urdaneta,50701
+parroquia_50702,territorial_pd.municipio_507,San Francisco De Cara,50702
+parroquia_50703,territorial_pd.municipio_507,Taguay,50703
+parroquia_50704,territorial_pd.municipio_507,Las Peñitas,50704
+parroquia_50801,territorial_pd.municipio_508,Zamora,50801
+parroquia_50802,territorial_pd.municipio_508,Magdaleno,50802
+parroquia_50803,territorial_pd.municipio_508,San Francisco De Asís,50803
+parroquia_50804,territorial_pd.municipio_508,Valles De Tucutunemo,50804
+parroquia_50805,territorial_pd.municipio_508,Augusto Mijares,50805
+parroquia_50901,territorial_pd.municipio_509,Libertador,50901
+parroquia_50902,territorial_pd.municipio_509,San Martín De Porres,50902
+parroquia_51001,territorial_pd.municipio_510,Santa Cruz,51001
+parroquia_51101,territorial_pd.municipio_511,Bolívar,51101
+parroquia_51201,territorial_pd.municipio_512,Santos Michelena,51201
+parroquia_51202,territorial_pd.municipio_512,Tiara,51202
+parroquia_51301,territorial_pd.municipio_513,Mario Briceño Iragorry,51301
+parroquia_51302,territorial_pd.municipio_513,Caña De Azúcar,51302
+parroquia_51401,territorial_pd.municipio_514,Tovar,51401
+parroquia_51501,territorial_pd.municipio_515,Camatagua,51501
+parroquia_51502,territorial_pd.municipio_515,No Urbana Carmen De Cura,51502
+parroquia_51601,territorial_pd.municipio_516,José Rafael Revenga,51601
+parroquia_51701,territorial_pd.municipio_517,Santa Rita,51701
+parroquia_51702,territorial_pd.municipio_517,Francisco De Miranda,51702
+parroquia_51703,territorial_pd.municipio_517,Monseñor Feliciano González,51703
+parroquia_51801,territorial_pd.municipio_518,Ocumare De La Costa De Oro,51801
+parroquia_60101,territorial_pd.municipio_601,Arismendi,60101
+parroquia_60102,territorial_pd.municipio_601,Guadarrama,60102
+parroquia_60103,territorial_pd.municipio_601,La Unión,60103
+parroquia_60104,territorial_pd.municipio_601,San Antonio,60104
+parroquia_60201,territorial_pd.municipio_602,Alfredo Arvelo Larriva,60201
+parroquia_60202,territorial_pd.municipio_602,Barinas,60202
+parroquia_60203,territorial_pd.municipio_602,San Silvestre,60203
+parroquia_60204,territorial_pd.municipio_602,Santa Inés,60204
+parroquia_60205,territorial_pd.municipio_602,Santa Lucía,60205
+parroquia_60206,territorial_pd.municipio_602,Torunos,60206
+parroquia_60207,territorial_pd.municipio_602,El Carmen,60207
+parroquia_60208,territorial_pd.municipio_602,Rómulo Betancourt,60208
+parroquia_60209,territorial_pd.municipio_602,Corazón De Jesús,60209
+parroquia_60210,territorial_pd.municipio_602,Ramón Ignacio Méndez,60210
+parroquia_60211,territorial_pd.municipio_602,Alto Barinas,60211
+parroquia_60212,territorial_pd.municipio_602,Manuel Palacio Fajardo,60212
+parroquia_60213,territorial_pd.municipio_602,Juan Antonio Rodríguez Domínguez,60213
+parroquia_60214,territorial_pd.municipio_602,Dominga Ortiz De Páez,60214
+parroquia_60301,territorial_pd.municipio_603,Altamira,60301
+parroquia_60302,territorial_pd.municipio_603,Barinitas,60302
+parroquia_60303,territorial_pd.municipio_603,Calderas,60303
+parroquia_60401,territorial_pd.municipio_604,Santa Bárbara,60401
+parroquia_60402,territorial_pd.municipio_604,José Ignacio Del Pumar,60402
+parroquia_60403,territorial_pd.municipio_604,Ramón Ignacio Méndez,60403
+parroquia_60404,territorial_pd.municipio_604,Pedro Briceño Méndez,60404
+parroquia_60501,territorial_pd.municipio_605,El Real,60501
+parroquia_60502,territorial_pd.municipio_605,La Luz,60502
+parroquia_60503,territorial_pd.municipio_605,Obispos,60503
+parroquia_60504,territorial_pd.municipio_605,Los Guasimitos,60504
+parroquia_60601,territorial_pd.municipio_606,Ciudad Bolivia,60601
+parroquia_60602,territorial_pd.municipio_606,Ignacio Briceño,60602
+parroquia_60603,territorial_pd.municipio_606,Páez,60603
+parroquia_60604,territorial_pd.municipio_606,José Félix Ribas,60604
+parroquia_60701,territorial_pd.municipio_607,Dolores,60701
+parroquia_60702,territorial_pd.municipio_607,Libertad,60702
+parroquia_60703,territorial_pd.municipio_607,Palacios Fajardo,60703
+parroquia_60704,territorial_pd.municipio_607,Santa Rosa,60704
+parroquia_60801,territorial_pd.municipio_608,Ciudad De Nutrias,60801
+parroquia_60802,territorial_pd.municipio_608,El Regalo,60802
+parroquia_60803,territorial_pd.municipio_608,Puerto De Nutrias,60803
+parroquia_60804,territorial_pd.municipio_608,Santa Catalina,60804
+parroquia_60901,territorial_pd.municipio_609,Rodríguez Domínguez,60901
+parroquia_60902,territorial_pd.municipio_609,Sabaneta,60902
+parroquia_61001,territorial_pd.municipio_610,Ticoporo,61001
+parroquia_61002,territorial_pd.municipio_610,Nicolás Pulido,61002
+parroquia_61003,territorial_pd.municipio_610,Andrés Bello,61003
+parroquia_61101,territorial_pd.municipio_611,Barrancas,61101
+parroquia_61102,territorial_pd.municipio_611,El Socorro,61102
+parroquia_61103,territorial_pd.municipio_611,Masparrito,61103
+parroquia_61201,territorial_pd.municipio_612,El Cantón,61201
+parroquia_61202,territorial_pd.municipio_612,Santa Cruz De Guacas,61202
+parroquia_61203,territorial_pd.municipio_612,Puerto Vivas,61203
+parroquia_70101,territorial_pd.municipio_701,Simón Bolívar,70101
+parroquia_70102,territorial_pd.municipio_701,Once De Abril,70102
+parroquia_70103,territorial_pd.municipio_701,Vista Al Sol,70103
+parroquia_70104,territorial_pd.municipio_701,Chirica,70104
+parroquia_70105,territorial_pd.municipio_701,Dalla Costa,70105
+parroquia_70106,territorial_pd.municipio_701,Cachamay,70106
+parroquia_70107,territorial_pd.municipio_701,Universidad,70107
+parroquia_70108,territorial_pd.municipio_701,Unare,70108
+parroquia_70109,territorial_pd.municipio_701,Yocoima,70109
+parroquia_70110,territorial_pd.municipio_701,Pozo Verde,70110
+parroquia_70201,territorial_pd.municipio_702,Sección Capital Cedeño,70201
+parroquia_70202,territorial_pd.municipio_702,Ascensión Farreras,70202
+parroquia_70203,territorial_pd.municipio_702,Altagracia,70203
+parroquia_70204,territorial_pd.municipio_702,La Urbana,70204
+parroquia_70205,territorial_pd.municipio_702,Guaniamo,70205
+parroquia_70206,territorial_pd.municipio_702,Pijiguaos,70206
+parroquia_70301,territorial_pd.municipio_703,Catedral,70301
+parroquia_70302,territorial_pd.municipio_703,Agua Salada,70302
+parroquia_70303,territorial_pd.municipio_703,La Sabanita,70303
+parroquia_70304,territorial_pd.municipio_703,Vista Hermosa,70304
+parroquia_70305,territorial_pd.municipio_703,Marhuanta,70305
+parroquia_70306,territorial_pd.municipio_703,José Antonio Páez,70306
+parroquia_70307,territorial_pd.municipio_703,Orinoco,70307
+parroquia_70308,territorial_pd.municipio_703,Panapana,70308
+parroquia_70309,territorial_pd.municipio_703,Zea,70309
+parroquia_70401,territorial_pd.municipio_704,Sección Capital Piar,70401
+parroquia_70402,territorial_pd.municipio_704,Andrés Eloy Blanco,70402
+parroquia_70403,territorial_pd.municipio_704,Pedro Cova,70403
+parroquia_70501,territorial_pd.municipio_705,Sección Capital Roscio,70501
+parroquia_70502,territorial_pd.municipio_705,Salom,70502
+parroquia_70601,territorial_pd.municipio_706,Sección Capital Sucre,70601
+parroquia_70602,territorial_pd.municipio_706,Aripao,70602
+parroquia_70603,territorial_pd.municipio_706,Las Majadas,70603
+parroquia_70604,territorial_pd.municipio_706,Moitaco,70604
+parroquia_70605,territorial_pd.municipio_706,Guarataro,70605
+parroquia_70701,territorial_pd.municipio_707,Sección Capital Sifontes,70701
+parroquia_70702,territorial_pd.municipio_707,Dalla Costa,70702
+parroquia_70703,territorial_pd.municipio_707,San Isidro,70703
+parroquia_70801,territorial_pd.municipio_708,Sección Capital Raúl Leoni,70801
+parroquia_70802,territorial_pd.municipio_708,San Francisco,70802
+parroquia_70803,territorial_pd.municipio_708,Barceloneta,70803
+parroquia_70804,territorial_pd.municipio_708,Santa Bárbara,70804
+parroquia_70901,territorial_pd.municipio_709,Sección Capital Gran Sabana,70901
+parroquia_70902,territorial_pd.municipio_709,Ikabarú,70902
+parroquia_71001,territorial_pd.municipio_710,El Callao,71001
+parroquia_71101,territorial_pd.municipio_711,Padre Pedro Chien,71101
+parroquia_80101,territorial_pd.municipio_801,Bejuma,80101
+parroquia_80102,territorial_pd.municipio_801,Canoabo,80102
+parroquia_80103,territorial_pd.municipio_801,Simón Bolívar,80103
+parroquia_80201,territorial_pd.municipio_802,Güigüe,80201
+parroquia_80202,territorial_pd.municipio_802,Belén,80202
+parroquia_80203,territorial_pd.municipio_802,Tacarigua,80203
+parroquia_80301,territorial_pd.municipio_803,Mariara,80301
+parroquia_80302,territorial_pd.municipio_803,Aguas Calientes,80302
+parroquia_80401,territorial_pd.municipio_804,Guacara,80401
+parroquia_80402,territorial_pd.municipio_804,Ciudad Alianza,80402
+parroquia_80403,territorial_pd.municipio_804,Yagua,80403
+parroquia_80501,territorial_pd.municipio_805,Montalbán,80501
+parroquia_80601,territorial_pd.municipio_806,Morón,80601
+parroquia_80602,territorial_pd.municipio_806,Urama,80602
+parroquia_80701,territorial_pd.municipio_807,Democracia,80701
+parroquia_80702,territorial_pd.municipio_807,Fraternidad,80702
+parroquia_80703,territorial_pd.municipio_807,Goaigoaza,80703
+parroquia_80704,territorial_pd.municipio_807,Juan José Flores,80704
+parroquia_80705,territorial_pd.municipio_807,Bartolomé Salom,80705
+parroquia_80706,territorial_pd.municipio_807,Unión,80706
+parroquia_80707,territorial_pd.municipio_807,Borburata,80707
+parroquia_80708,territorial_pd.municipio_807,Patanemo,80708
+parroquia_80801,territorial_pd.municipio_808,San Joaquín,80801
+parroquia_80901,territorial_pd.municipio_809,Candelaria,80901
+parroquia_80902,territorial_pd.municipio_809,Catedral,80902
+parroquia_80903,territorial_pd.municipio_809,El Socorro,80903
+parroquia_80904,territorial_pd.municipio_809,Miguel Peña,80904
+parroquia_80905,territorial_pd.municipio_809,San Blas,80905
+parroquia_80906,territorial_pd.municipio_809,San José,80906
+parroquia_80907,territorial_pd.municipio_809,Santa Rosa,80907
+parroquia_80908,territorial_pd.municipio_809,Rafael Urdaneta,80908
+parroquia_80909,territorial_pd.municipio_809,Negro Primero,80909
+parroquia_81001,territorial_pd.municipio_810,Miranda,81001
+parroquia_81101,territorial_pd.municipio_811,Los Guayos,81101
+parroquia_81201,territorial_pd.municipio_812,Naguanagua,81201
+parroquia_81301,territorial_pd.municipio_813,San Diego,81301
+parroquia_81401,territorial_pd.municipio_814,Tocuyito,81401
+parroquia_81402,territorial_pd.municipio_814,Independencia,81402
+parroquia_90101,territorial_pd.municipio_901,Cojedes,90101
+parroquia_90102,territorial_pd.municipio_901,Juan De Mata Suárez,90102
+parroquia_90201,territorial_pd.municipio_902,Tinaquillo,90201
+parroquia_90301,territorial_pd.municipio_903,El Baúl,90301
+parroquia_90302,territorial_pd.municipio_903,Sucre,90302
+parroquia_90401,territorial_pd.municipio_904,El Pao,90401
+parroquia_90501,territorial_pd.municipio_905,Libertad De Cojedes,90501
+parroquia_90502,territorial_pd.municipio_905,El Amparo,90502
+parroquia_90601,territorial_pd.municipio_906,San Carlos De Austria,90601
+parroquia_90602,territorial_pd.municipio_906,Juan Angel Bravo,90602
+parroquia_90603,territorial_pd.municipio_906,Manuel Manrique,90603
+parroquia_90701,territorial_pd.municipio_907,General En Jefe José Laurencio Silva,90701
+parroquia_90801,territorial_pd.municipio_908,Macapo,90801
+parroquia_90802,territorial_pd.municipio_908,La Aguadita,90802
+parroquia_90901,territorial_pd.municipio_909,Rómulo Gallegos,90901
+parroquia_100101,territorial_pd.municipio_1001,San Juan De Los Cayos,100101
+parroquia_100102,territorial_pd.municipio_1001,Capadare,100102
+parroquia_100103,territorial_pd.municipio_1001,La Pastora,100103
+parroquia_100104,territorial_pd.municipio_1001,Libertador,100104
+parroquia_100201,territorial_pd.municipio_1002,San Luis,100201
+parroquia_100202,territorial_pd.municipio_1002,Aracua,100202
+parroquia_100203,territorial_pd.municipio_1002,La Peña,100203
+parroquia_100301,territorial_pd.municipio_1003,Capatárida,100301
+parroquia_100302,territorial_pd.municipio_1003,Borojó,100302
+parroquia_100303,territorial_pd.municipio_1003,Seque,100303
+parroquia_100304,territorial_pd.municipio_1003,Zazárida,100304
+parroquia_100305,territorial_pd.municipio_1003,Bariro,100305
+parroquia_100306,territorial_pd.municipio_1003,Guajiro,100306
+parroquia_100401,territorial_pd.municipio_1004,Norte,100401
+parroquia_100402,territorial_pd.municipio_1004,Carirubana,100402
+parroquia_100403,territorial_pd.municipio_1004,Punta Cardón,100403
+parroquia_100404,territorial_pd.municipio_1004,Santa Ana,100404
+parroquia_100501,territorial_pd.municipio_1005,La Vela De Coro,100501
+parroquia_100502,territorial_pd.municipio_1005,Acurigua,100502
+parroquia_100503,territorial_pd.municipio_1005,Guaibacoa,100503
+parroquia_100504,territorial_pd.municipio_1005,Macoruca,100504
+parroquia_100505,territorial_pd.municipio_1005,Las Calderas,100505
+parroquia_100601,territorial_pd.municipio_1006,Pedregal,100601
+parroquia_100602,territorial_pd.municipio_1006,Agua Clara,100602
+parroquia_100603,territorial_pd.municipio_1006,Avaria,100603
+parroquia_100604,territorial_pd.municipio_1006,Piedra Grande,100604
+parroquia_100605,territorial_pd.municipio_1006,Purureche,100605
+parroquia_100701,territorial_pd.municipio_1007,Pueblo Nuevo,100701
+parroquia_100702,territorial_pd.municipio_1007,Adícora,100702
+parroquia_100703,territorial_pd.municipio_1007,Baraived,100703
+parroquia_100704,territorial_pd.municipio_1007,Buena Vista,100704
+parroquia_100705,territorial_pd.municipio_1007,Jadacaquiva,100705
+parroquia_100706,territorial_pd.municipio_1007,Moruy,100706
+parroquia_100707,territorial_pd.municipio_1007,El Vínculo,100707
+parroquia_100708,territorial_pd.municipio_1007,El Hato,100708
+parroquia_100709,territorial_pd.municipio_1007,Adaure,100709
+parroquia_100801,territorial_pd.municipio_1008,Churuguara,100801
+parroquia_100802,territorial_pd.municipio_1008,Agua Larga,100802
+parroquia_100803,territorial_pd.municipio_1008,Independencia,100803
+parroquia_100804,territorial_pd.municipio_1008,Mapararí,100804
+parroquia_100805,territorial_pd.municipio_1008,El Paují,100805
+parroquia_100901,territorial_pd.municipio_1009,Mene De Mauroa,100901
+parroquia_100902,territorial_pd.municipio_1009,Casigua,100902
+parroquia_100903,territorial_pd.municipio_1009,San Félix,100903
+parroquia_101001,territorial_pd.municipio_1010,San Antonio,101001
+parroquia_101002,territorial_pd.municipio_1010,San Gabriel,101002
+parroquia_101004,territorial_pd.municipio_1010,Guzmán Guillermo,101004
+parroquia_101005,territorial_pd.municipio_1010,Mitare,101005
+parroquia_101006,territorial_pd.municipio_1010,Sabaneta,101006
+parroquia_101007,territorial_pd.municipio_1010,Río Seco,101007
+parroquia_101101,territorial_pd.municipio_1011,Cabure,101101
+parroquia_101102,territorial_pd.municipio_1011,Curimagua,101102
+parroquia_101103,territorial_pd.municipio_1011,Colina,101103
+parroquia_101201,territorial_pd.municipio_1012,Tucacas,101201
+parroquia_101202,territorial_pd.municipio_1012,Boca De Aroa,101202
+parroquia_101301,territorial_pd.municipio_1013,Puerto Cumarebo,101301
+parroquia_101302,territorial_pd.municipio_1013,La Ciénaga,101302
+parroquia_101303,territorial_pd.municipio_1013,La Soledad,101303
+parroquia_101304,territorial_pd.municipio_1013,Pueblo Cumarebo,101304
+parroquia_101305,territorial_pd.municipio_1013,Zazarida,101305
+parroquia_101401,territorial_pd.municipio_1014,Capital Dabajuro,101401
+parroquia_101501,territorial_pd.municipio_1015,Chichiriviche,101501
+parroquia_101502,territorial_pd.municipio_1015,Boca De Tocuyo,101502
+parroquia_101503,territorial_pd.municipio_1015,Tocuyo De La Costa,101503
+parroquia_101601,territorial_pd.municipio_1016,Los Taques,101601
+parroquia_101602,territorial_pd.municipio_1016,Judibana,101602
+parroquia_101701,territorial_pd.municipio_1017,Píritu,101701
+parroquia_101702,territorial_pd.municipio_1017,San José De La Costa,101702
+parroquia_101801,territorial_pd.municipio_1018,Santa Cruz De Bucaral,101801
+parroquia_101802,territorial_pd.municipio_1018,El Charal,101802
+parroquia_101803,territorial_pd.municipio_1018,Las Vegas Del Tuy,101803
+parroquia_101901,territorial_pd.municipio_1019,San Francisco,101901
+parroquia_102001,territorial_pd.municipio_1020,Jacura,102001
+parroquia_102002,territorial_pd.municipio_1020,Agua Linda,102002
+parroquia_102003,territorial_pd.municipio_1020,Araurima,102003
+parroquia_102101,territorial_pd.municipio_1021,Cacique Manaure,102101
+parroquia_102201,territorial_pd.municipio_1022,Palmasola,102201
+parroquia_102301,territorial_pd.municipio_1023,Sucre,102301
+parroquia_102302,territorial_pd.municipio_1023,Pecaya,102302
+parroquia_102401,territorial_pd.municipio_1024,Urumaco,102401
+parroquia_102402,territorial_pd.municipio_1024,Urbana Bruzual,102402
+parroquia_102501,territorial_pd.municipio_1025,Tocópero,102501
+parroquia_110101,territorial_pd.municipio_1101,Valle De La Pascua,110101
+parroquia_110102,territorial_pd.municipio_1101,Espino,110102
+parroquia_110201,territorial_pd.municipio_1102,El Sombrero,110201
+parroquia_110202,territorial_pd.municipio_1102,Sosa,110202
+parroquia_110301,territorial_pd.municipio_1103,Calabozo,110301
+parroquia_110302,territorial_pd.municipio_1103,El Calvario,110302
+parroquia_110303,territorial_pd.municipio_1103,El Rastro,110303
+parroquia_110304,territorial_pd.municipio_1103,Guardatinajas,110304
+parroquia_110401,territorial_pd.municipio_1104,Altagracia De Orituco,110401
+parroquia_110402,territorial_pd.municipio_1104,Lezama,110402
+parroquia_110403,territorial_pd.municipio_1104,Libertad De Orituco,110403
+parroquia_110404,territorial_pd.municipio_1104,San Francisco De Macaira,110404
+parroquia_110405,territorial_pd.municipio_1104,San Rafael De Orituco,110405
+parroquia_110406,territorial_pd.municipio_1104,Soublette,110406
+parroquia_110407,territorial_pd.municipio_1104,Paso Real De Macaira,110407
+parroquia_110501,territorial_pd.municipio_1105,Tucupido,110501
+parroquia_110502,territorial_pd.municipio_1105,San Rafael De Laya,110502
+parroquia_110601,territorial_pd.municipio_1106,San Juan De Los Morros,110601
+parroquia_110602,territorial_pd.municipio_1106,Parapara,110602
+parroquia_110603,territorial_pd.municipio_1106,Cantagallo,110603
+parroquia_110701,territorial_pd.municipio_1107,Zaraza,110701
+parroquia_110702,territorial_pd.municipio_1107,San José De Unare,110702
+parroquia_110801,territorial_pd.municipio_1108,Camaguán,110801
+parroquia_110802,territorial_pd.municipio_1108,Puerto Miranda,110802
+parroquia_110803,territorial_pd.municipio_1108,Uverito,110803
+parroquia_110901,territorial_pd.municipio_1109,San José De Guaribe,110901
+parroquia_111001,territorial_pd.municipio_1110,Las Mercedes,111001
+parroquia_111002,territorial_pd.municipio_1110,Santa Rita De Manapire,111002
+parroquia_111003,territorial_pd.municipio_1110,Cabruta,111003
+parroquia_111101,territorial_pd.municipio_1111,El Socorro,111101
+parroquia_111201,territorial_pd.municipio_1112,Ortiz,111201
+parroquia_111202,territorial_pd.municipio_1112,San Francisco De Tiznados,111202
+parroquia_111203,territorial_pd.municipio_1112,San José De Tiznados,111203
+parroquia_111204,territorial_pd.municipio_1112,San Lorenzo De Tiznados,111204
+parroquia_111301,territorial_pd.municipio_1113,Santa María De Ipire,111301
+parroquia_111302,territorial_pd.municipio_1113,Altamira,111302
+parroquia_111401,territorial_pd.municipio_1114,Chaguaramas,111401
+parroquia_111501,territorial_pd.municipio_1115,San Gerónimo De Guayabal,111501
+parroquia_111502,territorial_pd.municipio_1115,Cazorla,111502
+parroquia_120101,territorial_pd.municipio_1201,Freitez,120101
+parroquia_120102,territorial_pd.municipio_1201,José María Blanco,120102
+parroquia_120201,territorial_pd.municipio_1202,Catedral,120201
+parroquia_120202,territorial_pd.municipio_1202,Concepción,120202
+parroquia_120203,territorial_pd.municipio_1202,Santa Rosa,120203
+parroquia_120204,territorial_pd.municipio_1202,Unión,120204
+parroquia_120205,territorial_pd.municipio_1202,El Cují,120205
+parroquia_120206,territorial_pd.municipio_1202,Tamaca,120206
+parroquia_120207,territorial_pd.municipio_1202,Juan De Villegas,120207
+parroquia_120208,territorial_pd.municipio_1202,Aguedo Felipe Alvarado,120208
+parroquia_120209,territorial_pd.municipio_1202,Buena Vista,120209
+parroquia_120210,territorial_pd.municipio_1202,Juárez,120210
+parroquia_120301,territorial_pd.municipio_1203,Juan Bautista Rodríguez,120301
+parroquia_120302,territorial_pd.municipio_1203,Diego De Lozada,120302
+parroquia_120303,territorial_pd.municipio_1203,San Miguel,120303
+parroquia_120304,territorial_pd.municipio_1203,Cuara,120304
+parroquia_120305,territorial_pd.municipio_1203,Paraíso De San José,120305
+parroquia_120306,territorial_pd.municipio_1203,Tintorero,120306
+parroquia_120307,territorial_pd.municipio_1203,José Bernardo Dorante,120307
+parroquia_120308,territorial_pd.municipio_1203,Coronel Mariano Peraza,120308
+parroquia_120401,territorial_pd.municipio_1204,Bolívar,120401
+parroquia_120402,territorial_pd.municipio_1204,Anzoátegui,120402
+parroquia_120403,territorial_pd.municipio_1204,Guárico,120403
+parroquia_120404,territorial_pd.municipio_1204,Humocaro Alto,120404
+parroquia_120405,territorial_pd.municipio_1204,Humocaro Bajo,120405
+parroquia_120406,territorial_pd.municipio_1204,Morán,120406
+parroquia_120407,territorial_pd.municipio_1204,Hilario Luna Y Luna,120407
+parroquia_120408,territorial_pd.municipio_1204,La Candelaria,120408
+parroquia_120501,territorial_pd.municipio_1205,Cabudare,120501
+parroquia_120502,territorial_pd.municipio_1205,José Gregorio Bastidas,120502
+parroquia_120503,territorial_pd.municipio_1205,Agua Viva,120503
+parroquia_120601,territorial_pd.municipio_1206,Trinidad Samuel,120601
+parroquia_120602,territorial_pd.municipio_1206,Antonio Díaz,120602
+parroquia_120603,territorial_pd.municipio_1206,Camacaro,120603
+parroquia_120604,territorial_pd.municipio_1206,Castañeda,120604
+parroquia_120605,territorial_pd.municipio_1206,Chiquinquirá,120605
+parroquia_120606,territorial_pd.municipio_1206,Espinoza De Los Monteros,120606
+parroquia_120607,territorial_pd.municipio_1206,Lara,120607
+parroquia_120608,territorial_pd.municipio_1206,Manuel Morillo,120608
+parroquia_120609,territorial_pd.municipio_1206,Montes De Oca,120609
+parroquia_120610,territorial_pd.municipio_1206,Torres,120610
+parroquia_120611,territorial_pd.municipio_1206,El Blanco,120611
+parroquia_120612,territorial_pd.municipio_1206,Montaña Verde,120612
+parroquia_120614,territorial_pd.municipio_1206,Las Mercedes,120614
+parroquia_120615,territorial_pd.municipio_1206,Cecilio Zubillaga,120615
+parroquia_120616,territorial_pd.municipio_1206,Reyes Vargas,120616
+parroquia_120617,territorial_pd.municipio_1206,Altagracia,120617
+parroquia_120701,territorial_pd.municipio_1207,Siquisique,120701
+parroquia_120702,territorial_pd.municipio_1207,San Miguel,120702
+parroquia_120703,territorial_pd.municipio_1207,Xaguas,120703
+parroquia_120704,territorial_pd.municipio_1207,Moroturo,120704
+parroquia_120801,territorial_pd.municipio_1208,Pío Tamayo,120801
+parroquia_120802,territorial_pd.municipio_1208,Yacambú,120802
+parroquia_120803,territorial_pd.municipio_1208,Quebrada Honda De Guache,120803
+parroquia_120901,territorial_pd.municipio_1209,Sarare,120901
+parroquia_120902,territorial_pd.municipio_1209,Gustavo Vegas León,120902
+parroquia_120903,territorial_pd.municipio_1209,Buría,120903
+parroquia_130101,territorial_pd.municipio_1301,Gabriel Picón González,130101
+parroquia_130102,territorial_pd.municipio_1301,Héctor Amable Mora,130102
+parroquia_130103,territorial_pd.municipio_1301,José Nucete Sardi,130103
+parroquia_130104,territorial_pd.municipio_1301,Pulido Méndez,130104
+parroquia_130105,territorial_pd.municipio_1301,Presidente Rómulo Gallegos,130105
+parroquia_130106,territorial_pd.municipio_1301,Presidente Betancourt,130106
+parroquia_130107,territorial_pd.municipio_1301,Presidente Páez,130107
+parroquia_130201,territorial_pd.municipio_1302,La Azulita,130201
+parroquia_130301,territorial_pd.municipio_1303,Canaguá,130301
+parroquia_130302,territorial_pd.municipio_1303,Capurí,130302
+parroquia_130303,territorial_pd.municipio_1303,Chacantá,130303
+parroquia_130304,territorial_pd.municipio_1303,El Molino,130304
+parroquia_130305,territorial_pd.municipio_1303,Guaimaral,130305
+parroquia_130306,territorial_pd.municipio_1303,Mucutuy,130306
+parroquia_130307,territorial_pd.municipio_1303,Mucuchachí,130307
+parroquia_130401,territorial_pd.municipio_1304,Acequias,130401
+parroquia_130402,territorial_pd.municipio_1304,Jají,130402
+parroquia_130403,territorial_pd.municipio_1304,La Mesa,130403
+parroquia_130404,territorial_pd.municipio_1304,San José Del Sur,130404
+parroquia_130405,territorial_pd.municipio_1304,Montalbán,130405
+parroquia_130406,territorial_pd.municipio_1304,Matriz,130406
+parroquia_130407,territorial_pd.municipio_1304,Fernández Peña,130407
+parroquia_130501,territorial_pd.municipio_1305,Guaraque,130501
+parroquia_130502,territorial_pd.municipio_1305,Mesa De Quintero,130502
+parroquia_130503,territorial_pd.municipio_1305,Río Negro,130503
+parroquia_130601,territorial_pd.municipio_1306,Arapuey,130601
+parroquia_130602,territorial_pd.municipio_1306,Palmira,130602
+parroquia_130701,territorial_pd.municipio_1307,Torondoy,130701
+parroquia_130702,territorial_pd.municipio_1307,San Cristóbal De Torondoy,130702
+parroquia_130801,territorial_pd.municipio_1308,Arias,130801
+parroquia_130802,territorial_pd.municipio_1308,Sagrario,130802
+parroquia_130803,territorial_pd.municipio_1308,Milla,130803
+parroquia_130804,territorial_pd.municipio_1308,El Llano,130804
+parroquia_130805,territorial_pd.municipio_1308,Juan Rodríguez Suárez,130805
+parroquia_130806,territorial_pd.municipio_1308,Jacinto Plaza,130806
+parroquia_130807,territorial_pd.municipio_1308,Domingo Peña,130807
+parroquia_130808,territorial_pd.municipio_1308,Gonzalo Picón Febres,130808
+parroquia_130809,territorial_pd.municipio_1308,Osuna Rodríguez,130809
+parroquia_130810,territorial_pd.municipio_1308,Lasso De La Vega,130810
+parroquia_130811,territorial_pd.municipio_1308,Caracciolo Parra Pérez,130811
+parroquia_130812,territorial_pd.municipio_1308,Mariano Picón Salas,130812
+parroquia_130813,territorial_pd.municipio_1308,Antonio Spinetti Dini,130813
+parroquia_130814,territorial_pd.municipio_1308,El Morro,130814
+parroquia_130815,territorial_pd.municipio_1308,Los Nevados,130815
+parroquia_130901,territorial_pd.municipio_1309,Tabay,130901
+parroquia_131001,territorial_pd.municipio_1310,Timotes,131001
+parroquia_131002,territorial_pd.municipio_1310,Andrés Eloy Blanco,131002
+parroquia_131003,territorial_pd.municipio_1310,Piñango,131003
+parroquia_131004,territorial_pd.municipio_1310,La Venta,131004
+parroquia_131101,territorial_pd.municipio_1311,Santa Cruz De Mora,131101
+parroquia_131102,territorial_pd.municipio_1311,Mesa Bolívar,131102
+parroquia_131103,territorial_pd.municipio_1311,Mesa De Las Palmas,131103
+parroquia_131201,territorial_pd.municipio_1312,Santa Elena De Arenales,131201
+parroquia_131202,territorial_pd.municipio_1312,Eloy Paredes,131202
+parroquia_131203,territorial_pd.municipio_1312,San Rafael De Alcázar,131203
+parroquia_131301,territorial_pd.municipio_1313,Tucani,131301
+parroquia_131302,territorial_pd.municipio_1313,Florencio Ramírez,131302
+parroquia_131401,territorial_pd.municipio_1314,Santo Domingo,131401
+parroquia_131402,territorial_pd.municipio_1314,Las Piedras,131402
+parroquia_131501,territorial_pd.municipio_1315,Pueblo Llano,131501
+parroquia_131601,territorial_pd.municipio_1316,Mucuchíes,131601
+parroquia_131602,territorial_pd.municipio_1316,Mucurubá,131602
+parroquia_131603,territorial_pd.municipio_1316,San Rafael,131603
+parroquia_131604,territorial_pd.municipio_1316,Cacute,131604
+parroquia_131605,territorial_pd.municipio_1316,La Toma,131605
+parroquia_131701,territorial_pd.municipio_1317,Bailadores,131701
+parroquia_131702,territorial_pd.municipio_1317,Gerónimo Maldonado,131702
+parroquia_131801,territorial_pd.municipio_1318,Capital Sucre,131801
+parroquia_131802,territorial_pd.municipio_1318,Chiguará,131802
+parroquia_131803,territorial_pd.municipio_1318,Estánquez,131803
+parroquia_131804,territorial_pd.municipio_1318,San Juan,131804
+parroquia_131805,territorial_pd.municipio_1318,Pueblo Nuevo Del Sur,131805
+parroquia_131806,territorial_pd.municipio_1318,La Trampa,131806
+parroquia_131901,territorial_pd.municipio_1319,El Llano,131901
+parroquia_131902,territorial_pd.municipio_1319,Tovar,131902
+parroquia_131903,territorial_pd.municipio_1319,El Amparo,131903
+parroquia_131904,territorial_pd.municipio_1319,San Francisco,131904
+parroquia_132001,territorial_pd.municipio_1320,Nueva Bolivia,132001
+parroquia_132002,territorial_pd.municipio_1320,Independencia,132002
+parroquia_132003,territorial_pd.municipio_1320,María De La Concepción Palacios Blanco,132003
+parroquia_132004,territorial_pd.municipio_1320,Santa Apolonia,132004
+parroquia_132101,territorial_pd.municipio_1321,Padre Noguera,132101
+parroquia_132201,territorial_pd.municipio_1322,Aricagua,132201
+parroquia_132202,territorial_pd.municipio_1322,San Antonio,132202
+parroquia_132301,territorial_pd.municipio_1323,Zea,132301
+parroquia_132302,territorial_pd.municipio_1323,Caño El Tigre,132302
+parroquia_140101,territorial_pd.municipio_1401,Caucagua,140101
+parroquia_140102,territorial_pd.municipio_1401,Aragüita,140102
+parroquia_140103,territorial_pd.municipio_1401,Arévalo González,140103
+parroquia_140104,territorial_pd.municipio_1401,Capaya,140104
+parroquia_140105,territorial_pd.municipio_1401,Panaquire,140105
+parroquia_140106,territorial_pd.municipio_1401,Ribas,140106
+parroquia_140107,territorial_pd.municipio_1401,El Café,140107
+parroquia_140108,territorial_pd.municipio_1401,Marizapa,140108
+parroquia_140201,territorial_pd.municipio_1402,Higuerote,140201
+parroquia_140202,territorial_pd.municipio_1402,Curiepe,140202
+parroquia_140203,territorial_pd.municipio_1402,Tacarigua,140203
+parroquia_140301,territorial_pd.municipio_1403,Los Teques,140301
+parroquia_140302,territorial_pd.municipio_1403,Cecilio Acosta,140302
+parroquia_140303,territorial_pd.municipio_1403,Paracotos,140303
+parroquia_140304,territorial_pd.municipio_1403,San Pedro,140304
+parroquia_140305,territorial_pd.municipio_1403,Tácata,140305
+parroquia_140306,territorial_pd.municipio_1403,El Jarillo,140306
+parroquia_140307,territorial_pd.municipio_1403,Altagracia De La Montaña,140307
+parroquia_140401,territorial_pd.municipio_1404,Santa Teresa Del Tuy,140401
+parroquia_140402,territorial_pd.municipio_1404,El Cartanal,140402
+parroquia_140501,territorial_pd.municipio_1405,Ocumare Del Tuy,140501
+parroquia_140502,territorial_pd.municipio_1405,La Democracia,140502
+parroquia_140503,territorial_pd.municipio_1405,Santa Bárbara,140503
+parroquia_140601,territorial_pd.municipio_1406,Río Chico,140601
+parroquia_140602,territorial_pd.municipio_1406,El Guapo,140602
+parroquia_140603,territorial_pd.municipio_1406,Tacarigua De La Laguna,140603
+parroquia_140604,territorial_pd.municipio_1406,Paparo,140604
+parroquia_140605,territorial_pd.municipio_1406,San Fernando Del Guapo,140605
+parroquia_140701,territorial_pd.municipio_1407,Santa Lucía,140701
+parroquia_140801,territorial_pd.municipio_1408,Guarenas,140801
+parroquia_140901,territorial_pd.municipio_1409,Petare,140901
+parroquia_140902,territorial_pd.municipio_1409,Leoncio Martínez,140902
+parroquia_140903,territorial_pd.municipio_1409,Caucagüita,140903
+parroquia_140904,territorial_pd.municipio_1409,Fila De Mariches,140904
+parroquia_140905,territorial_pd.municipio_1409,La Dolorita,140905
+parroquia_141001,territorial_pd.municipio_1410,Cúa,141001
+parroquia_141002,territorial_pd.municipio_1410,Nueva Cúa,141002
+parroquia_141101,territorial_pd.municipio_1411,Guatire,141101
+parroquia_141102,territorial_pd.municipio_1411,Bolívar,141102
+parroquia_141201,territorial_pd.municipio_1412,Charallave,141201
+parroquia_141202,territorial_pd.municipio_1412,Las Brisas,141202
+parroquia_141301,territorial_pd.municipio_1413,San Antonio De Los Altos,141301
+parroquia_141401,territorial_pd.municipio_1414,San José De Barlovento,141401
+parroquia_141402,territorial_pd.municipio_1414,Cumbo,141402
+parroquia_141501,territorial_pd.municipio_1415,San Francisco De Yare,141501
+parroquia_141502,territorial_pd.municipio_1415,San Antonio De Yare,141502
+parroquia_141601,territorial_pd.municipio_1416,Baruta,141601
+parroquia_141602,territorial_pd.municipio_1416,El Cafetal,141602
+parroquia_141603,territorial_pd.municipio_1416,Las Minas De Baruta,141603
+parroquia_141701,territorial_pd.municipio_1417,Carrizal,141701
+parroquia_141801,territorial_pd.municipio_1418,Chacao,141801
+parroquia_141901,territorial_pd.municipio_1419,El Hatillo,141901
+parroquia_142001,territorial_pd.municipio_1420,Mamporal,142001
+parroquia_142101,territorial_pd.municipio_1421,Cúpira,142101
+parroquia_142102,territorial_pd.municipio_1421,Machurucuto,142102
+parroquia_150101,territorial_pd.municipio_1501,San Antonio,150101
+parroquia_150102,territorial_pd.municipio_1501,San Francisco,150102
+parroquia_150201,territorial_pd.municipio_1502,Bolívar,150201
+parroquia_150301,territorial_pd.municipio_1503,Caripe,150301
+parroquia_150302,territorial_pd.municipio_1503,Teresén,150302
+parroquia_150303,territorial_pd.municipio_1503,El Guácharo,150303
+parroquia_150304,territorial_pd.municipio_1503,San Agustín,150304
+parroquia_150305,territorial_pd.municipio_1503,La Guanota,150305
+parroquia_150306,territorial_pd.municipio_1503,Sabana De Piedra,150306
+parroquia_150401,territorial_pd.municipio_1504,Capital Cedeño,150401
+parroquia_150402,territorial_pd.municipio_1504,Areo,150402
+parroquia_150403,territorial_pd.municipio_1504,San Félix,150403
+parroquia_150404,territorial_pd.municipio_1504,Viento Fresco,150404
+parroquia_150501,territorial_pd.municipio_1505,Ezequiel Zamora,150501
+parroquia_150502,territorial_pd.municipio_1505,El Tejero,150502
+parroquia_150601,territorial_pd.municipio_1506,Libertador,150601
+parroquia_150602,territorial_pd.municipio_1506,Tabasca,150602
+parroquia_150603,territorial_pd.municipio_1506,Las Alhuacas,150603
+parroquia_150604,territorial_pd.municipio_1506,Chaguaramas,150604
+parroquia_150701,territorial_pd.municipio_1507,El Furrial,150701
+parroquia_150702,territorial_pd.municipio_1507,Jusepín,150702
+parroquia_150703,territorial_pd.municipio_1507,El Corozo,150703
+parroquia_150704,territorial_pd.municipio_1507,San Vicente,150704
+parroquia_150705,territorial_pd.municipio_1507,La Pica,150705
+parroquia_150706,territorial_pd.municipio_1507,Alto De Los Godos,150706
+parroquia_150707,territorial_pd.municipio_1507,Boquerón,150707
+parroquia_150708,territorial_pd.municipio_1507,Las Cocuizas,150708
+parroquia_150709,territorial_pd.municipio_1507,Santa Cruz,150709
+parroquia_150710,territorial_pd.municipio_1507,San Simón,150710
+parroquia_150801,territorial_pd.municipio_1508,Capital Piar,150801
+parroquia_150802,territorial_pd.municipio_1508,Chaguaramal,150802
+parroquia_150803,territorial_pd.municipio_1508,Guanaguana,150803
+parroquia_150804,territorial_pd.municipio_1508,Aparicio,150804
+parroquia_150805,territorial_pd.municipio_1508,Taguaya,150805
+parroquia_150806,territorial_pd.municipio_1508,El Pinto,150806
+parroquia_150807,territorial_pd.municipio_1508,La Toscana,150807
+parroquia_150901,territorial_pd.municipio_1509,Capital Punceres,150901
+parroquia_150902,territorial_pd.municipio_1509,Cachipo,150902
+parroquia_151001,territorial_pd.municipio_1510,Capital Sotillo,151001
+parroquia_151002,territorial_pd.municipio_1510,Los Barrancos De Fajardo,151002
+parroquia_151101,territorial_pd.municipio_1511,Aguasay,151101
+parroquia_151201,territorial_pd.municipio_1512,Santa Bárbara,151201
+parroquia_151301,territorial_pd.municipio_1513,Uracoa,151301
+parroquia_160101,territorial_pd.municipio_1601,Arismendi,160101
+parroquia_160201,territorial_pd.municipio_1602,Díaz,160201
+parroquia_160202,territorial_pd.municipio_1602,Zabala,160202
+parroquia_160301,territorial_pd.municipio_1603,Capital Gómez,160301
+parroquia_160302,territorial_pd.municipio_1603,Guevara,160302
+parroquia_160303,territorial_pd.municipio_1603,Matasiete,160303
+parroquia_160304,territorial_pd.municipio_1603,Bolívar,160304
+parroquia_160305,territorial_pd.municipio_1603,Sucre,160305
+parroquia_160401,territorial_pd.municipio_1604,Maneiro,160401
+parroquia_160402,territorial_pd.municipio_1604,Aguirre,160402
+parroquia_160501,territorial_pd.municipio_1605,Marcano,160501
+parroquia_160502,territorial_pd.municipio_1605,Adrián,160502
+parroquia_160601,territorial_pd.municipio_1606,Mariño,160601
+parroquia_160701,territorial_pd.municipio_1607,Península De Macanao,160701
+parroquia_160702,territorial_pd.municipio_1607,San Francisco,160702
+parroquia_160801,territorial_pd.municipio_1608,Villalba,160801
+parroquia_160802,territorial_pd.municipio_1608,Vicente Fuentes,160802
+parroquia_160901,territorial_pd.municipio_1609,Tubores,160901
+parroquia_160902,territorial_pd.municipio_1609,Los Barales,160902
+parroquia_161001,territorial_pd.municipio_1610,Antolín Del Campo,161001
+parroquia_161101,territorial_pd.municipio_1611,García,161101
+parroquia_161102,territorial_pd.municipio_1611,Francisco Fajardo,161102
+parroquia_170101,territorial_pd.municipio_1701,Araure,170101
+parroquia_170102,territorial_pd.municipio_1701,Río Acarigua,170102
+parroquia_170201,territorial_pd.municipio_1702,Esteller,170201
+parroquia_170202,territorial_pd.municipio_1702,Uveral,170202
+parroquia_170301,territorial_pd.municipio_1703,Guanare,170301
+parroquia_170302,territorial_pd.municipio_1703,Córdoba,170302
+parroquia_170303,territorial_pd.municipio_1703,San Juan De Guanaguanare,170303
+parroquia_170304,territorial_pd.municipio_1703,Virgen De La Coromoto,170304
+parroquia_170305,territorial_pd.municipio_1703,San José De La Montaña,170305
+parroquia_170401,territorial_pd.municipio_1704,Guanarito,170401
+parroquia_170402,territorial_pd.municipio_1704,Trinidad De La Capilla,170402
+parroquia_170403,territorial_pd.municipio_1704,Divina Pastora,170403
+parroquia_170501,territorial_pd.municipio_1705,Ospino,170501
+parroquia_170502,territorial_pd.municipio_1705,Aparición,170502
+parroquia_170503,territorial_pd.municipio_1705,La Estación,170503
+parroquia_170601,territorial_pd.municipio_1706,Páez,170601
+parroquia_170602,territorial_pd.municipio_1706,Payara,170602
+parroquia_170603,territorial_pd.municipio_1706,Pimpinela,170603
+parroquia_170604,territorial_pd.municipio_1706,Ramón Peraza,170604
+parroquia_170701,territorial_pd.municipio_1707,Sucre,170701
+parroquia_170702,territorial_pd.municipio_1707,Concepción,170702
+parroquia_170703,territorial_pd.municipio_1707,San Rafael De Palo Alzado,170703
+parroquia_170704,territorial_pd.municipio_1707,Uvencio Antonio Velásquez,170704
+parroquia_170705,territorial_pd.municipio_1707,San José De Saguaz,170705
+parroquia_170706,territorial_pd.municipio_1707,Villa Rosa,170706
+parroquia_170801,territorial_pd.municipio_1708,Turén,170801
+parroquia_170802,territorial_pd.municipio_1708,Canelones,170802
+parroquia_170803,territorial_pd.municipio_1708,Santa Cruz,170803
+parroquia_170804,territorial_pd.municipio_1708,San Isidro Labrador,170804
+parroquia_170901,territorial_pd.municipio_1709,Monseñor José Vicente De Unda,170901
+parroquia_170902,territorial_pd.municipio_1709,Peña Blanca,170902
+parroquia_171001,territorial_pd.municipio_1710,Agua Blanca,171001
+parroquia_171101,territorial_pd.municipio_1711,Papelón,171101
+parroquia_171102,territorial_pd.municipio_1711,Caño Delgadito,171102
+parroquia_171201,territorial_pd.municipio_1712,San Genaro De Boconoito,171201
+parroquia_171202,territorial_pd.municipio_1712,Antolín Tovar,171202
+parroquia_171301,territorial_pd.municipio_1713,San Rafael De Onoto,171301
+parroquia_171302,territorial_pd.municipio_1713,Santa Fe,171302
+parroquia_171303,territorial_pd.municipio_1713,Thermo Morles,171303
+parroquia_171401,territorial_pd.municipio_1714,Santa Rosalía,171401
+parroquia_171402,territorial_pd.municipio_1714,Florida,171402
+parroquia_180101,territorial_pd.municipio_1801,Río Caribe,180101
+parroquia_180102,territorial_pd.municipio_1801,San Juan De Las Galdonas,180102
+parroquia_180103,territorial_pd.municipio_1801,Puerto Santo,180103
+parroquia_180104,territorial_pd.municipio_1801,El Morro De Puerto Santo,180104
+parroquia_180105,territorial_pd.municipio_1801,Antonio José De Sucre,180105
+parroquia_180201,territorial_pd.municipio_1802,El Pilar,180201
+parroquia_180202,territorial_pd.municipio_1802,El Rincón,180202
+parroquia_180203,territorial_pd.municipio_1802,Guaraúnos,180203
+parroquia_180204,territorial_pd.municipio_1802,Tunapuicito,180204
+parroquia_180205,territorial_pd.municipio_1802,Unión,180205
+parroquia_180206,territorial_pd.municipio_1802,General Francisco Antonio Vásquez,180206
+parroquia_180301,territorial_pd.municipio_1803,Santa Catalina,180301
+parroquia_180302,territorial_pd.municipio_1803,Santa Rosa,180302
+parroquia_180303,territorial_pd.municipio_1803,Santa Teresa,180303
+parroquia_180304,territorial_pd.municipio_1803,Bolívar,180304
+parroquia_180305,territorial_pd.municipio_1803,Macarapana,180305
+parroquia_180401,territorial_pd.municipio_1804,Yaguaraparo,180401
+parroquia_180402,territorial_pd.municipio_1804,Libertad,180402
+parroquia_180403,territorial_pd.municipio_1804,El Paujil,180403
+parroquia_180501,territorial_pd.municipio_1805,Irapa,180501
+parroquia_180502,territorial_pd.municipio_1805,Campo Claro,180502
+parroquia_180503,territorial_pd.municipio_1805,Soro,180503
+parroquia_180504,territorial_pd.municipio_1805,San Antonio De Irapa,180504
+parroquia_180505,territorial_pd.municipio_1805,Marabal,180505
+parroquia_180601,territorial_pd.municipio_1806,Capital Mejía,180601
+parroquia_180701,territorial_pd.municipio_1807,Cumanacoa,180701
+parroquia_180702,territorial_pd.municipio_1807,Arenas,180702
+parroquia_180703,territorial_pd.municipio_1807,Aricagua,180703
+parroquia_180704,territorial_pd.municipio_1807,Cocollar,180704
+parroquia_180705,territorial_pd.municipio_1807,San Fernando,180705
+parroquia_180706,territorial_pd.municipio_1807,San Lorenzo,180706
+parroquia_180801,territorial_pd.municipio_1808,Villa Frontado (Muelle De Cariaco),180801
+parroquia_180802,territorial_pd.municipio_1808,Catuaro,180802
+parroquia_180803,territorial_pd.municipio_1808,Rendón,180803
+parroquia_180804,territorial_pd.municipio_1808,Santa Cruz,180804
+parroquia_180805,territorial_pd.municipio_1808,Santa María,180805
+parroquia_180901,territorial_pd.municipio_1809,Altagracia,180901
+parroquia_180902,territorial_pd.municipio_1809,Ayacucho,180902
+parroquia_180903,territorial_pd.municipio_1809,Santa Inés,180903
+parroquia_180904,territorial_pd.municipio_1809,Valentín Valiente,180904
+parroquia_180905,territorial_pd.municipio_1809,San Juan,180905
+parroquia_180906,territorial_pd.municipio_1809,Santa Fe,180906
+parroquia_180907,territorial_pd.municipio_1809,Raúl Leoni,180907
+parroquia_181001,territorial_pd.municipio_1810,Güiria,181001
+parroquia_181002,territorial_pd.municipio_1810,Cristóbal Colón,181002
+parroquia_181003,territorial_pd.municipio_1810,Punta De Piedras,181003
+parroquia_181004,territorial_pd.municipio_1810,Bideau,181004
+parroquia_181101,territorial_pd.municipio_1811,Mariño,181101
+parroquia_181102,territorial_pd.municipio_1811,Rómulo Gallegos,181102
+parroquia_181201,territorial_pd.municipio_1812,Tunapuy,181201
+parroquia_181202,territorial_pd.municipio_1812,Campo Elías,181202
+parroquia_181301,territorial_pd.municipio_1813,San José De Aerocuar,181301
+parroquia_181302,territorial_pd.municipio_1813,Tavera Acosta,181302
+parroquia_181401,territorial_pd.municipio_1814,Capital Bolívar,181401
+parroquia_181501,territorial_pd.municipio_1815,Araya,181501
+parroquia_181502,territorial_pd.municipio_1815,Manicuare,181502
+parroquia_181503,territorial_pd.municipio_1815,Chacopata,181503
+parroquia_190101,territorial_pd.municipio_1901,Ayacucho,190101
+parroquia_190102,territorial_pd.municipio_1901,Rivas Berti,190102
+parroquia_190103,territorial_pd.municipio_1901,San Pedro Del Río,190103
+parroquia_190201,territorial_pd.municipio_1902,Bolívar,190201
+parroquia_190202,territorial_pd.municipio_1902,Palotal,190202
+parroquia_190203,territorial_pd.municipio_1902,Juan Vicente Gómez,190203
+parroquia_190204,territorial_pd.municipio_1902,Isaías Medina Angarita,190204
+parroquia_190302,territorial_pd.municipio_1903,Juan Germán Roscio,190302
+parroquia_190301,territorial_pd.municipio_1903,Independencia,190301
+parroquia_190303,territorial_pd.municipio_1903,Román Cárdenas,190303
+parroquia_190401,territorial_pd.municipio_1904,Cárdenas,190401
+parroquia_190402,territorial_pd.municipio_1904,La Florida,190402
+parroquia_190403,territorial_pd.municipio_1904,Amenodoro Rangel Lamús,190403
+parroquia_190501,territorial_pd.municipio_1905,Jáuregui,190501
+parroquia_190502,territorial_pd.municipio_1905,Emilio Constantino Guerrero,190502
+parroquia_190503,territorial_pd.municipio_1905,Monseñor Miguel Antonio Salas,190503
+parroquia_190601,territorial_pd.municipio_1906,Junín,190601
+parroquia_190602,territorial_pd.municipio_1906,Bramón,190602
+parroquia_190603,territorial_pd.municipio_1906,La Petrólia,190603
+parroquia_190604,territorial_pd.municipio_1906,Quinimarí,190604
+parroquia_190701,territorial_pd.municipio_1907,Lobatera,190701
+parroquia_190702,territorial_pd.municipio_1907,Constitución,190702
+parroquia_190801,territorial_pd.municipio_1908,La Concordia,190801
+parroquia_190802,territorial_pd.municipio_1908,Pedro María Morantes,190802
+parroquia_190803,territorial_pd.municipio_1908,San Juan Bautista,190803
+parroquia_190804,territorial_pd.municipio_1908,San Sebastián,190804
+parroquia_190805,territorial_pd.municipio_1908,Dr. Francisco Romero Lobo,190805
+parroquia_190901,territorial_pd.municipio_1909,Capital Uribante,190901
+parroquia_190902,territorial_pd.municipio_1909,Cárdenas,190902
+parroquia_190903,territorial_pd.municipio_1909,Potosí,190903
+parroquia_190904,territorial_pd.municipio_1909,Juan Pablo Peñaloza,190904
+parroquia_191001,territorial_pd.municipio_1910,Córdoba,191001
+parroquia_191101,territorial_pd.municipio_1911,García De Hevia,191101
+parroquia_191102,territorial_pd.municipio_1911,Boca De Grita,191102
+parroquia_191103,territorial_pd.municipio_1911,José Antonio Páez,191103
+parroquia_191201,territorial_pd.municipio_1912,Guásimos,191201
+parroquia_191301,territorial_pd.municipio_1913,Michelena,191301
+parroquia_191401,territorial_pd.municipio_1914,Libertador,191401
+parroquia_191402,territorial_pd.municipio_1914,San Joaquín De Navay,191402
+parroquia_191403,territorial_pd.municipio_1914,Doradas,191403
+parroquia_191404,territorial_pd.municipio_1914,Emeterio Ochoa,191404
+parroquia_191501,territorial_pd.municipio_1915,Panamericano,191501
+parroquia_191502,territorial_pd.municipio_1915,La Palmita,191502
+parroquia_191601,territorial_pd.municipio_1916,Pedro María Ureña,191601
+parroquia_191602,territorial_pd.municipio_1916,Nueva Arcadia,191602
+parroquia_191701,territorial_pd.municipio_1917,Sucre,191701
+parroquia_191702,territorial_pd.municipio_1917,San Pablo,191702
+parroquia_191703,territorial_pd.municipio_1917,Eleazar López Contreras,191703
+parroquia_191801,territorial_pd.municipio_1918,Andrés Bello,191801
+parroquia_191901,territorial_pd.municipio_1919,Fernández Feo,191901
+parroquia_191902,territorial_pd.municipio_1919,Santo Domingo,191902
+parroquia_191903,territorial_pd.municipio_1919,Alberto Adriani,191903
+parroquia_192001,territorial_pd.municipio_1920,Libertad,192001
+parroquia_192002,territorial_pd.municipio_1920,Cipriano Castro,192002
+parroquia_192003,territorial_pd.municipio_1920,Manuel Felipe Rugeles,192003
+parroquia_192101,territorial_pd.municipio_1921,Samuel Darío Maldonado,192101
+parroquia_192102,territorial_pd.municipio_1921,Boconó,192102
+parroquia_192103,territorial_pd.municipio_1921,Hernández,192103
+parroquia_192201,territorial_pd.municipio_1922,Seboruco,192201
+parroquia_192301,territorial_pd.municipio_1923,Antonio Rómulo Costa,192301
+parroquia_192401,territorial_pd.municipio_1924,Francisco De Miranda,192401
+parroquia_192501,territorial_pd.municipio_1925,José María Vargas,192501
+parroquia_192601,territorial_pd.municipio_1926,Rafael Urdaneta,192601
+parroquia_192701,territorial_pd.municipio_1927,Simón Rodríguez,192701
+parroquia_192801,territorial_pd.municipio_1928,Torbes,192801
+parroquia_192901,territorial_pd.municipio_1929,San Judas Tadeo,192901
+parroquia_200101,territorial_pd.municipio_2001,Betijoque,200101
+parroquia_200102,territorial_pd.municipio_2001,José Gregorio Hernández,200102
+parroquia_200103,territorial_pd.municipio_2001,La Pueblita,200103
+parroquia_200104,territorial_pd.municipio_2001,Los Cedros,200104
+parroquia_200201,territorial_pd.municipio_2002,Boconó,200201
+parroquia_200202,territorial_pd.municipio_2002,El Carmen,200202
+parroquia_200203,territorial_pd.municipio_2002,Mosquey,200203
+parroquia_200204,territorial_pd.municipio_2002,Ayacucho,200204
+parroquia_200205,territorial_pd.municipio_2002,Burbusay,200205
+parroquia_200206,territorial_pd.municipio_2002,General Rivas,200206
+parroquia_200207,territorial_pd.municipio_2002,Monseñor Jáuregui,200207
+parroquia_200208,territorial_pd.municipio_2002,Rafael Rangel,200208
+parroquia_200209,territorial_pd.municipio_2002,San José,200209
+parroquia_200210,territorial_pd.municipio_2002,San Miguel,200210
+parroquia_200211,territorial_pd.municipio_2002,Guaramacal,200211
+parroquia_200212,territorial_pd.municipio_2002,Vega De Guaramacal,200212
+parroquia_200301,territorial_pd.municipio_2003,Carache,200301
+parroquia_200302,territorial_pd.municipio_2003,La Concepción,200302
+parroquia_200303,territorial_pd.municipio_2003,Cuicas,200303
+parroquia_200304,territorial_pd.municipio_2003,Panamericana,200304
+parroquia_200305,territorial_pd.municipio_2003,Santa Cruz,200305
+parroquia_200401,territorial_pd.municipio_2004,Escuque,200401
+parroquia_200402,territorial_pd.municipio_2004,Sabana Libre,200402
+parroquia_200403,territorial_pd.municipio_2004,La Unión,200403
+parroquia_200404,territorial_pd.municipio_2004,Santa Rita,200404
+parroquia_200501,territorial_pd.municipio_2005,Cristóbal Mendoza,200501
+parroquia_200502,territorial_pd.municipio_2005,Chiquinquirá,200502
+parroquia_200503,territorial_pd.municipio_2005,Matriz,200503
+parroquia_200504,territorial_pd.municipio_2005,Monseñor Carrillo,200504
+parroquia_200505,territorial_pd.municipio_2005,Cruz Carrillo,200505
+parroquia_200506,territorial_pd.municipio_2005,Andrés Linares,200506
+parroquia_200507,territorial_pd.municipio_2005,Tres Esquinas,200507
+parroquia_200601,territorial_pd.municipio_2006,La Quebrada,200601
+parroquia_200602,territorial_pd.municipio_2006,Jajó,200602
+parroquia_200603,territorial_pd.municipio_2006,La Mesa,200603
+parroquia_200604,territorial_pd.municipio_2006,Santiago,200604
+parroquia_200605,territorial_pd.municipio_2006,Cabimbú,200605
+parroquia_200606,territorial_pd.municipio_2006,Tuñame,200606
+parroquia_200701,territorial_pd.municipio_2007,Mercedes Díaz,200701
+parroquia_200702,territorial_pd.municipio_2007,Juan Ignacio Montilla,200702
+parroquia_200703,territorial_pd.municipio_2007,La Beatriz,200703
+parroquia_200704,territorial_pd.municipio_2007,Mendoza,200704
+parroquia_200705,territorial_pd.municipio_2007,La Puerta,200705
+parroquia_200706,territorial_pd.municipio_2007,San Luis,200706
+parroquia_200801,territorial_pd.municipio_2008,Chejendé,200801
+parroquia_200802,territorial_pd.municipio_2008,Carrillo,200802
+parroquia_200803,territorial_pd.municipio_2008,Cegarra,200803
+parroquia_200804,territorial_pd.municipio_2008,Bolivia,200804
+parroquia_200805,territorial_pd.municipio_2008,Manuel Salvador Ulloa,200805
+parroquia_200806,territorial_pd.municipio_2008,San José,200806
+parroquia_200807,territorial_pd.municipio_2008,Arnoldo Gabaldón,200807
+parroquia_200901,territorial_pd.municipio_2009,El Dividive,200901
+parroquia_200902,territorial_pd.municipio_2009,Agua Caliente,200902
+parroquia_200903,territorial_pd.municipio_2009,El Cenizo,200903
+parroquia_200904,territorial_pd.municipio_2009,Agua Santa,200904
+parroquia_200905,territorial_pd.municipio_2009,Valerita,200905
+parroquia_201001,territorial_pd.municipio_2010,Monte Carmelo,201001
+parroquia_201002,territorial_pd.municipio_2010,Buena Vista,201002
+parroquia_201003,territorial_pd.municipio_2010,Santa María Del Horcón,201003
+parroquia_201101,territorial_pd.municipio_2011,Motatán,201101
+parroquia_201102,territorial_pd.municipio_2011,El Baño,201102
+parroquia_201103,territorial_pd.municipio_2011,Jalisco,201103
+parroquia_201201,territorial_pd.municipio_2012,Pampán,201201
+parroquia_201202,territorial_pd.municipio_2012,Santa Ana,201202
+parroquia_201203,territorial_pd.municipio_2012,La Paz,201203
+parroquia_201204,territorial_pd.municipio_2012,Flor De Patria,201204
+parroquia_201301,territorial_pd.municipio_2013,Carvajal,201301
+parroquia_201302,territorial_pd.municipio_2013,Antonio Nicolás Briceño,201302
+parroquia_201303,territorial_pd.municipio_2013,Campo Alegre,201303
+parroquia_201304,territorial_pd.municipio_2013,José Leonardo Suárez,201304
+parroquia_201401,territorial_pd.municipio_2014,Sabana De Mendoza,201401
+parroquia_201402,territorial_pd.municipio_2014,Junín,201402
+parroquia_201403,territorial_pd.municipio_2014,Valmore Rodríguez,201403
+parroquia_201404,territorial_pd.municipio_2014,El Paraíso,201404
+parroquia_201501,territorial_pd.municipio_2015,Santa Isabel,201501
+parroquia_201502,territorial_pd.municipio_2015,Araguaney,201502
+parroquia_201503,territorial_pd.municipio_2015,El Jagüito,201503
+parroquia_201504,territorial_pd.municipio_2015,La Esperanza,201504
+parroquia_201601,territorial_pd.municipio_2016,Sabana Grande,201601
+parroquia_201602,territorial_pd.municipio_2016,Cheregüé,201602
+parroquia_201603,territorial_pd.municipio_2016,Granados,201603
+parroquia_201701,territorial_pd.municipio_2017,El Socorro,201701
+parroquia_201702,territorial_pd.municipio_2017,Los Caprichos,201702
+parroquia_201703,territorial_pd.municipio_2017,Antonio José De Sucre,201703
+parroquia_201801,territorial_pd.municipio_2018,Campo Elías,201801
+parroquia_201802,territorial_pd.municipio_2018,Arnoldo Gabaldón,201802
+parroquia_201901,territorial_pd.municipio_2019,Santa Apolonia,201901
+parroquia_201902,territorial_pd.municipio_2019,La Ceiba,201902
+parroquia_201903,territorial_pd.municipio_2019,El Progreso,201903
+parroquia_201904,territorial_pd.municipio_2019,Tres De Febrero,201904
+parroquia_202001,territorial_pd.municipio_2020,Pampanito,202001
+parroquia_202002,territorial_pd.municipio_2020,Pampanito Ii,202002
+parroquia_202003,territorial_pd.municipio_2020,La Concepción,202003
+parroquia_210101,territorial_pd.municipio_2101,Bolívar,210101
+parroquia_210201,territorial_pd.municipio_2102,Bruzual,210201
+parroquia_210202,territorial_pd.municipio_2102,Campo Elías,210202
+parroquia_210301,territorial_pd.municipio_2103,Nirgua,210301
+parroquia_210302,territorial_pd.municipio_2103,Salom,210302
+parroquia_210303,territorial_pd.municipio_2103,Temerla,210303
+parroquia_210401,territorial_pd.municipio_2104,San Felipe,210401
+parroquia_210402,territorial_pd.municipio_2104,Albarico,210402
+parroquia_210403,territorial_pd.municipio_2104,San Javier,210403
+parroquia_210501,territorial_pd.municipio_2105,Sucre,210501
+parroquia_210601,territorial_pd.municipio_2106,Urachiche,210601
+parroquia_210701,territorial_pd.municipio_2107,Peña,210701
+parroquia_210702,territorial_pd.municipio_2107,San Andrés,210702
+parroquia_210801,territorial_pd.municipio_2108,José Antonio Páez,210801
+parroquia_210901,territorial_pd.municipio_2109,La Trinidad,210901
+parroquia_211001,territorial_pd.municipio_2110,Cocorote,211001
+parroquia_211101,territorial_pd.municipio_2111,Independencia,211101
+parroquia_211201,territorial_pd.municipio_2112,Arístides Bastidas,211201
+parroquia_211301,territorial_pd.municipio_2113,Manuel Monge,211301
+parroquia_211401,territorial_pd.municipio_2114,Veroes,211401
+parroquia_211402,territorial_pd.municipio_2114,El Guayabo,211402
+parroquia_220101,territorial_pd.municipio_2201,General Urdaneta,220101
+parroquia_220102,territorial_pd.municipio_2201,Libertador,220102
+parroquia_220103,territorial_pd.municipio_2201,Manuel Guanipa Matos,220103
+parroquia_220104,territorial_pd.municipio_2201,Marcelino Briceño,220104
+parroquia_220105,territorial_pd.municipio_2201,San Timoteo,220105
+parroquia_220106,territorial_pd.municipio_2201,Pueblo Nuevo,220106
+parroquia_220201,territorial_pd.municipio_2202,Pedro Lucas Urribarri,220201
+parroquia_220202,territorial_pd.municipio_2202,Santa Rita,220202
+parroquia_220203,territorial_pd.municipio_2202,José Cenovio Urribarri,220203
+parroquia_220204,territorial_pd.municipio_2202,El Mene,220204
+parroquia_220301,territorial_pd.municipio_2203,Santa Cruz Del Zulia,220301
+parroquia_220302,territorial_pd.municipio_2203,Urribarri,220302
+parroquia_220303,territorial_pd.municipio_2203,Moralito,220303
+parroquia_220304,territorial_pd.municipio_2203,San Carlos Del Zulia,220304
+parroquia_220305,territorial_pd.municipio_2203,Santa Bárbara,220305
+parroquia_220401,territorial_pd.municipio_2204,Luis De Vicente,220401
+parroquia_220402,territorial_pd.municipio_2204,Ricaurte,220402
+parroquia_220403,territorial_pd.municipio_2204,Monseñor Marcos Sergio Godoy,220403
+parroquia_220404,territorial_pd.municipio_2204,San Rafael,220404
+parroquia_220405,territorial_pd.municipio_2204,Las Parcelas,220405
+parroquia_220406,territorial_pd.municipio_2204,Tamare,220406
+parroquia_220407,territorial_pd.municipio_2204,La Sierrita,220407
+parroquia_220501,territorial_pd.municipio_2205,Bolívar,220501
+parroquia_220502,territorial_pd.municipio_2205,Coquivacoa,220502
+parroquia_220503,territorial_pd.municipio_2205,Cristo De Aranza,220503
+parroquia_220504,territorial_pd.municipio_2205,Chiquinquirá,220504
+parroquia_220505,territorial_pd.municipio_2205,Santa Lucía,220505
+parroquia_220506,territorial_pd.municipio_2205,Olegario Villalobos,220506
+parroquia_220507,territorial_pd.municipio_2205,Juana De Avila,220507
+parroquia_220508,territorial_pd.municipio_2205,Caracciolo Parra Pérez,220508
+parroquia_220509,territorial_pd.municipio_2205,Idelfonso Vásquez,220509
+parroquia_220510,territorial_pd.municipio_2205,Cacique Mara,220510
+parroquia_220511,territorial_pd.municipio_2205,Cecilio Acosta,220511
+parroquia_220512,territorial_pd.municipio_2205,Raúl Leoni,220512
+parroquia_220513,territorial_pd.municipio_2205,Francisco Eugenio Bustamante,220513
+parroquia_220514,territorial_pd.municipio_2205,Manuel Dagnino,220514
+parroquia_220515,territorial_pd.municipio_2205,Luis Hurtado Higuera,220515
+parroquia_220516,territorial_pd.municipio_2205,Venancio Pulgar,220516
+parroquia_220517,territorial_pd.municipio_2205,Antonio Borjas Romero,220517
+parroquia_220518,territorial_pd.municipio_2205,San Isidro,220518
+parroquia_220601,territorial_pd.municipio_2206,Faría,220601
+parroquia_220602,territorial_pd.municipio_2206,San Antonio,220602
+parroquia_220603,territorial_pd.municipio_2206,Ana María Campos,220603
+parroquia_220604,territorial_pd.municipio_2206,San José,220604
+parroquia_220605,territorial_pd.municipio_2206,Altagracia,220605
+parroquia_220701,territorial_pd.municipio_2207,Guajira,220701
+parroquia_220702,territorial_pd.municipio_2207,Elías Sánchez Rubio,220702
+parroquia_220703,territorial_pd.municipio_2207,Sinamaica,220703
+parroquia_220704,territorial_pd.municipio_2207,Alta Guajira,220704
+parroquia_220801,territorial_pd.municipio_2208,San José De Perijá,220801
+parroquia_220802,territorial_pd.municipio_2208,Bartolomé De Las Casas,220802
+parroquia_220803,territorial_pd.municipio_2208,Libertad,220803
+parroquia_220804,territorial_pd.municipio_2208,Río Negro,220804
+parroquia_220901,territorial_pd.municipio_2209,Gibraltar,220901
+parroquia_220902,territorial_pd.municipio_2209,Heras,220902
+parroquia_220903,territorial_pd.municipio_2209,Monseñor Arturo Celestino Alvarez,220903
+parroquia_220904,territorial_pd.municipio_2209,Rómulo Gallegos,220904
+parroquia_220905,territorial_pd.municipio_2209,Bobures,220905
+parroquia_220906,territorial_pd.municipio_2209,El Batey,220906
+parroquia_221001,territorial_pd.municipio_2210,Andrés Bello,221001
+parroquia_221002,territorial_pd.municipio_2210,Potreritos,221002
+parroquia_221003,territorial_pd.municipio_2210,El Carmelo,221003
+parroquia_221004,territorial_pd.municipio_2210,Chiquinquirá,221004
+parroquia_221005,territorial_pd.municipio_2210,Concepción,221005
+parroquia_221101,territorial_pd.municipio_2211,Eleazar López Contreras,221101
+parroquia_221102,territorial_pd.municipio_2211,Alonso De Ojeda,221102
+parroquia_221103,territorial_pd.municipio_2211,Venezuela,221103
+parroquia_221104,territorial_pd.municipio_2211,Campo Lara,221104
+parroquia_221105,territorial_pd.municipio_2211,Libertad,221105
+parroquia_221201,territorial_pd.municipio_2212,Udón Pérez,221201
+parroquia_221202,territorial_pd.municipio_2212,Encontrados,221202
+parroquia_221301,territorial_pd.municipio_2213,Donaldo García,221301
+parroquia_221302,territorial_pd.municipio_2213,Sixto Zambrano,221302
+parroquia_221303,territorial_pd.municipio_2213,El Rosario,221303
+parroquia_221401,territorial_pd.municipio_2214,Ambrosio,221401
+parroquia_221402,territorial_pd.municipio_2214,Germán Ríos Linares,221402
+parroquia_221403,territorial_pd.municipio_2214,Jorge Hernández,221403
+parroquia_221404,territorial_pd.municipio_2214,La Rosa,221404
+parroquia_221405,territorial_pd.municipio_2214,Punta Gorda,221405
+parroquia_221406,territorial_pd.municipio_2214,Carmen Herrera,221406
+parroquia_221407,territorial_pd.municipio_2214,San Benito,221407
+parroquia_221408,territorial_pd.municipio_2214,Rómulo Betancourt,221408
+parroquia_221409,territorial_pd.municipio_2214,Arístides Calvani,221409
+parroquia_221501,territorial_pd.municipio_2215,Raúl Cuenca,221501
+parroquia_221502,territorial_pd.municipio_2215,La Victoria,221502
+parroquia_221503,territorial_pd.municipio_2215,Rafael Urdaneta,221503
+parroquia_221601,territorial_pd.municipio_2216,José Ramón Yepes,221601
+parroquia_221602,territorial_pd.municipio_2216,La Concepción,221602
+parroquia_221603,territorial_pd.municipio_2216,San José,221603
+parroquia_221604,territorial_pd.municipio_2216,Mariano Parra León,221604
+parroquia_221701,territorial_pd.municipio_2217,Monagas,221701
+parroquia_221702,territorial_pd.municipio_2217,Isla De Toas,221702
+parroquia_221801,territorial_pd.municipio_2218,Marcial Hernández,221801
+parroquia_221802,territorial_pd.municipio_2218,Francisco Ochoa,221802
+parroquia_221803,territorial_pd.municipio_2218,San Francisco,221803
+parroquia_221804,territorial_pd.municipio_2218,El Bajo,221804
+parroquia_221805,territorial_pd.municipio_2218,Domitila Flores,221805
+parroquia_221806,territorial_pd.municipio_2218,Los Cortijos,221806
+parroquia_221901,territorial_pd.municipio_2219,Barí,221901
+parroquia_221902,territorial_pd.municipio_2219,Jesús María Semprún,221902
+parroquia_222001,territorial_pd.municipio_2220,Simón Rodríguez,222001
+parroquia_222002,territorial_pd.municipio_2220,Carlos Quevedo,222002
+parroquia_222003,territorial_pd.municipio_2220,Francisco Javier Pulgar,222003
+parroquia_222101,territorial_pd.municipio_2221,Rafael María Baralt,222101
+parroquia_222102,territorial_pd.municipio_2221,Manuel Manrique,222102
+parroquia_222103,territorial_pd.municipio_2221,Rafael Urdaneta,222103
+parroquia_230101,territorial_pd.municipio_2301,San José,230101
+parroquia_230102,territorial_pd.municipio_2301,Virgen Del Valle,230102
+parroquia_230103,territorial_pd.municipio_2301,San Rafael,230103
+parroquia_230104,territorial_pd.municipio_2301,José Vidal Marcano,230104
+parroquia_230105,territorial_pd.municipio_2301,Leonardo Ruíz Pineda,230105
+parroquia_230106,territorial_pd.municipio_2301,Monseñor Argimiro García,230106
+parroquia_230107,territorial_pd.municipio_2301,Mariscal Antonio José De Sucre,230107
+parroquia_230108,territorial_pd.municipio_2301,Juan Millán,230108
+parroquia_230201,territorial_pd.municipio_2302,Pedernales,230201
+parroquia_230202,territorial_pd.municipio_2302,Luis Beltrán Prieto Figueroa,230202
+parroquia_230301,territorial_pd.municipio_2303,Curiapo,230301
+parroquia_230302,territorial_pd.municipio_2303,Santos De Abelgas,230302
+parroquia_230303,territorial_pd.municipio_2303,Manuel Renaud,230303
+parroquia_230304,territorial_pd.municipio_2303,Padre Barral,230304
+parroquia_230305,territorial_pd.municipio_2303,Francisco Aniceto Lugo,230305
+parroquia_230306,territorial_pd.municipio_2303,Almirante Luis Brión,230306
+parroquia_230401,territorial_pd.municipio_2304,Imataca,230401
+parroquia_230402,territorial_pd.municipio_2304,Rómulo Gallegos,230402
+parroquia_230403,territorial_pd.municipio_2304,Juan Bautista Arismendi,230403
+parroquia_230404,territorial_pd.municipio_2304,Manuel Piar,230404
+parroquia_230405,territorial_pd.municipio_2304,Cinco De Julio,230405
+parroquia_240101,territorial_pd.municipio_2401,Caraballeda,240101
+parroquia_240102,territorial_pd.municipio_2401,Carayaca,240102
+parroquia_240103,territorial_pd.municipio_2401,Caruao,240103
+parroquia_240104,territorial_pd.municipio_2401,Catia La Mar,240104
+parroquia_240105,territorial_pd.municipio_2401,La Guaira,240105
+parroquia_240106,territorial_pd.municipio_2401,Macuto,240106
+parroquia_240107,territorial_pd.municipio_2401,Maiquetía,240107
+parroquia_240108,territorial_pd.municipio_2401,Naiguatá,240108
+parroquia_240109,territorial_pd.municipio_2401,El Junko,240109
+parroquia_240110,territorial_pd.municipio_2401,Urimare,240110
+parroquia_240111,territorial_pd.municipio_2401,Carlos Soublette,240111

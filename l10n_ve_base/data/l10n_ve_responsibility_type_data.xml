@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record model='l10n_ve.responsibility.type' id='res_IVAO'>
+        <field name='code'>1</field>
+        <field name='name'>Contribuyente Ordinario</field>
+        <field name='active' eval="True"/>
+    </record>
+    <record model='l10n_ve.responsibility.type' id='res_IVAF'>
+        <field name='code'>2</field>
+        <field name='name'>Contribuyente Formal</field>
+        <field name='active' eval="True"/>
+    </record>
+    <record model='l10n_ve.responsibility.type' id='res_IVAE'>
+        <field name='code'>3</field>
+        <field name='name'>Contribuyente Especial</field>
+        <field name='active' eval="True"/>
+    </record>
+</odoo>

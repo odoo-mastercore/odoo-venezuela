@@ -1,0 +1,341 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* account_payment_group_document
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 13.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-06-08 01:35+0000\n"
+"PO-Revision-Date: 2020-06-07 22:41-0300\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: \n"
+"Language: es_AR\n"
+"X-Generator: Poedit 2.2.1\n"
+
+#. module: account_payment_group_document
+#: code:addons/account_payment_group_document/models/account_chart_template.py:0
+#, python-format
+msgid "%s Customer Receipts"
+msgstr "%s Recibos de cliente"
+
+#. module: account_payment_group_document
+#: code:addons/account_payment_group_document/models/account_chart_template.py:0
+#, python-format
+msgid "%s Supplier Payments"
+msgstr "%s Pagos a proveedor"
+
+#. module: account_payment_group_document
+#: model_terms:ir.ui.view,arch_db:account_payment_group_document.view_account_payment_group_form
+msgid "- Next Number:"
+msgstr "- Próximo número:"
+
+#. module: account_payment_group_document
+#: model:ir.model,name:account_payment_group_document.model_account_chart_template
+msgid "Account Chart Template"
+msgstr "Plantilla de Plan de Cuentas"
+
+#. module: account_payment_group_document
+#: model:ir.model,name:account_payment_group_document.model_account_payment_receiptbook
+msgid "Account payment Receiptbook"
+msgstr "Talonario de Recibo"
+
+#. module: account_payment_group_document
+#: model:ir.model.fields,field_description:account_payment_group_document.field_account_payment_receiptbook__active
+msgid "Active"
+msgstr "Activo"
+
+#. module: account_payment_group_document
+#: model:ir.model.fields,field_description:account_payment_group_document.field_account_payment_receiptbook__next_number
+msgid "Actual Next Number"
+msgstr "Siguiente número "
+
+#. module: account_payment_group_document
+#: model:ir.model.fields,help:account_payment_group_document.field_l10n_latam_document_type__internal_type
+msgid ""
+"Analog to odoo account.move.type but with more options allowing to identify "
+"the kind of document we are working with. (not only related to account."
+"move, could be for documents of other models like stock.picking)"
+msgstr ""
+"Análogo a al campo Tipo en la factura pero con mas opciones permitiendo "
+"indentificar el tipo de documento con el que estamos trabajando (no solo "
+"relacionado a la factura, puede ser para documentos de otros modelos como "
+"los movimientos de inventario)."
+
+#. module: account_payment_group_document
+#: code:addons/account_payment_group_document/models/account_chart_template.py:0
+#: model:ir.model.fields.selection,name:account_payment_group_document.selection__account_payment_receiptbook__sequence_type__automatic
+#, python-format
+msgid "Automatic"
+msgstr "Automático"
+
+#. module: account_payment_group_document
+#: model:ir.model.fields,field_description:account_payment_group_document.field_account_payment_receiptbook__company_id
+msgid "Company"
+msgstr "Compañía"
+
+#. module: account_payment_group_document
+#: model:ir.model.fields,field_description:account_payment_group_document.field_l10n_latam_document_type__country_id
+msgid "Country"
+msgstr "País"
+
+#. module: account_payment_group_document
+#: model:ir.model.fields,help:account_payment_group_document.field_l10n_latam_document_type__country_id
+msgid "Country in which this type of document is valid"
+msgstr "País donde el tipo de documento es valido"
+
+#. module: account_payment_group_document
+#: model:ir.model.fields,field_description:account_payment_group_document.field_account_payment_receiptbook__create_uid
+msgid "Created by"
+msgstr "Creado por"
+
+#. module: account_payment_group_document
+#: model:ir.model.fields,field_description:account_payment_group_document.field_account_payment_receiptbook__create_date
+msgid "Created on"
+msgstr "Creado el"
+
+#. module: account_payment_group_document
+#: model:ir.actions.act_window,name:account_payment_group_document.action_account_payment_group_invoice_wizard
+msgid "Credit / Debit Note"
+msgstr "Nota de Débito / Crédito"
+
+#. module: account_payment_group_document
+#: model:ir.model.fields.selection,name:account_payment_group_document.selection__account_payment_receiptbook__partner_type__customer
+msgid "Customer"
+msgstr "Cliente"
+
+#. module: account_payment_group_document
+#: model:ir.model.fields.selection,name:account_payment_group_document.selection__l10n_latam_document_type__internal_type__customer_payment
+msgid "Customer Receipt"
+msgstr "Recibo de cliente"
+
+#. module: account_payment_group_document
+#: model:ir.model.fields,field_description:account_payment_group_document.field_account_payment_receiptbook__display_name
+msgid "Display Name"
+msgstr "Nombre a mostrar"
+
+#. module: account_payment_group_document
+#: model:ir.model.fields,field_description:account_payment_group_document.field_account_payment_group__document_number
+#: model:ir.model.fields,field_description:account_payment_group_document.field_account_payment_group_invoice_wizard__document_number
+msgid "Document Number"
+msgstr "Número de Documento"
+
+#. module: account_payment_group_document
+#: model:ir.model.fields,field_description:account_payment_group_document.field_account_payment_group__name
+msgid "Document Reference"
+msgstr "Referencia del Documento"
+
+#. module: account_payment_group_document
+#: model:ir.model.fields,field_description:account_payment_group_document.field_account_payment_group_invoice_wizard__document_sequence_id
+msgid "Document Sequence"
+msgstr "Secuencia del Documento"
+
+#. module: account_payment_group_document
+#: model:ir.model.fields,field_description:account_payment_group_document.field_account_payment_group__document_type_id
+#: model:ir.model.fields,field_description:account_payment_group_document.field_account_payment_group_invoice_wizard__journal_document_type_id
+#: model:ir.model.fields,field_description:account_payment_group_document.field_account_payment_receiptbook__document_type_id
+#: model_terms:ir.ui.view,arch_db:account_payment_group_document.view_account_payment_group_invoice_wizard
+msgid "Document Type"
+msgstr "Tipo de Documento"
+
+#. module: account_payment_group_document
+#: model:ir.model.constraint,message:account_payment_group_document.constraint_account_payment_group_name_uniq
+msgid "Document number must be unique per receiptbook!"
+msgstr "El número de documento debe ser único por talonario de recibo!"
+
+#. module: account_payment_group_document
+#: model:ir.model.fields,field_description:account_payment_group_document.field_account_payment_receiptbook__mail_template_id
+msgid "Email Template"
+msgstr "Plantilla de correo electrónico"
+
+#. module: account_payment_group_document
+#: model:ir.model.fields,field_description:account_payment_group_document.field_account_payment_group__document_sequence_id
+#: model:ir.model.fields,field_description:account_payment_group_document.field_account_payment_receiptbook__sequence_id
+msgid "Entry Sequence"
+msgstr "Secuencia de Entrada"
+
+#. module: account_payment_group_document
+#: code:addons/account_payment_group_document/models/account_payment_group.py:0
+#, python-format
+msgid ""
+"Error!. Please define sequence on the receiptbook related documents to this "
+"payment or set the document number."
+msgstr ""
+"¡Error! Por favor defina una secuencia en los documentos asociados al "
+"talonario o establezca un número de documento."
+
+#. module: account_payment_group_document
+#: model:ir.model.fields,field_description:account_payment_group_document.field_account_payment_receiptbook__id
+msgid "ID"
+msgstr ""
+
+#. module: account_payment_group_document
+#: model:ir.model.fields,help:account_payment_group_document.field_account_payment_group_invoice_wizard__use_documents
+msgid ""
+"If active: will be using for legal invoicing (invoices, debit/credit "
+"notes). If not set means that will be used to register accounting entries "
+"not related to invoicing legal documents. For Example: Receipts, Tax "
+"Payments, Register journal entries"
+msgstr ""
+
+#. module: account_payment_group_document
+#: model:ir.model.fields,help:account_payment_group_document.field_account_payment_receiptbook__mail_template_id
+msgid ""
+"If set an email will be sent to the customer when the related account."
+"payment.group has been posted."
+msgstr ""
+"Si se configura, se enviará un correo electrónico al cliente / proveedor "
+"cuando se haya validado un Recibo / Pago."
+
+#. module: account_payment_group_document
+#: model:ir.model.fields,field_description:account_payment_group_document.field_l10n_latam_document_type__internal_type
+msgid "Internal Type"
+msgstr "Tipo interno"
+
+#. module: account_payment_group_document
+#: model:ir.model,name:account_payment_group_document.model_account_move
+msgid "Journal Entries"
+msgstr "Asientos contables"
+
+#. module: account_payment_group_document
+#: model:ir.model.fields,field_description:account_payment_group_document.field_account_payment_receiptbook____last_update
+msgid "Last Modified on"
+msgstr "Última modificación el"
+
+#. module: account_payment_group_document
+#: model:ir.model.fields,field_description:account_payment_group_document.field_account_payment_receiptbook__write_uid
+msgid "Last Updated by"
+msgstr "Última actualización por"
+
+#. module: account_payment_group_document
+#: model:ir.model.fields,field_description:account_payment_group_document.field_account_payment_receiptbook__write_date
+msgid "Last Updated on"
+msgstr "Última actualización el"
+
+#. module: account_payment_group_document
+#: model:ir.model,name:account_payment_group_document.model_l10n_latam_document_type
+msgid "Latam Document Type"
+msgstr "Tipo de Documento Latam"
+
+#. module: account_payment_group_document
+#: code:addons/account_payment_group_document/models/account_chart_template.py:0
+#: model:ir.model.fields.selection,name:account_payment_group_document.selection__account_payment_receiptbook__sequence_type__manual
+#, python-format
+msgid "Manual"
+msgstr ""
+
+#. module: account_payment_group_document
+#: model:ir.model.fields,field_description:account_payment_group_document.field_account_payment_receiptbook__name
+msgid "Name"
+msgstr "Nombre"
+
+#. module: account_payment_group_document
+#: model:ir.model.fields,field_description:account_payment_group_document.field_account_payment_group__next_number
+msgid "Next Number"
+msgstr "Próximo número"
+
+#. module: account_payment_group_document
+#: model:ir.model.fields,help:account_payment_group_document.field_account_payment_receiptbook__next_number
+msgid ""
+"Next number that will be used. This number can be incremented frequently so "
+"the displayed value might already be obsolete"
+msgstr "Siguiente número que será usado."
+
+#. module: account_payment_group_document
+#: model:ir.model.fields,field_description:account_payment_group_document.field_account_payment_receiptbook__padding
+msgid "Number Padding"
+msgstr ""
+
+#. module: account_payment_group_document
+#: model:ir.model.fields,field_description:account_payment_group_document.field_account_payment_receiptbook__partner_type
+msgid "Partner Type"
+msgstr "Tipo de partner"
+
+#. module: account_payment_group_document
+#: model:ir.model,name:account_payment_group_document.model_account_payment_group
+msgid "Payment Group"
+msgstr "Grupo de Pago"
+
+#. module: account_payment_group_document
+#: model:ir.model.fields,field_description:account_payment_group_document.field_account_payment_receiptbook__prefix
+msgid "Prefix"
+msgstr "Prefijo"
+
+#. module: account_payment_group_document
+#: model_terms:ir.ui.view,arch_db:account_payment_group_document.view_receipt_receiptbook_form
+#: model_terms:ir.ui.view,arch_db:account_payment_group_document.view_receipt_receiptbook_search
+#: model_terms:ir.ui.view,arch_db:account_payment_group_document.view_receipt_receiptbook_tree
+msgid "Receipt Books"
+msgstr "Talonarios de recibo"
+
+#. module: account_payment_group_document
+#: model:ir.model.fields,field_description:account_payment_group_document.field_account_payment_group__receiptbook_id
+msgid "ReceiptBook"
+msgstr "Talonario de Recibo"
+
+#. module: account_payment_group_document
+#: model:ir.actions.act_window,name:account_payment_group_document.action_receiptbook_form
+#: model:ir.ui.menu,name:account_payment_group_document.menu_receiptbook_form
+msgid "Receiptbooks"
+msgstr "Talonario de recibo"
+
+#. module: account_payment_group_document
+#: model:ir.model.fields,field_description:account_payment_group_document.field_account_payment_receiptbook__report_partner_id
+msgid "Report Partner"
+msgstr "Reportar partner"
+
+#. module: account_payment_group_document
+#: model:ir.model.fields,field_description:account_payment_group_document.field_account_payment_receiptbook__sequence
+msgid "Sequence"
+msgstr "Secuencia"
+
+#. module: account_payment_group_document
+#: model:ir.model.fields,field_description:account_payment_group_document.field_account_payment_receiptbook__sequence_type
+msgid "Sequence Type"
+msgstr "Tipo de Secuencia"
+
+#. module: account_payment_group_document
+#: model:ir.model.fields.selection,name:account_payment_group_document.selection__l10n_latam_document_type__internal_type__supplier_payment
+msgid "Supplier Payment"
+msgstr "Pago de proveedor"
+
+#. module: account_payment_group_document
+#: model:ir.model.fields,help:account_payment_group_document.field_account_payment_group__document_sequence_id
+#: model:ir.model.fields,help:account_payment_group_document.field_account_payment_receiptbook__sequence_id
+msgid ""
+"This field contains the information related to the numbering of the receipt "
+"entries of this receiptbook."
+msgstr ""
+"El campo contiene la información relacionada a la numeración de recibos de "
+"este talonario de recibo."
+
+#. module: account_payment_group_document
+#: model:ir.model.fields,field_description:account_payment_group_document.field_account_payment_group_invoice_wizard__use_documents
+msgid "Use Documents?"
+msgstr "Utiliza Documentos?"
+
+#. module: account_payment_group_document
+#: model:ir.model.fields,help:account_payment_group_document.field_account_payment_receiptbook__sequence
+msgid "Used to order the receiptbooks"
+msgstr ""
+
+#. module: account_payment_group_document
+#: model:ir.model.fields.selection,name:account_payment_group_document.selection__account_payment_receiptbook__partner_type__supplier
+msgid "Vendor"
+msgstr "Proveedor"
+
+#. module: account_payment_group_document
+#: model:ir.model,name:account_payment_group_document.model_account_payment_group_invoice_wizard
+msgid "account.payment.group.invoice.wizard"
+msgstr ""
+
+#. module: account_payment_group_document
+#: model:ir.model.fields,help:account_payment_group_document.field_account_payment_receiptbook__padding
+msgid ""
+"automatically adds some '0' on the left of the 'Number' to get the required "
+"padding size."
+msgstr ""

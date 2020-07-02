@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_seniat_ut_tree" model="ir.ui.view">
+        <field name="name">seniat.ut.tree</field>
+        <field name="model">seniat.ut</field>
+        <field name="arch" type="xml">
+            <tree string="SENIAT Unidad Tributaria" editable="top">
+                <field name="date"/>
+                <field name="amount"/>
+                <field name="ref"/>
+            </tree>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="act_seniat_ut">
+        <field name="name">SENIAT Unidad Tributaria</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">seniat.ut</field>
+        <field name="view_mode">tree</field>
+    </record>
+
+    <menuitem 
+        name="Unidad Tributaria" 
+        action="act_seniat_ut" id="menu_action_seniat_ut" 
+        sequence="95" parent="l10n_ve_base.menu_seniat_config"/>
+
+</odoo>

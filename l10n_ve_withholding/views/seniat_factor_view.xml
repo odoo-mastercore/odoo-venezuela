@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_seniat_factor_tree" model="ir.ui.view">
+        <field name="name">seniat.factor.tree</field>
+        <field name="model">seniat.factor</field>
+        <field name="arch" type="xml">
+            <tree string="SENIAT Factor de calculo ISLR" editable="top">
+                <field name="date"/>
+                <field name="amount"/>
+            </tree>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="act_seniat_factor">
+        <field name="name">SENIAT Factor de calculo ISLR</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">seniat.factor</field>
+        <field name="view_mode">tree</field>
+    </record>
+
+    <menuitem 
+        name="Factor de calculo ISLR" 
+        action="act_seniat_factor" id="menu_action_seniat_factor" 
+        sequence="85" parent="l10n_ve_base.menu_seniat_config"/>
+
+</odoo>

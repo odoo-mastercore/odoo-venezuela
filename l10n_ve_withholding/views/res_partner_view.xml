@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record model="ir.ui.view" id="view_partner_form">
+        <field name="name">res.partner.form.inherit</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="model">res.partner</field>
+        <field name="arch" type="xml">
+            <field name="property_supplier_payment_term_id" position="after">
+                <field 
+                  name="vat_retention" 
+                  string="Retención I.V.A" />
+                <field name="seniat_partner_type_id" />
+                <field 
+                    name="seniat_regimen_islr_ids" 
+                    attrs="{'invisible': [('seniat_partner_type_id', '==', False)]}"/>
+          </field>
+        </field>
+    </record>
+
+</odoo>

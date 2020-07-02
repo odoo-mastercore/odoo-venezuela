@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 ################################################################################
-# Author: SINPASYS GLOBAL SA || MASTERCORE SAS
+# Author: SINAPSYS GLOBAL SA || MASTERCORE SAS
 # Copyleft: 2020-Present.
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 #
@@ -41,15 +41,16 @@ class ResPartner(models.Model):
         domain="[('municipality_id', '=', municipality_id)]",
         help=u"Parroquia"
     )
-    vat_type = fields.Selection(
-        [('V', 'Persona Natural'), ('J', 'Persona Juridica'),
-        ('G', 'Gobierno'), ('E','Extranjero'), ('D', 'Pasaporte')], 
-        string='Identification Type',
-        required=True,
-        default='V'
-    )
-    vat = fields.Char(string='Identification Number',
-                      help="Identification Number for selected type")
+    l10n_latam_identification_type_id = fields.Many2one(
+        'l10n_latam.identification.type', string="Identification Type",
+        index=True, auto_join=True,
+        # default=lambda self: self.env.ref('l10n_ve_base.it_civ'),
+        help="The type of identification")
+    l10n_ve_responsibility_type_id = fields.Many2one(
+        'l10n_ve.responsibility.type', string='SENIAT Responsibility Type', 
+        index=True, help='Defined by SENIAT to identify the type of '
+        'responsibilities that a person or a legal entity could have and that '
+        'impacts in the type of operations and requirements they need.')
 
     @api.onchange('state_id')
     def _onchange_state_id(self):
@@ -72,3 +73,11 @@ class ResPartner(models.Model):
     def _onchange_municipality_id(self):
         if self.municipality_id:
             return {'value': {'parish_id': ''}}
+
+    @api.onchange('country_id')
+    def _onchange_country(self):
+        return {
+            'value': {
+                'l10n_ve_responsibility_type_id': ''
+            },
+        }

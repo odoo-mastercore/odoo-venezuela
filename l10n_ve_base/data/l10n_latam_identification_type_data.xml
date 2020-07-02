@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+<data>
+    <record model='l10n_latam.identification.type' id='l10n_latam_base.it_fid'>
+        <field name='description'>Cedula de Identidad Extranjero(a)</field>
+        <field name='country_id' ref='base.ve'/>
+        <field name='l10n_ve_code'>E</field>
+    </record>
+    <record model='l10n_latam.identification.type' id='l10n_latam_base.it_pass'>
+        <field name='l10n_ve_code'>P</field>
+        <!-- <field name="active" eval="False" /> -->
+    </record>
+    <record model='l10n_latam.identification.type' id='it_civ'>
+        <field name='name'>Cédula Identidad</field>
+        <field name='description'>Cedula de Identidad Venezolano(a)</field>
+        <field name='country_id' ref='base.ve'/>
+        <field name='l10n_ve_code'>V</field>
+        <field name='sequence'>70</field>
+    </record>
+    <record model='l10n_latam.identification.type' id='l10n_latam_base.it_vat'>
+        <field name='name'>RIF V</field>
+        <field name='description'>Registro Informacion Fiscal Persona Natural Venezolana</field>
+        <field name='country_id' ref='base.ve'/>
+        <field name='l10n_ve_code'>V</field>
+    </record>
+     <record model='l10n_latam.identification.type' id='it_rife'>
+        <field name='name'>RIF E</field>
+        <field name='description'>Registro Informacion Fiscal Persona Natural Extranjera</field>
+        <field name='country_id' ref='base.ve'/>
+        <field name='is_vat' eval='True'/>
+        <field name='l10n_ve_code'>E</field>
+        <field name='sequence'>110</field>
+    </record>
+    <record model='l10n_latam.identification.type' id='it_rifj'>
+        <field name='name'>RIF J</field>
+        <field name='description'>Registro Informacion Fiscal Persona Juridica</field>
+        <field name='country_id' ref='base.ve'/>
+        <field name='is_vat' eval='True'/>
+        <field name='l10n_ve_code'>J</field>
+        <field name='sequence'>120</field>
+    </record>
+    <record model='l10n_latam.identification.type' id='it_rifg'>
+        <field name='name'>RIF G</field>
+        <field name='description'>Registro Informacion Fiscal Persona Gubernamental</field>
+        <field name='country_id' ref='base.ve'/>
+        <field name='is_vat' eval='True'/>
+        <field name='l10n_ve_code'>G</field>
+        <field name='sequence'>130</field>
+    </record>
+    <record model='l10n_latam.identification.type' id='it_rifc'>
+        <field name='name'>RIF C</field>
+        <field name='description'>Registro Informacion Fiscal Consejo Comunal</field>
+        <field name='country_id' ref='base.ve'/>
+        <field name='is_vat' eval='True'/>
+        <field name='l10n_ve_code'>C</field>
+        <field name='sequence'>140</field>
+    </record>
+</data>
+</odoo>
