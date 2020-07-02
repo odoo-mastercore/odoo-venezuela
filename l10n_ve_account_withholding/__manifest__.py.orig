@@ -1,0 +1,75 @@
+<<<<<<< HEAD
+##############################################################################
+#
+#    Copyright (C) 2015  ADHOC SA  (http://www.adhoc.com.ar)
+#    All Rights Reserved.
+#
+#    This program is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU Affero General Public License as
+#    published by the Free Software Foundation, either version 3 of the
+#    License, or (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU Affero General Public License for more details.
+#
+#    You should have received a copy of the GNU Affero General Public License
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+##############################################################################
+{
+    'author': 'ADHOC SA',
+    'website': 'www.adhoc.com.ar',
+    'license': 'AGPL-3',
+    'category': 'Accounting & Finance',
+    'data': [
+        'views/account_tax_view.xml',
+        'views/account_payment_view.xml',
+        'data/account_payment_method_data.xml',
+    ],
+    'depends': [
+        'account',
+        # for payment method description and company_id field on form view
+        'l10n_ve_account_payment_fix',
+    ],
+    'installable': True,
+    'name': 'Withholdings on Payments',
+    'test': [],
+    'version': "13.0.1.0.0",
+=======
+###############################################################################
+# Author: SINAPSYS GLOBAL SA || MASTERCORE SAS
+# Copyleft: 2020-Present.
+# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
+#
+#
+###############################################################################
+{
+    'name': "Localización Withholding Venezuela",
+    'description': """
+        **Localización VENEZUELA Withholding**
+
+        ¡Felicidades!. Este es el módulo Withholding para la implementación de 
+        la **Localización Venezuela** que agrega características y datos 
+        necesarios para un correcto ejercicio fiscal de su empresa.
+    """,
+
+    'author': "SINAPSYS GLOBAL SA || MASTERCORE SAS",
+    'website': "http://sinapsys.global",
+    'version': '13.0.1',
+    'category': 'Localization',
+    'license': 'AGPL-3',
+    'depends': ['account',],
+    'data': [
+        'views/account_payment_group_view.xml',
+        'views/account_payment_view.xml',
+        'views/account_tax_view.xml',
+        'views/res_partner_view.xml',
+        'wizards/res_config_settings_views.xml',
+        'security/ir.model.access.csv',
+        'data/account_payment_method_data.xml',
+    ],
+
+>>>>>>> 2b15730a8f17d0b29086c700f11e5c52dd5c3f9f
+}
