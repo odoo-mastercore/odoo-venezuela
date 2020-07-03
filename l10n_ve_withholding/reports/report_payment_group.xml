@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <template id="report_payment_group_document" inherit_id="l10n_ve_account_payment.report_payment_group_document">
+    <template id="report_payment_group_document" inherit_id="l10n_ve_account_payment_group.report_payment_group_document">
         <t t-set="o" position="after">
             <t t-set="custom_header" t-value="'l10n_ar.custom_header'"/>
             <t t-set="report_date" t-value="o.payment_date"/>
@@ -40,18 +40,16 @@
             <div class="col-6">
                 <!-- IDENTIFICACION (ADQUIRIENTE-LOCATARIO-PRESTARIO) -->
 
-                <!-- (14) Apellido uy Nombre: Denominicacion o Razon Soclial -->
+                <!-- (1) Apellido uy Nombre: Denominicacion o Razon Soclial -->
                 <strong><span t-raw="o.partner_type == 'supplier' and 'Proveedor: ' or 'Cliente: '"/></strong><span t-field="o.partner_id.name"/>
+                
+                <!-- (2) RIF -->
+                <br/><strong>R.I.F:</strong> <span t-field="o.partner_id.l10n_latam_identification_type_id.l10n_ve_code"/>-<span t-field="o.partner_id.vat"/>
 
-                <!-- (15) Domicilio Comercial -->
+                <!-- (3) Domicilio Comercial -->
                 <br/>
                 <span t-esc="o.partner_id" t-options='{"widget": "contact", "fields": ["address"], "no_marker": True, "no_tag_br": True}'/>
 
-                <!-- (16) Tipo de Contribuyente -->
-                <strong>VAT Cond: </strong><span t-field="o.partner_id.l10n_ve_responsibility_type_id"/>
-
-                <!-- (17) RIF -->
-                <br/><strong>R.I.F:</strong> <span t-field="o.partner_id.l10n_latam_identification_type_id.l10n_ve_code"/><span t-field="o.partner_id.vat"/>
 
             </div>
         </div>

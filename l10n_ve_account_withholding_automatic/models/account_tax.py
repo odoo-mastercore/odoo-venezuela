@@ -170,10 +170,8 @@ result = withholdable_base_amount * 0.10
                 'withholdable_invoiced_amount')
             vals['amount'] = computed_withholding_amount
             vals['computed_withholding_amount'] = computed_withholding_amount
-
-            # por ahora no imprimimos el comment, podemos ver de llevarlo a
-            # otro campo si es de utilidad
-            vals.pop('comment')
+            #Utilizamos el comment para reflejar el porcentaje retenido.
+            vals['comment_withholding'] = vals.get('comment_withholding')
             if payment_withholding:
                 payment_withholding.write(vals)
             else:
@@ -279,7 +277,7 @@ result = withholdable_base_amount * 0.10
             (total_amount > withholding_non_taxable_minimum) and
             (total_amount - withholding_non_taxable_amount) or 0.0)
 
-        comment = False
+        comment_withholding = False
         if self.withholding_type == 'code':
             localdict = {
                 'withholdable_base_amount': withholdable_base_amount,
@@ -298,7 +296,7 @@ result = withholdable_base_amount * 0.10
             if rule:
                 percentage = rule.percentage
                 fix_amount = rule.fix_amount
-                comment = '%s x %s + %s' % (
+                comment_withholding = '%s x %s + %s' % (
                     withholdable_base_amount,
                     percentage,
                     fix_amount)
@@ -320,5 +318,5 @@ result = withholdable_base_amount * 0.10
             'payment_group_id': payment_group.id,
             'tax_withholding_id': self.id,
             'automatic': True,
-            'comment': comment,
+            'comment_withholding': comment_withholding,
         }

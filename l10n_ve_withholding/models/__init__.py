@@ -11,3 +11,4 @@ from . import account_move
 from . import seniat_islr
 from . import account_payment_group
 from . import res_partner
+from . import account_payment

@@ -61,6 +61,7 @@ class AccountPayment(models.Model):
         # compute='get_withholding_data',
         readonly=True,
     )
+    comment_withholding = fields.Char('Comment withholding')
 
     def _get_counterpart_move_line_vals(self, invoice=False):
         vals = super(AccountPayment, self)._get_counterpart_move_line_vals(

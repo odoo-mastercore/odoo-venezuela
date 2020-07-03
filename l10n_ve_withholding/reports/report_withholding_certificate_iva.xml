@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_withholding_certificate_document_iva">
+        <t t-call="web.external_layout">
+            <t t-set="o" t-value="o.with_context(lang=lang)" />
+                <t t-set="report_date" t-value="o.payment_date"/>
+                <t t-set="report_number" t-value="o.withholding_number or o.name"/>
+                <t t-set="report_name" t-value="'CERTIFICADO DE RETENCIÓN DEL IMPUESTO AL VALOR AGREGADO IVA'"/>
+                <!-- <t t-set="report_subname" 
+                    t-value=""/> -->
+            <div class="page">
+                <div>
+                </div><br/><br/><br/>
+                <div class="text-center">
+                    <br/><br/>
+                    <h4><b><t t-esc="report_name"/></b></h4>
+                    <p style="font-size: 12px;">
+                    Decreto con Rango, Valor y Fuerza de Ley de Reforma de la 
+                    ley de impuestos al valor agragado No. 1.436 del 17 de noviembre del 2014<br/>
+                    Articulo 11: " La Administración Tributaria podrá designar como responsables del
+                    pago   del   impuesto,   en   calidad   de   agentes   de   retención,   a   quienes   por   sus
+                    funciones   públicas   o   por   razón   de   sus   actividades   privadas<br/>  intervengan   en
+                    operaciones gravadas con el impuesto establecido en este decreto con Ragon, Valor y Fuerza de Ley. (...)"
+                    </p><br/>
+                    <div class="text-right">
+                        <p style="font-size: 14px;">
+                            <b>N° de Comprobante: </b><span t-esc="report_number"/><br/>
+                            <b>Fecha de emisión: </b><span t-esc="report_date"/><br/>
+                            <b>Periodo Fiscal: </b><span t-esc="o._get_fiscal_period(report_date)"/>
+                            
+                        </p>
+                    </div>
+                </div><br/>
+                <div id="informations" class="row mt8 mb8">
+                    <div class="col-6">
+
+                        <!-- IDENTIFICACION (SUJETO A RETENCIÓN) -->
+                        <!-- (1) Apellido uy Nombre: Denominicacion o Razon Social -->
+                        <strong>Sujeto a Retención: </strong><span t-field="o.partner_id.name"/>
+                        <!-- (2) RIF -->
+                        <t t-if="o.partner_id.vat and o.partner_id.l10n_latam_identification_type_id.name">
+                            <br/>
+                            <strong>R.I.F:</strong> <span t-field="o.partner_id.l10n_latam_identification_type_id.l10n_ve_code"/>-<span t-field="o.partner_id.vat"/>
+                        </t>
+                        <!-- (3) Responsabilidad -->
+                        <br/>
+                        <strong>Tipo de Contribuyente: </strong><span t-field="o.partner_id.l10n_ve_responsibility_type_id"/>
+                        <!-- (4) Domicilio Comercial -->
+                        <br/>
+                        <span t-esc="o.partner_id" t-options='{"widget": "contact", "fields": ["address"], "no_marker": True, "no_tag_br": True}'/>
+
+                    </div>
+                    <div class="col-6">
+
+                        <!-- IDENTIFICACION (AGENTE DE RETENCIÓN) -->
+                        <!-- (1) Apellido uy Nombre: Denominicacion o Razon Social -->
+                        <strong>Razon Social del Agente de Retención: </strong><span t-field="o.company_id.name"/>
+                        <!-- (2) RIF -->
+                        <br/>
+                        <strong>R.I.F:</strong> <span t-field="o.company_id.partner_id.l10n_latam_identification_type_id.l10n_ve_code"/>-<span t-field="o.company_id.vat"/>
+                        <!-- (3) Responsabilidad -->
+                        <br/>
+                        <strong>Tipo de Contribuyente: </strong><span t-field="o.company_id.l10n_ve_responsibility_type_id"/>
+                        <!-- (4) Domicilio Comercial -->
+                        <br/>
+                        <span t-esc="o.company_id.partner_id" t-options='{"widget": "contact", "fields": ["address"], "no_marker": True, "no_tag_br": True}'/>
+
+                    </div>
+                </div>
+                <br/>
+                <table class="table table-sm o_main_table">
+                    <thead>
+                        <tr>
+                            <th class="text-center"><strong>No</strong></th>
+                            <th class="text-center"><strong>Fecha Dto</strong></th>
+                            <th class="text-center"><strong>Número de factura</strong></th>
+                            <th class="text-center"><strong>Número de Control</strong></th>
+                            <th class="text-center"><strong>Número N/D</strong></th>
+                            <th class="text-center"><strong>Número N/C</strong></th>
+                            <th class="text-center"><strong>Tipo</strong></th>
+                            <th class="text-center"><strong>Dto Afectado</strong></th>
+                            <th class="text-center"><strong>Total Compra con IVA</strong></th>
+                            <th class="text-center"><strong>Compras sin crédito</strong></th>
+                            <th class="text-center"><strong>Base Imponible</strong></th>
+                            <th class="text-center"><strong>% Alic</strong></th>
+                            <th class="text-center"><strong>Monto IVA</strong></th>
+                            <th class="text-center"><strong>IVA Retenido</strong></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th class="text-center">1</th>
+                            <th class="text-center"><span t-esc="report_date"/></th>
+                            <th class="text-center"><span t-field="o.communication"/></th>
+                            <th class="text-center"><span t-field="o.communication"/></th>
+                            <th class="text-center"></th>
+                            <th class="text-center"></th>
+                            <th class="text-center">01</th>
+                            <th class="text-center"></th>
+                            <th class="text-center"><span t-field="o.total_amount"/></th>
+                            <th class="text-center">0,00</th>
+                            <th class="text-center"><span t-field="o.withholdable_invoiced_amount"/></th>
+                            <th class="text-center"><span t-field="o.tax_withholding_id.description"/></th>
+                            <th class="text-center"><span t-field="o.withholdable_base_amount"/></th>
+                            <th class="text-center"><span t-field="o.computed_withholding_amount"/></th>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <br/><br/><br/>
+            </div>
+            <div class="row">
+                <br/><br/><br/>
+                <div class="col-2"></div>
+                <div name="footer_left_column" class="col-4">
+                    ________________________ <br/>
+                    Agente de Retención
+                </div>
+                <div class="col-2"></div>
+                <div name="footer_right_column" class="col-4">
+                    _______________________<br/>
+                    Beneficiario
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="report_withholding_certificate_iva">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-set="lang" t-value="o.partner_id.lang"/>
+                <t t-call="l10n_ve_withholding.report_withholding_certificate_document_iva" t-lang="lang"/>
+            </t>
+        </t>
+    </template>
+
+    <record id="report_qweb_paperformat_l" model="report.paperformat">
+        <field name="name">Account financial report qweb landscape</field>
+        <field name="default" eval="True"/>
+        <field name="format">custom</field>
+        <field name="page_height">297</field>
+        <field name="page_width">210</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">12</field>
+        <field name="margin_bottom">8</field>
+        <field name="margin_left">5</field>
+        <field name="margin_right">5</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">10</field>
+        <field name="dpi">110</field>
+        <field name="orientation">Landscape</field>
+    </record>
+
+    <report
+        string="Certificado de Retención"
+        id="action_report_withholding_certificate_iva"
+        model="account.payment"
+        report_type="qweb-pdf"
+        name="l10n_ve_withholding.report_withholding_certificate_iva"
+        file="l10n_ve_withholding.report_withholding_certificate_iva"
+        print_report_name="'Certificado de Retención - %s' % (object.withholding_number or '')"
+        paperformat="report_qweb_paperformat_l"
+    />
+
+</odoo>

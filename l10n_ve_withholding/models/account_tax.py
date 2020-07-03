@@ -25,11 +25,7 @@ class AccountTax(models.Model):
         commercial_partner = payment_group.commercial_partner_id
 
         force_withholding_amount_type = None
-        _logger.warning('withholding_type')
-        _logger.warning(self.withholding_type)
-        _logger.warning(payment_group.iva)
         if self.withholding_type == 'partner_tax' and payment_group.iva == True:
-            _logger.warning('IF IVA RETENTION')
             alicuota_retencion = self.get_partner_alicuot(commercial_partner)
             alicuota = int(alicuota_retencion) / 100.0
             force_withholding_amount_type = self.withholding_amount_type
@@ -40,13 +36,12 @@ class AccountTax(models.Model):
             base_invoice = [
                 int(x.balance) * -1.0 for x in payment_group.to_pay_move_line_ids][0]
             amount = base_amount * (alicuota)
-            vals['comment'] = "%s x %s" % (
+            vals['comment_withholding'] = "%s x %s" % (
                 base_amount, alicuota)
             vals['total_amount'] = base_invoice
-            vals['withholdable_invoiced_amount'] = base_invoice
+            vals['withholdable_invoiced_amount'] = payment_group.selected_debt_untaxed * -1.0
             vals['withholdable_base_amount'] = base_amount
             vals['period_withholding_amount'] = amount
-            _logger.warning(vals)
 
         elif self.withholding_type == 'tabla_islr':
             regimen = payment_group.regimen_islr_id
@@ -85,8 +80,7 @@ class AccountTax(models.Model):
             else:
                 withholding = base_withholding * withholding_percentage
     
-            vals['comment'] = "%s - %s" % (
-                base, withholding)
+            vals['comment_withholding'] = str(withholding_percentage*100)+"%"
             vals['total_amount'] = base
             vals['withholdable_invoiced_amount'] = base
             vals['withholdable_base_amount'] = base_withholding

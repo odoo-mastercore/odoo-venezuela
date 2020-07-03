@@ -30,6 +30,8 @@
         'data/seniat_ut.xml',
         'data/seniat_tabla_islr.xml',
         'reports/report_withholding_certificate.xml',
+        'reports/report_withholding_certificate_iva.xml',
+        'reports/report_payment_group.xml',
         'views/account_payment_view.xml',
         'views/res_partner_view.xml',
         'security/ir.model.access.csv',

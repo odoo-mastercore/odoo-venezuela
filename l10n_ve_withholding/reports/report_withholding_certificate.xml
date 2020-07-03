@@ -7,18 +7,6 @@
                 <t t-set="report_number" t-value="o.withholding_number or o.name"/>
                 <t t-set="report_name" t-value="'CERTIFICADO DE RETENCIÓN'"/>
                 <t t-set="header_address" t-value="o.company_id.partner_id"/>
-
-                <t t-set="custom_footer">
-                    <div class="row">
-                        <div name="footer_left_column" class="col-8">
-                            Nombre y Apellido Firmante:
-                            <br/>Cargo:
-                        </div>
-                        <div name="footer_right_column" class="col-4">
-                            Firma Responsable
-                        </div>
-                    </div>
-                </t>
             <div class="page">
                 <div>
                     <div class="text-right">
@@ -32,22 +20,22 @@
                 <div id="informations" class="row mt8 mb8">
                     <div class="col-6">
 
-                        <!-- IDENTIFICACION (ADQUIRIENTE-LOCATARIO-PRESTARIO) -->
+                        <!-- IDENTIFICACION (SUJETO A RETENCIÓN) -->
 
-                        <!-- (14) Apellido uy Nombre: Denominicacion o Razon Soclial -->
+                        <!-- (1) Apellido uy Nombre: Denominicacion o Razon Soclial -->
                         <strong>Sujeto a Retención: </strong><span t-field="o.partner_id.name"/>
+                        <!-- (2) RIF -->
+                        <t t-if="o.partner_id.vat and o.partner_id.l10n_latam_identification_type_id.name">
+                            <br/>
+                            <strong>R.I.F:</strong> <span t-field="o.partner_id.l10n_latam_identification_type_id.l10n_ve_code"/>-<span t-field="o.partner_id.vat"/>
 
-                        <!-- (15) Domicilio Comercial -->
+                        </t>
+                        <!-- (3) Responsabilidad -->
+                        <br/>
+                        <strong>Tipo de Contribuyente: </strong><span t-field="o.partner_id.l10n_ve_responsibility_type_id"/>
+                        <!-- (4) Domicilio Comercial -->
                         <br/>
                         <span t-esc="o.partner_id" t-options='{"widget": "contact", "fields": ["address"], "no_marker": True, "no_tag_br": True}'/>
-
-                        <!-- (16) Responsabilidad AFIP -->
-                        <strong>VAT Cond: </strong><span t-field="o.partner_id.l10n_ve_responsibility_type_id"/>
-
-                        <!-- (17) RIF -->
-                        <t t-if="o.partner_id.vat and o.partner_id.l10n_latam_identification_type_id.name">:
-                            <br/><strong><t t-esc="o.partner_id.l10n_latam_identification_type_id.name" id="inv_tax_id_label"/></strong> <span t-field="o.partner_id.vat"/>
-                        </t>
 
                     </div>
                 </div>
@@ -59,35 +47,35 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td style="width: 50%;" class="text-right">
-                                Impuesto:
+                            <td class="text-right">
+                                Por Concepto:
                             </td>
                             <td class="text-left">
-                                <span t-field="o.tax_withholding_id.description"/>
+                                <span t-field="o.payment_group_id.regimen_islr_id.code_seniat"/> - <span t-field="o.payment_group_id.regimen_islr_id.activity_name"/>
                             </td>
                         </tr>
-                        <tr>
+                        <!-- <tr>
                             <td class="text-right">
-                                Régimen / Descripción:
+                                Comprobante que origina la retención:
                             </td>
                             <td class="text-left">
                                 <span t-field="o.communication"/>
                             </td>
-                        </tr>
-                        <tr>
-                            <td class="text-right">
-                                Comprobante de pago que origina la retención:
-                            </td>
-                            <td class="text-left">
-                                <span t-field="o.payment_group_id.display_name"/>
-                            </td>
-                        </tr>
+                        </tr> -->
                         <tr>
                             <td class="text-right">
                                 Importe del comprobante que origina la retención:
                             </td>
                             <td class="text-left">
                                 <span t-field="o.withholding_base_amount"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width: 50%;" class="text-right">
+                                Porcentaje Aplicado:
+                            </td>
+                            <td class="text-left">
+                                <span t-field="o.comment_withholding"/>
                             </td>
                         </tr>
                         <tr>
@@ -100,6 +88,20 @@
                         </tr>
                     </tbody>
                 </table>
+                <br/><br/><br/>
+            </div>
+            <div class="row">
+                <br/><br/><br/>
+                <div class="col-2"></div>
+                <div name="footer_left_column" class="col-4">
+                    ________________________ <br/>
+                    Agente de Retención
+                </div>
+                <div class="col-2"></div>
+                <div name="footer_right_column" class="col-4">
+                    _______________________<br/>
+                    Beneficiario
+                </div>
             </div>
         </t>
     </template>

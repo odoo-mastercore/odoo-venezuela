@@ -61,13 +61,9 @@ class AccountPaymentGroup(models.Model):
             selected_debt_taxed = 0.0
             for line in rec.to_pay_move_line_ids:
                 #this is conditional used to vat retention
-                _logger.warning('PENDIENTEEEEE')
-                _logger.warning(line.move_id.amount_by_group)
                 for abg in line.move_id.amount_by_group:
-                    _logger.warning(str(abg[0]))
                     if str(abg[0]).find('IVA') > -1:
                         selected_debt_taxed += abg[1]
-                        _logger.warning(selected_debt_taxed)
                 selected_finacial_debt += line.financial_amount_residual
                 selected_debt += line.move_id.amount_residual
                 # factor for total_untaxed
