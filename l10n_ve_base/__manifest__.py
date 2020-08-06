@@ -39,6 +39,8 @@
         'views/res_partner_view.xml',
         'views/res_partner_bank_view.xml',
         'views/res_company_view.xml',
+        'views/res_currency_view.xml',
+        'wizard/currency_rate_wizard_view.xml'
     ],
 
 }

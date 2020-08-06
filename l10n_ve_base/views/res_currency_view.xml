@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_currency_form" model="ir.ui.view">
+        <field name="name">res.currency.form</field>
+        <field name="model">res.currency</field>
+        <field name="inherit_id" ref="base.view_currency_form"/>
+        <field name="arch" type="xml">
+        <xpath expr="//div[@name='button_box']" position="inside">
+            <button 
+                name="action_get_currency_rate" 
+                string="Update Rate" 
+                icon="fa-repeat"
+                class="oe_stat_button"
+                type="object" 
+                attrs="{'invisible':[('name','==','VEF')]}" 
+                widget="statinfo" />
+        </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 ###############################################################################
 # Author: SINAPSYS GLOBAL SA || MASTERCORE SAS
 # Copyleft: 2020-Present.
@@ -6,5 +5,5 @@
 #
 #
 ###############################################################################
-from . import models
-from . import wizard
+
+from . import currency_rate_wizard
