@@ -23,7 +23,7 @@ class Parish(models.Model):
     )
     code = fields.Char(
         string='Código',
-        size=5,
+        size=6,
         required=True,
         help='Código de la Parroquia'
     )
