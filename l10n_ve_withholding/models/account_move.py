@@ -4,7 +4,12 @@ from odoo import models, fields
 class AccountMove(models.Model):
     _inherit = "account.move"
 
-   
+    l10n_ve_document_number = fields.Char(
+        'Control Number', size=80,
+        help="Number used to manage pre-printed invoices, by law you will"
+             " need to put here this number to be able to declarate on"
+             " Fiscal reports correctly.",store=True)
+
     def get_taxes_values(self):
         """
         Hacemos esto para disponer de fecha de factura y cia para calcular

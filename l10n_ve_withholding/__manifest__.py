@@ -35,6 +35,7 @@
         'views/account_payment_view.xml',
         'views/res_partner_view.xml',
         'security/ir.model.access.csv',
+        'views/account_move_view.xml',
         'views/seniat_ut_view.xml',
         'views/seniat_factor_view.xml',
         'views/seniat_partner_type_view.xml',
