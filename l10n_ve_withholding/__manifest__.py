@@ -29,6 +29,7 @@
         'data/seniat_partner_type.xml',
         'data/seniat_ut.xml',
         'data/seniat_tabla_islr.xml',
+        'data/account_move_sequence.xml',
         'reports/report_withholding_certificate.xml',
         'reports/report_withholding_certificate_iva.xml',
         'reports/report_payment_group.xml',
