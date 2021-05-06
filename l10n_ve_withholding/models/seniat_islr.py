@@ -145,6 +145,10 @@ class SeniatTablaIslr(models.Model):
         'seniat.ut', 
         'Valor Unidad Tributaria'
     )
+    code_identification_seniat = fields.Char(
+        string="Código Identificación Seniat",
+        help="Código Identificación Seniat",
+    )
 
     @api.depends('code_seniat', 'activity_name')
     def _compute_complete_name(self):
