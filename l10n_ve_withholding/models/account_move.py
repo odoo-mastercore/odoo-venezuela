@@ -42,8 +42,6 @@ class AccountMove(models.Model):
         if self.state == 'posted' and self.l10n_ve_document_number == False:
             l10n_ve_document_number = self.env[
                 'ir.sequence'].next_by_code('account.move.document.number')
-            _logger.warning('AHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH')
-            _logger.warning(l10n_ve_document_number)
             self.write({'l10n_ve_document_number': l10n_ve_document_number})
 
 
