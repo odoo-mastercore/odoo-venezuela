@@ -3,12 +3,12 @@
     <template id="report_withholding_certificate_document">
         <t t-call="web.external_layout">
             <t t-set="o" t-value="o.with_context(lang=lang)" />
-                <t t-set="report_date" t-value="o.payment_date"/>
-                <t t-set="report_number" t-value="o.withholding_number or o.name"/>
-                <t t-set="report_name" t-value="'CERTIFICADO DE RETENCIÓN'"/>
-                <t t-set="header_address" t-value="o.company_id.partner_id"/>
             <div class="page">
                 <div>
+                    <t t-set="report_date" t-value="o.payment_date"/>
+                    <t t-set="report_number" t-value="o.withholding_number or o.name"/>
+                    <t t-set="report_name" t-value="'CERTIFICADO DE RETENCIÓN'"/>
+                    <t t-set="header_address" t-value="o.company_id.partner_id"/>
                     <div class="text-right">
                         <h4><b><t t-esc="report_name"/></b></h4>
                         <p style="font-size: 14px;">
