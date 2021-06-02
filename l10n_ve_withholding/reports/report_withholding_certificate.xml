@@ -5,6 +5,7 @@
             <t t-set="o" t-value="o.with_context(lang=lang)" />
             <div class="page">
                 <div>
+                    <br/>
                     <t t-set="report_date" t-value="o.payment_date"/>
                     <t t-set="report_number" t-value="o.withholding_number or o.name"/>
                     <t t-set="report_name" t-value="'CERTIFICADO DE RETENCIÓN'"/>
