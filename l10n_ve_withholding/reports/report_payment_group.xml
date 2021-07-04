@@ -22,6 +22,7 @@
             </t>
         </t>
         <div id="informations" position="before">
+            <br/>
             <div class="text-right">
                 <t t-if="o.partner_type == 'supplier' and 'Proveedor'">
                     <h4><b>ORDEN DE PAGO</b></h4>
