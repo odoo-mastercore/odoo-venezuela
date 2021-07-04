@@ -16,10 +16,11 @@ Odoo Venezuela
 - l10n_ve_account_withholding
 - l10n_ve_account_withholding_automatic
 - l10n_ve_withholding
+- l10n_ve_vat_ledger
 
 ### Más Información:
 - 
 
 ### Colaboradores:
-- Reydi Hernández <rhe@mastercore.net>
-- Freddy Arraez <far@mastercore.net>
+- Reydi Hernández <rhe@sinapsys.global>
+- Freddy Arraez <far@sinapsys.global>
