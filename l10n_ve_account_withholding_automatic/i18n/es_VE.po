@@ -1,0 +1,372 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* l10n_ve_account_withholding_automatic
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 13.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-07-12 17:14+0000\n"
+"PO-Revision-Date: 2021-07-12 17:50-0400\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: \n"
+"Language: es_VE\n"
+"X-Generator: Poedit 3.0\n"
+
+#. module: l10n_ve_account_withholding_automatic
+#: model_terms:ir.ui.view,arch_db:l10n_ve_account_withholding_automatic.res_config_settings_view_form
+msgid ""
+"<span class=\"fa fa-lg fa-building-o\" title=\"Values set here are company-"
+"specific.\" groups=\"base.group_multi_company\"/>"
+msgstr ""
+
+#. module: l10n_ve_account_withholding_automatic
+#: model:ir.model.fields,field_description:l10n_ve_account_withholding_automatic.field_account_payment__accumulated_amount
+msgid "Accumulated Amount"
+msgstr "Monto acumulado"
+
+#. module: l10n_ve_account_withholding_automatic
+#: model:ir.model.fields,field_description:l10n_ve_account_withholding_automatic.field_account_payment__withholding_accumulated_payments
+#: model:ir.model.fields,field_description:l10n_ve_account_withholding_automatic.field_account_tax__withholding_accumulated_payments
+msgid "Accumulated Payments"
+msgstr "Pagos acumulados"
+
+#. module: l10n_ve_account_withholding_automatic
+#: model:ir.model.fields,field_description:l10n_ve_account_withholding_automatic.field_account_payment_group__withholdable_advanced_amount
+msgid "Adjustment / Advance (untaxed)"
+msgstr "Ajuste / anticipo (libre de impuestos)"
+
+#. module: l10n_ve_account_withholding_automatic
+#: model:ir.model.fields,field_description:l10n_ve_account_withholding_automatic.field_account_tax__withholding_advances
+msgid "Advances are Withholdable?"
+msgstr "¿Los anticipos son retenidos?"
+
+#. module: l10n_ve_account_withholding_automatic
+#: model:ir.model.fields,field_description:l10n_ve_account_withholding_automatic.field_account_tax_withholding_rule__fix_amount
+msgid "Amount"
+msgstr "Importe"
+
+#. module: l10n_ve_account_withholding_automatic
+#: model:ir.model.fields,help:l10n_ve_account_withholding_automatic.field_account_tax__withholding_non_taxable_amount
+msgid "Amount to be substracted before applying alicuot"
+msgstr "Cantidad a restar antes de aplicar alicuota"
+
+#. module: l10n_ve_account_withholding_automatic
+#: model:ir.model.fields,help:l10n_ve_account_withholding_automatic.field_account_tax__withholding_non_taxable_minimum
+msgid "Amounts lower than this wont't have any withholding"
+msgstr "Los montos inferiores a este no tendrán ninguna retención"
+
+#. module: l10n_ve_account_withholding_automatic
+#: model:ir.model.fields,field_description:l10n_ve_account_withholding_automatic.field_account_payment__automatic
+msgid "Automatic"
+msgstr "Automatico"
+
+#. module: l10n_ve_account_withholding_automatic
+#: model:ir.model.fields,field_description:l10n_ve_account_withholding_automatic.field_res_company__automatic_withholdings
+#: model:ir.model.fields,field_description:l10n_ve_account_withholding_automatic.field_res_config_settings__automatic_withholdings
+msgid "Automatic Withholdings"
+msgstr "Retenciones automáticas"
+
+#. module: l10n_ve_account_withholding_automatic
+#: model:ir.model.fields,field_description:l10n_ve_account_withholding_automatic.field_account_tax__withholding_amount_type
+msgid "Base Amount"
+msgstr "Cantidad base"
+
+#. module: l10n_ve_account_withholding_automatic
+#: model:ir.model.fields,help:l10n_ve_account_withholding_automatic.field_account_tax__withholding_amount_type
+msgid "Base amount used to get withholding amount"
+msgstr "Monto base utilizado para obtener el monto de la retención"
+
+#. module: l10n_ve_account_withholding_automatic
+#: model:ir.model.fields.selection,name:l10n_ve_account_withholding_automatic.selection__account_tax__withholding_type__based_on_rule
+msgid "Based On Rule"
+msgstr "Basado en la regla"
+
+#. module: l10n_ve_account_withholding_automatic
+#: model:ir.model.fields,field_description:l10n_ve_account_withholding_automatic.field_account_payment__comment_withholding
+msgid "Comment withholding"
+msgstr "Retención de comentarios"
+
+#. module: l10n_ve_account_withholding_automatic
+#: model:ir.model,name:l10n_ve_account_withholding_automatic.model_res_company
+msgid "Companies"
+msgstr "Compañías"
+
+#. module: l10n_ve_account_withholding_automatic
+#: model_terms:ir.ui.view,arch_db:l10n_ve_account_withholding_automatic.view_account_payment_group_form
+msgid "Compute Withholdings"
+msgstr "Calcular retenciones"
+
+#. module: l10n_ve_account_withholding_automatic
+#: model:ir.model.fields,field_description:l10n_ve_account_withholding_automatic.field_account_payment__computed_withholding_amount
+msgid "Computed Withholding Amount"
+msgstr "Importe de retención calculado"
+
+#. module: l10n_ve_account_withholding_automatic
+#: model:ir.model,name:l10n_ve_account_withholding_automatic.model_res_config_settings
+msgid "Config Settings"
+msgstr "Opciones de Configuración"
+
+#. module: l10n_ve_account_withholding_automatic
+#: code:addons/l10n_ve_account_withholding_automatic/models/account_tax.py:0
+#, python-format
+msgid ""
+"Could not eval rule domain \"%s\".\n"
+"This is what we get:\n"
+"%s"
+msgstr ""
+"No se pudo evaluar el dominio de regla \"% s\".\n"
+"Esto es lo que obtenemos:\n"
+"%s"
+
+#. module: l10n_ve_account_withholding_automatic
+#: model:ir.model.fields,field_description:l10n_ve_account_withholding_automatic.field_account_tax_withholding_rule__create_uid
+msgid "Created by"
+msgstr "Creado por"
+
+#. module: l10n_ve_account_withholding_automatic
+#: model:ir.model.fields,field_description:l10n_ve_account_withholding_automatic.field_account_tax_withholding_rule__create_date
+msgid "Created on"
+msgstr "Creado el"
+
+#. module: l10n_ve_account_withholding_automatic
+#: model:ir.model.fields,field_description:l10n_ve_account_withholding_automatic.field_account_tax_withholding_rule__display_name
+msgid "Display Name"
+msgstr "Nombre"
+
+#. module: l10n_ve_account_withholding_automatic
+#: model:ir.model.fields,field_description:l10n_ve_account_withholding_automatic.field_account_tax_withholding_rule__domain
+msgid "Domain"
+msgstr "Dominio"
+
+#. module: l10n_ve_account_withholding_automatic
+#: model:ir.model.fields,help:l10n_ve_account_withholding_automatic.field_account_tax_withholding_rule__percentage
+msgid "Enter % ratio between 0-1."
+msgstr "Ingrese el porcentaje de proporción entre 0-1."
+
+#. module: l10n_ve_account_withholding_automatic
+#: model:ir.model.fields,help:l10n_ve_account_withholding_automatic.field_account_tax_withholding_rule__fix_amount
+msgid "Fixed Amount after percentaje"
+msgstr "Monto fijo después del porcentaje"
+
+#. module: l10n_ve_account_withholding_automatic
+#: model:ir.model.fields,field_description:l10n_ve_account_withholding_automatic.field_account_tax_withholding_rule__id
+msgid "ID"
+msgstr "Identificador"
+
+#. module: l10n_ve_account_withholding_automatic
+#: model:ir.model.fields,help:l10n_ve_account_withholding_automatic.field_account_payment__withholding_accumulated_payments
+#: model:ir.model.fields,help:l10n_ve_account_withholding_automatic.field_account_tax__withholding_accumulated_payments
+msgid "If none is selected, then payments are not accumulated"
+msgstr "Si no se selecciona ninguno, los pagos no se acumulan"
+
+#. module: l10n_ve_account_withholding_automatic
+#: model:ir.model.fields,field_description:l10n_ve_account_withholding_automatic.field_account_payment__withholdable_advanced_amount
+msgid "Importe a cuenta sujeto a retencion"
+msgstr "Importe a cuenta sujeto a retención"
+
+#. module: l10n_ve_account_withholding_automatic
+#: model:ir.model.fields,field_description:l10n_ve_account_withholding_automatic.field_account_payment__withholdable_invoiced_amount
+msgid "Importe imputado sujeto a retencion"
+msgstr "Importe imputado sujeto a retención"
+
+#. module: l10n_ve_account_withholding_automatic
+#: model:ir.model.fields,field_description:l10n_ve_account_withholding_automatic.field_account_tax_withholding_rule____last_update
+msgid "Last Modified on"
+msgstr "Última modificación el"
+
+#. module: l10n_ve_account_withholding_automatic
+#: model:ir.model.fields,field_description:l10n_ve_account_withholding_automatic.field_account_tax_withholding_rule__write_uid
+msgid "Last Updated by"
+msgstr "Última actualización por"
+
+#. module: l10n_ve_account_withholding_automatic
+#: model:ir.model.fields,field_description:l10n_ve_account_withholding_automatic.field_account_tax_withholding_rule__write_date
+msgid "Last Updated on"
+msgstr "Última actualización el"
+
+#. module: l10n_ve_account_withholding_automatic
+#: model:ir.model.fields,help:l10n_ve_account_withholding_automatic.field_res_company__automatic_withholdings
+#: model:ir.model.fields,help:l10n_ve_account_withholding_automatic.field_res_config_settings__automatic_withholdings
+msgid "Make withholdings automatically on payments confirmation"
+msgstr "Realizar retenciones automáticamente en la confirmación de pagos"
+
+#. module: l10n_ve_account_withholding_automatic
+#: model_terms:ir.ui.view,arch_db:l10n_ve_account_withholding_automatic.res_config_settings_view_form
+msgid "Make withholdings automatically on payments confirmation."
+msgstr "Realice retenciones automáticamente en la confirmación de los pagos."
+
+#. module: l10n_ve_account_withholding_automatic
+#: model:ir.model.fields.selection,name:l10n_ve_account_withholding_automatic.selection__account_tax__withholding_accumulated_payments__month
+msgid "Month"
+msgstr "Mes(es)"
+
+#. module: l10n_ve_account_withholding_automatic
+#: code:addons/l10n_ve_account_withholding_automatic/models/account_tax.py:0
+#, python-format
+msgid "No journal for withholdings found on company %s"
+msgstr "No se encontró ningún diario de retenciones en la empresa% s"
+
+#. module: l10n_ve_account_withholding_automatic
+#: model:ir.model.fields,field_description:l10n_ve_account_withholding_automatic.field_account_payment__withholding_non_taxable_amount
+#: model:ir.model.fields,field_description:l10n_ve_account_withholding_automatic.field_account_tax__withholding_non_taxable_amount
+msgid "Non-taxable Amount"
+msgstr "Importe no imponible"
+
+#. module: l10n_ve_account_withholding_automatic
+#: code:addons/l10n_ve_account_withholding_automatic/models/account_tax.py:0
+#, python-format
+msgid "Non-taxable Amount can not be greater than Non-taxable Minimum"
+msgstr ""
+"La cantidad no imponible no puede ser mayor que el mínimo no imponible"
+
+#. module: l10n_ve_account_withholding_automatic
+#: model:ir.model.fields,field_description:l10n_ve_account_withholding_automatic.field_account_payment__withholding_non_taxable_minimum
+#: model:ir.model.fields,field_description:l10n_ve_account_withholding_automatic.field_account_tax__withholding_non_taxable_minimum
+msgid "Non-taxable Minimum"
+msgstr "Mínimo no imponible"
+
+#. module: l10n_ve_account_withholding_automatic
+#: model:ir.model.fields.selection,name:l10n_ve_account_withholding_automatic.selection__account_tax__withholding_type__none
+msgid "None"
+msgstr "Ninguno"
+
+#. module: l10n_ve_account_withholding_automatic
+#: model:ir.model,name:l10n_ve_account_withholding_automatic.model_account_payment_group
+msgid "Payment Group"
+msgstr "Grupo de pago"
+
+#. module: l10n_ve_account_withholding_automatic
+#: model:ir.model,name:l10n_ve_account_withholding_automatic.model_account_payment
+msgid "Payments"
+msgstr "Pagos"
+
+#. module: l10n_ve_account_withholding_automatic
+#: model:ir.model.fields,field_description:l10n_ve_account_withholding_automatic.field_account_tax_withholding_rule__percentage
+msgid "Percentage"
+msgstr "Porcentaje"
+
+#. module: l10n_ve_account_withholding_automatic
+#: model:ir.model.fields,field_description:l10n_ve_account_withholding_automatic.field_account_payment__period_withholding_amount
+msgid "Period Withholding Amount"
+msgstr "Monto de retención del período"
+
+#. module: l10n_ve_account_withholding_automatic
+#: model:ir.model.fields,field_description:l10n_ve_account_withholding_automatic.field_account_payment__previous_withholding_amount
+msgid "Previous Withholding Amount"
+msgstr "Monto de retención anterior"
+
+#. module: l10n_ve_account_withholding_automatic
+#: model:ir.model.fields.selection,name:l10n_ve_account_withholding_automatic.selection__account_tax__withholding_type__code
+msgid "Python Code"
+msgstr "Código Python"
+
+#. module: l10n_ve_account_withholding_automatic
+#: model:ir.model.fields,field_description:l10n_ve_account_withholding_automatic.field_account_tax__withholding_python_compute
+msgid "Python Code (withholdings)"
+msgstr "Código Python (retenciones)"
+
+#. module: l10n_ve_account_withholding_automatic
+#: model:ir.model.fields,field_description:l10n_ve_account_withholding_automatic.field_account_tax__withholding_rule_ids
+msgid "Rules"
+msgstr "Reglas"
+
+#. module: l10n_ve_account_withholding_automatic
+#: code:addons/l10n_ve_account_withholding_automatic/models/account_payment_group.py:0
+#, python-format
+msgid ""
+"Seleccionó deuda por %s pero aparentente desea pagar  %s. En la deuda "
+"seleccionada hay algunos comprobantes de mas que no van a poder ser pagados "
+"(%s). Deberá quitar  dichos comprobantes de la deuda seleccionada para "
+"poder hacer el correcto cálculo de las retenciones."
+msgstr ""
+"Seleccionó deuda por %s pero aparentente desea pagar  %s. En la deuda "
+"seleccionada hay algunos comprobantes de mas que no van a poder ser pagados "
+"(%s). Deberá quitar  dichos comprobantes de la deuda seleccionada para "
+"poder hacer el correcto cálculo de las retenciones."
+
+#. module: l10n_ve_account_withholding_automatic
+#: model:ir.model.fields,field_description:l10n_ve_account_withholding_automatic.field_account_tax_withholding_rule__sequence
+msgid "Sequence"
+msgstr "Secuencia"
+
+#. module: l10n_ve_account_withholding_automatic
+#: model:ir.model.fields,help:l10n_ve_account_withholding_automatic.field_account_payment_group__withholdable_advanced_amount
+msgid "Sometimes used for withholdings calculation"
+msgstr "A veces se utiliza para el cálculo de retenciones."
+
+#. module: l10n_ve_account_withholding_automatic
+#: model:ir.model,name:l10n_ve_account_withholding_automatic.model_account_tax
+msgid "Tax"
+msgstr "Impuesto"
+
+#. module: l10n_ve_account_withholding_automatic
+#: model:ir.model.fields,field_description:l10n_ve_account_withholding_automatic.field_account_tax_withholding_rule__tax_withholding_id
+msgid "Tax Withholding"
+msgstr "Retención de impuestos"
+
+#. module: l10n_ve_account_withholding_automatic
+#: model:ir.model.fields,help:l10n_ve_account_withholding_automatic.field_account_tax__withholding_type
+msgid "The computation method for the tax amount."
+msgstr "El método de cálculo del monto del impuesto."
+
+#. module: l10n_ve_account_withholding_automatic
+#: model:ir.model.fields,field_description:l10n_ve_account_withholding_automatic.field_account_payment__total_amount
+#: model:ir.model.fields.selection,name:l10n_ve_account_withholding_automatic.selection__account_tax__withholding_amount_type__total_amount
+msgid "Total Amount"
+msgstr "Cantidad total"
+
+#. module: l10n_ve_account_withholding_automatic
+#: model:ir.model.fields,field_description:l10n_ve_account_withholding_automatic.field_account_tax__withholding_type
+msgid "Type"
+msgstr "Tipo"
+
+#. module: l10n_ve_account_withholding_automatic
+#: model:ir.model.fields.selection,name:l10n_ve_account_withholding_automatic.selection__account_tax__withholding_amount_type__untaxed_amount
+msgid "Untaxed Amount"
+msgstr "Importe sin impuestos"
+
+#. module: l10n_ve_account_withholding_automatic
+#: model:ir.model.fields,field_description:l10n_ve_account_withholding_automatic.field_account_payment__withholdable_base_amount
+msgid "Withholdable Base Amount"
+msgstr "Monto base retenible"
+
+#. module: l10n_ve_account_withholding_automatic
+#: model:ir.model.fields,field_description:l10n_ve_account_withholding_automatic.field_account_tax__withholding_user_error_domain
+msgid "Withholding User Error Domain"
+msgstr "Dominio de error de usuario de retención"
+
+#. module: l10n_ve_account_withholding_automatic
+#: model:ir.model.fields,field_description:l10n_ve_account_withholding_automatic.field_account_tax__withholding_user_error_message
+msgid "Withholding User Error Message"
+msgstr "Mensaje de error de retención del usuario"
+
+#. module: l10n_ve_account_withholding_automatic
+#: model_terms:ir.ui.view,arch_db:l10n_ve_account_withholding_automatic.view_tax_form
+msgid "Withholding computation"
+msgstr "Cálculo de retención"
+
+#. module: l10n_ve_account_withholding_automatic
+#: model:ir.model.fields,field_description:l10n_ve_account_withholding_automatic.field_account_payment_group__withholdings_amount
+msgid "Withholdings Amount"
+msgstr "Monto de las retenciones"
+
+#. module: l10n_ve_account_withholding_automatic
+#: model:ir.model.fields,help:l10n_ve_account_withholding_automatic.field_account_tax__withholding_user_error_domain
+#: model:ir.model.fields,help:l10n_ve_account_withholding_automatic.field_account_tax_withholding_rule__domain
+msgid "Write a domain over account voucher module"
+msgstr "Escribir un módulo de cupón de dominio sobre cuenta"
+
+#. module: l10n_ve_account_withholding_automatic
+#: model:ir.model.fields.selection,name:l10n_ve_account_withholding_automatic.selection__account_tax__withholding_accumulated_payments__year
+msgid "Year"
+msgstr "Año(s)"
+
+#. module: l10n_ve_account_withholding_automatic
+#: model:ir.model,name:l10n_ve_account_withholding_automatic.model_account_tax_withholding_rule
+msgid "account.tax.withholding.rule"
+msgstr "account.tax.withholding.rule"

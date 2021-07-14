@@ -1,0 +1,1115 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* l10n_ve_account_payment_group
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 13.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-07-12 17:12+0000\n"
+"PO-Revision-Date: 2021-07-12 16:50-0400\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: \n"
+"Language: es_VE\n"
+"X-Generator: Poedit 3.0\n"
+
+#. module: l10n_ve_account_payment_group
+#: model:mail.template,body_html:l10n_ve_account_payment_group.email_template_edi_payment_group
+msgid ""
+"\n"
+"<div style=\"font-family: 'Lucida Grande', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; "
+"color: rgb(34, 34, 34); background-color: #FFF; \">\n"
+"    <p>Hello ${object.partner_id.name},</p>\n"
+"    <p>Here is your receipt from ${object.company_id.name}: </p>\n"
+"\n"
+"    <p style=\"border-left: 1px solid #8e0000; margin-left: 30px;\">\n"
+"       &nbsp;&nbsp;<strong>REFERENCES</strong><br />\n"
+"       &nbsp;&nbsp;Receipt number: <strong>${object.display_name}</strong><br />\n"
+"       &nbsp;&nbsp;Receipt reference: <strong>${object.communication or 'n/a'}</strong><br />\n"
+"       &nbsp;&nbsp;Receipt total: <strong>${object.payments_amount}</strong><br />\n"
+"    </p>\n"
+"\n"
+"    <p>If you have any question, do not hesitate to contact us.</p>\n"
+"    <p>Thank you for choosing ${object.company_id.name or 'us'}!</p>\n"
+"    <br/>\n"
+"    <br/>\n"
+"    <div style=\"width: 375px; margin: 0px; padding: 0px; background-color: #8E0000; border-top-"
+"left-radius: 5px 5px; border-top-right-radius: 5px 5px; background-repeat: repeat no-repeat;\">\n"
+"        <h3 style=\"margin: 0px; padding: 2px 14px; font-size: 12px; color: #DDD;\">\n"
+"            <strong style=\"text-transform:uppercase;\">${object.company_id.name}</strong></h3>\n"
+"    </div>\n"
+"    <div style=\"width: 347px; margin: 0px; padding: 5px 14px; line-height: 16px; background-"
+"color: #F2F2F2;\">\n"
+"        <span style=\"color: #222; margin-bottom: 5px; display: block; \">\n"
+"        % if object.company_id.street:\n"
+"            ${object.company_id.street}<br/>\n"
+"        % endif\n"
+"        % if object.company_id.street2:\n"
+"            ${object.company_id.street2}<br/>\n"
+"        % endif\n"
+"        % if object.company_id.city or object.company_id.zip:\n"
+"            ${object.company_id.zip} ${object.company_id.city}<br/>\n"
+"        % endif\n"
+"        % if object.company_id.country_id:\n"
+"            ${object.company_id.state_id and ('%s, ' % object.company_id.state_id.name) or ''} "
+"${object.company_id.country_id.name or ''}<br/>\n"
+"        % endif\n"
+"        </span>\n"
+"        % if object.company_id.phone:\n"
+"            <div style=\"margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: "
+"0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; \">\n"
+"                Phone:&nbsp; ${object.company_id.phone}\n"
+"            </div>\n"
+"        % endif\n"
+"        % if object.company_id.website:\n"
+"            <div>\n"
+"                Web :&nbsp;<a href=\"${object.company_id.website}\">${object.company_id.website}"
+"</a>\n"
+"            </div>\n"
+"        %endif\n"
+"        <p></p>\n"
+"    </div>\n"
+"</div>\n"
+"            "
+msgstr ""
+"\n"
+"<div style=\"font-family: 'Lucida Grande', Ubuntu, Arial, Verdana, sans-serif; font-size: 12px; "
+"color: rgb(34, 34, 34); background-color: #FFF; \">\n"
+"    <p>Hola $ {object.partner_id.name} ,</p>\n"
+"    <p>Aquí está su recibo en $ {object.company_id.name} : </p>\n"
+"\n"
+"    <p style=\"border-left: 1px solid #8e0000; margin-left: 30px;\">\n"
+"         <strong>Referencias</strong><br />Número de recibo: <strong>$ {object.display_name} </"
+"strong><br />Referencia de recepción: <strong>${object.communication o 'n/a'}</strong><br /"
+">Total del recibo: <strong>$ {object.payments_amount} </strong><br />\n"
+"    </p>\n"
+"\n"
+"    <p>Si tienes alguna inquietud, no dudes en ponerte en contacto con nosotros.</p>\n"
+"    <p>¡Gracias por elegir ${object.company_id.name o 'us'}!</p>\n"
+"    <br/>\n"
+"    <br/>\n"
+"    <div style=\"width: 375px; margin: 0px; padding: 0px; background-color: #8E0000; border-top-"
+"left-radius: 5px 5px; border-top-right-radius: 5px 5px; background-repeat: repeat no-repeat;\">\n"
+"        <h3 style=\"margin: 0px; padding: 2px 14px; font-size: 12px; color: #DDD;\">\n"
+"            <strong style=\"text-transform:uppercase;\">${object.company_id.name}</strong></h3>\n"
+"    </div>\n"
+"    <div style=\"width: 347px; margin: 0px; padding: 5px 14px; line-height: 16px; background-"
+"color: #F2F2F2;\">\n"
+"        <span style=\"color: #222; margin-bottom: 5px; display: block; \">\n"
+"       % if object.company_id.street:\n"
+"            ${object.company_id.street}<br/>\n"
+"        % endif\n"
+"        % if object.company_id.street2:\n"
+"            ${object.company_id.street2}<br/>\n"
+"        % endif\n"
+"        % if object.company_id.city or object.company_id.zip:\n"
+"            ${object.company_id.zip} ${object.company_id.city}<br/>\n"
+"        % endif\n"
+"        % if object.company_id.country_id:\n"
+"            ${object.company_id.state_id and  (' %s , ' % o bject.company_id.state_id.name) o "
+"''} ${object.company_id.country_id.name o ''}<br/>\n"
+"        % endif\n"
+"        </span> % i f object.company_id.phone:\n"
+"        <div style=\"margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; "
+"padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; \">Teléfono: "
+"${object.company_id.phone}\n"
+"            </div>\n"
+"        % endif\n"
+"        % if object.company_id.website:\n"
+"<div>Web : <a href=\"${object.company_id.website}\">$ {object.company_id.website} </a>\n"
+"            </div>\n"
+"        %endif        <p>\n"
+"    </div>\n"
+"</div>\n"
+"            "
+
+#. module: l10n_ve_account_payment_group
+#: model:mail.template,subject:l10n_ve_account_payment_group.email_template_edi_payment_group
+msgid "${object.company_id.name|safe} Receipt ${object.display_name or 'n/a'}"
+msgstr "${object.company_id.name|safe} Recibo ${object.display_name or 'n/a'}"
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.actions.report,print_report_name:l10n_ve_account_payment_group.action_report_payment_group
+msgid ""
+"(object.partner_type == 'supplier' and 'Orden de pago' or 'Recibo') + ' ' + object."
+"document_number"
+msgstr ""
+"(object.partner_type == 'supplier' and 'Orden de pago' or 'Recibo') + ' ' + object."
+"document_number"
+
+#. module: l10n_ve_account_payment_group
+#: model_terms:ir.ui.view,arch_db:l10n_ve_account_payment_group.view_account_payment_form
+msgid "(on company currency)"
+msgstr "(en la moneda de la empresa)"
+
+#. module: l10n_ve_account_payment_group
+#: model_terms:ir.ui.view,arch_db:l10n_ve_account_payment_group.view_account_payment_group_form
+msgid "+ Credit Note"
+msgstr "+ Nota de crédito"
+
+#. module: l10n_ve_account_payment_group
+#: model_terms:ir.ui.view,arch_db:l10n_ve_account_payment_group.view_account_payment_group_form
+msgid "+ Debit Note"
+msgstr "+ Nota de débito"
+
+#. module: l10n_ve_account_payment_group
+#: model_terms:ir.ui.view,arch_db:l10n_ve_account_payment_group.res_config_settings_view_form
+msgid ""
+"<span class=\"fa fa-lg fa-building-o\" title=\"Values set here are company-specific.\" groups="
+"\"base.group_multi_company\"/>"
+msgstr ""
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group__account_internal_type
+msgid "Account Internal Type"
+msgstr "Tipo de Cuenta Interna"
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group_invoice_wizard__date
+msgid "Accounting Date"
+msgstr "Fecha de contabilidad"
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group__message_needaction
+msgid "Action Needed"
+msgstr "Acción necesaria"
+
+#. module: l10n_ve_account_payment_group
+#: model_terms:ir.ui.view,arch_db:l10n_ve_account_payment_group.view_account_payment_group_form
+msgid "Add All / Refresh"
+msgstr "Agregar todo / Actualizar"
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group__unreconciled_amount
+msgid "Adjustment / Advance"
+msgstr "Ajuste / Avance"
+
+#. module: l10n_ve_account_payment_group
+#: model:res.groups,name:l10n_ve_account_payment_group.group_pay_now_customer_invoices
+msgid "Allow pay now on customer invoices"
+msgstr "Permitir pagar ahora en las facturas de los clientes"
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_res_config_settings__group_pay_now_customer_invoices
+msgid "Allow pay now on customer invoices?"
+msgstr "¿Permitir pagar ahora en las facturas de los clientes?"
+
+#. module: l10n_ve_account_payment_group
+#: model:res.groups,name:l10n_ve_account_payment_group.group_pay_now_vendor_invoices
+msgid "Allow pay now on vendor invoices"
+msgstr "Permitir pagar ahora en facturas de proveedores"
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_res_config_settings__group_pay_now_vendor_invoices
+msgid "Allow pay now on vendor invoices?"
+msgstr "¿Permitir pagar ahora en facturas de proveedores?"
+
+#. module: l10n_ve_account_payment_group
+#: model_terms:ir.ui.view,arch_db:l10n_ve_account_payment_group.res_config_settings_view_form
+msgid "Allow to choose inbound/outbound on payment lines."
+msgstr "Permitir elegir entrantes / salientes en las líneas de pago."
+
+#. module: l10n_ve_account_payment_group
+#: model_terms:ir.ui.view,arch_db:l10n_ve_account_payment_group.res_config_settings_view_form
+msgid "Allow to pay customer invoices automatically on invoice validation."
+msgstr "Permitir pagar las facturas de los clientes automáticamente en la validación de facturas."
+
+#. module: l10n_ve_account_payment_group
+#: model_terms:ir.ui.view,arch_db:l10n_ve_account_payment_group.res_config_settings_view_form
+msgid "Allow to pay vendor invoices automatically on invoice validation."
+msgstr "Permitir pagar facturas de proveedores automáticamente en la validación de facturas."
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.model.fields,help:l10n_ve_account_payment_group.field_res_config_settings__group_pay_now_vendor_invoices
+#: model_terms:ir.ui.view,arch_db:l10n_ve_account_payment_group.res_config_settings_view_form
+msgid ""
+"Allow users to choose a payment journal on invoices so that invoice is automatically paid after "
+"invoice validation. A payment will be created using choosen journal"
+msgstr ""
+"Permita que los usuarios elijan un diario de pago en las facturas para que la factura se pague "
+"automáticamente después de la validación de la misma. Se creará un pago utilizando el diario "
+"elegido"
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group__payments_amount
+#: model_terms:ir.ui.view,arch_db:l10n_ve_account_payment_group.view_move_line_tree
+msgid "Amount"
+msgstr "Importe"
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment__amount_company_currency
+msgid "Amount on Company Currency"
+msgstr "Importe en la moneda de la empresa"
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group_invoice_wizard__account_analytic_id
+msgid "Analytic Account"
+msgstr "Cuenta analítica"
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group__message_attachment_count
+msgid "Attachment Count"
+msgstr "Cantidad de Adjuntos"
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.model,name:l10n_ve_account_payment_group.model_account_bank_statement_line
+msgid "Bank Statement Line"
+msgstr "Línea de extracto bancario"
+
+#. module: l10n_ve_account_payment_group
+#: model_terms:ir.ui.view,arch_db:l10n_ve_account_payment_group.view_account_payment_group_form
+#: model_terms:ir.ui.view,arch_db:l10n_ve_account_payment_group.view_account_payment_group_invoice_wizard
+msgid "Cancel"
+msgstr "Cancelar"
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.model.fields.selection,name:l10n_ve_account_payment_group.selection__account_payment_group__state__cancel
+msgid "Cancelled"
+msgstr "Cancelado"
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_res_config_settings__group_choose_payment_type
+#: model:res.groups,name:l10n_ve_account_payment_group.group_choose_payment_type
+msgid "Choose Payment Type on Payments"
+msgstr "Elija el tipo de pago en las líneas de pago"
+
+#. module: l10n_ve_account_payment_group
+#: model_terms:ir.actions.act_window,help:l10n_ve_account_payment_group.action_account_payments_group
+#: model_terms:ir.actions.act_window,help:l10n_ve_account_payment_group.action_account_payments_group_payable
+msgid "Click to register a payment"
+msgstr "Haga clic para registrar un pago"
+
+#. module: l10n_ve_account_payment_group
+#: model_terms:ir.actions.act_window,help:l10n_ve_account_payment_group.action_account_payments_transfer
+msgid "Click to register a transfer between liquidity journals"
+msgstr "Haga clic para registrar una transferencia entre diarios de liquidez"
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group__commercial_partner_id
+msgid "Commercial Entity"
+msgstr "Entidad comercial"
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.model,name:l10n_ve_account_payment_group.model_res_company
+msgid "Companies"
+msgstr "Compañías"
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group__company_id
+#: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group_invoice_wizard__company_id
+#: model_terms:ir.ui.view,arch_db:l10n_ve_account_payment_group.view_account_payment_group_search
+#: model_terms:ir.ui.view,arch_db:l10n_ve_account_payment_group.view_account_payment_transfer_search
+msgid "Company"
+msgstr "Compañía"
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment__company_currency_id
+msgid "Company currency"
+msgstr "Moneda de la empresa"
+
+#. module: l10n_ve_account_payment_group
+#: code:addons/l10n_ve_account_payment_group/models/account_payment_group.py:0
+#, python-format
+msgid "Compose Email"
+msgstr "Escribir correo electrónico"
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.model,name:l10n_ve_account_payment_group.model_res_config_settings
+msgid "Config Settings"
+msgstr "Opciones de Configuración"
+
+#. module: l10n_ve_account_payment_group
+#: model_terms:ir.ui.view,arch_db:l10n_ve_account_payment_group.view_account_payment_group_form
+#: model_terms:ir.ui.view,arch_db:l10n_ve_account_payment_group.view_account_payment_group_invoice_wizard
+msgid "Confirm"
+msgstr "Confirmar"
+
+#. module: l10n_ve_account_payment_group
+#: model:res.groups,name:l10n_ve_account_payment_group.account_confirm_payment
+msgid "Confirm payments (only if double validation is enabled)"
+msgstr "Confirmar pagos (solo si está habilitada la doble validación)"
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.model.fields.selection,name:l10n_ve_account_payment_group.selection__account_payment_group__state__confirmed
+msgid "Confirmed"
+msgstr "Confirmado"
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group__create_uid
+#: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group_invoice_wizard__create_uid
+msgid "Created by"
+msgstr "Creado por"
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group__create_date
+#: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group_invoice_wizard__create_date
+msgid "Created on"
+msgstr "Creado el"
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.actions.act_window,name:l10n_ve_account_payment_group.action_account_payment_group_invoice_wizard
+msgid "Credit / Debit Note"
+msgstr "Nota de crédito / débito"
+
+#. module: l10n_ve_account_payment_group
+#: model_terms:ir.ui.view,arch_db:l10n_ve_account_payment_group.view_account_payment_group_invoice_wizard
+msgid "Credit Note"
+msgstr "Nota de Crédito"
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group__currency_id
+#: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group_invoice_wizard__currency_id
+#: model_terms:ir.ui.view,arch_db:l10n_ve_account_payment_group.view_account_payment_group_search
+#: model_terms:ir.ui.view,arch_db:l10n_ve_account_payment_group.view_account_payment_transfer_search
+msgid "Currency"
+msgstr "Moneda"
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.model.fields.selection,name:l10n_ve_account_payment_group.selection__account_payment_group__partner_type__customer
+msgid "Customer"
+msgstr "Cliente"
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.actions.act_window,name:l10n_ve_account_payment_group.action_account_payments_group
+#: model:ir.ui.menu,name:l10n_ve_account_payment_group.menu_action_account_payments_group_receivable
+msgid "Customer Receipts"
+msgstr "Recibos de clientes"
+
+#. module: l10n_ve_account_payment_group
+#: model_terms:ir.ui.view,arch_db:l10n_ve_account_payment_group.view_account_payment_group_form
+msgid "Debts"
+msgstr "Deudas"
+
+#. module: l10n_ve_account_payment_group
+#: model_terms:ir.ui.view,arch_db:l10n_ve_account_payment_group.view_account_payment_group_search
+#: model_terms:ir.ui.view,arch_db:l10n_ve_account_payment_group.view_account_payment_transfer_search
+msgid "Description"
+msgstr "Descripción"
+
+#. module: l10n_ve_account_payment_group
+#: model_terms:ir.ui.view,arch_db:l10n_ve_account_payment_group.view_account_payment_from_group_tree
+msgid "Details"
+msgstr "Detalles"
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.model.fields,help:l10n_ve_account_payment_group.field_account_payment_group__payment_difference
+msgid "Difference between selected debt (or to pay amount) and payments amount"
+msgstr "Diferencia entre la deuda seleccionada (o el monto a pagar) y el monto de los pagos"
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group__display_name
+#: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group_invoice_wizard__display_name
+msgid "Display Name"
+msgstr "Nombre"
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_res_company__double_validation
+#: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_res_config_settings__double_validation
+msgid "Double Validation on Payments?"
+msgstr "¿Doble validación de pagos?"
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.model.fields.selection,name:l10n_ve_account_payment_group.selection__account_payment_group__state__draft
+#: model_terms:ir.ui.view,arch_db:l10n_ve_account_payment_group.view_account_payment_group_search
+#: model_terms:ir.ui.view,arch_db:l10n_ve_account_payment_group.view_account_payment_transfer_search
+msgid "Draft"
+msgstr "Borrador"
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment__exchange_rate
+msgid "Exchange Rate"
+msgstr "Exchange Rate"
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group__message_follower_ids
+msgid "Followers"
+msgstr "Seguidores"
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group__message_channel_ids
+msgid "Followers (Channels)"
+msgstr "Seguidores (Canales)"
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group__message_partner_ids
+msgid "Followers (Partners)"
+msgstr "Seguidores (Partners)"
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment__force_amount_company_currency
+msgid "Forced Amount on Company Currency"
+msgstr "Importe en la moneda de la empresa"
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group__has_outstanding
+msgid "Has Outstanding"
+msgstr "Tiene sobresaliente"
+
+#. module: l10n_ve_account_payment_group
+#: model_terms:ir.ui.view,arch_db:l10n_ve_account_payment_group.view_account_payment_group_form
+msgid ""
+"Hay <b>créditos pendientes</b> de imputar en la deuda seleccionada, se intentará imputar dichos "
+"créditos a otros comprobantes seleccionados pero dicha información <b>no quedará registrada en "
+"el pago</b>. Si no desea que se imputen automáticamente puede borrarlos de la lista."
+msgstr ""
+"Hay <b>créditos pendientes</b> de imputar en la deuda seleccionada, se intentará imputar dichos "
+"créditos a otros comprobantes seleccionados pero dicha información <b>no quedará registrada en "
+"el pago</b>. Si no desea que se imputen automáticamente puede borrarlos de la lista."
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group__id
+#: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group_invoice_wizard__id
+msgid "ID"
+msgstr "Identificador"
+
+#. module: l10n_ve_account_payment_group
+#: model_terms:ir.ui.view,arch_db:l10n_ve_account_payment_group.view_account_payment_form
+msgid ""
+"IMPORTANTE: La validación de la línea de pago se debe hacer desde el recibo. La cancelación "
+"manual de una línea de pago se usa solo para correcciones y usos avanzados. Seguro desea "
+"continuar?"
+msgstr ""
+"IMPORTANTE: La validación de la línea de pago se debe hacer desde el recibo. La cancelación "
+"manual de una línea de pago se usa solo para correcciones y usos avanzados. Seguro desea "
+"continuar?"
+
+#. module: l10n_ve_account_payment_group
+#: model_terms:ir.ui.view,arch_db:l10n_ve_account_payment_group.view_account_payment_form
+msgid ""
+"IMPORTANTE: La validación de la línea de pago se debe hacer desde el recibo. La validación "
+"manual de una línea de pago se usa solo para correcciones y usos avanzados. Seguro desea "
+"continuar?"
+msgstr ""
+"IMPORTANTE: La validación de la línea de pago se debe hacer desde el recibo. La validación "
+"manual de una línea de pago se usa solo para correcciones y usos avanzados. Seguro desea "
+"continuar?"
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.model.fields,help:l10n_ve_account_payment_group.field_account_payment_group__message_needaction
+#: model:ir.model.fields,help:l10n_ve_account_payment_group.field_account_payment_group__message_unread
+msgid "If checked, new messages require your attention."
+msgstr "Si está marcada, los mensajes nuevos requieren su atención."
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.model.fields,help:l10n_ve_account_payment_group.field_account_payment_group__message_has_error
+#: model:ir.model.fields,help:l10n_ve_account_payment_group.field_account_payment_group__message_has_sms_error
+msgid "If checked, some messages have a delivery error."
+msgstr "Si está marcado, algunos mensajes tienen un error de entrega."
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.model.fields,help:l10n_ve_account_payment_group.field_account_move__pay_now_journal_id
+msgid ""
+"If you set a journal here, after invoice validation, the invoice will be automatically paid with "
+"this journal. As manual paymentmethod is used, only journals with manual method are shown."
+msgstr ""
+"Si establece un diario aquí, después de la validación de la factura, la factura se pagará "
+"automáticamente con este diario. Como se utiliza el método de pago manual, solo se muestran los "
+"diarios con el método manual."
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group__message_is_follower
+msgid "Is Follower"
+msgstr "Es Seguidor"
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.model.fields,help:l10n_ve_account_payment_group.field_account_payment_group__sent
+msgid "It indicates that the receipt has been sent."
+msgstr "Indica que se ha enviado el recibo."
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.model,name:l10n_ve_account_payment_group.model_account_journal
+#: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group_invoice_wizard__journal_id
+#: model_terms:ir.ui.view,arch_db:l10n_ve_account_payment_group.view_account_payment_transfer_search
+msgid "Journal"
+msgstr "Diario"
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.model,name:l10n_ve_account_payment_group.model_account_move
+msgid "Journal Entries"
+msgstr "Asientos contables"
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.model,name:l10n_ve_account_payment_group.model_account_move_line
+msgid "Journal Item"
+msgstr "Apunte contable"
+
+#. module: l10n_ve_account_payment_group
+#: code:addons/l10n_ve_account_payment_group/models/account_payment_group.py:0
+#: model_terms:ir.ui.view,arch_db:l10n_ve_account_payment_group.view_account_payment_group_form
+#: model_terms:ir.ui.view,arch_db:l10n_ve_account_payment_group.view_move_line_tree
+#, python-format
+msgid "Journal Items"
+msgstr "Apuntes contables"
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group____last_update
+#: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group_invoice_wizard____last_update
+msgid "Last Modified on"
+msgstr "Última modificación el"
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group__write_uid
+#: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group_invoice_wizard__write_uid
+msgid "Last Updated by"
+msgstr "Última actualización por"
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group__write_date
+#: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group_invoice_wizard__write_date
+msgid "Last Updated on"
+msgstr "Última actualización el"
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.model.fields,help:l10n_ve_account_payment_group.field_account_payment_group__matched_move_line_ids
+msgid "Lines that has been matched to payments, only available after payment validation"
+msgstr "Líneas que se han emparejado con pagos, solo disponibles después de la validación del pago"
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group__message_main_attachment_id
+msgid "Main Attachment"
+msgstr "Adjunto principal"
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group__matched_amount
+msgid "Matched Amount"
+msgstr "Monto igualado"
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group__matched_amount_untaxed
+msgid "Matched Amount Untaxed"
+msgstr "Importe igualado sin impuestos"
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group__matched_move_line_ids
+msgid "Matched Move Line"
+msgstr "Línea de movimiento coincidente"
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group__communication
+msgid "Memo"
+msgstr "Memo"
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group__message_has_error
+msgid "Message Delivery error"
+msgstr "Error de entrega del mensaje"
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group__message_ids
+msgid "Messages"
+msgstr "Mensajes"
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group__move_line_ids
+msgid "Move Line"
+msgstr "Mover línea"
+
+#. module: l10n_ve_account_payment_group
+#: model_terms:ir.ui.view,arch_db:l10n_ve_account_payment_group.view_account_payment_group_search
+msgid "Not Cancelled"
+msgstr "No cancelado"
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group__notes
+#: model_terms:ir.ui.view,arch_db:l10n_ve_account_payment_group.view_account_payment_group_form
+msgid "Notes"
+msgstr "Notas"
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group__message_needaction_counter
+msgid "Number of Actions"
+msgstr "Número de Acciones"
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group__message_has_error_counter
+msgid "Number of errors"
+msgstr "Número de errores"
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.model.fields,help:l10n_ve_account_payment_group.field_account_payment_group__message_needaction_counter
+msgid "Number of messages which requires an action"
+msgstr "Número de mensajes los cuales requieren una acción"
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.model.fields,help:l10n_ve_account_payment_group.field_account_payment_group__message_has_error_counter
+msgid "Number of messages with delivery error"
+msgstr "Número de mensajes con errores de entrega"
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.model.fields,help:l10n_ve_account_payment_group.field_account_payment_group__message_unread_counter
+msgid "Number of unread messages"
+msgstr "Número de mensajes no leidos"
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_move__open_move_line_ids
+msgid "Open Move Line"
+msgstr "Abrir línea de movimiento"
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment__other_currency
+msgid "Other Currency"
+msgstr "Otra moneda"
+
+#. module: l10n_ve_account_payment_group
+#: model_terms:ir.ui.view,arch_db:l10n_ve_account_payment_group.view_account_payment_group_form
+msgid "Paid"
+msgstr "Pagado"
+
+#. module: l10n_ve_account_payment_group
+#: model_terms:ir.ui.view,arch_db:l10n_ve_account_payment_group.view_move_line_with_matched_tree
+msgid "Paid Amount"
+msgstr "Monto de pago"
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group__partner_id
+#: model_terms:ir.ui.view,arch_db:l10n_ve_account_payment_group.view_account_payment_group_search
+msgid "Partner"
+msgstr "Empresa"
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group__partner_type
+msgid "Partner Type"
+msgstr "Tipo de socio"
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_move__pay_now_journal_id
+msgid "Pay now Journal"
+msgstr "Pagar ahora Diario"
+
+#. module: l10n_ve_account_payment_group
+#: code:addons/l10n_ve_account_payment_group/models/account_move.py:0
+#, python-format
+msgid "Pay now journal must have manual method!"
+msgstr "¡El diario Pagar ahora debe tener un método manual!"
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment__signed_amount_company_currency
+msgid "Payment Amount on Company Currency"
+msgstr "Importe del pago en la moneda de la empresa"
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group__payment_date
+msgid "Payment Date"
+msgstr "Fecha de pago"
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.model,name:l10n_ve_account_payment_group.model_account_payment_group
+#: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment__payment_group_id
+#: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group_invoice_wizard__payment_group_id
+msgid "Payment Group"
+msgstr "Grupo de pago"
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment__payment_group_company_id
+msgid "Payment Group Company"
+msgstr "Grupo de pago de la Compañía"
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_move_line__payment_group_matched_amount
+msgid "Payment Group Matched Amount"
+msgstr "Importe igualado del grupo de pago"
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_move__payment_group_ids
+#: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_move_line__payment_group_ids
+msgid "Payment Groups"
+msgstr "Grupo de pago"
+
+#. module: l10n_ve_account_payment_group
+#: code:addons/l10n_ve_account_payment_group/models/account_payment.py:0
+#: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group__payment_ids
+#: model_terms:ir.ui.view,arch_db:l10n_ve_account_payment_group.view_account_payment_group_form
+#, python-format
+msgid "Payment Lines"
+msgstr "Líneas de pago"
+
+#. module: l10n_ve_account_payment_group
+#: model_terms:ir.ui.view,arch_db:l10n_ve_account_payment_group.view_account_payment_transfer_search
+msgid "Payment Method"
+msgstr "Método de pago"
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group__payment_methods
+msgid "Payment Methods"
+msgstr "Métodos de pago"
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group__payment_subtype
+msgid "Payment Subtype"
+msgstr "Subtipo de pago"
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.model,name:l10n_ve_account_payment_group.model_payment_transaction
+msgid "Payment Transaction"
+msgstr "Transacción de pago"
+
+#. module: l10n_ve_account_payment_group
+#: model_terms:ir.ui.view,arch_db:l10n_ve_account_payment_group.view_account_payment_form
+msgid "Payment Type"
+msgstr "Tipo de Pago"
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment__payment_type_copy
+msgid "Payment Type (without transfer)"
+msgstr "Tipo de pago (sin transferencia)"
+
+#. module: l10n_ve_account_payment_group
+#: code:addons/l10n_ve_account_payment_group/wizards/account_payment_group_invoice_wizard.py:0
+#, python-format
+msgid "Payment id %s"
+msgstr "Identificador %s de pago"
+
+#. module: l10n_ve_account_payment_group
+#: model_terms:ir.ui.view,arch_db:l10n_ve_account_payment_group.view_account_payment_group_form
+msgid ""
+"Payment will be automatically matched with the oldest lines of this list (by maturity date). You "
+"can remove any line you dont want to be matched."
+msgstr ""
+"El pago se comparará automáticamente con las líneas más antiguas de esta lista (por fecha de "
+"vencimiento). Puede eliminar cualquier línea que no desee que coincida."
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.model,name:l10n_ve_account_payment_group.model_account_payment
+#: model_terms:ir.ui.view,arch_db:l10n_ve_account_payment_group.view_account_payment_group_graph
+#: model_terms:ir.ui.view,arch_db:l10n_ve_account_payment_group.view_account_payment_group_search
+msgid "Payments"
+msgstr "Pagos"
+
+#. module: l10n_ve_account_payment_group
+#: model_terms:ir.ui.view,arch_db:l10n_ve_account_payment_group.view_account_payment_group_form
+msgid "Payments Amount"
+msgstr "Monto de los pagos"
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group__payment_difference
+msgid "Payments Difference"
+msgstr "Diferencia de pagos"
+
+#. module: l10n_ve_account_payment_group
+#: model_terms:ir.actions.act_window,help:l10n_ve_account_payment_group.action_account_payments_group
+#: model_terms:ir.actions.act_window,help:l10n_ve_account_payment_group.action_account_payments_group_payable
+msgid ""
+"Payments are used to register liquidity movements (send or collect).\n"
+"          You can then process those payments by your own means or by using installed facilities."
+msgstr ""
+"Los pagos se utilizan para registrar movimientos de liquidez (enviar o cobrar).\n"
+"          A continuación, puede procesar esos pagos por sus propios medios o utilizando las "
+"actualizaciones instaladas."
+
+#. module: l10n_ve_account_payment_group
+#: code:addons/l10n_ve_account_payment_group/models/account_payment.py:0
+#, python-format
+msgid "Payments with partners must be created from payments groups"
+msgstr "Los pagos con socios deben crearse a partir de grupos de pagos"
+
+#. module: l10n_ve_account_payment_group
+#: code:addons/l10n_ve_account_payment_group/models/account_payment.py:0
+#, python-format
+msgid "Payments without partners (usually transfers) cant't have a related payment group"
+msgstr ""
+"Los pagos sin socios (generalmente transferencias) no pueden tener un grupo de pago relacionado"
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group__pop_up
+msgid "Pop Up"
+msgstr "Surgir"
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.model.fields.selection,name:l10n_ve_account_payment_group.selection__account_payment_group__state__posted
+#: model_terms:ir.ui.view,arch_db:l10n_ve_account_payment_group.view_account_payment_group_search
+#: model_terms:ir.ui.view,arch_db:l10n_ve_account_payment_group.view_account_payment_transfer_search
+msgid "Posted"
+msgstr "Publicado"
+
+#. module: l10n_ve_account_payment_group
+#: model_terms:ir.ui.view,arch_db:l10n_ve_account_payment_group.view_account_payment_group_form
+msgid "Print"
+msgstr "Impresión"
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group_invoice_wizard__product_id
+msgid "Product"
+msgstr "Producto"
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group_invoice_wizard__description
+msgid "Reason"
+msgstr "Razón"
+
+#. module: l10n_ve_account_payment_group
+#: model:mail.template,report_name:l10n_ve_account_payment_group.email_template_edi_payment_group
+msgid "Receipt_${(object.display_name or '').replace('/','_')}"
+msgstr "Receipt_${(object.display_name or '').replace('/','_')}"
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.model.fields.selection,name:l10n_ve_account_payment_group.selection__account_payment__payment_type_copy__inbound
+msgid "Receive Money"
+msgstr "Receive Money"
+
+#. module: l10n_ve_account_payment_group
+#: model_terms:ir.ui.view,arch_db:l10n_ve_account_payment_group.account_journal_dashboard_kanban_view
+msgid "Received Money"
+msgstr "Dinero recibido"
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.actions.report,name:l10n_ve_account_payment_group.action_report_payment_group
+msgid "Recibo / Orden de Pago"
+msgstr "Recibo / Orden de Pago"
+
+#. module: l10n_ve_account_payment_group
+#: model_terms:ir.ui.view,arch_db:l10n_ve_account_payment_group.view_account_payment_transfer_search
+msgid "Reconciled"
+msgstr "Reconciliado"
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group_invoice_wizard__invoice_date
+msgid "Refund Date"
+msgstr "Fecha de Devolución"
+
+#. module: l10n_ve_account_payment_group
+#: code:addons/l10n_ve_account_payment_group/models/account_move.py:0
+#: model_terms:ir.ui.view,arch_db:l10n_ve_account_payment_group.view_account_payment_group_form
+#, python-format
+msgid "Register Payment"
+msgstr "Registro de pago"
+
+#. module: l10n_ve_account_payment_group
+#: model_terms:ir.ui.view,arch_db:l10n_ve_account_payment_group.view_account_payment_group_form
+msgid "Remove All"
+msgstr "Remove All"
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group__message_has_sms_error
+msgid "SMS Delivery error"
+msgstr "Error de entrega de SMS"
+
+#. module: l10n_ve_account_payment_group
+#: model:res.groups,name:l10n_ve_account_payment_group.account_see_payment_menu
+msgid "See Payments Menu"
+msgstr "Ver menú de pagos"
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group__selected_debt
+msgid "Selected Debt"
+msgstr "Deuda seleccionada"
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group__selected_debt_untaxed
+msgid "Selected Debt Untaxed"
+msgstr "Deuda seleccionada sin impuestos"
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group__selected_finacial_debt
+msgid "Selected Financial Debt"
+msgstr "Deuda financiera seleccionada"
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.model.fields.selection,name:l10n_ve_account_payment_group.selection__account_payment__payment_type_copy__outbound
+msgid "Send Money"
+msgstr "Enviar dinero"
+
+#. module: l10n_ve_account_payment_group
+#: model_terms:ir.ui.view,arch_db:l10n_ve_account_payment_group.view_account_payment_group_form
+msgid "Send by Email"
+msgstr "Enviar por correo electrónico"
+
+#. module: l10n_ve_account_payment_group
+#: model_terms:ir.ui.view,arch_db:l10n_ve_account_payment_group.account_journal_dashboard_kanban_view
+msgid "Sended Money"
+msgstr "Dinero enviado"
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group__sent
+#: model_terms:ir.ui.view,arch_db:l10n_ve_account_payment_group.view_account_payment_transfer_search
+msgid "Sent"
+msgstr "Enviado"
+
+#. module: l10n_ve_account_payment_group
+#: model_terms:ir.ui.view,arch_db:l10n_ve_account_payment_group.view_account_payment_group_form
+msgid "Set to Draft"
+msgstr "Establecer en borrador"
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment__signed_amount
+msgid "Signed Amount"
+msgstr "Monto firmado"
+
+#. module: l10n_ve_account_payment_group
+#: model_terms:ir.ui.view,arch_db:l10n_ve_account_payment_group.view_account_payment_group_search
+#: model_terms:ir.ui.view,arch_db:l10n_ve_account_payment_group.view_account_payment_transfer_search
+msgid "State"
+msgstr "Estado"
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group__state
+msgid "Status"
+msgstr ""
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.actions.act_window,name:l10n_ve_account_payment_group.action_account_payments_group_payable
+#: model:ir.ui.menu,name:l10n_ve_account_payment_group.menu_action_account_payments_group_payable
+msgid "Supplier Payments"
+msgstr "Pagos a proveedores"
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group_invoice_wizard__tax_ids
+msgid "Taxes"
+msgstr "Impuestos"
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.model.fields,help:l10n_ve_account_payment_group.field_account_payment_group__to_pay_move_line_ids
+msgid "This lines are the ones the user has selected to be paid."
+msgstr "Estas líneas son las que el usuario ha seleccionado para recibir el pago."
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group__to_pay_amount
+msgid "To Pay Amount"
+msgstr "Para pagar la cantidad"
+
+#. module: l10n_ve_account_payment_group
+#: code:addons/l10n_ve_account_payment_group/models/account_payment_group.py:0
+#, python-format
+msgid "To Pay Amount and Payment Amount must be equal!"
+msgstr "¡Para pagar el monto y el monto del pago deben ser iguales!"
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group__to_pay_move_line_ids
+#: model_terms:ir.ui.view,arch_db:l10n_ve_account_payment_group.view_account_payment_group_form
+msgid "To Pay Lines"
+msgstr "Pagar líneas"
+
+#. module: l10n_ve_account_payment_group
+#: code:addons/l10n_ve_account_payment_group/models/account_payment.py:0
+#: code:addons/l10n_ve_account_payment_group/models/account_payment_group.py:0
+#, python-format
+msgid "To Pay Lines must be of the same account!"
+msgstr "¡Las líneas de pago deben ser de la misma cuenta!"
+
+#. module: l10n_ve_account_payment_group
+#: model_terms:ir.ui.view,arch_db:l10n_ve_account_payment_group.view_account_payment_from_group_tree
+#: model_terms:ir.ui.view,arch_db:l10n_ve_account_payment_group.view_account_payment_group_tree
+#: model_terms:ir.ui.view,arch_db:l10n_ve_account_payment_group.view_move_line_tree
+#: model_terms:ir.ui.view,arch_db:l10n_ve_account_payment_group.view_move_line_with_matched_tree
+msgid "Total"
+msgstr "Total"
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group_invoice_wizard__amount_total
+msgid "Total Amount"
+msgstr "Cantidad total"
+
+#. module: l10n_ve_account_payment_group
+#: model_terms:ir.ui.view,arch_db:l10n_ve_account_payment_group.view_account_payment_transfer_search
+msgid "Transfer To"
+msgstr "Transferir a"
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.actions.act_window,name:l10n_ve_account_payment_group.action_account_payments_transfer
+#: model:ir.ui.menu,name:l10n_ve_account_payment_group.menu_action_account_payments_transfer
+#: model_terms:ir.ui.view,arch_db:l10n_ve_account_payment_group.view_account_payment_transfer_search
+msgid "Transfers"
+msgstr "Traslados"
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group__unmatched_amount
+msgid "Unmatched Amount"
+msgstr "Monto incomparable"
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group__message_unread
+msgid "Unread Messages"
+msgstr "Mensajes no leídos"
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group__message_unread_counter
+msgid "Unread Messages Counter"
+msgstr "Contador de mensajes no leídos"
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group_invoice_wizard__amount_untaxed
+msgid "Untaxed Amount"
+msgstr "Importe sin impuestos"
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.model.fields,help:l10n_ve_account_payment_group.field_res_company__double_validation
+#: model:ir.model.fields,help:l10n_ve_account_payment_group.field_res_config_settings__double_validation
+msgid "Use two steps validation on payments to suppliers"
+msgstr "Utilice la validación de dos pasos en los pagos a proveedores"
+
+#. module: l10n_ve_account_payment_group
+#: model_terms:ir.ui.view,arch_db:l10n_ve_account_payment_group.res_config_settings_view_form
+msgid "Use two steps validation on payments to suppliers."
+msgstr "Use two steps validation on payments to suppliers."
+
+#. module: l10n_ve_account_payment_group
+#: model_terms:ir.ui.view,arch_db:l10n_ve_account_payment_group.res_config_settings_view_form
+msgid ""
+"Used if you want let user choose payment type (inbound or outbound) when registering a payment "
+"from a payment group"
+msgstr ""
+"Se utiliza si desea que el usuario elija el tipo de pago (entrante o saliente) al registrar un "
+"pago de un grupo de pago"
+
+#. module: l10n_ve_account_payment_group
+#: model_terms:ir.ui.view,arch_db:l10n_ve_account_payment_group.view_account_payment_group_form
+msgid "Validate"
+msgstr "Validar"
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.model.fields.selection,name:l10n_ve_account_payment_group.selection__account_payment_group__partner_type__supplier
+msgid "Vendor"
+msgstr "Vendedor"
+
+#. module: l10n_ve_account_payment_group
+#: model_terms:ir.ui.view,arch_db:l10n_ve_account_payment_group.view_move_form
+msgid "View Payments"
+msgstr "Ver pagos"
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group__website_message_ids
+msgid "Website Messages"
+msgstr "Mensajes del sitio web"
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.model.fields,help:l10n_ve_account_payment_group.field_account_payment_group__website_message_ids
+msgid "Website communication history"
+msgstr "Historial de comunicación del sitio web"
+
+#. module: l10n_ve_account_payment_group
+#: code:addons/l10n_ve_account_payment_group/models/account_payment_group.py:0
+#, python-format
+msgid "You can not confirm a payment group without payment lines!"
+msgstr "¡No puede confirmar un grupo de pago sin líneas de pago!"
+
+#. module: l10n_ve_account_payment_group
+#: code:addons/l10n_ve_account_payment_group/models/account_payment_group.py:0
+#, python-format
+msgid "You can not delete a payment that is already posted"
+msgstr "No puede eliminar un pago que ya está registrado."
+
+#. module: l10n_ve_account_payment_group
+#: code:addons/l10n_ve_account_payment_group/models/account_payment_group.py:0
+#, python-format
+msgid "You can not send to pay lines from different partners"
+msgstr "No puede enviar a líneas de pago de diferentes socios."
+
+#. module: l10n_ve_account_payment_group
+#: code:addons/l10n_ve_account_payment_group/models/account_move.py:0
+#, python-format
+msgid "You can only register payment if invoice is posted and unpaid"
+msgstr "Solo puede registrar el pago si la factura se registra y no se paga"
+
+#. module: l10n_ve_account_payment_group
+#: code:addons/l10n_ve_account_payment_group/wizards/account_payment_group_invoice_wizard.py:0
+#, python-format
+msgid "You can only set amount total if taxes are of type percentage"
+msgstr "Solo puede establecer el monto total si los impuestos son de tipo porcentaje"
+
+#. module: l10n_ve_account_payment_group
+#: model:ir.model,name:l10n_ve_account_payment_group.model_account_payment_group_invoice_wizard
+msgid "account.payment.group.invoice.wizard"
+msgstr "account.payment.group.invoice.wizard"

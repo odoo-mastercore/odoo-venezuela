@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 13.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-06-17 21:43+0000\n"
-"PO-Revision-Date: 2020-06-17 18:49-0300\n"
+"POT-Creation-Date: 2021-07-12 17:05+0000\n"
+"PO-Revision-Date: 2021-07-12 18:06-0400\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: \n"
 "Language: es_VE\n"
-"X-Generator: Poedit 2.2.1\n"
+"X-Generator: Poedit 3.0\n"
 
 #. module: l10n_ve_base
 #: model:ir.model.fields,field_description:l10n_ve_base.field_l10n_ve_responsibility_type__active
@@ -36,19 +36,29 @@ msgstr "Cuentas bancarias"
 #: model_terms:ir.ui.view,arch_db:l10n_ve_base.view_res_company_form_inherit
 #: model_terms:ir.ui.view,arch_db:l10n_ve_base.view_res_partner_form_inherit
 msgid "Calle 2..."
-msgstr ""
+msgstr "Calle 2..."
 
 #. module: l10n_ve_base
 #: model_terms:ir.ui.view,arch_db:l10n_ve_base.view_res_company_form_inherit
 #: model_terms:ir.ui.view,arch_db:l10n_ve_base.view_res_partner_form_inherit
 msgid "Calle..."
-msgstr ""
+msgstr "Calle..."
+
+#. module: l10n_ve_base
+#: model_terms:ir.ui.view,arch_db:l10n_ve_base.currency_rate_wizard_form
+msgid "Cancel"
+msgstr "Cancel"
 
 #. module: l10n_ve_base
 #: model_terms:ir.ui.view,arch_db:l10n_ve_base.view_res_company_form_inherit
 #: model_terms:ir.ui.view,arch_db:l10n_ve_base.view_res_partner_form_inherit
 msgid "Ciudad"
-msgstr ""
+msgstr "Ciudad"
+
+#. module: l10n_ve_base
+#: model_terms:ir.ui.view,arch_db:l10n_ve_base.consult_currency_wizard_confirm
+msgid "Close"
+msgstr "Cerca"
 
 #. module: l10n_ve_base
 #: model:ir.model.fields,field_description:l10n_ve_base.field_l10n_ve_responsibility_type__code
@@ -58,17 +68,32 @@ msgstr "Código"
 #. module: l10n_ve_base
 #: model:ir.model.fields,field_description:l10n_ve_base.field_l10n_latam_identification_type__l10n_ve_code
 msgid "Code Seniat"
-msgstr "Código de SENIAT"
+msgstr "Código Seniat"
 
 #. module: l10n_ve_base
 #: model:ir.model.constraint,message:l10n_ve_base.constraint_l10n_ve_responsibility_type_code
 msgid "Code must be unique!"
-msgstr "El Código debe ser Único"
+msgstr "¡El código debe ser único!"
 
 #. module: l10n_ve_base
 #: model:ir.model,name:l10n_ve_base.model_res_company
 msgid "Companies"
 msgstr "Compañías"
+
+#. module: l10n_ve_base
+#: model:ir.model.fields,field_description:l10n_ve_base.field_currency_rate_wizard__company_id
+msgid "Company"
+msgstr "Compañía"
+
+#. module: l10n_ve_base
+#: model_terms:ir.ui.view,arch_db:l10n_ve_base.currency_rate_wizard_form
+msgid "Confirm"
+msgstr "Confirmar"
+
+#. module: l10n_ve_base
+#: model_terms:ir.ui.view,arch_db:l10n_ve_base.consult_currency_wizard_confirm
+msgid "Consult Currency Wizard"
+msgstr "Consultar asistente de moneda"
 
 #. module: l10n_ve_base
 #: model:ir.model,name:l10n_ve_base.model_res_partner
@@ -82,68 +107,81 @@ msgid "Country"
 msgstr "País"
 
 #. module: l10n_ve_base
+#: model:ir.model.fields,field_description:l10n_ve_base.field_currency_rate_wizard__create_uid
 #: model:ir.model.fields,field_description:l10n_ve_base.field_l10n_ve_responsibility_type__create_uid
 msgid "Created by"
 msgstr "Creado por"
 
 #. module: l10n_ve_base
+#: model:ir.model.fields,field_description:l10n_ve_base.field_currency_rate_wizard__create_date
 #: model:ir.model.fields,field_description:l10n_ve_base.field_l10n_ve_responsibility_type__create_date
 msgid "Created on"
 msgstr "Creado el"
 
 #. module: l10n_ve_base
-#: model_terms:ir.ui.view,arch_db:l10n_ve_base.view_res_partner_bank_form_inherit
-msgid "Cuenta Bancaria"
-msgstr ""
-
-#. module: l10n_ve_base
 #: model:ir.model.fields.selection,name:l10n_ve_base.selection__res_partner_bank__l10n_ve_acc_type__ahorro
 msgid "Cuenta Corriente"
-msgstr ""
+msgstr "Cuenta Corriente"
 
 #. module: l10n_ve_base
 #: model:ir.model.fields.selection,name:l10n_ve_base.selection__res_partner_bank__l10n_ve_acc_type__fideicomiso
 msgid "Cuenta Fideicomiso"
-msgstr ""
+msgstr "Cuenta Fideicomiso"
 
 #. module: l10n_ve_base
 #: model:ir.model.fields.selection,name:l10n_ve_base.selection__res_partner_bank__l10n_ve_acc_type__corriente
 msgid "Cuenta de Ahorro"
-msgstr ""
+msgstr "Cuenta de Ahorro"
 
 #. module: l10n_ve_base
 #: model_terms:ir.ui.view,arch_db:l10n_ve_base.view_res_partner_bank_tree_inherit
 msgid "Cuentas bancarias"
-msgstr ""
+msgstr "Cuenta de Ahorro"
+
+#. module: l10n_ve_base
+#: model:ir.model,name:l10n_ve_base.model_res_currency
+#: model:ir.model.fields,field_description:l10n_ve_base.field_currency_rate_wizard__currency_id
+msgid "Currency"
+msgstr "Moneda"
+
+#. module: l10n_ve_base
+#: model:ir.model,name:l10n_ve_base.model_res_currency_rate
+msgid "Currency Rate"
+msgstr "Tasa monetaria"
+
+#. module: l10n_ve_base
+#: model:ir.model,name:l10n_ve_base.model_currency_rate_wizard
+#: model_terms:ir.ui.view,arch_db:l10n_ve_base.currency_rate_wizard_form
+msgid "Currency Rate Wizard"
+msgstr "Asistente de tipo de cambio"
+
+#. module: l10n_ve_base
+#: model:ir.model.fields,field_description:l10n_ve_base.field_res_currency__rate
+msgid "Current Rate"
+msgstr "Tasa"
 
 #. module: l10n_ve_base
 #: model:l10n_latam.identification.type,name:l10n_ve_base.it_civ
 msgid "Cédula Identidad"
-msgstr ""
+msgstr "Cédula Identidad"
 
 #. module: l10n_ve_base
 #: code:addons/l10n_ve_base/models/res_partner_bank.py:0
 #, python-format
 msgid "Debe Seleccionar la Entidad Bancaria."
-msgstr ""
+msgstr "Debe Seleccionar la Entidad Bancaria."
 
 #. module: l10n_ve_base
 #: code:addons/l10n_ve_base/models/res_bank.py:0
 #, python-format
 msgid "Debe indicar el Nombre de la Entidad Bancaria."
-msgstr ""
+msgstr "Debe indicar el Nombre de la Entidad Bancaria."
 
 #. module: l10n_ve_base
 #: code:addons/l10n_ve_base/models/res_partner_bank.py:0
 #, python-format
 msgid "Debe indicar el numero de cuenta."
-msgstr ""
-
-#. module: l10n_ve_base
-#: code:addons/l10n_ve_base/models/res_partner_bank.py:0
-#, python-format
-msgid "Debe seleccionar el tipo de Cuenta."
-msgstr ""
+msgstr "Debe indicar el numero de cuenta."
 
 #. module: l10n_ve_base
 #: model:ir.model.fields,help:l10n_ve_base.field_res_company__l10n_ve_responsibility_type_id
@@ -154,13 +192,15 @@ msgid ""
 "a legal entity could have and that impacts in the type of operations and "
 "requirements they need."
 msgstr ""
-"Definido por el SENIAT para identificar el tipo de responsabilidad fiscal "
-"que una persona o entidad legal  puede tener."
+"Definido por SENIAT para identificar el tipo de responsabilidades que una "
+"persona o entidad jurídica podría tener y que impacta en el tipo de "
+"operaciones y requisitos que necesita."
 
 #. module: l10n_ve_base
+#: model:ir.model.fields,field_description:l10n_ve_base.field_currency_rate_wizard__display_name
 #: model:ir.model.fields,field_description:l10n_ve_base.field_l10n_ve_responsibility_type__display_name
 msgid "Display Name"
-msgstr "Nombre a mostrar"
+msgstr "Nombre"
 
 #. module: l10n_ve_base
 #: model:ir.model.fields,field_description:l10n_ve_base.field_res_company__state_id
@@ -170,12 +210,18 @@ msgstr "Nombre a mostrar"
 #: model:ir.model.fields,help:l10n_ve_base.field_res_partner__state_id
 #: model:ir.model.fields,help:l10n_ve_base.field_res_users__state_id
 msgid "Estado"
-msgstr ""
+msgstr "Estado"
 
 #. module: l10n_ve_base
+#: model:ir.model.fields,field_description:l10n_ve_base.field_currency_rate_wizard__id
 #: model:ir.model.fields,field_description:l10n_ve_base.field_l10n_ve_responsibility_type__id
 msgid "ID"
-msgstr ""
+msgstr "Identificador"
+
+#. module: l10n_ve_base
+#: model:account.tax.group,name:l10n_ve_base.tax_group_iva_16
+msgid "IVA 16%"
+msgstr "IVA 16%"
 
 #. module: l10n_ve_base
 #: model:ir.model.fields,field_description:l10n_ve_base.field_res_company__l10n_latam_identification_type_id
@@ -190,19 +236,22 @@ msgid "Identification Types"
 msgstr "Tipos de Identificación"
 
 #. module: l10n_ve_base
+#: model:ir.model.fields,field_description:l10n_ve_base.field_currency_rate_wizard____last_update
 #: model:ir.model.fields,field_description:l10n_ve_base.field_l10n_ve_responsibility_type____last_update
 msgid "Last Modified on"
 msgstr "Última modificación el"
 
 #. module: l10n_ve_base
+#: model:ir.model.fields,field_description:l10n_ve_base.field_currency_rate_wizard__write_uid
 #: model:ir.model.fields,field_description:l10n_ve_base.field_l10n_ve_responsibility_type__write_uid
 msgid "Last Updated by"
 msgstr "Última actualización por"
 
 #. module: l10n_ve_base
+#: model:ir.model.fields,field_description:l10n_ve_base.field_currency_rate_wizard__write_date
 #: model:ir.model.fields,field_description:l10n_ve_base.field_l10n_ve_responsibility_type__write_date
 msgid "Last Updated on"
-msgstr "Ultima actualización el"
+msgstr "Última actualización el"
 
 #. module: l10n_ve_base
 #: model:ir.model.fields,field_description:l10n_ve_base.field_res_company__municipality_id
@@ -214,7 +263,7 @@ msgstr "Ultima actualización el"
 #: model_terms:ir.ui.view,arch_db:l10n_ve_base.view_res_company_form_inherit
 #: model_terms:ir.ui.view,arch_db:l10n_ve_base.view_res_partner_form_inherit
 msgid "Municipio"
-msgstr ""
+msgstr "Municipio"
 
 #. module: l10n_ve_base
 #: model:ir.model.fields,field_description:l10n_ve_base.field_l10n_ve_responsibility_type__name
@@ -224,7 +273,14 @@ msgstr "Nombre"
 #. module: l10n_ve_base
 #: model:ir.model.constraint,message:l10n_ve_base.constraint_l10n_ve_responsibility_type_name
 msgid "Name must be unique!"
-msgstr "El nombre debe ser único!"
+msgstr "¡El nombre debe ser único!"
+
+#. module: l10n_ve_base
+#: code:addons/l10n_ve_base/models/res_currency_rate.py:0
+#, python-format
+msgid "No company found using Venezuela localization"
+msgstr ""
+"No se ha encontrado ninguna empresa que utilice la localización de Venezuela"
 
 #. module: l10n_ve_base
 #: model:ir.model.fields,field_description:l10n_ve_base.field_res_company__parish_id
@@ -236,7 +292,7 @@ msgstr "El nombre debe ser único!"
 #: model_terms:ir.ui.view,arch_db:l10n_ve_base.view_res_company_form_inherit
 #: model_terms:ir.ui.view,arch_db:l10n_ve_base.view_res_partner_form_inherit
 msgid "Parroquia"
-msgstr ""
+msgstr "Parroquia"
 
 #. module: l10n_ve_base
 #: model:ir.model.fields,field_description:l10n_ve_base.field_res_company__country_id
@@ -246,43 +302,48 @@ msgstr ""
 #: model:ir.model.fields,help:l10n_ve_base.field_res_partner__country_id
 #: model:ir.model.fields,help:l10n_ve_base.field_res_users__country_id
 msgid "País"
-msgstr ""
+msgstr "País"
 
 #. module: l10n_ve_base
 #: model:l10n_latam.identification.type,name:l10n_ve_base.it_rifc
 msgid "RIF C"
-msgstr ""
+msgstr "RIF C"
 
 #. module: l10n_ve_base
 #: model:l10n_latam.identification.type,name:l10n_ve_base.it_rife
 msgid "RIF E"
-msgstr ""
+msgstr "RIF E"
 
 #. module: l10n_ve_base
 #: model:l10n_latam.identification.type,name:l10n_ve_base.it_rifg
 msgid "RIF G"
-msgstr ""
+msgstr "RIF G"
 
 #. module: l10n_ve_base
 #: model:l10n_latam.identification.type,name:l10n_ve_base.it_rifj
 msgid "RIF J"
-msgstr ""
+msgstr "RIF J"
+
+#. module: l10n_ve_base
+#: model:ir.model.fields,field_description:l10n_ve_base.field_res_currency_rate__rate
+msgid "Rate"
+msgstr "Tasa"
 
 #. module: l10n_ve_base
 #: model:ir.ui.menu,name:l10n_ve_base.menu_seniat_responsibility_type
 msgid "Responsibility Types"
-msgstr "Tipo de responsabilidad"
+msgstr "Tipos de Responsabilidad"
 
 #. module: l10n_ve_base
 #: model:ir.ui.menu,name:l10n_ve_base.menu_seniat_config
 msgid "SENIAT"
-msgstr ""
+msgstr "SENIAT"
 
 #. module: l10n_ve_base
 #: model_terms:ir.ui.view,arch_db:l10n_ve_base.view_res_company_form_inherit
 #: model_terms:ir.ui.view,arch_db:l10n_ve_base.view_res_partner_form_inherit
 msgid "SENIAT Responsibility"
-msgstr "Responsabilidad  SENIAT"
+msgstr "Responsabilidad del SENIAT"
 
 #. module: l10n_ve_base
 #: model:ir.model,name:l10n_ve_base.model_l10n_ve_responsibility_type
@@ -290,23 +351,23 @@ msgstr "Responsabilidad  SENIAT"
 #: model:ir.model.fields,field_description:l10n_ve_base.field_res_partner__l10n_ve_responsibility_type_id
 #: model:ir.model.fields,field_description:l10n_ve_base.field_res_users__l10n_ve_responsibility_type_id
 msgid "SENIAT Responsibility Type"
-msgstr "Tipo de Responsabilidad SENIAT"
+msgstr "Tipo de responsabilidad del SENIAT"
 
 #. module: l10n_ve_base
 #: model_terms:ir.ui.view,arch_db:l10n_ve_base.view_res_partner_bank_form_inherit
 msgid "Seleccione"
-msgstr ""
+msgstr "Seleccione"
 
 #. module: l10n_ve_base
 #: model_terms:ir.ui.view,arch_db:l10n_ve_base.view_seniat_responsibility_type_form
 #: model_terms:ir.ui.view,arch_db:l10n_ve_base.view_seniat_responsibility_type_tree
 msgid "Seniat Responsibility Type"
-msgstr "Tipo de Responsabilidad SENIAT"
+msgstr "Tipo de responsabilidad de Seniat"
 
 #. module: l10n_ve_base
 #: model:ir.actions.act_window,name:l10n_ve_base.action_seniat_responsibility_type
 msgid "Seniat Responsibility Types"
-msgstr "Tipos de Responsabilidad SENIAT"
+msgstr "Tipos de responsabilidad de Seniat"
 
 #. module: l10n_ve_base
 #: model:ir.model.fields,field_description:l10n_ve_base.field_l10n_ve_responsibility_type__sequence
@@ -318,6 +379,21 @@ msgstr "Secuencia"
 #: model_terms:ir.ui.view,arch_db:l10n_ve_base.view_res_partner_form_inherit
 msgid "State"
 msgstr "Estado"
+
+#. module: l10n_ve_base
+#: model:ir.model.fields,field_description:l10n_ve_base.field_currency_rate_wizard__number
+msgid "Tasa en Bs"
+msgstr "Tasa en Bs"
+
+#. module: l10n_ve_base
+#: model:ir.model.fields,help:l10n_ve_base.field_res_currency_rate__rate
+msgid "The rate of the currency to the currency of rate 1"
+msgstr "La tasa de cambio de la moneda respecto a la moneda de tasa 1"
+
+#. module: l10n_ve_base
+#: model:ir.model.fields,help:l10n_ve_base.field_res_currency__rate
+msgid "The rate of the currency to the currency of rate 1."
+msgstr "La tasa de cambio de la moneda respecto a la moneda de tasa 1."
 
 #. module: l10n_ve_base
 #: model:ir.model.fields,help:l10n_ve_base.field_res_company__l10n_latam_identification_type_id
@@ -332,16 +408,36 @@ msgstr "Tipo de identificación"
 #: model_terms:ir.ui.view,arch_db:l10n_ve_base.view_res_partner_bank_form_inherit
 #: model_terms:ir.ui.view,arch_db:l10n_ve_base.view_res_partner_bank_tree_inherit
 msgid "Tipo de cuenta"
-msgstr ""
+msgstr "Tipo de cuenta"
 
 #. module: l10n_ve_base
 #: model:ir.model.fields,help:l10n_ve_base.field_account_setup_bank_manual_config__l10n_ve_acc_type
 #: model:ir.model.fields,help:l10n_ve_base.field_res_partner_bank__l10n_ve_acc_type
 msgid "Tipo de cuenta."
-msgstr ""
+msgstr "Tipo de cuenta."
+
+#. module: l10n_ve_base
+#: model_terms:ir.ui.view,arch_db:l10n_ve_base.view_currency_form
+msgid "Update Rate"
+msgstr "Frecuencia de actualización"
+
+#. module: l10n_ve_base
+#: model_terms:ir.ui.view,arch_db:l10n_ve_base.consult_currency_wizard_confirm
+msgid "Updated exchange rate"
+msgstr "Tipo de cambio actualizado"
 
 #. module: l10n_ve_base
 #: model_terms:ir.ui.view,arch_db:l10n_ve_base.view_res_company_form_inherit
 #: model_terms:ir.ui.view,arch_db:l10n_ve_base.view_res_partner_form_inherit
 msgid "ZIP"
 msgstr "Código Postal"
+
+#. module: l10n_ve_base
+#: model:ir.actions.act_window,name:l10n_ve_base.action_currency_rate_wizard
+msgid "currency_rate_wizard"
+msgstr "currency_rate_wizard"
+
+#. module: l10n_ve_base
+#: model_terms:ir.ui.view,arch_db:l10n_ve_base.currency_rate_wizard_form
+msgid "or"
+msgstr "o"

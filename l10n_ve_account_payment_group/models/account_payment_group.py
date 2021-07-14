@@ -602,3 +602,22 @@ class AccountPaymentGroup(models.Model):
             self.filtered(lambda rec: not rec.sent).write({'sent': True})
         return super(AccountPaymentGroup, self.with_context(
             mail_post_autofollow=True)).message_post(**kwargs)
+
+    def _get_report_filename(self):
+        for rec in self:
+            name = ''
+            if rec.partner_type == 'supplier':
+                name = 'Orden de pago'
+                if rec.display_name == 'False':
+                    name += ' OP-Borrador'
+                else:
+                    name += ' '+rec.display_name
+            else:
+                name = 'Recibo'
+                if rec.display_name == 'False':
+                    name += ' RE-Borrador'
+                else:
+                    name += ' '+rec.display_name
+        return name
+
+        OP-X
