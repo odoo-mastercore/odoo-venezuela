@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: Odoo Server 13.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-07-12 17:05+0000\n"
-"PO-Revision-Date: 2021-07-12 18:06-0400\n"
+"PO-Revision-Date: 2021-07-15 11:48-0400\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -47,7 +47,7 @@ msgstr "Calle..."
 #. module: l10n_ve_base
 #: model_terms:ir.ui.view,arch_db:l10n_ve_base.currency_rate_wizard_form
 msgid "Cancel"
-msgstr "Cancel"
+msgstr "Cancelar"
 
 #. module: l10n_ve_base
 #: model_terms:ir.ui.view,arch_db:l10n_ve_base.view_res_company_form_inherit
@@ -136,7 +136,7 @@ msgstr "Cuenta de Ahorro"
 #. module: l10n_ve_base
 #: model_terms:ir.ui.view,arch_db:l10n_ve_base.view_res_partner_bank_tree_inherit
 msgid "Cuentas bancarias"
-msgstr "Cuenta de Ahorro"
+msgstr "Cuentas bancarias"
 
 #. module: l10n_ve_base
 #: model:ir.model,name:l10n_ve_base.model_res_currency

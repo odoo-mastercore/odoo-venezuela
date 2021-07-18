@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: Odoo Server 13.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-07-12 17:12+0000\n"
-"PO-Revision-Date: 2021-07-12 16:50-0400\n"
+"PO-Revision-Date: 2021-07-15 11:28-0400\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -162,6 +162,8 @@ msgid ""
 "<span class=\"fa fa-lg fa-building-o\" title=\"Values set here are company-specific.\" groups="
 "\"base.group_multi_company\"/>"
 msgstr ""
+"<span class = \"fa fa-lg fa-building-o\" title = \"Los valores establecidos aquí son específicos "
+"de la empresa\". grupos = \"base.group_multi_company\" />"
 
 #. module: l10n_ve_account_payment_group
 #: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group__account_internal_type
@@ -422,7 +424,7 @@ msgstr "Borrador"
 #. module: l10n_ve_account_payment_group
 #: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment__exchange_rate
 msgid "Exchange Rate"
-msgstr "Exchange Rate"
+msgstr "Tipo de cambio"
 
 #. module: l10n_ve_account_payment_group
 #: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group__message_follower_ids
@@ -437,7 +439,7 @@ msgstr "Seguidores (Canales)"
 #. module: l10n_ve_account_payment_group
 #: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group__message_partner_ids
 msgid "Followers (Partners)"
-msgstr "Seguidores (Partners)"
+msgstr "Seguidores (Socios)"
 
 #. module: l10n_ve_account_payment_group
 #: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment__force_amount_company_currency
@@ -823,7 +825,7 @@ msgstr "Surgir"
 #: model_terms:ir.ui.view,arch_db:l10n_ve_account_payment_group.view_account_payment_group_search
 #: model_terms:ir.ui.view,arch_db:l10n_ve_account_payment_group.view_account_payment_transfer_search
 msgid "Posted"
-msgstr "Publicado"
+msgstr "Al corriente"
 
 #. module: l10n_ve_account_payment_group
 #: model_terms:ir.ui.view,arch_db:l10n_ve_account_payment_group.view_account_payment_group_form
@@ -848,7 +850,7 @@ msgstr "Receipt_${(object.display_name or '').replace('/','_')}"
 #. module: l10n_ve_account_payment_group
 #: model:ir.model.fields.selection,name:l10n_ve_account_payment_group.selection__account_payment__payment_type_copy__inbound
 msgid "Receive Money"
-msgstr "Receive Money"
+msgstr "Recibir dinero"
 
 #. module: l10n_ve_account_payment_group
 #: model_terms:ir.ui.view,arch_db:l10n_ve_account_payment_group.account_journal_dashboard_kanban_view
@@ -880,7 +882,7 @@ msgstr "Registro de pago"
 #. module: l10n_ve_account_payment_group
 #: model_terms:ir.ui.view,arch_db:l10n_ve_account_payment_group.view_account_payment_group_form
 msgid "Remove All"
-msgstr "Remove All"
+msgstr "Eliminar todo"
 
 #. module: l10n_ve_account_payment_group
 #: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group__message_has_sms_error
@@ -947,7 +949,7 @@ msgstr "Estado"
 #. module: l10n_ve_account_payment_group
 #: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group__state
 msgid "Status"
-msgstr ""
+msgstr "Estatus"
 
 #. module: l10n_ve_account_payment_group
 #: model:ir.actions.act_window,name:l10n_ve_account_payment_group.action_account_payments_group_payable
@@ -1043,7 +1045,7 @@ msgstr "Utilice la validación de dos pasos en los pagos a proveedores"
 #. module: l10n_ve_account_payment_group
 #: model_terms:ir.ui.view,arch_db:l10n_ve_account_payment_group.res_config_settings_view_form
 msgid "Use two steps validation on payments to suppliers."
-msgstr "Use two steps validation on payments to suppliers."
+msgstr "Utilice la validación de dos pasos en los pagos a proveedores."
 
 #. module: l10n_ve_account_payment_group
 #: model_terms:ir.ui.view,arch_db:l10n_ve_account_payment_group.res_config_settings_view_form
@@ -1089,13 +1091,13 @@ msgstr "¡No puede confirmar un grupo de pago sin líneas de pago!"
 #: code:addons/l10n_ve_account_payment_group/models/account_payment_group.py:0
 #, python-format
 msgid "You can not delete a payment that is already posted"
-msgstr "No puede eliminar un pago que ya está registrado."
+msgstr "No puede eliminar un pago que ya está registrado"
 
 #. module: l10n_ve_account_payment_group
 #: code:addons/l10n_ve_account_payment_group/models/account_payment_group.py:0
 #, python-format
 msgid "You can not send to pay lines from different partners"
-msgstr "No puede enviar a líneas de pago de diferentes socios."
+msgstr "No puede enviar a líneas de pago de diferentes socios"
 
 #. module: l10n_ve_account_payment_group
 #: code:addons/l10n_ve_account_payment_group/models/account_move.py:0
