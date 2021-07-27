@@ -57,39 +57,80 @@ class AccountVatLedgerXlsx(models.AbstractModel):
             total_amount_other_tax = 0
             i = 0   
             for invoice in obj.invoice_ids:
-                # Write lines
-                i += 1
-                sheet.write(row, 0, i, line)
-                sheet.write(row, 1, invoice.invoice_date, date_line)
-                sheet.write(row, 2, invoice.name, line)
-                sheet.write(row, 3, invoice.l10n_ve_document_number, line)
-                sheet.write(row, 4, invoice.partner_id.name, line)
-                sheet.write(row, 5, invoice.partner_id.\
-                    l10n_latam_identification_type_id.l10n_ve_code+'-'+invoice.\
-                    partner_id.vat, line)
-                sheet.write(row, 6, '', line)
-                sheet.write(row, 7, '', line)
-                sheet.write(row, 8, '', line)
-                sheet.write(row, 9, '01-REG', line)
-                sheet.write(row, 10, int((str(
-                    invoice.amount_by_group[0][0]).replace("IVA ","")).\
-                    replace("%","")), line)
-                sheet.write(row, 11, invoice.amount_untaxed_signed, line)
-                if invoice.amount_tax_signed == 0:
-                    sheet.write(row, 12, invoice.amount_tax_signed, line)
-                    sheet.write(row, 13, 0, line)
-                    sheet.write(row, 14, invoice.amount_total_signed, line)
-                    total_amount_other_tax += invoice.amount_total_signed
-                else:
-                    sheet.write(row, 12, invoice.amount_tax_signed, line)
-                    sheet.write(row, 13, invoice.amount_total_signed, line)
-                    sheet.write(row, 14, 0, line)
-                
-                # Adding totals
-                total_amount_taxed += invoice.amount_tax_signed
-                total_amount_untaxed += invoice.amount_untaxed_signed 
-                total_amount += invoice.amount_total_signed
-                row += 1
+                if obj.type == 'purchase':
+                    # Write Purchase lines 
+                    i += 1
+                    sheet.write(row, 0, i, line)
+                    sheet.write(row, 1, invoice.invoice_date, date_line)
+                    sheet.write(row, 2, invoice.ref, line)
+                    sheet.write(row, 3, invoice.l10n_ve_document_number, line)
+                    sheet.write(row, 4, invoice.partner_id.name, line)
+                    sheet.write(row, 5, invoice.partner_id.\
+                        l10n_latam_identification_type_id.l10n_ve_code+'-'+
+                        invoice.partner_id.vat, line)
+                    sheet.write(row, 6, '', line)
+                    sheet.write(row, 7, '', line)
+                    sheet.write(row, 8, '', line)
+                    sheet.write(row, 9, '01-REG', line)
+                    sheet.write(row, 10, int((str(
+                        invoice.amount_by_group[0][0]).replace("IVA ","")).\
+                        replace("%","")), line)
+                    sheet.write(row, 11, 
+                        str(invoice.amount_untaxed_signed * -1), line)
+                    if invoice.amount_tax_signed == 0:
+                        sheet.write(row, 12, 
+                            str(invoice.amount_tax_signed * -1), line)
+                        sheet.write(row, 13, 0, line)
+                        sheet.write(row, 14, 
+                            str(invoice.amount_total_signed * -1), line)
+                        total_amount_other_tax += invoice.amount_total_signed
+                    else:
+                        sheet.write(row, 12, 
+                            str(invoice.amount_tax_signed * -1), line)
+                        sheet.write(row, 13, 
+                            str(invoice.amount_total_signed * -1), line)
+                        sheet.write(row, 14, 0, line)
+                    
+                    # Adding totals
+                    total_amount_taxed += invoice.amount_tax_signed * -1
+                    total_amount_untaxed += invoice.amount_untaxed_signed * -1
+                    total_amount += invoice.amount_total_signed * -1
+                    row += 1
+
+                elif obj.type == 'sale':
+                    # Write Sale lines
+                    i += 1
+                    sheet.write(row, 0, i, line)
+                    sheet.write(row, 1, invoice.invoice_date, date_line)
+                    sheet.write(row, 2, invoice.name, line)
+                    sheet.write(row, 3, invoice.l10n_ve_document_number, line)
+                    sheet.write(row, 4, invoice.partner_id.name, line)
+                    sheet.write(row, 5, invoice.partner_id.\
+                        l10n_latam_identification_type_id.l10n_ve_code+'-'+invoice.\
+                        partner_id.vat, line)
+                    sheet.write(row, 6, '', line)
+                    sheet.write(row, 7, '', line)
+                    sheet.write(row, 8, '', line)
+                    sheet.write(row, 9, '01-REG', line)
+                    sheet.write(row, 10, int((str(
+                        invoice.amount_by_group[0][0]).replace("IVA ","")).\
+                        replace("%","")), line)
+                    sheet.write(row, 11, invoice.amount_untaxed_signed, line)
+                    if invoice.amount_tax_signed == 0:
+                        sheet.write(row, 12, invoice.amount_tax_signed, line)
+                        sheet.write(row, 13, 0, line)
+                        sheet.write(row, 14, invoice.amount_total_signed, line)
+                        total_amount_other_tax += invoice.amount_total_signed
+                    else:
+                        sheet.write(row, 12, invoice.amount_tax_signed, line)
+                        sheet.write(row, 13, invoice.amount_total_signed, line)
+                        sheet.write(row, 14, 0, line)
+                    
+                    # Adding totals
+                    total_amount_taxed += invoice.amount_tax_signed
+                    total_amount_untaxed += invoice.amount_untaxed_signed 
+                    total_amount += invoice.amount_total_signed
+                    row += 1
 
             # # Write totals lines
             sheet.write(row, 10, 'TOTALES', bold)
