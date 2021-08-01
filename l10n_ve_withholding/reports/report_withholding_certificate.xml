@@ -62,7 +62,13 @@
                             </td>
                             <td class="text-left">
                                 <t t-foreach="o.payment_group_id.to_pay_move_line_ids" t-as="i">
-                                    <span t-field="i.move_id.l10n_ve_document_number"/>
+                                    Nro: <span t-field="i.move_id.l10n_ve_document_number"/>, 
+                                    <t t-if="i.move_id.type == out_invoice">
+                                        Fact: <span t-field="i.move_id.name"/>
+                                    </t>
+                                    <t t-else="">
+                                        Fact: <span t-field="i.move_id.ref"/>
+                                    </t>
                                 </t>
                             </td>
                         </tr>
