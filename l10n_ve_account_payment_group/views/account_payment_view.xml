@@ -89,13 +89,13 @@
                 <field name="signed_amount" invisible="1"/>
             </form>
 
-            <button name="post" position="attributes">
+            <button name="action_post" position="attributes">
                 <!-- idem cancel -->
                 <attribute name="groups">base.group_no_one</attribute>
                 <attribute name="confirm">IMPORTANTE: La validación de la línea de pago se debe hacer desde el recibo. La validación manual de una línea de pago se usa solo para correcciones y usos avanzados. Seguro desea continuar?</attribute>
             </button>
 
-            <button name="cancel" position="attributes">
+            <button name="action_cancel" position="attributes">
                 <!-- al final lo hacemos visible para poder hacer ajustes sin cancelar todo el payment group, pero solo si no transfer, con tec group y un confirm -->
                 <attribute name="groups">base.group_no_one</attribute>
                 <attribute name="confirm">IMPORTANTE: La validación de la línea de pago se debe hacer desde el recibo. La cancelación manual de una línea de pago se usa solo para correcciones y usos avanzados. Seguro desea continuar?</attribute>
@@ -152,13 +152,13 @@
             <field name="payment_type_copy" position="replace"/>
 
             <!-- sacamos confirm y groups en transfers -->
-            <button name="post" position="attributes">
+            <button name="action_post" position="attributes">
                 <attribute name="confirm"></attribute>
                 <attribute name="groups"></attribute>
             </button>
 
             <!-- sacamos confirm y groups en transfers -->
-            <button name="cancel" position="attributes">
+            <button name="action_cancel" position="attributes">
                 <attribute name="confirm"></attribute>
                 <attribute name="groups"></attribute>
             </button>
@@ -176,9 +176,9 @@
             <tree position="attributes">
                 <attribute name="create">true</attribute>
             </tree>
-            <field name="partner_id" position="replace">
+            <!-- <field name="partner_id" position="replace">
                 <field name="destination_journal_id"/>
-            </field>
+            </field> -->
         </field>
     </record>
 
@@ -191,7 +191,7 @@
                 <field name="name" filter_domain="['|', ('name','ilike',self), ('communication','ilike',self)]" string="Description"/>
                 <separator/>
                 <field name="journal_id" />
-                <field name="destination_journal_id"/>
+                <!-- <field name="destination_journal_id"/> -->
                 <field name="company_id" groups="base.group_multi_company" />
                 <separator/>
                 <filter string="Draft" domain="[('state','=','draft')]" name='state_draft'/>
@@ -200,7 +200,7 @@
                 <filter name="reconciled" string="Reconciled" domain="[('state','=','reconciled')]"/>
                 <separator/>
                 <filter name="journal_id" string="Journal" domain="[]" context="{'group_by': 'journal_id'}"/>
-                <filter name="destination_journal_id" string="Transfer To" domain="[]" context="{'group_by': 'destination_journal_id'}"/>
+                <!-- <filter name="destination_journal_id" string="Transfer To" domain="[]" context="{'group_by': 'destination_journal_id'}"/> -->
                 <filter name="payment_method_id" string="Payment Method" domain="[]" context="{'group_by': 'payment_method_id'}"/>
                 <filter name="state" string="State" domain="[]" context="{'group_by': 'state'}"/>
                 <filter name="currency_id" string="Currency" domain="[]" context="{'group_by': 'currency_id'}" groups="base.group_multi_currency"/>

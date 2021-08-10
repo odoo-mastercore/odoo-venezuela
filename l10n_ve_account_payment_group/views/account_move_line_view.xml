@@ -51,8 +51,8 @@
     <field name="arch" type="xml">
         <group id="header_left_group">
             <!-- only allow pay now if manual method available -->
-            <field name="pay_now_journal_id" attrs="{'invisible': [('type', 'not in', ('in_invoice', 'in_refund'))]}" options="{'no_create': True}" domain="[('company_id', '=', company_id), ('type', 'in', ['bank', 'cash']), ('outbound_payment_method_ids.code', '=', 'manual')]" groups="l10n_ve_account_payment_group.group_pay_now_vendor_invoices"/>
-            <field name="pay_now_journal_id" attrs="{'invisible': [('type', 'not in', ('out_invoice', 'out_refund'))]}" options="{'no_create': True}" domain="[('company_id', '=', company_id), ('type', 'in', ['bank', 'cash']), ('inbound_payment_method_ids.code', '=', 'manual')]" groups="l10n_ve_account_payment_group.group_pay_now_customer_invoices"/>
+            <field name="pay_now_journal_id" attrs="{'invisible': [('move_type', 'not in', ('in_invoice', 'in_refund'))]}" options="{'no_create': True}" domain="[('company_id', '=', company_id), ('type', 'in', ['bank', 'cash']), ('outbound_payment_method_ids.code', '=', 'manual')]" groups="l10n_ve_account_payment_group.group_pay_now_vendor_invoices"/>
+            <field name="pay_now_journal_id" attrs="{'invisible': [('move_type', 'not in', ('out_invoice', 'out_refund'))]}" options="{'no_create': True}" domain="[('company_id', '=', company_id), ('type', 'in', ['bank', 'cash']), ('inbound_payment_method_ids.code', '=', 'manual')]" groups="l10n_ve_account_payment_group.group_pay_now_customer_invoices"/>
         </group>
 
         <button id="account_invoice_payment_btn" position="attributes">
