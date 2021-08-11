@@ -478,9 +478,9 @@ class AccountPaymentGroup(models.Model):
             ('account_id.internal_type', '=',
                 self.account_internal_type),
             ('account_id.reconcile', '=', True),
-            ('reconciled', '=', False),
             ('move_id.move_type', 'in', 
-                ['out_invoice','out_refund','in_invoice','in_refund'])
+                ['out_invoice','out_refund','in_invoice','in_refund']),
+            ('reconciled', '=', False),
             ('full_reconcile_id', '=', False),
             ('company_id', '=', self.company_id.id),
             # '|',

@@ -1,7 +1,7 @@
 {
     "name": "Payment Groups with Accounting Documents",
-    "version": "13.0.1.0.0",
-    "author": "ADHOC SA,Odoo Community Association (OCA)",
+    "version": "14.0.1.0.0",
+    "author": "ADHOC SA, SINAPSYS GLOBAL SA || MASTERCORE SAS",
     "license": "AGPL-3",
     "category": "Accounting",
     "depends": [

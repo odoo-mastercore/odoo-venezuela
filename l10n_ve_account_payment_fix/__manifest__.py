@@ -1,5 +1,5 @@
 {
-    'author': 'ADHOC SA',
+    'author': 'ADHOC SA, SINAPSYS GLOBAL SA || MASTERCORE SAS',
     'website': 'www.adhoc.com.ar',
     'license': 'AGPL-3',
     'category': 'Accounting & Finance',

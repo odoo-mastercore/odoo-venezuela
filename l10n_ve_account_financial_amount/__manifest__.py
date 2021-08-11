@@ -1,7 +1,7 @@
 {
     "name": "Accounting Financial Amounts",
     "version": "14.0.1.0.0",
-    "author": "ADHOC SA",
+    "author": "ADHOC SA, SINAPSYS GLOBAL SA || MASTERCORE SAS",
     "license": "AGPL-3",
     "category": "Accounting",
     "depends": [

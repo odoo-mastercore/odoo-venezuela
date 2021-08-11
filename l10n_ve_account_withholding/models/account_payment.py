@@ -26,7 +26,8 @@ class AccountPayment(models.Model):
         readonly=True,
         states={'draft': [('readonly', False)]},
     )
-
+    communication = fields.Text('Notas')
+    
     def post(self):
         without_number = self.filtered(
             lambda x: x.tax_withholding_id and not x.withholding_number)

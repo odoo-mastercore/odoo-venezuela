@@ -5,7 +5,7 @@
     "version": "14.0.1.0.0",
     "category": "Accounting",
     "website": "www.adhoc.com.ar",
-    "author": "ADHOC SA,",
+    "author": "ADHOC SA, SINAPSYS GLOBAL SA || MASTERCORE SAS",
     "license": "AGPL-3",
     "application": False,
     'installable': True,
