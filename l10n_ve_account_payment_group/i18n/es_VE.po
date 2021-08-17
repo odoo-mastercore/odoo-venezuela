@@ -825,7 +825,7 @@ msgstr "Surgir"
 #: model_terms:ir.ui.view,arch_db:l10n_ve_account_payment_group.view_account_payment_group_search
 #: model_terms:ir.ui.view,arch_db:l10n_ve_account_payment_group.view_account_payment_transfer_search
 msgid "Posted"
-msgstr "Al corriente"
+msgstr "Publicado"
 
 #. module: l10n_ve_account_payment_group
 #: model_terms:ir.ui.view,arch_db:l10n_ve_account_payment_group.view_account_payment_group_form
@@ -1014,7 +1014,7 @@ msgstr "Transferir a"
 #: model:ir.ui.menu,name:l10n_ve_account_payment_group.menu_action_account_payments_transfer
 #: model_terms:ir.ui.view,arch_db:l10n_ve_account_payment_group.view_account_payment_transfer_search
 msgid "Transfers"
-msgstr "Traslados"
+msgstr "Transferencias"
 
 #. module: l10n_ve_account_payment_group
 #: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group__unmatched_amount

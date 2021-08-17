@@ -684,9 +684,19 @@ msgid "SENIAT Unidad Tributaria"
 msgstr "SENIAT Unidad Tributaria"
 
 #. module: l10n_ve_withholding
+#: model:ir.model.fields,field_description:l10n_ve_withholding.field_account_payment_group__selected_debt_currency_id
+msgid "Selected Debt in foreign currency"
+msgstr "Moneda de la deuda seleccionada"
+
+#. module: l10n_ve_withholding
 #: model:ir.model.fields,field_description:l10n_ve_withholding.field_account_payment_group__selected_debt_taxed
 msgid "Selected Debt taxed"
 msgstr "Deuda seleccionada gravada"
+
+#. module: l10n_ve_withholding
+#: model:ir.model.fields,field_description:l10n_ve_withholding.field_account_payment_group__selected_finacial_debt_currency
+msgid "Selected Financial Debt in foreign currency"
+msgstr "Deuda Seleccionada en Divisas"
 
 #. module: l10n_ve_withholding
 #: code:addons/l10n_ve_withholding/models/account_tax.py:0
@@ -801,6 +811,11 @@ msgid ""
 msgstr ""
 "_______________________<br/>\n"
 "                    Beneficiario"
+
+#. module: l10n_ve_withholding
+#: model:ir.model.fields,field_description:l10n_ve_withholding.field_account_payment_group__debt_multicurrency
+msgid "debt is in foreign currency?"
+msgstr "La deuda es en una moneda extranjera?"
 
 #. module: l10n_ve_withholding
 #: model_terms:ir.ui.view,arch_db:l10n_ve_withholding.report_withholding_certificate_document

@@ -419,7 +419,7 @@ msgstr "Tipo de cuenta."
 #. module: l10n_ve_base
 #: model_terms:ir.ui.view,arch_db:l10n_ve_base.view_currency_form
 msgid "Update Rate"
-msgstr "Frecuencia de actualización"
+msgstr "Actualizar tipo de cambio"
 
 #. module: l10n_ve_base
 #: model_terms:ir.ui.view,arch_db:l10n_ve_base.consult_currency_wizard_confirm
