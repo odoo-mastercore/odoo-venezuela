@@ -189,8 +189,9 @@ class AccountPayment(models.Model):
             self.payment_method_id = (
                 payment_methods and payment_methods[0] or False)
             # si se eligió de origen el mismo diario de destino, lo resetiamos
-            if self.journal_id == self.destination_journal_id:
-                self.destination_journal_id = False
+            #Se comento para V14
+            # if self.journal_id == self.destination_journal_id:
+            #     self.destination_journal_id = False
         #     # Set payment method domain
         #     # (restrict to methods enabled for the journal and to selected
         #     # payment type)
