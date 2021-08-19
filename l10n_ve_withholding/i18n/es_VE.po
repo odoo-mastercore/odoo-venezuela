@@ -381,8 +381,10 @@ msgid "Contact"
 msgstr "Contacto"
 
 #. module: l10n_ve_withholding
+#: model:ir.model.fields,field_description:l10n_ve_withholding.field_account_bank_statement_line__l10n_ve_document_number
 #: model:ir.model.fields,field_description:l10n_ve_withholding.field_account_move__l10n_ve_document_number
-#: model_terms:ir.ui.view,arch_db:l10n_ve_withholding.view_move_form
+#: model:ir.model.fields,field_description:l10n_ve_withholding.field_account_payment__l10n_ve_document_number
+#: model_terms:ir.ui.view,arch_db:l10n_ve_withholding.view_move_form_l10n_ve
 msgid "Control Number"
 msgstr "Número de control"
 
