@@ -6,7 +6,7 @@
             <div class="page">
                 <div>
                     <br/>
-                    <t t-set="report_date" t-value="o.payment_date"/>
+                    <t t-set="report_date" t-value="o.date"/>
                     <t t-set="report_number" t-value="o.withholding_number or o.name"/>
                     <t t-set="report_name" t-value="'CERTIFICADO DE RETENCIÓN'"/>
                     <t t-set="header_address" t-value="o.company_id.partner_id"/>
@@ -63,7 +63,7 @@
                             <td class="text-left">
                                 <t t-foreach="o.payment_group_id.to_pay_move_line_ids" t-as="i">
                                     Nro: <span t-field="i.move_id.l10n_ve_document_number"/>, 
-                                    <t t-if="i.move_id.type == out_invoice">
+                                    <t t-if="i.move_id.move_type == out_invoice">
                                         Fact: <span t-field="i.move_id.name"/>
                                     </t>
                                     <t t-else="">

@@ -66,14 +66,28 @@
                     <h1><field name="payment_group_id"/></h1>
                 </div>
             </div>
-
+            <field name="destination_account_id" position="attributes">
+                <!-- comes from payment_group and from context on transfers -->
+                <attribute name="invisible">1</attribute>
+            </field>
+            <field name="is_internal_transfer" position="attributes">
+                <!-- comes from payment_group and from context on transfers -->
+                <attribute name="invisible">1</attribute>
+            </field>
+            <!-- seccion para adaptar el pago en otras monedas standard -->
+            <div name="amount_div" position="replace">
+                <div name="amount_div" class='row'>
+                    <field name="amount" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                    <field name="currency_id" options="{'no_create': True, 'no_open': True}" required="1" attrs="{'readonly': [('state', '!=', 'draft')]}" groups="base.group_multi_currency"/>
+                </div>
+            </div>
             <!-- seccion para mejora pagos en otra moneda -->
             <div name="amount_div" position="after">
                 <field name="company_currency_id" invisible="1"/>
                 <field name="other_currency" invisible="1"/>
                 <field name="force_amount_company_currency" invisible="1"/>
                 <label for="amount_company_currency" string="(on company currency)" attrs="{'invisible': [('other_currency', '=', False)]}"/>
-                <div name="amount_company_currency" class="o_row" attrs="{'invisible': [('other_currency', '=', False)]}">
+                <div name="amount_company_currency" class="row" attrs="{'invisible': [('other_currency', '=', False)]}">
                     x <field name="exchange_rate"/> = <field name="amount_company_currency" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                 </div>
             </div>

@@ -19,6 +19,19 @@
                         domain="[('id', 'in', partner_regimen_islr_ids)]" 
                         options='{"no_open": True, "no_create": True}'/>                        
                 </field>
+                <field name="selected_debt" position="replace">
+                    <field name="debt_multicurrency" invisible="1"/>
+                    <field name="selected_debt_currency_id" invisible="1" />
+                    <field 
+                        name="selected_debt" 
+                        attrs="{'invisible': [('state', 'not in', ['draft', 'confirmed'])]}" 
+                        options="{'currency_field': 'currency_id'}"/>
+                    <field 
+                        name="selected_finacial_debt_currency" 
+                        attrs="{'invisible': ['|',('debt_multicurrency', '=', False),  ('state', 'not in', ['draft', 'confirmed'])]}" 
+                        options="{'currency_field': 'selected_debt_currency_id'}"/>
+                </field>
+
                 <xpath expr="//button[@name='compute_withholdings']" position="replace">
                     
                 <button name="compute_withholdings" 
