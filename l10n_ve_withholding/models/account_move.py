@@ -7,6 +7,7 @@
 #
 ###############################################################################
 from odoo import models, fields, api, _
+from odoo.exceptions import UserError, ValidationError
 import logging
 
 _logger = logging.getLogger(__name__)
@@ -42,9 +43,16 @@ class AccountMove(models.Model):
         for rec in self:
             if rec.state == 'posted' and rec.l10n_ve_document_number == False:
                 if rec.type in ['out_invoice']:
-                    l10n_ve_document_number = rec.env[
-                        'ir.sequence'].next_by_code('account.move.document.number')
-                    rec.write({'l10n_ve_document_number': l10n_ve_document_number})
+                    if rec.journal_id.sequence_control_id:        
+                        l10n_ve_document_number = rec.env[
+                            'ir.sequence'].next_by_code(rec.journal_id.\
+                                sequence_control_id.code)
+                        rec.write({
+                            'l10n_ve_document_number': l10n_ve_document_number})
+                    else:
+                        raise ValidationError(
+                    _("El diario por el cual está emitiendo la factura no"+
+                        " tiene secuencia para número de control"))
 
 
 class AccountMoveLine(models.Model):

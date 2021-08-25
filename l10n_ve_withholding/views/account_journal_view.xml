@@ -1,0 +1,21 @@
+<odoo>
+    <record id="view_account_journal_form_inherit" model="ir.ui.view">
+        <field name="name">account.journal.form.inherit</field>
+        <field name="model">account.journal</field>
+        <field name="inherit_id" ref="account.view_account_journal_form"/>
+        <field name="arch" type="xml">
+        <xpath expr="//field[@name='refund_sequence']" position="before">
+            <label for="sequence_control_id" attrs="{'invisible': [('type', 'not in', ['sale',])]}" />
+            <div attrs="{'invisible': [('type', 'not in', ['sale',])]}">
+                <field name="sequence_control_id" style="padding-right: 1.0em"/>
+                <div attrs="{'invisible': ['|',('type', 'not in', ['sale',]), ('sequence_control_id', '==', False)]}">
+                <label for="current_control_number" />:
+                    <field name="current_control_number"/>
+                    - <label for="next_control_number"/>:
+                    <field name="next_control_number"  />
+                </div>
+            </div>
+        </xpath>
+        </field>
+    </record>
+</odoo>

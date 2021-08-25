@@ -405,6 +405,12 @@ msgid "Created on"
 msgstr "Creado en"
 
 #. module: l10n_ve_withholding
+#: model:ir.model.fields,field_description:l10n_ve_withholding.field_account_bank_statement_import_journal_creation__current_control_number
+#: model:ir.model.fields,field_description:l10n_ve_withholding.field_account_journal__current_control_number
+msgid "Current Number Control"
+msgstr "Actual Numero de control"
+
+#. module: l10n_ve_withholding
 #: model:ir.model.fields,field_description:l10n_ve_withholding.field_seniat_tabla_islr__code_identification_seniat
 #: model:ir.model.fields,help:l10n_ve_withholding.field_seniat_tabla_islr__code_identification_seniat
 msgid "Código Identificación Seniat"
@@ -575,6 +581,12 @@ msgid "Monto para expresar la cantidad que no entra a retención"
 msgstr "Monto para expresar la cantidad que no entra a retención"
 
 #. module: l10n_ve_withholding
+#: model:ir.model.fields,field_description:l10n_ve_withholding.field_account_bank_statement_import_journal_creation__next_control_number
+#: model:ir.model.fields,field_description:l10n_ve_withholding.field_account_journal__next_control_number
+msgid "Next Number Control"
+msgstr "Siguiente Numero de control"
+
+#. module: l10n_ve_withholding
 #: model:ir.model.fields,field_description:l10n_ve_withholding.field_seniat_partner_type__name
 msgid "Nombre Persona"
 msgstr "Nombre Persona"
@@ -697,6 +709,12 @@ msgstr "Deuda seleccionada gravada"
 #: model:ir.model.fields,field_description:l10n_ve_withholding.field_account_payment_group__selected_finacial_debt_currency
 msgid "Selected Financial Debt in foreign currency"
 msgstr "Deuda Seleccionada en Divisas"
+
+#. module: l10n_ve_withholding
+#: model:ir.model.fields,field_description:l10n_ve_withholding.field_account_bank_statement_import_journal_creation__sequence_control_id
+#: model:ir.model.fields,field_description:l10n_ve_withholding.field_account_journal__sequence_control_id
+msgid "Sequence control number"
+msgstr "Secuencia para el Numero de Control"
 
 #. module: l10n_ve_withholding
 #: code:addons/l10n_ve_withholding/models/account_tax.py:0
