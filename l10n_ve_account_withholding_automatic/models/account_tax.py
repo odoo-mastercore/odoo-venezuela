@@ -213,8 +213,8 @@ result = withholdable_base_amount * 0.10
             from_relative_delta = relativedelta(day=1, month=1)
         from_date = to_date + from_relative_delta
         common_previous_domain += [
-            ('payment_date', '<=', to_date),
-            ('payment_date', '>=', from_date),
+            ('date', '<=', to_date),
+            ('date', '>=', from_date),
         ]
 
         previous_payment_groups_domain = common_previous_domain + [
