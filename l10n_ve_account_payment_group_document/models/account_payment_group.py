@@ -129,7 +129,7 @@ class AccountPaymentGroup(models.Model):
                     rec.receiptbook_id.with_context(
                         ir_sequence_date=rec.payment_date
                         ).sequence_id.next_by_id())
-            rec.payment_ids.move_name = rec.name
+            rec.payment_ids.move_id.name = rec.name
 
             # hacemos el llamado acá y no arriba para primero hacer los checks
             # y ademas primero limpiar o copiar talonario antes de postear.

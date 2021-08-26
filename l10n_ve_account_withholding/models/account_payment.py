@@ -28,7 +28,7 @@ class AccountPayment(models.Model):
     )
     communication = fields.Text('Notas')
     
-    def post(self):
+    def action_post(self):
         without_number = self.filtered(
             lambda x: x.tax_withholding_id and not x.withholding_number)
 
@@ -46,7 +46,7 @@ class AccountPayment(models.Model):
             payment.withholding_number = \
                 payment.tax_withholding_id.withholding_sequence_id.next_by_id()
 
-        return super(AccountPayment, self).post()
+        return super(AccountPayment, self).action_post()
 
     def _prepare_payment_moves(self):
         all_move_vals = []
