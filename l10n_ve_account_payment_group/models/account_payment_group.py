@@ -539,7 +539,7 @@ class AccountPaymentGroup(models.Model):
         self.write({'state': 'posted'})
 
     def cancel(self):
-        self.mapped('payment_ids').cancel()
+        self.mapped('payment_ids').action_cancel()
         self.write({'state': 'cancel'})
         return True
 

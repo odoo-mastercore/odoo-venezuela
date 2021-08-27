@@ -39,11 +39,14 @@ class AccountMove(models.Model):
 
     def _post(self, soft):
         super(AccountMove, self)._post(soft)
-        if self.state == 'posted' and self.l10n_ve_document_number == False:
-            if self.move_type in ['out_invoice']:
-                l10n_ve_document_number = self.env[
-                    'ir.sequence'].next_by_code('account.move.document.number')
-                self.write({'l10n_ve_document_number': l10n_ve_document_number})
+        for rec in self:
+            if rec.state == 'posted' and rec.l10n_ve_document_number == False:
+                if rec.move_type in ['out_invoice']:
+                    l10n_ve_document_number = rec.env[
+                        'ir.sequence'].next_by_code(
+                            'account.move.document.number')
+                    rec.write(
+                        {'l10n_ve_document_number': l10n_ve_document_number})
 
 
 class AccountMoveLine(models.Model):
