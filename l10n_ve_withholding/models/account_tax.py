@@ -39,7 +39,7 @@ class AccountTax(models.Model):
             vals['comment_withholding'] = "%s x %s" % (
                 base_amount, alicuota)
             vals['total_amount'] = base_invoice
-            vals['withholdable_invoiced_amount'] = payment_group.selected_debt_untaxed * -1.0
+            vals['withholdable_invoiced_amount'] = payment_group.selected_debt_untaxed 
             vals['withholdable_base_amount'] = base_amount
             vals['period_withholding_amount'] = amount
 
@@ -48,7 +48,7 @@ class AccountTax(models.Model):
             vals = super(AccountTax, self).get_withholding_vals(
                 payment_group, force_withholding_amount_type)
 
-            base = payment_group.selected_debt_untaxed * -1.0
+            base = payment_group.selected_debt_untaxed 
             base_withholding = base * (
                 regimen.withholding_base_percentage / 100)
             withholding_percentage = 0.0

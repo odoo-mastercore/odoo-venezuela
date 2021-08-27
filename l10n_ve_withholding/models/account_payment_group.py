@@ -91,14 +91,9 @@ class AccountPaymentGroup(models.Model):
                 selected_debt += line.amount_residual
                 factor = invoice and invoice._get_tax_factor() or 1.0
                 selected_debt_untaxed += line.amount_residual * factor
-            sign = 1.0
+            sign = rec.partner_type == 'supplier' and -1.0 or 1.0
             rec.selected_finacial_debt = selected_finacial_debt * sign
             rec.selected_debt = selected_debt * sign
             rec.selected_finacial_debt_currency = selected_finacial_debt_currency * sign
             rec.selected_debt_untaxed = selected_debt_untaxed * sign
             rec.selected_debt_taxed = selected_debt_taxed
-            _logger.warning('-----------------------------------')
-            _logger.warning(rec.selected_finacial_debt )
-            _logger.warning(rec.selected_debt)
-            _logger.warning(rec.selected_debt_untaxed)
-            _logger.warning(rec.selected_debt_taxed)

@@ -4,6 +4,9 @@ from ast import literal_eval
 from odoo.tools.safe_eval import safe_eval
 from dateutil.relativedelta import relativedelta
 import datetime
+import logging
+
+_logger = logging.getLogger(__name__)
 
 
 class AccountTax(models.Model):
@@ -121,6 +124,8 @@ result = withholdable_base_amount * 0.10
 
     def create_payment_withholdings(self, payment_group):
         for tax in self.filtered(lambda x: x.withholding_type != 'none'):
+            _logger.warning('.--------------------------------------------')
+            _logger.warning('ESTA ENTRANDO EN EL CREATE')
             payment_withholding = self.env[
                 'account.payment'].search([
                     ('payment_group_id', '=', payment_group.id),
@@ -141,6 +146,9 @@ result = withholdable_base_amount * 0.10
                 if payment_group.search(domain):
                     raise ValidationError(tax.withholding_user_error_message)
             vals = tax.get_withholding_vals(payment_group)
+            _logger.warning('ESTE ES EL VALS')
+            _logger.warning('----------------')
+            _logger.warning(vals)
 
             # we set computed_withholding_amount, hacemos round porque
             # si no puede pasarse un valor con mas decimales del que se ve
