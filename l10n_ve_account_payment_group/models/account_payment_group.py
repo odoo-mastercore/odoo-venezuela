@@ -118,7 +118,7 @@ class AccountPaymentGroup(models.Model):
     # reconciled_amount = fields.Monetary(compute='_compute_amounts')
     to_pay_amount = fields.Monetary(
         compute='_compute_to_pay_amount',
-        inverse='_inverse_to_pay_amount',
+        #inverse='_inverse_to_pay_amount',
         string='To Pay Amount',
         # string='Total To Pay Amount',
         readonly=True,
@@ -441,7 +441,7 @@ class AccountPaymentGroup(models.Model):
             rec.selected_debt_untaxed = selected_debt_untaxed * sign
 
     @api.depends(
-        'selected_debt', 'unreconciled_amount')
+        'selected_debt', 'unreconciled_amount','to_pay_move_line_ids')
     def _compute_to_pay_amount(self):
         for rec in self:
             rec.to_pay_amount = rec.selected_debt + rec.unreconciled_amount

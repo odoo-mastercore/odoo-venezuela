@@ -70,7 +70,7 @@ class AccountPaymentGroup(models.Model):
             selected_debt_untaxed = 0.0
             selected_debt_taxed = 0.0
             selected_finacial_debt_currency = 0.0
-            for line in rec.to_pay_move_line_ids:
+            for line in rec.to_pay_move_line_ids._origin:
                 #this is conditional used to vat retention
                 for abg in line.move_id.amount_by_group:
                     if str(abg[0]).find('IVA') > -1:
@@ -91,7 +91,7 @@ class AccountPaymentGroup(models.Model):
                 selected_debt += line.amount_residual
                 factor = invoice and invoice._get_tax_factor() or 1.0
                 selected_debt_untaxed += line.amount_residual * factor
-            sign = 1.0
+            sign = rec.partner_type == 'supplier' and -1.0 or 1.0
             rec.selected_finacial_debt = selected_finacial_debt * sign
             rec.selected_debt = selected_debt * sign
             rec.selected_finacial_debt_currency = selected_finacial_debt_currency * sign
