@@ -105,10 +105,13 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     sheet.write(row, 2, invoice.name, line)
                     sheet.write(row, 3, invoice.l10n_ve_document_number or 'FALSE', line)
                     sheet.write(row, 4, invoice.partner_id.name or 'FALSE', line)
-                    
-                    sheet.write(row, 5, invoice.partner_id.\
-                        l10n_latam_identification_type_id.l10n_ve_code+'-'+invoice.\
-                        partner_id.vat or 'FALSE', line)
+                    if invoice.partner_id.\
+                        l10n_latam_identification_type_id.l10n_ve_code:
+                        sheet.write(row, 5, invoice.partner_id.\
+                            l10n_latam_identification_type_id.l10n_ve_code+'-'+invoice.\
+                            partner_id.vat or 'FALSE', line)
+                    else:
+                        sheet.write(row, 5, 'FALSE'+'-'+invoice.partner_id.vat or 'FALSE', line)
                     sheet.write(row, 6, '', line)
                     sheet.write(row, 7, '', line)
                     sheet.write(row, 8, '', line)
