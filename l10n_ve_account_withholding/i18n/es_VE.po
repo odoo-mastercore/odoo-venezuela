@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 13.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-12 17:13+0000\n"
-"PO-Revision-Date: 2021-07-15 11:34-0400\n"
+"POT-Creation-Date: 2021-08-29 21:22+0000\n"
+"PO-Revision-Date: 2021-08-31 14:26-0400\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -37,7 +37,7 @@ msgstr "Compañías"
 #: model:ir.model.fields.selection,name:l10n_ve_account_withholding.selection__account_tax_template__type_tax_use__customer
 #: model_terms:ir.ui.view,arch_db:l10n_ve_account_withholding.view_account_tax_search
 msgid "Customer Payment"
-msgstr "Pago del Cliente"
+msgstr "Pago de cliente"
 
 #. module: l10n_ve_account_withholding
 #: model:ir.model.fields,help:l10n_ve_account_withholding.field_account_tax_template__type_tax_use
@@ -78,6 +78,11 @@ msgid ""
 msgstr ""
 "Si no establece un número, agregaremos un número automáticamente de una "
 "secuencia que debe configurarse en la retención de impuestos"
+
+#. module: l10n_ve_account_withholding
+#: model:ir.ui.menu,name:l10n_ve_account_withholding.menu_withholding_tax_form
+msgid "Impuestos de Retención"
+msgstr "Impuestos de Retención"
 
 #. module: l10n_ve_account_withholding
 #: code:addons/l10n_ve_account_withholding/models/account_payment.py:0

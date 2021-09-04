@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 13.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-12 17:05+0000\n"
-"PO-Revision-Date: 2021-07-15 11:48-0400\n"
+"POT-Creation-Date: 2021-08-29 21:15+0000\n"
+"PO-Revision-Date: 2021-08-30 09:36-0400\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -58,7 +58,7 @@ msgstr "Ciudad"
 #. module: l10n_ve_base
 #: model_terms:ir.ui.view,arch_db:l10n_ve_base.consult_currency_wizard_confirm
 msgid "Close"
-msgstr "Cerca"
+msgstr "Cerrar"
 
 #. module: l10n_ve_base
 #: model:ir.model.fields,field_description:l10n_ve_base.field_l10n_ve_responsibility_type__code
@@ -116,7 +116,7 @@ msgstr "Creado por"
 #: model:ir.model.fields,field_description:l10n_ve_base.field_currency_rate_wizard__create_date
 #: model:ir.model.fields,field_description:l10n_ve_base.field_l10n_ve_responsibility_type__create_date
 msgid "Created on"
-msgstr "Creado el"
+msgstr "Creado en"
 
 #. module: l10n_ve_base
 #: model:ir.model.fields.selection,name:l10n_ve_base.selection__res_partner_bank__l10n_ve_acc_type__ahorro
@@ -239,19 +239,19 @@ msgstr "Tipos de Identificación"
 #: model:ir.model.fields,field_description:l10n_ve_base.field_currency_rate_wizard____last_update
 #: model:ir.model.fields,field_description:l10n_ve_base.field_l10n_ve_responsibility_type____last_update
 msgid "Last Modified on"
-msgstr "Última modificación el"
+msgstr "Modificada por última vez"
 
 #. module: l10n_ve_base
 #: model:ir.model.fields,field_description:l10n_ve_base.field_currency_rate_wizard__write_uid
 #: model:ir.model.fields,field_description:l10n_ve_base.field_l10n_ve_responsibility_type__write_uid
 msgid "Last Updated by"
-msgstr "Última actualización por"
+msgstr "Última actualización realizada por"
 
 #. module: l10n_ve_base
 #: model:ir.model.fields,field_description:l10n_ve_base.field_currency_rate_wizard__write_date
 #: model:ir.model.fields,field_description:l10n_ve_base.field_l10n_ve_responsibility_type__write_date
 msgid "Last Updated on"
-msgstr "Última actualización el"
+msgstr "Ultima actualizacion en"
 
 #. module: l10n_ve_base
 #: model:ir.model.fields,field_description:l10n_ve_base.field_res_company__municipality_id
@@ -435,7 +435,7 @@ msgstr "Código Postal"
 #. module: l10n_ve_base
 #: model:ir.actions.act_window,name:l10n_ve_base.action_currency_rate_wizard
 msgid "currency_rate_wizard"
-msgstr "currency_rate_wizard"
+msgstr "Asistente de tipo de cambio"
 
 #. module: l10n_ve_base
 #: model_terms:ir.ui.view,arch_db:l10n_ve_base.currency_rate_wizard_form

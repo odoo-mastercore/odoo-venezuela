@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 13.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-12 17:14+0000\n"
-"PO-Revision-Date: 2021-07-15 11:33-0400\n"
+"POT-Creation-Date: 2021-08-29 21:23+0000\n"
+"PO-Revision-Date: 2021-08-31 14:29-0400\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -77,7 +77,7 @@ msgstr "Retenciones automáticas"
 #. module: l10n_ve_account_withholding_automatic
 #: model:ir.model.fields,field_description:l10n_ve_account_withholding_automatic.field_account_tax__withholding_amount_type
 msgid "Base Amount"
-msgstr "Cantidad base"
+msgstr "Importe base"
 
 #. module: l10n_ve_account_withholding_automatic
 #: model:ir.model.fields,help:l10n_ve_account_withholding_automatic.field_account_tax__withholding_amount_type
@@ -134,12 +134,12 @@ msgstr "Creado por"
 #. module: l10n_ve_account_withholding_automatic
 #: model:ir.model.fields,field_description:l10n_ve_account_withholding_automatic.field_account_tax_withholding_rule__create_date
 msgid "Created on"
-msgstr "Creado el"
+msgstr "Creado en"
 
 #. module: l10n_ve_account_withholding_automatic
 #: model:ir.model.fields,field_description:l10n_ve_account_withholding_automatic.field_account_tax_withholding_rule__display_name
 msgid "Display Name"
-msgstr "Nombre"
+msgstr "Mostrar nombre"
 
 #. module: l10n_ve_account_withholding_automatic
 #: model:ir.model.fields,field_description:l10n_ve_account_withholding_automatic.field_account_tax_withholding_rule__domain
@@ -180,17 +180,17 @@ msgstr "Importe imputado sujeto a retención"
 #. module: l10n_ve_account_withholding_automatic
 #: model:ir.model.fields,field_description:l10n_ve_account_withholding_automatic.field_account_tax_withholding_rule____last_update
 msgid "Last Modified on"
-msgstr "Última modificación el"
+msgstr "Modificada por última vez"
 
 #. module: l10n_ve_account_withholding_automatic
 #: model:ir.model.fields,field_description:l10n_ve_account_withholding_automatic.field_account_tax_withholding_rule__write_uid
 msgid "Last Updated by"
-msgstr "Última actualización por"
+msgstr "Última actualización realizada por"
 
 #. module: l10n_ve_account_withholding_automatic
 #: model:ir.model.fields,field_description:l10n_ve_account_withholding_automatic.field_account_tax_withholding_rule__write_date
 msgid "Last Updated on"
-msgstr "Última actualización el"
+msgstr "Ultima actualizacion en"
 
 #. module: l10n_ve_account_withholding_automatic
 #: model:ir.model.fields,help:l10n_ve_account_withholding_automatic.field_res_company__automatic_withholdings
@@ -206,7 +206,7 @@ msgstr "Realice retenciones automáticamente en la confirmación de los pagos."
 #. module: l10n_ve_account_withholding_automatic
 #: model:ir.model.fields.selection,name:l10n_ve_account_withholding_automatic.selection__account_tax__withholding_accumulated_payments__month
 msgid "Month"
-msgstr "Mes(es)"
+msgstr "Mes"
 
 #. module: l10n_ve_account_withholding_automatic
 #: code:addons/l10n_ve_account_withholding_automatic/models/account_tax.py:0
@@ -321,7 +321,7 @@ msgstr "El método de cálculo del monto del impuesto."
 #: model:ir.model.fields,field_description:l10n_ve_account_withholding_automatic.field_account_payment__total_amount
 #: model:ir.model.fields.selection,name:l10n_ve_account_withholding_automatic.selection__account_tax__withholding_amount_type__total_amount
 msgid "Total Amount"
-msgstr "Cantidad total"
+msgstr "Importe total"
 
 #. module: l10n_ve_account_withholding_automatic
 #: model:ir.model.fields,field_description:l10n_ve_account_withholding_automatic.field_account_tax__withholding_type
@@ -331,7 +331,7 @@ msgstr "Tipo"
 #. module: l10n_ve_account_withholding_automatic
 #: model:ir.model.fields.selection,name:l10n_ve_account_withholding_automatic.selection__account_tax__withholding_amount_type__untaxed_amount
 msgid "Untaxed Amount"
-msgstr "Importe sin impuestos"
+msgstr "Base imponible"
 
 #. module: l10n_ve_account_withholding_automatic
 #: model:ir.model.fields,field_description:l10n_ve_account_withholding_automatic.field_account_payment__withholdable_base_amount
@@ -367,7 +367,7 @@ msgstr "Escribir un módulo de cupón de dominio sobre cuenta"
 #. module: l10n_ve_account_withholding_automatic
 #: model:ir.model.fields.selection,name:l10n_ve_account_withholding_automatic.selection__account_tax__withholding_accumulated_payments__year
 msgid "Year"
-msgstr "Año(s)"
+msgstr "Año"
 
 #. module: l10n_ve_account_withholding_automatic
 #: model:ir.model,name:l10n_ve_account_withholding_automatic.model_account_tax_withholding_rule

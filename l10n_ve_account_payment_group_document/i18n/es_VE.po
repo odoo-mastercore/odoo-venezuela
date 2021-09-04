@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 13.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-12 17:12+0000\n"
-"PO-Revision-Date: 2021-07-15 11:19-0400\n"
+"POT-Creation-Date: 2021-08-29 21:35+0000\n"
+"PO-Revision-Date: 2021-08-31 14:55-0400\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -52,7 +52,7 @@ msgstr "Activo"
 #. module: l10n_ve_account_payment_group_document
 #: model:ir.model.fields,field_description:l10n_ve_account_payment_group_document.field_account_payment_receiptbook__next_number
 msgid "Actual Next Number"
-msgstr "Número siguiente real"
+msgstr "Número Siguiente Real"
 
 #. module: l10n_ve_account_payment_group_document
 #: model:ir.model.fields,help:l10n_ve_account_payment_group_document.field_l10n_latam_document_type__internal_type
@@ -61,10 +61,10 @@ msgid ""
 "the kind of document we are working with. (not only related to account."
 "move, could be for documents of other models like stock.picking)"
 msgstr ""
-"Análogo a odoo account.move.type pero con más opciones que permiten "
-"identificar el tipo de documento con el que estamos trabajando. (no sólo "
-"relacionado con account.move, podría ser para documentos de otros modelos "
-"como stock.picking)"
+"Análogo a account.move.type de Odoo pero con más opciones, permitiendo "
+"identificar el tipo de documento sobre el que estamos trabajando. (no "
+"solamente relativo a account.move, podría ser relativo a otros modelos, "
+"como por ejemplo stock.picking)"
 
 #. module: l10n_ve_account_payment_group_document
 #: code:addons/l10n_ve_account_payment_group_document/models/account_chart_template.py:0
@@ -96,7 +96,7 @@ msgstr "Creado por"
 #. module: l10n_ve_account_payment_group_document
 #: model:ir.model.fields,field_description:l10n_ve_account_payment_group_document.field_account_payment_receiptbook__create_date
 msgid "Created on"
-msgstr "Creado el"
+msgstr "Creado en"
 
 #. module: l10n_ve_account_payment_group_document
 #: model:ir.actions.act_window,name:l10n_ve_account_payment_group_document.action_account_payment_group_invoice_wizard
@@ -116,13 +116,13 @@ msgstr "Recibo del cliente"
 #. module: l10n_ve_account_payment_group_document
 #: model:ir.model.fields,field_description:l10n_ve_account_payment_group_document.field_account_payment_receiptbook__display_name
 msgid "Display Name"
-msgstr "Nombre"
+msgstr "Mostrar nombre"
 
 #. module: l10n_ve_account_payment_group_document
 #: model:ir.model.fields,field_description:l10n_ve_account_payment_group_document.field_account_payment_group__document_number
 #: model:ir.model.fields,field_description:l10n_ve_account_payment_group_document.field_account_payment_group_invoice_wizard__document_number
 msgid "Document Number"
-msgstr "Número del Documento"
+msgstr "Número de Documento"
 
 #. module: l10n_ve_account_payment_group_document
 #: model:ir.model.fields,field_description:l10n_ve_account_payment_group_document.field_account_payment_group__name
@@ -140,7 +140,7 @@ msgstr "Secuencia de documentos"
 #: model:ir.model.fields,field_description:l10n_ve_account_payment_group_document.field_account_payment_receiptbook__document_type_id
 #: model_terms:ir.ui.view,arch_db:l10n_ve_account_payment_group_document.view_account_payment_group_invoice_wizard
 msgid "Document Type"
-msgstr "Tipo de documento"
+msgstr "Tipo de Documento"
 
 #. module: l10n_ve_account_payment_group_document
 #: model:ir.model.constraint,message:l10n_ve_account_payment_group_document.constraint_account_payment_group_name_uniq
@@ -156,7 +156,7 @@ msgstr "Plantilla de correo electrónico"
 #: model:ir.model.fields,field_description:l10n_ve_account_payment_group_document.field_account_payment_group__document_sequence_id
 #: model:ir.model.fields,field_description:l10n_ve_account_payment_group_document.field_account_payment_receiptbook__sequence_id
 msgid "Entry Sequence"
-msgstr "Secuencia de entrada"
+msgstr "Secuencia del asiento"
 
 #. module: l10n_ve_account_payment_group_document
 #: code:addons/l10n_ve_account_payment_group_document/models/account_payment_group.py:0
@@ -181,11 +181,10 @@ msgid ""
 "not related to invoicing legal documents. For Example: Receipts, Tax "
 "Payments, Register journal entries"
 msgstr ""
-"Si está activo: se utilizará para facturación legal (facturas, notas de "
-"débito / crédito). Si no se establece significa que se utilizará para "
-"registrar asientos contables no relacionados con la facturación de "
-"documentos legales. Por ejemplo: recibos, pagos de impuestos, registro de "
-"asientos de diario"
+"Si esta activo: será utilizado para facturación (facturas, notas de débito "
+"y crédito). SI esta desactivado significa que que será usado para registrar "
+"movimientos contables que no están relacionas con facturación como tal. Por "
+"ejemplo: Recibos, Pagos de Impuestos, Registrar asientos contables"
 
 #. module: l10n_ve_account_payment_group_document
 #: model:ir.model.fields,help:l10n_ve_account_payment_group_document.field_account_payment_receiptbook__mail_template_id
@@ -209,17 +208,17 @@ msgstr "Asientos contables"
 #. module: l10n_ve_account_payment_group_document
 #: model:ir.model.fields,field_description:l10n_ve_account_payment_group_document.field_account_payment_receiptbook____last_update
 msgid "Last Modified on"
-msgstr "Última modificación el"
+msgstr "Modificada por última vez"
 
 #. module: l10n_ve_account_payment_group_document
 #: model:ir.model.fields,field_description:l10n_ve_account_payment_group_document.field_account_payment_receiptbook__write_uid
 msgid "Last Updated by"
-msgstr "Última actualización por"
+msgstr "Última actualización realizada por"
 
 #. module: l10n_ve_account_payment_group_document
 #: model:ir.model.fields,field_description:l10n_ve_account_payment_group_document.field_account_payment_receiptbook__write_date
 msgid "Last Updated on"
-msgstr "Última actualización el"
+msgstr "Ultima actualizacion en"
 
 #. module: l10n_ve_account_payment_group_document
 #: model:ir.model,name:l10n_ve_account_payment_group_document.model_l10n_latam_document_type
@@ -241,7 +240,7 @@ msgstr "Nombre"
 #. module: l10n_ve_account_payment_group_document
 #: model:ir.model.fields,field_description:l10n_ve_account_payment_group_document.field_account_payment_group__next_number
 msgid "Next Number"
-msgstr "Siguiente número"
+msgstr "Próximo número"
 
 #. module: l10n_ve_account_payment_group_document
 #: model:ir.model.fields,help:l10n_ve_account_payment_group_document.field_account_payment_receiptbook__next_number
@@ -250,8 +249,7 @@ msgid ""
 "the displayed value might already be obsolete"
 msgstr ""
 "Siguiente número que se utilizará. Este número se puede incrementar con "
-"frecuencia, por lo que es posible que el valor mostrado ya esté "
-"desactualizado."
+"frecuencia, por lo que es posible que el valor mostrado ya esté obsoleto"
 
 #. module: l10n_ve_account_payment_group_document
 #: model:ir.model.fields,field_description:l10n_ve_account_payment_group_document.field_account_payment_receiptbook__padding
@@ -261,7 +259,7 @@ msgstr "Relleno numérico"
 #. module: l10n_ve_account_payment_group_document
 #: model:ir.model.fields,field_description:l10n_ve_account_payment_group_document.field_account_payment_receiptbook__partner_type
 msgid "Partner Type"
-msgstr "Tipo de socio"
+msgstr "Tipo de Empresa"
 
 #. module: l10n_ve_account_payment_group_document
 #: model:ir.model,name:l10n_ve_account_payment_group_document.model_account_payment_group
@@ -324,7 +322,7 @@ msgstr ""
 #. module: l10n_ve_account_payment_group_document
 #: model:ir.model.fields,field_description:l10n_ve_account_payment_group_document.field_account_payment_group_invoice_wizard__use_documents
 msgid "Use Documents?"
-msgstr "¿Usar documentos?"
+msgstr "Usa Documentos?"
 
 #. module: l10n_ve_account_payment_group_document
 #: model:ir.model.fields,help:l10n_ve_account_payment_group_document.field_account_payment_receiptbook__sequence
@@ -334,7 +332,7 @@ msgstr "Se utiliza para pedir los talonarios de recibos"
 #. module: l10n_ve_account_payment_group_document
 #: model:ir.model.fields.selection,name:l10n_ve_account_payment_group_document.selection__account_payment_receiptbook__partner_type__supplier
 msgid "Vendor"
-msgstr "Vendedor"
+msgstr "Proveedor"
 
 #. module: l10n_ve_account_payment_group_document
 #: model:ir.model,name:l10n_ve_account_payment_group_document.model_account_payment_group_invoice_wizard

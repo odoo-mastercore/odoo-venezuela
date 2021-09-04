@@ -6,14 +6,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 13.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-12 17:11+0000\n"
-"PO-Revision-Date: 2021-07-15 11:16-0400\n"
+"POT-Creation-Date: 2021-08-29 21:27+0000\n"
+"PO-Revision-Date: 2021-08-31 14:30-0400\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: \n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "Language: es_VE\n"
 "X-Generator: Poedit 3.0\n"
 
@@ -29,8 +29,8 @@ msgstr "Métodos de pago disponibles"
 
 #. module: l10n_ve_account_payment_fix
 #: model:ir.ui.menu,name:l10n_ve_account_payment_fix.menu_finance_bank_and_cash
-msgid "Bank and Cash"
-msgstr "Banco y efectivo"
+msgid "Banco y Caja"
+msgstr "Banco y Caja"
 
 #. module: l10n_ve_account_payment_fix
 #: model:ir.model.fields,field_description:l10n_ve_account_payment_fix.field_account_payment__currency_id

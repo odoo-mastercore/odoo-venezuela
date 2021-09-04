@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 13.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-12 17:12+0000\n"
-"PO-Revision-Date: 2021-07-15 11:28-0400\n"
+"POT-Creation-Date: 2021-08-29 21:30+0000\n"
+"PO-Revision-Date: 2021-08-31 14:53-0400\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -173,12 +173,12 @@ msgstr "Tipo de Cuenta Interna"
 #. module: l10n_ve_account_payment_group
 #: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group_invoice_wizard__date
 msgid "Accounting Date"
-msgstr "Fecha de contabilidad"
+msgstr "Fecha contable"
 
 #. module: l10n_ve_account_payment_group
 #: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group__message_needaction
 msgid "Action Needed"
-msgstr "Acción necesaria"
+msgstr "Acción requerida"
 
 #. module: l10n_ve_account_payment_group
 #: model_terms:ir.ui.view,arch_db:l10n_ve_account_payment_group.view_account_payment_group_form
@@ -255,7 +255,7 @@ msgstr "Cuenta analítica"
 #. module: l10n_ve_account_payment_group
 #: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group__message_attachment_count
 msgid "Attachment Count"
-msgstr "Cantidad de Adjuntos"
+msgstr "Conteo de archivos adjuntos"
 
 #. module: l10n_ve_account_payment_group
 #: model:ir.model,name:l10n_ve_account_payment_group.model_account_bank_statement_line
@@ -271,7 +271,7 @@ msgstr "Cancelar"
 #. module: l10n_ve_account_payment_group
 #: model:ir.model.fields.selection,name:l10n_ve_account_payment_group.selection__account_payment_group__state__cancel
 msgid "Cancelled"
-msgstr "Cancelado"
+msgstr "Cancelada"
 
 #. module: l10n_ve_account_payment_group
 #: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_res_config_settings__group_choose_payment_type
@@ -317,7 +317,7 @@ msgstr "Moneda de la empresa"
 #: code:addons/l10n_ve_account_payment_group/models/account_payment_group.py:0
 #, python-format
 msgid "Compose Email"
-msgstr "Escribir correo electrónico"
+msgstr "Componer correo electrónico"
 
 #. module: l10n_ve_account_payment_group
 #: model:ir.model,name:l10n_ve_account_payment_group.model_res_config_settings
@@ -350,7 +350,7 @@ msgstr "Creado por"
 #: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group__create_date
 #: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group_invoice_wizard__create_date
 msgid "Created on"
-msgstr "Creado el"
+msgstr "Creado en"
 
 #. module: l10n_ve_account_payment_group
 #: model:ir.actions.act_window,name:l10n_ve_account_payment_group.action_account_payment_group_invoice_wizard
@@ -439,7 +439,7 @@ msgstr "Seguidores (Canales)"
 #. module: l10n_ve_account_payment_group
 #: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group__message_partner_ids
 msgid "Followers (Partners)"
-msgstr "Seguidores (Socios)"
+msgstr "Seguidores (Empresas)"
 
 #. module: l10n_ve_account_payment_group
 #: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment__force_amount_company_currency
@@ -494,13 +494,13 @@ msgstr ""
 #: model:ir.model.fields,help:l10n_ve_account_payment_group.field_account_payment_group__message_needaction
 #: model:ir.model.fields,help:l10n_ve_account_payment_group.field_account_payment_group__message_unread
 msgid "If checked, new messages require your attention."
-msgstr "Si está marcada, los mensajes nuevos requieren su atención."
+msgstr "Si está marcado hay nuevos mensajes que requieren su atención."
 
 #. module: l10n_ve_account_payment_group
 #: model:ir.model.fields,help:l10n_ve_account_payment_group.field_account_payment_group__message_has_error
 #: model:ir.model.fields,help:l10n_ve_account_payment_group.field_account_payment_group__message_has_sms_error
 msgid "If checked, some messages have a delivery error."
-msgstr "Si está marcado, algunos mensajes tienen un error de entrega."
+msgstr "Si se encuentra marcado, algunos mensajes tienen error de envío."
 
 #. module: l10n_ve_account_payment_group
 #: model:ir.model.fields,help:l10n_ve_account_payment_group.field_account_move__pay_now_journal_id
@@ -515,7 +515,7 @@ msgstr ""
 #. module: l10n_ve_account_payment_group
 #: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group__message_is_follower
 msgid "Is Follower"
-msgstr "Es Seguidor"
+msgstr "Es un seguidor"
 
 #. module: l10n_ve_account_payment_group
 #: model:ir.model.fields,help:l10n_ve_account_payment_group.field_account_payment_group__sent
@@ -551,19 +551,19 @@ msgstr "Apuntes contables"
 #: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group____last_update
 #: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group_invoice_wizard____last_update
 msgid "Last Modified on"
-msgstr "Última modificación el"
+msgstr "Modificada por última vez"
 
 #. module: l10n_ve_account_payment_group
 #: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group__write_uid
 #: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group_invoice_wizard__write_uid
 msgid "Last Updated by"
-msgstr "Última actualización por"
+msgstr "Última actualización realizada por"
 
 #. module: l10n_ve_account_payment_group
 #: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group__write_date
 #: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group_invoice_wizard__write_date
 msgid "Last Updated on"
-msgstr "Última actualización el"
+msgstr "Ultima actualizacion en"
 
 #. module: l10n_ve_account_payment_group
 #: model:ir.model.fields,help:l10n_ve_account_payment_group.field_account_payment_group__matched_move_line_ids
@@ -573,7 +573,7 @@ msgstr "Líneas que se han emparejado con pagos, solo disponibles después de la
 #. module: l10n_ve_account_payment_group
 #: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group__message_main_attachment_id
 msgid "Main Attachment"
-msgstr "Adjunto principal"
+msgstr "Adjuntos principales"
 
 #. module: l10n_ve_account_payment_group
 #: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group__matched_amount
@@ -593,12 +593,12 @@ msgstr "Línea de movimiento coincidente"
 #. module: l10n_ve_account_payment_group
 #: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group__communication
 msgid "Memo"
-msgstr "Memo"
+msgstr "Circular"
 
 #. module: l10n_ve_account_payment_group
 #: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group__message_has_error
 msgid "Message Delivery error"
-msgstr "Error de entrega del mensaje"
+msgstr "Error de Envío de Mensaje"
 
 #. module: l10n_ve_account_payment_group
 #: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group__message_ids
@@ -608,7 +608,7 @@ msgstr "Mensajes"
 #. module: l10n_ve_account_payment_group
 #: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group__move_line_ids
 msgid "Move Line"
-msgstr "Mover línea"
+msgstr "Apunte"
 
 #. module: l10n_ve_account_payment_group
 #: model_terms:ir.ui.view,arch_db:l10n_ve_account_payment_group.view_account_payment_group_search
@@ -624,22 +624,22 @@ msgstr "Notas"
 #. module: l10n_ve_account_payment_group
 #: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group__message_needaction_counter
 msgid "Number of Actions"
-msgstr "Número de Acciones"
+msgstr "Número de acciones"
 
 #. module: l10n_ve_account_payment_group
 #: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group__message_has_error_counter
 msgid "Number of errors"
-msgstr "Número de errores"
+msgstr "Numero de errores"
 
 #. module: l10n_ve_account_payment_group
 #: model:ir.model.fields,help:l10n_ve_account_payment_group.field_account_payment_group__message_needaction_counter
 msgid "Number of messages which requires an action"
-msgstr "Número de mensajes los cuales requieren una acción"
+msgstr "Número de mensajes que requieren una acción"
 
 #. module: l10n_ve_account_payment_group
 #: model:ir.model.fields,help:l10n_ve_account_payment_group.field_account_payment_group__message_has_error_counter
 msgid "Number of messages with delivery error"
-msgstr "Número de mensajes con errores de entrega"
+msgstr "Número de mensajes con error de envío"
 
 #. module: l10n_ve_account_payment_group
 #: model:ir.model.fields,help:l10n_ve_account_payment_group.field_account_payment_group__message_unread_counter
@@ -675,7 +675,7 @@ msgstr "Empresa"
 #. module: l10n_ve_account_payment_group
 #: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group__partner_type
 msgid "Partner Type"
-msgstr "Tipo de socio"
+msgstr "Tipo de Empresa"
 
 #. module: l10n_ve_account_payment_group
 #: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_move__pay_now_journal_id
@@ -752,7 +752,7 @@ msgstr "Transacción de pago"
 #. module: l10n_ve_account_payment_group
 #: model_terms:ir.ui.view,arch_db:l10n_ve_account_payment_group.view_account_payment_form
 msgid "Payment Type"
-msgstr "Tipo de Pago"
+msgstr "Tipo de pago"
 
 #. module: l10n_ve_account_payment_group
 #: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment__payment_type_copy
@@ -799,8 +799,7 @@ msgid ""
 "          You can then process those payments by your own means or by using installed facilities."
 msgstr ""
 "Los pagos se utilizan para registrar movimientos de liquidez (enviar o cobrar).\n"
-"          A continuación, puede procesar esos pagos por sus propios medios o utilizando las "
-"actualizaciones instaladas."
+"          A continuación, puede procesar esos pagos por sus propios medios o utilizando las actualizaciones instaladas."
 
 #. module: l10n_ve_account_payment_group
 #: code:addons/l10n_ve_account_payment_group/models/account_payment.py:0
@@ -812,8 +811,7 @@ msgstr "Los pagos con socios deben crearse a partir de grupos de pagos"
 #: code:addons/l10n_ve_account_payment_group/models/account_payment.py:0
 #, python-format
 msgid "Payments without partners (usually transfers) cant't have a related payment group"
-msgstr ""
-"Los pagos sin socios (generalmente transferencias) no pueden tener un grupo de pago relacionado"
+msgstr "Los pagos sin socios (generalmente transferencias) no pueden tener un grupo de pago relacionado"
 
 #. module: l10n_ve_account_payment_group
 #: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group__pop_up
@@ -830,7 +828,7 @@ msgstr "Publicado"
 #. module: l10n_ve_account_payment_group
 #: model_terms:ir.ui.view,arch_db:l10n_ve_account_payment_group.view_account_payment_group_form
 msgid "Print"
-msgstr "Impresión"
+msgstr "Imprimir"
 
 #. module: l10n_ve_account_payment_group
 #: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group_invoice_wizard__product_id
@@ -840,7 +838,7 @@ msgstr "Producto"
 #. module: l10n_ve_account_payment_group
 #: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group_invoice_wizard__description
 msgid "Reason"
-msgstr "Razón"
+msgstr "Motivo"
 
 #. module: l10n_ve_account_payment_group
 #: model:mail.template,report_name:l10n_ve_account_payment_group.email_template_edi_payment_group
@@ -870,14 +868,14 @@ msgstr "Reconciliado"
 #. module: l10n_ve_account_payment_group
 #: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group_invoice_wizard__invoice_date
 msgid "Refund Date"
-msgstr "Fecha de Devolución"
+msgstr "Fecha de rectificación"
 
 #. module: l10n_ve_account_payment_group
 #: code:addons/l10n_ve_account_payment_group/models/account_move.py:0
 #: model_terms:ir.ui.view,arch_db:l10n_ve_account_payment_group.view_account_payment_group_form
 #, python-format
 msgid "Register Payment"
-msgstr "Registro de pago"
+msgstr "Registrar pago"
 
 #. module: l10n_ve_account_payment_group
 #: model_terms:ir.ui.view,arch_db:l10n_ve_account_payment_group.view_account_payment_group_form
@@ -887,7 +885,7 @@ msgstr "Eliminar todo"
 #. module: l10n_ve_account_payment_group
 #: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group__message_has_sms_error
 msgid "SMS Delivery error"
-msgstr "Error de entrega de SMS"
+msgstr "Error de entrega del SMS"
 
 #. module: l10n_ve_account_payment_group
 #: model:res.groups,name:l10n_ve_account_payment_group.account_see_payment_menu
@@ -933,7 +931,7 @@ msgstr "Enviado"
 #. module: l10n_ve_account_payment_group
 #: model_terms:ir.ui.view,arch_db:l10n_ve_account_payment_group.view_account_payment_group_form
 msgid "Set to Draft"
-msgstr "Establecer en borrador"
+msgstr "Cambiar a borrador"
 
 #. module: l10n_ve_account_payment_group
 #: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment__signed_amount
@@ -949,7 +947,7 @@ msgstr "Estado"
 #. module: l10n_ve_account_payment_group
 #: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group__state
 msgid "Status"
-msgstr "Estatus"
+msgstr "Estado"
 
 #. module: l10n_ve_account_payment_group
 #: model:ir.actions.act_window,name:l10n_ve_account_payment_group.action_account_payments_group_payable
@@ -1002,7 +1000,7 @@ msgstr "Total"
 #. module: l10n_ve_account_payment_group
 #: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group_invoice_wizard__amount_total
 msgid "Total Amount"
-msgstr "Cantidad total"
+msgstr "Importe total"
 
 #. module: l10n_ve_account_payment_group
 #: model_terms:ir.ui.view,arch_db:l10n_ve_account_payment_group.view_account_payment_transfer_search
@@ -1024,12 +1022,12 @@ msgstr "Monto incomparable"
 #. module: l10n_ve_account_payment_group
 #: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group__message_unread
 msgid "Unread Messages"
-msgstr "Mensajes no leídos"
+msgstr "Mensajes sin leer"
 
 #. module: l10n_ve_account_payment_group
 #: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group__message_unread_counter
 msgid "Unread Messages Counter"
-msgstr "Contador de mensajes no leídos"
+msgstr "Contador de mensajes sin leer"
 
 #. module: l10n_ve_account_payment_group
 #: model:ir.model.fields,field_description:l10n_ve_account_payment_group.field_account_payment_group_invoice_wizard__amount_untaxed
@@ -1064,7 +1062,7 @@ msgstr "Validar"
 #. module: l10n_ve_account_payment_group
 #: model:ir.model.fields.selection,name:l10n_ve_account_payment_group.selection__account_payment_group__partner_type__supplier
 msgid "Vendor"
-msgstr "Vendedor"
+msgstr "Proveedor"
 
 #. module: l10n_ve_account_payment_group
 #: model_terms:ir.ui.view,arch_db:l10n_ve_account_payment_group.view_move_form
@@ -1079,7 +1077,7 @@ msgstr "Mensajes del sitio web"
 #. module: l10n_ve_account_payment_group
 #: model:ir.model.fields,help:l10n_ve_account_payment_group.field_account_payment_group__website_message_ids
 msgid "Website communication history"
-msgstr "Historial de comunicación del sitio web"
+msgstr "Historial de comunicaciones del sitio web"
 
 #. module: l10n_ve_account_payment_group
 #: code:addons/l10n_ve_account_payment_group/models/account_payment_group.py:0
