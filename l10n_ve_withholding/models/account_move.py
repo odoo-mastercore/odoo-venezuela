@@ -41,7 +41,7 @@ class AccountMove(models.Model):
         super(AccountMove, self)._post(soft)
         for rec in self:
             if rec.state == 'posted' and rec.l10n_ve_document_number == False:
-                if rec.move_type in ['out_invoice']:
+                if rec.move_type in ['out_invoice','out_refund']:
                     l10n_ve_document_number = rec.env[
                         'ir.sequence'].next_by_code(
                             'account.move.document.number')
