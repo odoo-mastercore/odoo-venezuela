@@ -47,6 +47,58 @@
         </tree>
     </field>
 </record>
+<record id="view_account_payment_kanban" model="ir.ui.view">
+    <field name="name">account.payment.kanban</field>
+    <field name="model">account.payment</field>
+    <field name="arch" type="xml">
+        <kanban class="o_kanban_mobile"  create="1" >
+            <field name="name" />
+            <field name="journal_id"/>
+            <field name="payment_method_id"/>
+            <field name="amount"/>
+            <field name="currency_id"/>
+            <field name="amount_company_currency" />
+            <field name="other_currency" invisible="1"/>
+            <templates>
+            <t t-name="kanban-box">
+                    <div t-attf-class="oe_kanban_card oe_kanban_global_click">
+                        <div class="row">
+                            <div class="col-8">
+                                <strong>
+                                    <span>
+                                        <field name="name"/>
+                                        <field name="journal_id"/>
+                                    </span>
+                                </strong>
+                            </div>
+                            <div class="col-4">
+                                <strong>
+                                    <span class="float-right text-right">
+                                        <field name="payment_method_id"/>
+                                    </span>
+                                </strong>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 text-muted">
+                                <span>
+                                    Monto:
+                                    <field name="amount"/>
+                                    <field name="currency_id"/>
+                                </span>
+                                <span attrs="{'invisible': [('other_currency', '=', False)]}">
+                                    <br/>
+                                    Monto en moneda de la compañia:
+                                    <field name="amount_company_currency"/>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </templates>
+        </kanban>        
+    </field>
+</record>
 
 <!-- default payment views (we disable creation and are not used for transfers) -->
     <record id="view_account_payment_form" model="ir.ui.view">
