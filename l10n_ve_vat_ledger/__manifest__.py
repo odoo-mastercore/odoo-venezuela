@@ -21,7 +21,7 @@
     'category': 'Localization',
     'license': 'AGPL-3',
     'depends': [
-        'account', 'l10n_ve_base','l10n_ve_withholding',],
+        'account', 'l10n_ve_base','l10n_ve_withholding', 'report_xlsx'],
     'data': [
         'security/security.xml',
         'security/ir.model.access.csv',
