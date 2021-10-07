@@ -61,32 +61,20 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     # Write Purchase lines 
                     i += 1
                     sheet.write(row, 0, i, line)
-                    sheet.write(row, 1, invoice.invoice_date, date_line)
-                    sheet.write(row, 2, invoice.ref, line)
+                    sheet.write(row, 1, invoice.invoice_date or 'FALSE', date_line)
+                    sheet.write(row, 2, invoice.ref or 'FALSE', line)
                     sheet.write(row, 3, invoice.l10n_ve_document_number or 'FALSE', line)
                     sheet.write(row, 4, invoice.partner_id.name or 'FALSE', line)
-                    if invoice.partner_id.\
-                        l10n_latam_identification_type_id.l10n_ve_code and invoice.\
-                            partner_id.vat:
-                        sheet.write(row, 5, invoice.partner_id.\
-                            l10n_latam_identification_type_id.l10n_ve_code+'-'+invoice.\
-                            partner_id.vat, line)
-                    elif invoice.partner_id.\
-                        l10n_latam_identification_type_id.l10n_ve_code:
-                        sheet.write(row, 5, invoice.partner_id.\
-                            l10n_latam_identification_type_id.l10n_ve_code+'-'+'FALSE', line)
-                    else:
-                        sheet.write(row, 5, 'FALSE'+'-'+invoice.partner_id.vat, line)
+                    sheet.write(row, 5,  '%s-%s' %(invoice.partner_id.\
+                    l10n_latam_identification_type_id.l10n_ve_code or 'FALSE',
+                    invoice.partner_id.vat or 'FALSE'), line)
                     sheet.write(row, 6, '', line)
                     sheet.write(row, 7, '', line)
                     sheet.write(row, 8, '', line)
                     sheet.write(row, 9, '01-REG', line)
-                    sheet.write(row, 10, int((str(
-                        invoice.amount_by_group[0][0]).replace("IVA ","")).\
-                        replace("%","")), line)
-                    sheet.write(row, 11, 
-                        str(invoice.amount_untaxed_signed * -1), line)
                     if invoice.amount_tax_signed == 0:
+                        sheet.write(row, 10, 0, line)
+                        sheet.write(row, 11, 0, line)
                         sheet.write(row, 12, 
                             str(invoice.amount_tax_signed * -1), line)
                         sheet.write(row, 13, 0, line)
@@ -94,6 +82,11 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                             str(invoice.amount_total_signed * -1), line)
                         total_amount_other_tax += invoice.amount_total_signed
                     else:
+                        sheet.write(row, 10, int((str(
+                            invoice.amount_by_group[0][0]).replace("IVA ","")).\
+                            replace("%","")), line)
+                        sheet.write(row, 11, 
+                            str(invoice.amount_untaxed_signed * -1), line)
                         sheet.write(row, 12, 
                             str(invoice.amount_tax_signed * -1), line)
                         sheet.write(row, 13, 
