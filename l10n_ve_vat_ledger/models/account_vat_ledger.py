@@ -82,21 +82,24 @@ class AccountVatLedger(models.Model):
     @api.depends('journal_ids', 'date_from', 'date_to')
     def _compute_invoices(self):
         for rec in self:
-            if rec.type == 'sale':
-                type_invoice = ['out_invoice', 'out_refund']
-            elif rec.type == 'purchase':
-                type_invoice = ['in_invoice', 'in_refund']
-            else:
-                type_invoice = []
-            invoices_domain = [
+            invoices_domain = []
+
+            invoices_domain += [
                 ('state', '!=', 'draft'),
                 ('l10n_ve_document_number', '!=', False),
                 ('journal_id', 'in', rec.journal_ids.ids),
-                ('type', 'in', type_invoice),
-                ('invoice_date', '>=', rec.date_from),
-                ('invoice_date', '<=', rec.date_to),
                 ('company_id', '=', rec.company_id.id),
             ]
+            if rec.type == 'sale':
+                invoices_domain += [
+                    ('type', 'in',['out_invoice', 'out_refund']),
+                    ('invoice_date', '>=', rec.date_from),
+                    ('invoice_date', '<=', rec.date_to),]
+            elif rec.type == 'purchase':
+                invoices_domain += [
+                    ('type', 'in',['in_invoice', 'in_refund']),
+                    ('date', '>=', rec.date_from),
+                    ('date', '<=', rec.date_to),]
             rec.invoice_ids = rec.env['account.move'].search(invoices_domain,
                 order='invoice_date asc, l10n_ve_document_number asc')
     
