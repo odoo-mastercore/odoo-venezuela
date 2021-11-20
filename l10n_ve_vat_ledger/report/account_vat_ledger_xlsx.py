@@ -61,7 +61,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     # Write Purchase lines 
                     i += 1
                     sheet.write(row, 0, i, line)
-                    sheet.write(row, 1, invoice.date or 'FALSE', date_line)
+                    sheet.write(row, 1, invoice.invoice_date or 'FALSE', date_line)
                     sheet.write(row, 2, invoice.ref or 'FALSE', line)
                     sheet.write(row, 3, invoice.l10n_ve_document_number or 'FALSE', line)
                     sheet.write(row, 4, invoice.partner_id.name or 'FALSE', line)
