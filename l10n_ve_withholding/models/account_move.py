@@ -49,10 +49,10 @@ class AccountMove(models.Model):
                                 sequence_control_id.code)
                         rec.write({
                             'l10n_ve_document_number': l10n_ve_document_number})
-                    else:
-                        raise ValidationError(
-                    _("El diario por el cual está emitiendo la factura no"+
-                        " tiene secuencia para número de control"))
+                    # else:
+                    #     raise ValidationError(
+                    # _("El diario por el cual está emitiendo la factura no"+
+                    #     " tiene secuencia para número de control"))
 
 
 class AccountMoveLine(models.Model):
