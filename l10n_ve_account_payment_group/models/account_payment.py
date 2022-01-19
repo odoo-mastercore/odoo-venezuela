@@ -94,7 +94,14 @@ class AccountPayment(models.Model):
 
     @api.onchange('payment_group_id')
     def onchange_payment_group_id(self):
-        if self.payment_group_id.payment_difference:
+        # now we change this according when use save & new the context from the payment was erased and we need to use some data.
+        # this change is due this odoo change https://github.com/odoo/odoo/commit/c14b17c4855fd296fd804a45eab02b6d3566bb7a
+        if self.payment_group_id:
+            self.payment_group_company_id = self.payment_group_id.company_id
+            self.payment_date = self.payment_group_id.payment_date
+            self.partner_type = self.payment_group_id.partner_type
+            self.partner_id = self.payment_group_id.partner_id
+            self.payment_type = 'inbound' if self.payment_group_id.partner_type  == 'customer' else 'outbound'
             self.amount = self.payment_group_id.payment_difference
 
     @api.depends('amount', 'other_currency', 'amount_company_currency')
@@ -168,7 +175,7 @@ class AccountPayment(models.Model):
         we disable change of partner_type if we came from a payment_group
         but we still reset the journal
         """
-        if not self._context.get('payment_group'):
+        if not self.payment_group_id:
             return super(AccountPayment, self)._onchange_payment_type()
         self.journal_id = False
 
@@ -263,18 +270,22 @@ class AccountPayment(models.Model):
         apply when the all the counterpart account are receivable/payable """
         # Si viene counterpart_aml entonces estamos viniendo de una
         # conciliacion desde el wizard
-        new_aml_dicts = self._context.get('new_aml_dicts', [])
-        counterpart_aml_dicts = self._context.get('counterpart_aml_dicts')
-        counterpart_aml_data = counterpart_aml_dicts or [{}]
-        if counterpart_aml_data or new_aml_dicts:
+        aml_data = self._context.get(
+            'counterpart_aml_dicts') or self._context.get(
+                'new_aml_dicts') or [{}]
+        if aml_data and not vals.get('partner_id'):
             vals.update(self.infer_partner_info(vals))
 
+        receivable_payable_accounts = [
+            (x.get('move_line') and x.get(
+                'move_line').account_id.internal_type in ['receivable', 'payable']) or
+            (x.get('account_id') and self.env[
+                'account.account'].browse(x.get('account_id')).internal_type in [
+                'receivable', 'payable'])
+            for x in aml_data]
         create_from_statement = self._context.get(
-            'create_from_statement', False) and vals.get('partner_type') \
-            and vals.get('partner_id') and all([
-                x.get('move_line') and x.get('move_line').account_id.internal_type in [
-                    'receivable', 'payable']
-                for x in counterpart_aml_data])
+            'create_from_statement') and vals.get('partner_type') \
+            and vals.get('partner_id') and all(receivable_payable_accounts)
         create_from_expense = self._context.get('create_from_expense', False)
         create_from_website = self._context.get('create_from_website', False)
         # NOTE: This is required at least from POS when we do not have
@@ -333,19 +344,27 @@ class AccountPayment(models.Model):
         }
 
     def _prepare_payment_moves(self):
-        all_move_vals = []
+        all_moves_vals = []
         for rec in self:
-            move_vals = super(AccountPayment, rec)._prepare_payment_moves()
-            # If we have a communication on payment group append it before payment communication
-            if rec.payment_group_id.communication:
-                move_vals[0]['ref'] = "%s%s" % (self.payment_group_id.communication, move_vals[0]['ref'] or '')
+            moves_vals = super(AccountPayment, rec)._prepare_payment_moves()
+            for move_vals in moves_vals:
+                # If we have a communication on payment group append it before payment communication
+                if rec.payment_group_id.communication:
+                    move_vals['ref'] = "%s%s" % (self.payment_group_id.communication, move_vals['ref'] or '')
 
-            # Si se esta forzando importe en moneda de cia, usamos este importe para debito/credito
-            if rec.force_amount_company_currency:
-                for line in move_vals[0]['line_ids']:
-                    if line[2].get('debit'):
-                        line[2]['debit'] = rec.force_amount_company_currency
-                    if line[2].get('credit'):
-                        line[2]['credit'] = rec.force_amount_company_currency
-            all_move_vals += move_vals
-        return all_move_vals
+                # Si se esta forzando importe en moneda de cia, usamos este importe para debito/credito
+                if rec.force_amount_company_currency:
+                    for line in move_vals['line_ids']:
+                        if line[2].get('debit'):
+                            line[2]['debit'] = rec.force_amount_company_currency
+                        if line[2].get('credit'):
+                            line[2]['credit'] = rec.force_amount_company_currency
+                all_moves_vals += [move_vals]
+        return all_moves_vals
+        
+    @api.model
+    def default_get(self, default_fields):
+        rec = super().default_get(default_fields)
+        if rec.get('invoice_ids', False):
+            rec.pop('invoice_ids')
+        return rec

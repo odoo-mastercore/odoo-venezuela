@@ -367,19 +367,11 @@ class AccountPaymentGroup(models.Model):
         al revz (debit_move_id vs credit_move_id)
         """
         for rec in self:
-            lines = rec.move_line_ids.browse()
-            # not sure why but self.move_line_ids dont work the same way
-            payment_lines = rec.payment_ids.mapped('move_line_ids')
-
-            reconciles = rec.env['account.partial.reconcile'].search([
-                ('credit_move_id', 'in', payment_lines.ids)])
-            lines |= reconciles.mapped('debit_move_id')
-
-            reconciles = rec.env['account.partial.reconcile'].search([
-                ('debit_move_id', 'in', payment_lines.ids)])
-            lines |= reconciles.mapped('credit_move_id')
-
-            rec.matched_move_line_ids = lines - payment_lines
+            payment_lines = rec.payment_ids.mapped('move_line_ids').filtered(
+                lambda x: x.account_internal_type in ['receivable', 'payable'])
+            rec.matched_move_line_ids = (payment_lines.mapped(
+                'matched_debit_ids.debit_move_id') | payment_lines.mapped(
+                'matched_credit_ids.credit_move_id')) - payment_lines
 
     @api.depends('payment_ids.move_line_ids')
     def _compute_move_lines(self):
@@ -494,9 +486,10 @@ class AccountPaymentGroup(models.Model):
         self.to_pay_move_line_ids = False
 
     @api.model
-    def default_get(self, fields):
+    def default_get(self, defaul_fields):
         # TODO si usamos los move lines esto no haria falta
-        rec = super().default_get(fields)
+        rec = super().default_get(defaul_fields)
+        rec['payment_date'] = fields.Date.context_today(self)
         to_pay_move_line_ids = self._context.get('to_pay_move_line_ids')
         to_pay_move_lines = self.env['account.move.line'].browse(
             to_pay_move_line_ids).filtered(lambda x: (
