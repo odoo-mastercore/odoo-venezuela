@@ -118,12 +118,12 @@ class AccountPaymentGroup(models.Model):
     # reconciled_amount = fields.Monetary(compute='_compute_amounts')
     to_pay_amount = fields.Monetary(
         compute='_compute_to_pay_amount',
-        #inverse='_inverse_to_pay_amount',
+        inverse='_inverse_to_pay_amount',
         string='To Pay Amount',
         # string='Total To Pay Amount',
         readonly=True,
         states={'draft': [('readonly', False)]},
-        track_visibility='always',
+        #track_visibility='always',
     )
     payments_amount = fields.Monetary(
         compute='_compute_payments_amount',
