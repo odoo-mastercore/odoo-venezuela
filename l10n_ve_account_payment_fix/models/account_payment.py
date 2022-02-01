@@ -203,23 +203,24 @@ class AccountPayment(models.Model):
         #                 ('payment_type', '=', payment_type),
         #                 ('id', 'in', payment_methods.ids)]}}
         # return {}
-
-    @api.depends('invoice_line_ids', 'payment_type', 'partner_type', 'partner_id')
-    def _compute_destination_account_id(self):
-        """
-        We send force_company on context so payments can be created from parent
-        companies. We try to send force_company on self but it doesnt works, it
-        only works sending it on partner
-        """
-        res = super(AccountPayment, self)._compute_destination_account_id()
-        for rec in self.filtered(
-                lambda x: not x.invoice_line_ids and x.payment_type != 'transfer'):
-            partner = self.partner_id.with_context(
-                force_company=self.company_id.id)
-            if self.partner_type == 'customer':
-                self.destination_account_id = (
-                    partner.property_account_receivable_id.id)
-            else:
-                self.destination_account_id = (
-                    partner.property_account_payable_id.id)
-        return res
+    #TODO Evaluar si es necesaria esta funcion por ahora se comento para
+    #permitir el onchange de la transferencia interna
+    # @api.depends('invoice_line_ids', 'payment_type', 'partner_type', 'partner_id')
+    # def _compute_destination_account_id(self):
+    #     """
+    #     We send force_company on context so payments can be created from parent
+    #     companies. We try to send force_company on self but it doesnt works, it
+    #     only works sending it on partner
+    #     """
+    #     res = super(AccountPayment, self)._compute_destination_account_id()
+    #     for rec in self.filtered(
+    #             lambda x: not x.invoice_line_ids and x.payment_type != 'transfer'):
+    #         partner = self.partner_id.with_context(
+    #             force_company=self.company_id.id)
+    #         if self.partner_type == 'customer':
+    #             self.destination_account_id = (
+    #                 partner.property_account_receivable_id.id)
+    #         else:
+    #             self.destination_account_id = (
+    #                 partner.property_account_payable_id.id)
+    #     return res

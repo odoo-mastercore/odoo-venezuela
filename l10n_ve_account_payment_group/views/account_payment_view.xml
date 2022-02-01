@@ -210,24 +210,38 @@
         <field name="mode">primary</field>
         <field name="arch" type="xml">
             <!-- we need to re enable this -->
-            <form position="attributes">
+            <!-- <form position="attributes">
                 <attribute name="create">true</attribute>
                 <attribute name="edit">true</attribute>
-            </form>
+            </form> -->
 
-            <field name="payment_type_copy" position="replace"/>
-
+            <!-- <field name="payment_type_copy" position="replace"/> -->
             <!-- sacamos confirm y groups en transfers -->
+            <form position="attributes">
+                <attribute name="create">false</attribute>
+                <attribute name="edit">true</attribute>
+            </form>
             <button name="action_post" position="attributes">
                 <attribute name="confirm"></attribute>
                 <attribute name="groups"></attribute>
             </button>
-
+            <field name="destination_account_id" position="attributes">
+                <!-- comes from payment_group and from context on transfers -->
+                <attribute name="invisible">0</attribute>
+            </field>
+            <field name="is_internal_transfer" position="attributes">
+                <!-- comes from payment_group and from context on transfers -->
+                <attribute name="invisible">0</attribute>
+            </field>
+            <field name="partner_id" position="attributes">
+                <!-- comes from payment_group and is not used on transfers -->
+                <attribute name="invisible">0</attribute>
+            </field>
             <!-- sacamos confirm y groups en transfers -->
-            <button name="action_cancel" position="attributes">
+            <!-- <button name="action_cancel" position="attributes">
                 <attribute name="confirm"></attribute>
                 <attribute name="groups"></attribute>
-            </button>
+            </button> -->
         </field>
     </record>
 
@@ -275,13 +289,13 @@
         </field>
     </record>
 
+        <!-- <field name="view_id" ref="view_account_payment_transfer_tree"/> -->
     <record id="action_account_payments_transfer" model="ir.actions.act_window">
         <field name="name">Transfers</field>
         <field name="res_model">account.payment</field>
         <field name="view_mode">tree,form,graph</field>
-        <field name="context">{'default_payment_type': 'transfer'}</field>
-        <field name="domain">[('payment_type', '=', 'transfer')]</field>
-        <!-- <field name="view_id" ref="view_account_payment_transfer_tree"/> -->
+        <field name="context">{'default_is_internal_transfer': True}</field>
+        <field name="domain">[('is_internal_transfer', '=', True)]</field>
         <field name="search_view_id" ref="view_account_payment_transfer_search"/>
         <field name="view_ids" eval="[(5, 0, 0),
             (0, 0, {'view_mode': 'tree', 'view_id': ref('view_account_payment_transfer_tree')}),
@@ -292,7 +306,18 @@
             </p>
         </field>
     </record>
-
+    <!-- <record id="action_account_payments_transfer" model="ir.actions.act_window">
+        <field name="name">Transfers</field>
+        <field name="res_model">account.payment</field>
+        <field name="view_mode">tree,form,graph</field>
+        <field name="context">{'default_is_internal_transfer': True, 'default_move_journal_types': ('bank', 'cash')}</field>
+        <field name="domain">[('is_internal_transfer', '=', 'transfer')]</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+              Click to register a transfer between liquidity journals
+            </p>
+        </field>
+    </record> -->
     <menuitem action="action_account_payments_transfer" id="menu_action_account_payments_transfer" parent="l10n_ve_account_payment_fix.menu_finance_bank_and_cash" sequence="30" groups="account.group_account_user"/>
 
 </odoo>

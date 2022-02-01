@@ -145,11 +145,12 @@ class AccountPayment(models.Model):
         for rec in self:
             # if false, then it is a transfer
             rec.payment_type = (
-                rec.payment_type_copy and rec.payment_type_copy or 'transfer')
+                rec.payment_type_copy and rec.payment_type_copy)
+                # rec.payment_type_copy and rec.payment_type_copy or 'transfer')
 
     @api.depends('payment_type')
     def _compute_payment_type_copy(self):
-        for rec in self:
+        for rec in self.with_context(skip_account_move_synchronization=True):
             if rec.payment_type == 'transfer':
                 rec.payment_type_copy = False
             else:
@@ -349,3 +350,33 @@ class AccountPayment(models.Model):
                         line[2]['credit'] = rec.force_amount_company_currency
             all_move_vals += move_vals
         return all_move_vals
+    
+    # @api.depends('is_internal_transfer')
+    # def _compute_partner_id(self):
+    #     for pay in self:
+    #         _logger.warning('ESTA ENTRANDO EN EL IFFFF')
+    #         if pay.is_internal_transfer:
+    #             pay.partner_id = pay.journal_id.company_id.partner_id
+
+    @api.depends('partner_id')
+    def _compute_partner_bank_id(self):
+        ''' The default partner_bank_id will be the first available on the partner. '''
+        for pay in self:
+            available_partner_bank_accounts = pay.partner_id.bank_ids.filtered(
+                lambda x: x.company_id in (False, pay.company_id))
+            if available_partner_bank_accounts:
+                if not pay.is_internal_transfer:
+                    pay.partner_bank_id = available_partner_bank_accounts[0]._origin
+
+            else:
+                pay.partner_bank_id = False
+    
+    @api.depends('partner_id', 'destination_account_id', 'journal_id')
+    def _onchange_is_internal_transfer(self):
+        for payment in self:
+            if payment.is_internal_transfer:
+                payment.partner_id = payment.journal_id.company_id.partner_id
+                is_partner_ok = payment.partner_id == payment.journal_id.company_id.partner_id
+                is_account_ok = payment.destination_account_id and payment.destination_account_id == payment.journal_id.company_id.transfer_account_id
+                payment.is_internal_transfer = is_partner_ok and is_account_ok
+            
