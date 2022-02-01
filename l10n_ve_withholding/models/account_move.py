@@ -8,6 +8,7 @@
 ###############################################################################
 from odoo import models, fields, api, _
 from odoo.exceptions import UserError, ValidationError
+from datetime import datetime
 import logging
 
 _logger = logging.getLogger(__name__)
@@ -43,6 +44,14 @@ class AccountMove(models.Model):
         for rec in self:
             if rec.state == 'posted' and rec.l10n_ve_document_number == False:
                 if rec.type in ['out_invoice']:
+                    today = datetime.strptime(
+                        str(fields.Date.today()), "%Y-%m-%d")
+                    invoice_date = datetime.strptime(
+                        str(rec.invoice_date), "%Y-%m-%d")
+                    if invoice_date > today:
+                        raise ValidationError(
+                            _("La factura no puede ser mayor a la fecha actual"+
+                                " por favor verifique la fecha de su factura."))
                     if rec.journal_id.sequence_control_id:        
                         l10n_ve_document_number = rec.env[
                             'ir.sequence'].next_by_code(rec.journal_id.\
