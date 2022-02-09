@@ -112,7 +112,7 @@ class AccountPayment(models.Model):
     # rouding odoo believes amount has changed)
     @api.onchange('amount_company_currency')
     def _inverse_amount_company_currency(self):
-        for rec in self:
+        for rec in self.with_context(skip_account_move_synchronization=True):
             if rec.other_currency and rec.amount_company_currency != \
                     rec.currency_id._convert(
                         rec.amount, rec.company_id.currency_id,
@@ -129,7 +129,7 @@ class AccountPayment(models.Model):
         * si no, si hay force_amount_company_currency, devuelve ese valor
         * sino, devuelve el amount convertido a la moneda de la cia
         """
-        for rec in self:
+        for rec in self.with_context(skip_account_move_synchronization=True):
             if not rec.other_currency:
                 amount_company_currency = rec.amount
             elif rec.force_amount_company_currency:
@@ -305,7 +305,7 @@ class AccountPayment(models.Model):
         If we are paying a payment gorup with paylines, we use account
         of lines that are going to be paid
         """
-        for rec in self:
+        for rec in self.with_context(skip_account_move_synchronization=True):
             to_pay_account = rec.payment_group_id.to_pay_move_line_ids.mapped(
                 'account_id')
             if len(to_pay_account) > 1:
