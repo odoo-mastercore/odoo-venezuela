@@ -5,5 +5,4 @@
 #
 #
 ###############################################################################
-from . import models
-from . import wizard
+from . import account_move_reverse
