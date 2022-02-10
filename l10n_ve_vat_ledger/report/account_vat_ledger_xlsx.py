@@ -49,14 +49,16 @@ class AccountVatLedgerXlsx(models.AbstractModel):
             sheet.write(4, 12, 'Impuesto IVA.', bold)
             sheet.write(4, 13, 'Total Ventas Incluyendo IVA.', bold)
             sheet.write(4, 14, 'Total Ventas Internas No Gravadas.', bold)
+            sheet.write(4, 15, 'IVA Retenido.', bold)
 
             row = 5
             total_amount_taxed = 0
             total_amount_untaxed = 0
             total_amount = 0
             total_amount_other_tax = 0
+            total_retencion = 0
             i = 0   
-            for invoice in obj.invoice_ids:
+            for invoice in reversed(obj.invoice_ids):
                 if obj.type == 'purchase':
                     # Write Purchase lines 
                     i += 1
@@ -131,10 +133,28 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                         sheet.write(row, 13, invoice.amount_total_signed, line)
                         sheet.write(row, 14, 0, line)
                     
+                    sql = """
+                    SELECT p.withholding_number AS number_wh,p.amount AS amount_wh,l.move_id AS invoice
+                    FROM  account_tax AS t INNER JOIN account_payment  AS p ON t.id=p.tax_withholding_id
+                    INNER JOIN account_move_line_payment_group_to_pay_rel AS g ON p.payment_group_id=g.payment_group_id
+                    INNER JOIN account_move_line AS l ON g.to_pay_line_id=l.id
+                    WHERE t.type_tax_use='%s' AND t.withholding_type='partner_tax' AND l.move_id=%d
+                    """ % ('customer', invoice.id)
+                    self._cr.execute(sql)
+                    res = self._cr.fetchone()
+                    reten = 0.00
+                    if res:
+                        reten = float(res[1])
+                    else:
+                        reten = 0
+                    
+                    sheet.write(row, 15, reten, line)
+
                     # Adding totals
                     total_amount_taxed += invoice.amount_tax_signed
                     total_amount_untaxed += invoice.amount_untaxed_signed 
                     total_amount += invoice.amount_total_signed
+                    total_retencion += reten
                     row += 1
 
             # # Write totals lines
@@ -143,3 +163,4 @@ class AccountVatLedgerXlsx(models.AbstractModel):
             sheet.write(row, 12, total_amount_taxed, bold)
             sheet.write(row, 13, total_amount, bold)
             sheet.write(row, 14, total_amount_other_tax, bold)
+            sheet.write(row, 15, total_retencion, bold)
