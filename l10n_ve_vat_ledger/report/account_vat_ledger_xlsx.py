@@ -116,23 +116,31 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     sheet.write(row, 7, '', line)
                     sheet.write(row, 8, '', line)
                     sheet.write(row, 9, '01-REG', line)
-                    
-                    if invoice.amount_tax_signed == 0:
+                    if invoice.state == 'cancel':
                         sheet.write(row, 10, 0, line)
                         sheet.write(row, 11, 0, line)
-                        sheet.write(row, 12, invoice.amount_tax_signed, line)
+                        sheet.write(row, 12, 0, line)
                         sheet.write(row, 13, 0, line)
-                        sheet.write(row, 14, invoice.amount_total_signed, line)
-                        total_amount_other_tax += invoice.amount_total_signed
-                    else:
-                        sheet.write(row, 10, int((str(
-                            invoice.amount_by_group[0][0]).replace("IVA ","")).\
-                            replace("%","")), line)
-                        sheet.write(row, 11, invoice.amount_untaxed_signed, line)
-                        sheet.write(row, 12, invoice.amount_tax_signed, line)
-                        sheet.write(row, 13, invoice.amount_total_signed, line)
                         sheet.write(row, 14, 0, line)
-                    
+
+                    else:
+                        if invoice.amount_tax_signed == 0:
+                            sheet.write(row, 10, 0, line)
+                            sheet.write(row, 11, 0, line)
+                            sheet.write(row, 12, invoice.amount_tax_signed, line)
+                            sheet.write(row, 13, 0, line)
+                            sheet.write(row, 14, invoice.amount_total_signed, line)
+                            total_amount_other_tax += invoice.amount_total_signed
+                        else:
+                            sheet.write(row, 10, int((str(
+                                invoice.amount_by_group[0][0]).replace("IVA ","")).\
+                                replace("%","")), line)
+                            sheet.write(row, 11, invoice.amount_untaxed_signed, line)
+                            sheet.write(row, 12, invoice.amount_tax_signed, line)
+                            sheet.write(row, 13, invoice.amount_total_signed, line)
+                            sheet.write(row, 14, 0, line)
+                            sheet.write(row, 16, 'ANULADA', line)
+                        
                     sql = """
                     SELECT p.withholding_number AS number_wh,p.amount AS amount_wh,l.move_id AS invoice
                     FROM  account_tax AS t INNER JOIN account_payment  AS p ON t.id=p.tax_withholding_id
@@ -151,10 +159,16 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     sheet.write(row, 15, reten, line)
 
                     # Adding totals
-                    total_amount_taxed += invoice.amount_tax_signed
-                    total_amount_untaxed += invoice.amount_untaxed_signed 
-                    total_amount += invoice.amount_total_signed
-                    total_retencion += reten
+                    if invoice.state == 'cancel':
+                        total_amount_taxed += 0
+                        total_amount_untaxed += 0
+                        total_amount += 0
+                        total_retencion += 0
+                    else:
+                        total_amount_taxed += invoice.amount_tax_signed
+                        total_amount_untaxed += invoice.amount_untaxed_signed 
+                        total_amount += invoice.amount_total_signed
+                        total_retencion += reten
                     row += 1
 
             # # Write totals lines
