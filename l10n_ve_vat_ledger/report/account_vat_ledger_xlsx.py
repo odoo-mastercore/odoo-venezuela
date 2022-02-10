@@ -122,6 +122,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                         sheet.write(row, 12, 0, line)
                         sheet.write(row, 13, 0, line)
                         sheet.write(row, 14, 0, line)
+                        sheet.write(row, 16, 'ANULADA', line)
 
                     else:
                         if invoice.amount_tax_signed == 0:
@@ -139,7 +140,6 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                             sheet.write(row, 12, invoice.amount_tax_signed, line)
                             sheet.write(row, 13, invoice.amount_total_signed, line)
                             sheet.write(row, 14, 0, line)
-                            sheet.write(row, 16, 'ANULADA', line)
                         
                     sql = """
                     SELECT p.withholding_number AS number_wh,p.amount AS amount_wh,l.move_id AS invoice
