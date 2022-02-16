@@ -17,7 +17,7 @@
     <record id="view_account_payment_from_group_tree" model="ir.ui.view">
         <field name="name">account.payment.tree</field>
         <field name="model">account.payment</field>
-        <field name="inherit_id" ref="l10n_ve_account_payment_group.view_account_payment_from_group_tree"/>
+        <field name="inherit_id" ref="account_payment_group.view_account_payment_from_group_tree"/>
         <field name="arch" type="xml">
             <tree>
                 <field name="payment_method_code" invisible="1"/>

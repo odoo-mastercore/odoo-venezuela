@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <template id="report_payment_group_document" inherit_id="l10n_ve_account_payment_group.report_payment_group_document">
+    <template id="report_payment_group_document" inherit_id="account_payment_group.report_payment_group_document">
         <t t-set="o" position="after">
             <t t-set="report_date" t-value="o.payment_date"/>
             <t t-set="report_number" t-value="o.document_number"/>

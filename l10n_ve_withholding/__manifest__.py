@@ -17,12 +17,11 @@
 
     'author': "SINAPSYS GLOBAL SA || MASTERCORE SAS",
     'website': "http://sinapsys.global",
-    'version': '13.0.1',
+    'version': '15.0.0',
     'category': 'Localization',
     'license': 'AGPL-3',
     'depends': [
-        'account', 'l10n_ve_base','l10n_ve_account_withholding_automatic',
-        'l10n_ve_account_payment_group_document'],
+        'account', 'l10n_ve_base','account_withholding_automatic',],
     'data': [
         'data/account_tax_withholding_template.xml',
         'data/seniat_factor.xml',

@@ -19,7 +19,7 @@ class AccountPaymentGroup(models.Model):
     # this field is to be used by vat retention
     selected_debt_taxed = fields.Monetary(
         string='Selected Debt taxed',
-        compute='_compute_selected_debt',
+        compute='_compute_selected_debt_taxed',
     )
     iva = fields.Boolean('¿Aplicar Retención IVA?')
     islr = fields.Boolean('¿Aplicar Retención ISLR?')
@@ -32,9 +32,13 @@ class AccountPaymentGroup(models.Model):
         compute='_partner_regimenes_islr',
     )
     #This field is to be used by invoice in multicurrency
+    selected_finacial_debt = fields.Monetary(
+        string='Selected Financial Debt',
+        compute='_compute_selected_debt_financial',
+    )
     selected_finacial_debt_currency = fields.Monetary(
         string='Selected Financial Debt in foreign currency',
-        compute='_compute_selected_debt',
+        compute='_compute_selected_debt_financial',
     )
     debt_multicurrency = fields.Boolean(
         string='debt is in foreign currency?', default=False,
@@ -54,6 +58,24 @@ class AccountPaymentGroup(models.Model):
             else:
                 rec.partner_regimen_islr_ids = rec.env['seniat.tabla.islr']
 
+    @api.depends(
+        'to_pay_move_line_ids.amount_residual',
+        'to_pay_move_line_ids.amount_residual_currency',
+        'to_pay_move_line_ids.currency_id',
+        'to_pay_move_line_ids.move_id',
+        'payment_date',
+        'currency_id',
+    )
+    def _compute_selected_debt_taxed(self):
+        for rec in self:
+            selected_debt_taxed = 0.0
+            for line in rec.to_pay_move_line_ids._origin:
+                #this is conditional used to vat retention
+                for abg in line.move_id.tax_totals_json:
+                    if str(abg[0]).find('IVA') > -1:
+                        selected_debt_taxed += abg[1]
+                selected_finacial_debt += line.financial_amount_residual
+            rec.selected_debt_taxed = selected_debt_taxed
 
     @api.depends(
         'to_pay_move_line_ids.amount_residual',
@@ -63,19 +85,11 @@ class AccountPaymentGroup(models.Model):
         'payment_date',
         'currency_id',
     )
-    def _compute_selected_debt(self):
+    def _compute_selected_debt_financial(self):
         for rec in self:
             selected_finacial_debt = 0.0
-            selected_debt = 0.0
-            selected_debt_untaxed = 0.0
-            selected_debt_taxed = 0.0
             selected_finacial_debt_currency = 0.0
             for line in rec.to_pay_move_line_ids._origin:
-                #this is conditional used to vat retention
-                for abg in line.move_id.amount_by_group:
-                    if str(abg[0]).find('IVA') > -1:
-                        selected_debt_taxed += abg[1]
-                selected_finacial_debt += line.financial_amount_residual
                 # factor for total_untaxed
                 invoice = line.move_id
                 if line.move_id.currency_id != rec.company_id.currency_id:
@@ -87,13 +101,25 @@ class AccountPaymentGroup(models.Model):
                     rec.debt_multicurrency = True
                 else:
                     rec.debt_multicurrency = False
+                if rec.debt_multicurrency:
+                    last_rate = 0
+                    last_rate = self.env['res.currency.rate'].search([
+                        ('currency_id', '=', rec.selected_debt_currency_id.id),
+                        ('name', '=', rec.payment_date)
+                    ], limit=1).rate
+                    if last_rate == 0:
+                        last_rate = self.env['res.currency.rate'].search([
+                            ('currency_id', '=', rec.selected_debt_currency_id.id),
+                        ], limit=1).rate
+                    if last_rate == 0:
+                        last_rate = 1
+                    rate = round((1 / last_rate), 2)
+                    finacial_debt_currency = rec.selected_finacial_debt_currency*rate
+                    selected_finacial_debt += finacial_debt_currency
+                else:
+                    selected_finacial_debt += line.financial_amount_residual
                     #selected_debt += line.move_id.amount_residual
-                selected_debt += line.amount_residual
-                factor = invoice and invoice._get_tax_factor() or 1.0
-                selected_debt_untaxed += line.amount_residual * factor
             sign = rec.partner_type == 'supplier' and -1.0 or 1.0
             rec.selected_finacial_debt = selected_finacial_debt * sign
-            rec.selected_debt = selected_debt * sign
             rec.selected_finacial_debt_currency = selected_finacial_debt_currency * sign
-            rec.selected_debt_untaxed = selected_debt_untaxed * sign
-            rec.selected_debt_taxed = selected_debt_taxed
+

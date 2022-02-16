@@ -2,7 +2,9 @@
 # For copyright and license notices, see __manifest__.py file in module root
 # directory
 ##############################################################################
+from re import search
 from odoo import models, fields, api, _
+import json
 # import time
 import logging
 
@@ -13,6 +15,19 @@ class AccountVatLedgerXlsx(models.AbstractModel):
     _name = 'report.l10n_ve_vat_ledger.account_vat_ledger_xlsx'
     _inherit = 'report.report_xlsx.abstract'
     _description = "Xlsx Account VAT Ledger"
+
+    def find_values(self, id, json_repr):
+        results = []
+
+        def _decode_dict(a_dict):
+            try:
+                results.append(a_dict[id])
+            except KeyError:
+                pass
+            return a_dict
+        # Return value ignored.
+        json.loads(json_repr, object_hook=_decode_dict)
+        return results
 
     def generate_xlsx_report(self, workbook, data, account_vat):
         for obj in account_vat:
@@ -84,9 +99,11 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                             str(invoice.amount_total_signed * -1), line)
                         total_amount_other_tax += invoice.amount_total_signed
                     else:
+                        groups = self.find_values(
+                            'groups_by_subtotal', invoice.tax_totals_json)
                         sheet.write(row, 10, int((str(
-                            invoice.amount_by_group[0][0]).replace("IVA ","")).\
-                            replace("%","")), line)
+                            groups[0].get('Base imponible')[0].get(
+                            'tax_group_name')).replace("IVA ", "")).replace("%", "")), line)
                         sheet.write(row, 11, 
                             str(invoice.amount_untaxed_signed * -1), line)
                         sheet.write(row, 12, 
@@ -133,8 +150,11 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                             sheet.write(row, 14, invoice.amount_total_signed, line)
                             total_amount_other_tax += invoice.amount_total_signed
                         else:
+                            groups = self.find_values(
+                                'groups_by_subtotal', invoice.tax_totals_json)
                             sheet.write(row, 10, int((str(
-                                invoice.amount_by_group[0][0]).replace("IVA ","")).\
+                                groups[0].get('Base imponible')[0].get(
+                                    'tax_group_name')).replace("IVA ", "")).
                                 replace("%","")), line)
                             sheet.write(row, 11, invoice.amount_untaxed_signed, line)
                             sheet.write(row, 12, invoice.amount_tax_signed, line)

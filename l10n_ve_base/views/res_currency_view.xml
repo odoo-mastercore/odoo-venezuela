@@ -5,7 +5,7 @@
         <field name="model">res.currency</field>
         <field name="inherit_id" ref="base.view_currency_form"/>
         <field name="arch" type="xml">
-        <xpath expr="//div[@name='button_box']" position="inside">
+        <xpath expr="//page[@name='rates']" position="inside">
             <button 
                 name="action_get_currency_rate" 
                 string="Update Rate" 

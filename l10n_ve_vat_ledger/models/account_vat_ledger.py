@@ -92,12 +92,12 @@ class AccountVatLedger(models.Model):
             ]
             if rec.type == 'sale':
                 invoices_domain += [
-                    ('type', 'in',['out_invoice', 'out_refund']),
+                    ('move_type', 'in',['out_invoice', 'out_refund']),
                     ('invoice_date', '>=', rec.date_from),
                     ('invoice_date', '<=', rec.date_to),]
             elif rec.type == 'purchase':
                 invoices_domain += [
-                    ('type', 'in',['in_invoice', 'in_refund']),
+                    ('move_type', 'in',['in_invoice', 'in_refund']),
                     ('date', '>=', rec.date_from),
                     ('date', '<=', rec.date_to),]
             rec.invoice_ids = rec.env['account.move'].search(invoices_domain,
