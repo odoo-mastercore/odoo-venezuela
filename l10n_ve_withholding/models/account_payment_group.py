@@ -117,7 +117,7 @@ class AccountPaymentGroup(models.Model):
                     finacial_debt_currency = rec.selected_finacial_debt_currency*rate
                     selected_finacial_debt += finacial_debt_currency
                 else:
-                    selected_finacial_debt += line.financial_amount_residual
+                    selected_finacial_debt += line.amount_residual
                     #selected_debt += line.move_id.amount_residual
             sign = rec.partner_type == 'supplier' and -1.0 or 1.0
             rec.selected_finacial_debt = selected_finacial_debt * sign
