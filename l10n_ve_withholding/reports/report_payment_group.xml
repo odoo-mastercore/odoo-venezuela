@@ -4,7 +4,7 @@
         <t t-set="o" position="after">
             <t t-set="report_date" t-value="o.payment_date"/>
             <t t-set="report_number" t-value="o.document_number"/>
-            <!--<t t-set="report_name" t-value="o.partner_type == 'supplier' and 'Orden de pago' or 'Recibo'"/>-->
+            <t t-set="report_name" t-value="o.partner_type == 'supplier' and 'Orden de pago' or 'Recibo'"/>
             <t t-set="header_address" t-value="o.receiptbook_id.report_partner_id or o.company_id.partner_id"/>
 
             <t t-set="custom_footer">
@@ -75,7 +75,7 @@
                         <tr>
                             <td><span t-raw='"%s - %s" % (line.tax_withholding_id.name, line.withholding_number or line.name)'/></td>
                             <td class="text-right o_price_total">
-                                <span class="text-nowrap" t-field="line.signed_amount_company_currency"/>
+                                <span class="text-nowrap" t-field="line.amount_company_currency"/>
                             </td>
                         </tr>
                     </t>
@@ -91,7 +91,7 @@
                               </t>
                             </td>
                             <td class="text-right o_price_total">
-                                <span class="text-nowrap" t-field="line.signed_amount_company_currency"/>
+                                <span class="text-nowrap" t-field="line.amount_company_currency"/>
                             </td>
                         </tr>
                     </t>
