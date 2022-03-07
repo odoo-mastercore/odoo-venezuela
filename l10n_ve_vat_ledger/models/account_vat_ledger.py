@@ -73,14 +73,13 @@ class AccountVatLedger(models.Model):
         'Reference',
     )
     invoice_ids = fields.Many2many(
-        'account.move',
+        'account.move', 'account_vat_ledger_invoice_rel',
+        'vat_ledger_id', 'invoice_id',
         string="Invoices",
-        compute="_compute_invoices",
         store=True
     )
 
-    @api.depends('journal_ids', 'date_from', 'date_to')
-    def _compute_invoices(self):
+    def compute_data_invoce(self):
         for rec in self:
             invoices_domain = []
 

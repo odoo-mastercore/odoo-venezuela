@@ -24,6 +24,8 @@
                     <button name="action_present" string="Present" states="draft" type="object" class="oe_highlight"/>
                     <button name="action_cancel" string="Cancel" states="draft,presented" type="object"/>
                     <button name="action_to_draft" string="To Draft" states="cancel" type="object"/>
+                    <button name="compute_data_invoce" 
+                                string="CALCULAR LIBRO DE IVA" states="draft" type="object" style="padding: 0 10px;" class="btn btn-primary"/>
                     <field name="state" widget="statusbar" statusbar_visible="draft,presented"/>
                 </header>
                 <sheet>
