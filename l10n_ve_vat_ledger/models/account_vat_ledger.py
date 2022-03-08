@@ -100,7 +100,7 @@ class AccountVatLedger(models.Model):
                     ('date', '>=', rec.date_from),
                     ('date', '<=', rec.date_to),]
             rec.invoice_ids = rec.env['account.move'].search(invoices_domain,
-                order='l10n_ve_document_number desc, invoice_date desc')
+                order='l10n_ve_document_number desc')
     
     @api.depends('type', 'reference',)
     def _compute_name(self):
