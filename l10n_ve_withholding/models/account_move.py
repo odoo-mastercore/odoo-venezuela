@@ -39,8 +39,8 @@ class AccountMove(models.Model):
             pass
         return super().get_taxes_values()
 
-    def post(self):
-        super(AccountMove, self).post()
+    def _post(self, soft):
+        super(AccountMove, self)._post(soft)
         for rec in self:
             if rec.state == 'posted' and rec.l10n_ve_document_number == False:
                 if rec.type in ['move_type']:
