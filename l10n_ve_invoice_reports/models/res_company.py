@@ -19,5 +19,5 @@ class ResCompany(models.Model):
     def set_report_layout(self):
         self.browse(1).write({
             'external_report_layout_id': self.env.ref(
-                'web.external_layout_background').id
+                'web.external_layout_bold').id
         })
