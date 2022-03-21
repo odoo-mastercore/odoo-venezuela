@@ -35,17 +35,23 @@
                         attrs="{'invisible': ['|',('debt_multicurrency', '=', False),  ('state', 'not in', ['draft', 'confirmed'])]}" 
                         options="{'currency_field': 'selected_debt_currency_id'}"/>
                 </field>
+            </field>
+        </record>
 
+        <record id="inherit_view_account_payment_group_form" model="ir.ui.view">
+            <field name="name">inherit.account.payment.group.form</field>
+            <field name="model">account.payment.group</field>
+            <field name="inherit_id" ref="account_withholding_automatic.view_account_payment_group_form"/>
+            <field name="arch" type="xml">
                 <xpath expr="//button[@name='compute_withholdings']" position="replace">
-                    
-                <button name="compute_withholdings" 
-                        string="Calcular Retenciones" 
-                        type="object" 
-                        confirm="El computar la retención realizara un solo registro por la factura correspondiente, para ello solo puede pagar una factura a la vez."
-                        attrs="{'invisible': [
-                            '|','|', ('partner_type', '!=', 'supplier'), ('state', 'not in', ['draft', 'confirmed']),
-                            ('iva', '!=', True),('islr', '!=', True)
-                        ]}"/>
+                  <button name="compute_withholdings" 
+                      string="Calcular Retenciones" 
+                      type="object" 
+                      confirm="El computar la retención realizara un solo registro por la factura correspondiente, para ello solo puede pagar una factura a la vez."
+                      attrs="{'invisible': [
+                          '|','|', ('partner_type', '!=', 'supplier'), ('state', 'not in', ['draft', 'confirmed']),
+                          ('iva', '!=', True),('islr', '!=', True)
+                      ]}"/>
                 </xpath>
             </field>
         </record>
