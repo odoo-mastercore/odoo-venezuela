@@ -6,7 +6,7 @@
             <div class="page">
                 <div>
                     <br/>
-                    <t t-set="report_date" t-value="o.payment_date"/>
+                    <t t-set="report_date" t-value="o.date"/>
                     <t t-set="report_number" t-value="o.withholding_number or o.name"/>
                     <t t-set="report_name" t-value="'CERTIFICADO DE RETENCIÓN'"/>
                     <t t-set="header_address" t-value="o.company_id.partner_id"/>
