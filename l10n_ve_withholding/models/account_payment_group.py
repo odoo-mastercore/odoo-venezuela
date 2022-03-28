@@ -123,7 +123,7 @@ class AccountPaymentGroup(models.Model):
             rec.selected_finacial_debt = selected_finacial_debt * sign
             rec.selected_finacial_debt_currency = selected_finacial_debt_currency * sign
 
-    @api.depends('selected_debt', 'selected_finacial_debt', 'unreconciled_amount')
+    @api.depends('selected_debt', 'selected_finacial_debt', 'unreconciled_amount', 'payment_date',)
     def _compute_to_pay_amount(self):
         for rec in self:
             if rec.debt_multicurrency:
