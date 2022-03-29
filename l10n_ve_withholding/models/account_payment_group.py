@@ -84,6 +84,8 @@ class AccountPaymentGroup(models.Model):
         'to_pay_move_line_ids.move_id',
         'payment_date',
         'currency_id',
+        'partner_id',
+        'selected_debt',
     )
     def _compute_selected_debt_financial(self):
         for rec in self:
@@ -91,12 +93,11 @@ class AccountPaymentGroup(models.Model):
             selected_finacial_debt_currency = 0.0
             for line in rec.to_pay_move_line_ids._origin:
                 # factor for total_untaxed
-                invoice = line.move_id
-                if line.move_id.currency_id != rec.company_id.currency_id:
+                if line.move_id.currency_id.id != rec.company_id.currency_id.id:
                     selected_finacial_debt_currency += line.amount_residual_currency
                     rec.debt_multicurrency = True
                     rec.selected_debt_currency_id = line.move_id.currency_id.id
-                elif line.move_id.currency_id != rec.company_id.currency_id and rec.debt_multicurrency:
+                elif line.move_id.currency_id.id != rec.company_id.currency_id.id and rec.debt_multicurrency:
                     selected_finacial_debt_currency += line.amount_residual_currency
                     rec.debt_multicurrency = True
                 else:
@@ -123,10 +124,10 @@ class AccountPaymentGroup(models.Model):
             rec.selected_finacial_debt = selected_finacial_debt * sign
             rec.selected_finacial_debt_currency = selected_finacial_debt_currency * sign
 
-    @api.depends('selected_debt', 'selected_finacial_debt', 'unreconciled_amount', 'payment_date',)
+    @api.depends('selected_debt', 'debt_multicurrency','selected_finacial_debt', 'unreconciled_amount',)
     def _compute_to_pay_amount(self):
         for rec in self:
-            if rec.debt_multicurrency:
+            if rec.selected_finacial_debt != rec.selected_debt:
                 rec.to_pay_amount = rec.selected_finacial_debt + rec.unreconciled_amount
             else:
                 rec.to_pay_amount = rec.selected_debt + rec.unreconciled_amount
@@ -134,7 +135,7 @@ class AccountPaymentGroup(models.Model):
     @api.onchange('to_pay_amount')
     def _inverse_to_pay_amount(self):
         for rec in self:
-            if rec.debt_multicurrency:
+            if rec.selected_finacial_debt != rec.selected_debt:
                 rec.unreconciled_amount = rec.to_pay_amount - rec.selected_finacial_debt
             else:
                 rec.unreconciled_amount = rec.to_pay_amount - rec.selected_debt
