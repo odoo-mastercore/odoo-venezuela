@@ -14,10 +14,10 @@
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='ref']" position="after">
                     <field name="l10n_ve_document_number"
-                        invisible="context.get('default_type') not in ('out_invoice', 'out_refund','out_receipt')" 
+                        invisible="context.get('default_move_type') not in ('out_invoice', 'out_refund','out_receipt')" 
                         readonly="1" string="Control Number"/>
                     <field name="l10n_ve_document_number"
-                        invisible="context.get('default_type') not in ('in_invoice', 'in_refund','in_receipt')" 
+                        invisible="context.get('default_move_type') not in ('in_invoice', 'in_refund','in_receipt')" 
                         attrs="{'readonly': [('state','!=','draft')]}" string="Control Number"/>
                 </xpath>
             </field>

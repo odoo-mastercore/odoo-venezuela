@@ -7,6 +7,9 @@ from odoo import models, fields
 class AccountPayment(models.Model):
     _inherit = "account.payment"
 
+    #created to record retention percentages
+    comment_withholding = fields.Char('Comment withholding')
+
     def _get_fiscal_period(self, date):
         str_date = str(date).split('-')
         vals = 'AÑO '+str_date[0]+' MES '+str_date[1]
