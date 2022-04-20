@@ -8,7 +8,7 @@
         </record>
         <record id="seniat_ut_002" model="seniat.ut">
             <field name="date">2020-03-13</field>
-            <field name="amount">0,02</field>
+            <field name="amount">0.02</field>
             <field name="ref">Gaceta Oficial Nro. 41.839</field>
         </record>
 
