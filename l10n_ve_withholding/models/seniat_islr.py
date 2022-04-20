@@ -60,7 +60,7 @@ class BandaCaculo(models.Model):
     _rec_name = 'complete_percentage'
 
     amount_minimum = fields.Float(
-        'Monto mayor a ',
+        'Sustraendo Bs. ',
         help="Monto para expresar la cantidad que no entra a retención"
     )
     amount_maximum = fields.Float(
@@ -78,7 +78,7 @@ class BandaCaculo(models.Model):
         help='% Base Retención'
     )
     withholding_amount = fields.Float(
-        'Monto fijo de retención',
+        'Pagos Mayor a Bs.',
         help='Monto Retención'
     )
     complete_percentage = fields.Char(
