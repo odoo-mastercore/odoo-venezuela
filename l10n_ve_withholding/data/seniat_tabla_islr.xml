@@ -46,22 +46,22 @@
         </record>
         <record id="tax_retencion_003" model="seniat.tabla.islr">
             <field name="code_seniat">003</field>
-            <field name="activity_name">Preparadores de Animales</field>
+            <field name="activity_name">Honorarios Profesionales</field>
             <field name="seniat_partner_type_id" ref="seniat_partner_type_pnnr"/>
             <field name="factor_id" ref="seniat_factor_83"/>
             <field name="withholding_base_percentage">90</field>
             <field name="seniat_ut_id" ref="seniat_ut_002"/>
             <field name="type_subtracting">no_amount</field>
-            <field name="code_identification_seniat">1.c</field>
+            <field name="code_identification_seniat">1.a</field>
             <field name="banda_calculo_ids" eval="[(5, 0),
                 (0,0, {
-                    'amount_minimum': 0.01,
+                    'amount_minimum': 0.10,
                     'amount_maximum': 0.00,
                     'type_amount': 'bs',
                     'withholding_percentage': 34.00
                 })
             ]"/>
-        </record>
+        </record> 
         <record id="tax_retencion_004" model="seniat.tabla.islr">
             <field name="code_seniat">004</field>
             <field name="activity_name">Honorarios Profesionales</field>
@@ -73,7 +73,7 @@
             <field name="code_identification_seniat">1.b</field>
             <field name="banda_calculo_ids" eval="[(5, 0),
                 (0,0, {
-                    'amount_minimum': 0.1,
+                    'amount_minimum': 0.10,
                     'amount_maximum': 0.00,
                     'type_amount': 'bs',
                     'withholding_percentage': 5.00
@@ -91,7 +91,7 @@
             <field name="code_identification_seniat">1.a</field>
             <field name="banda_calculo_ids" eval="[(5, 0),
                 (0,0, {
-                    'amount_minimum': 0.01,
+                    'amount_minimum': 1.0,
                     'amount_maximum': 2000.00,
                     'type_amount': 'ut',
                     'type_subtracting_rel':'amount',
@@ -117,6 +117,24 @@
             ]"/>
         </record>
 
+        <record id="tax_retencion_006" model="seniat.tabla.islr">
+            <field name="code_seniat">006</field>
+            <field name="activity_name">Preparadores de Animales</field>
+            <field name="seniat_partner_type_id" ref="seniat_partner_type_pnnr"/>
+            <field name="factor_id" ref="seniat_factor_83"/>
+            <field name="withholding_base_percentage">90</field>
+            <field name="seniat_ut_id" ref="seniat_ut_002"/>
+            <field name="type_subtracting">no_amount</field>
+            <field name="code_identification_seniat">1.c</field>
+            <field name="banda_calculo_ids" eval="[(5, 0),
+                (0,0, {
+                    'amount_minimum': 0.01,
+                    'amount_maximum': 0.00,
+                    'type_amount': 'bs',
+                    'withholding_percentage': 34.00
+                })
+            ]"/>
+        </record>
 
         <!-- bloque 3 -->
         <record id="tax_retencion_018" model="seniat.tabla.islr">
@@ -130,12 +148,12 @@
             <field name="code_identification_seniat">2.a</field>
             <field name="banda_calculo_ids" eval="[(5, 0),
                 (0,0, {
-                    'amount_minimum': 1.67,
+                    'amount_minimum': 0.05,
                     'amount_maximum': 0.00,
                     'type_amount': 'bs',
                     'type_subtracting_rel':'amount',
                     'withholding_amount': 0.05,
-                    'withholding_percentage': 3.00
+                    'withholding_percentage': 1.67
                 })
             ]"/>
         </record>
@@ -150,7 +168,7 @@
             <field name="code_identification_seniat">2.a</field>
             <field name="banda_calculo_ids" eval="[(5, 0),
                 (0,0, {
-                    'amount_minimum': 0.01,
+                    'amount_minimum': 0.10,
                     'amount_maximum': 0.00,
                     'type_amount': 'bs',
                     'withholding_percentage': 34.00
@@ -168,7 +186,7 @@
             <field name="code_identification_seniat">2.a</field>
             <field name="banda_calculo_ids" eval="[(5, 0),
                 (0,0, {
-                    'amount_minimum': 0.1,
+                    'amount_minimum': 0.10,
                       'amount_maximum': 0.00,
                     'type_amount': 'bs',
                     'withholding_percentage': 5.00
@@ -186,7 +204,7 @@
             <field name="code_identification_seniat">2.a</field>
             <field name="banda_calculo_ids" eval="[(5, 0),
                 (0,0, {
-                    'amount_minimum': 0.01,
+                    'amount_minimum': 0.10,
                     'amount_maximum': 0.00,
                     'type_amount': 'bs',
                     'withholding_percentage': 5.00
@@ -227,7 +245,7 @@
             <field name="code_identification_seniat">11</field>
             <field name="banda_calculo_ids" eval="[(5, 0),
                 (0,0, {
-                    'amount_minimum': 0.01,
+                    'amount_minimum': 0.10,
                     'amount_maximum': 0.00,
                     'type_amount': 'bs',
                     'withholding_percentage': 34.00
@@ -245,7 +263,7 @@
             <field name="code_identification_seniat">11</field>
             <field name="banda_calculo_ids" eval="[(5, 0),
                 (0,0, {
-                    'amount_minimum': 0.1,
+                    'amount_minimum': 0.10,
                     'amount_maximum': 0.00,
                     'type_amount': 'bs',
                     'withholding_percentage': 2.00
@@ -263,7 +281,7 @@
             <field name="code_identification_seniat">11</field>
             <field name="banda_calculo_ids" eval="[(5, 0),
                 (0,0, {
-                    'amount_minimum': 0.00,
+                    'amount_minimum': 1.0,
                     'amount_maximum': 2000.00,
                     'type_amount': 'ut',
                     'type_subtracting_rel':'amount',
@@ -303,7 +321,7 @@
             <field name="code_identification_seniat">12</field>
             <field name="banda_calculo_ids" eval="[(5, 0),
                 (0,0, {
-                    'amount_minimum': 0.5,
+                    'amount_minimum': 0.05,
                     'amount_maximum': 0.00,
                     'type_subtracting_rel':'amount',
                     'withholding_amount': 1.67,
@@ -325,7 +343,7 @@
             <field name="code_identification_seniat">12</field>
             <field name="banda_calculo_ids" eval="[(5, 0),
                 (0,0, {
-                    'amount_minimum': 0.01,
+                    'amount_minimum': 0.10,
                     'amount_maximum': 0.00,
                     'type_amount': 'bs',
                     'withholding_percentage': 34.00
@@ -345,7 +363,7 @@
             <field name="code_identification_seniat">12</field>
             <field name="banda_calculo_ids" eval="[(5, 0),
                 (0,0, {
-                    'amount_minimum': 0.1,
+                    'amount_minimum': 0.10,
                     'amount_maximum': 0.00,
                     'type_amount': 'bs',
                     'withholding_percentage': 5.00
@@ -365,7 +383,7 @@
             <field name="code_identification_seniat">12</field>
             <field name="banda_calculo_ids" eval="[(5, 0),
                 (0,0, {
-                    'amount_minimum': 0.01,
+                    'amount_minimum': 1.0,
                     'amount_maximum': 2000.00,
                     'type_amount': 'ut',
                     'type_subtracting_rel':'amount',
@@ -404,7 +422,7 @@
             <field name="code_identification_seniat">13</field>
             <field name="banda_calculo_ids" eval="[(5, 0),
                 (0,0, {
-                    'amount_minimum': 0.5,
+                    'amount_minimum': 0.05,
                     'amount_maximum': 0.00,
                     'type_amount': 'bs',
                     'type_subtracting_rel':'amount',
@@ -424,7 +442,7 @@
             <field name="code_identification_seniat">13</field>
             <field name="banda_calculo_ids" eval="[(5, 0),
                 (0,0, {
-                    'amount_minimum': 0.01,
+                    'amount_minimum': 0.10,
                     'amount_maximum': 0.00,
                     'type_amount': 'bs',
                     'withholding_percentage': 34.00
@@ -442,7 +460,7 @@
             <field name="code_identification_seniat">13</field>
             <field name="banda_calculo_ids" eval="[(5, 0),
                 (0,0, {
-                    'amount_minimum': 0.1,
+                    'amount_minimum': 0.10,
                     'amount_maximum': 0.00,
                     'type_amount': 'bs',
                     'withholding_percentage': 5.00
@@ -456,11 +474,11 @@
             <field name="factor_id" ref="seniat_factor_83"/>
             <field name="withholding_base_percentage">100</field>
             <field name="seniat_ut_id" ref="seniat_ut_002"/>
-            <field name="type_subtracting">amount</field>
+            <field name="type_subtracting">no_amount</field>
             <field name="code_identification_seniat">13</field>
             <field name="banda_calculo_ids" eval="[(5, 0),
                 (0,0, {
-                    'amount_minimum': 0.01,
+                    'amount_minimum': 0.10,
                     'amount_maximum': 0.00,
                     'type_amount': 'bs',
                     'withholding_percentage': 5.00
@@ -481,7 +499,7 @@
             <field name="code_identification_seniat">15</field>
             <field name="banda_calculo_ids" eval="[(5, 0),
                 (0,0, {
-                    'amount_minimum': 0.2,
+                    'amount_minimum': 0.02,
                     'amount_maximum': 0.00,
                     'type_amount': 'bs',
                     'type_subtracting_rel':'amount',
@@ -501,7 +519,7 @@
             <field name="code_identification_seniat">15</field>
             <field name="banda_calculo_ids" eval="[(5, 0),
                 (0,0, {
-                    'amount_minimum': 0.1,
+                    'amount_minimum': 0.10,
                     'amount_maximum': 0.00,
                     'type_amount': 'bs',
                     'withholding_percentage': 3.00
@@ -511,40 +529,40 @@
 
 
          <!-- bloque 8 -->
-        <record id="tax_retencion_073" model="seniat.tabla.islr">
-            <field name="code_seniat">073</field>
-            <field name="activity_name">Fletes Pagados a Personas Naturales o Jurídicas Domiciliadas en el Pais</field>
-            <field name="seniat_partner_type_id" ref="seniat_partner_type_pnr"/>
-            <field name="factor_id" ref="seniat_factor_83"/>
-            <field name="withholding_base_percentage">100</field>
-            <field name="seniat_ut_id" ref="seniat_ut_002"/>
-            <field name="type_subtracting">amount</field>
-            <field name="banda_calculo_ids" eval="[(5, 0),
-                (0,0, {
-                    'amount_minimum': 25.0,
-                    'amount_maximum': 0.00,
-                    'type_amount': 'bs',
-                    'withholding_percentage': 3.00
-                })
-            ]"/>
-        </record>
-        <record id="tax_retencion_074" model="seniat.tabla.islr">
-            <field name="code_seniat">074</field>
-            <field name="activity_name">Fletes Pagados a Personas Naturales o Jurídicas Domiciliadas en el Pais</field>
-            <field name="seniat_partner_type_id" ref="seniat_partner_type_pjd"/>
-            <field name="factor_id" ref="seniat_factor_83"/>
-            <field name="withholding_base_percentage">100</field>
-            <field name="seniat_ut_id" ref="seniat_ut_002"/>
-            <field name="type_subtracting">no_amount</field>
-            <field name="banda_calculo_ids" eval="[(5, 0),
-                (0,0, {
-                    'amount_minimum': 25.0,
-                    'amount_maximum': 0.00,
-                    'type_amount': 'bs',
-                    'withholding_percentage': 5.00
-                })
-            ]"/>
-        </record>
+        <!--<record id="tax_retencion_073" model="seniat.tabla.islr">-->
+            <!--<field name="code_seniat">073</field>-->
+            <!--<field name="activity_name">Fletes Pagados a Personas Naturales o Jurídicas Domiciliadas en el Pais</field>-->
+            <!--<field name="seniat_partner_type_id" ref="seniat_partner_type_pnr"/>-->
+            <!--<field name="factor_id" ref="seniat_factor_83"/>-->
+            <!--<field name="withholding_base_percentage">100</field>-->
+            <!--<field name="seniat_ut_id" ref="seniat_ut_002"/>-->
+            <!--<field name="type_subtracting">amount</field>-->
+            <!--<field name="banda_calculo_ids" eval="[(5, 0),-->
+                <!--(0,0, {-->
+                    <!--'amount_minimum': 25.0,-->
+                    <!--'amount_maximum': 0.00,-->
+                    <!--'type_amount': 'bs',-->
+                    <!--'withholding_percentage': 3.00-->
+                <!--})-->
+            <!--]"/>-->
+        <!--</record>-->
+        <!--<record id="tax_retencion_074" model="seniat.tabla.islr">-->
+            <!--<field name="code_seniat">074</field>-->
+            <!--<field name="activity_name">Fletes Pagados a Personas Naturales o Jurídicas Domiciliadas en el Pais</field>-->
+            <!--<field name="seniat_partner_type_id" ref="seniat_partner_type_pjd"/>-->
+            <!--<field name="factor_id" ref="seniat_factor_83"/>-->
+            <!--<field name="withholding_base_percentage">100</field>-->
+            <!--<field name="seniat_ut_id" ref="seniat_ut_002"/>-->
+            <!--<field name="type_subtracting">no_amount</field>-->
+            <!--<field name="banda_calculo_ids" eval="[(5, 0),-->
+                <!--(0,0, {-->
+                    <!--'amount_minimum': 25.0,-->
+                    <!--'amount_maximum': 0.00,-->
+                    <!--'type_amount': 'bs',-->
+                    <!--'withholding_percentage': 5.00-->
+                <!--})-->
+            <!--]"/>-->
+        <!--</record>-->
 
 
          <!-- bloque 9 -->
@@ -579,7 +597,7 @@
             <field name="code_identification_seniat">19</field>
             <field name="banda_calculo_ids" eval="[(5, 0),
                 (0,0, {
-                    'amount_minimum': 0.1,
+                    'amount_minimum': 0.10,
                     'amount_maximum': 0.00,
                     'type_amount': 'bs',
                     'withholding_percentage': 5.00
@@ -597,7 +615,7 @@
             <field name="code_identification_seniat">19</field>
             <field name="banda_calculo_ids" eval="[(5, 0),
                 (0,0, {
-                    'amount_minimum': 0.01,
+                    'amount_minimum': 0.10,
                     'amount_maximum': 0.00,
                     'type_amount': 'bs',
                     'withholding_percentage': 5.00
