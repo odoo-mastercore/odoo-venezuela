@@ -6,6 +6,10 @@
             <field name="amount">1500</field>
             <field name="ref">Gaceta Oficial Nro. 41.839</field>
         </record>
-
+        <record id="seniat_ut_002" model="seniat.ut">
+            <field name="date">2021-04-06</field>
+            <field name="amount">0.02</field>
+            <field name="ref">Gaceta Oficial Nro. 42.100</field>
+        </record>
   </data>
 </odoo>
