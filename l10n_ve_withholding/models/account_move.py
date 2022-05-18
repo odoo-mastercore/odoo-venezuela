@@ -42,7 +42,9 @@ class AccountMove(models.Model):
     def _post(self, soft):
         super(AccountMove, self)._post(soft)
         for rec in self:
-            if rec.state == 'posted' and rec.l10n_ve_document_number == False:
+            if (rec.state == 'posted' and rec.\
+                l10n_ve_document_number == False) or rec.\
+                    move_type == 'out_refund' and rec.l10n_ve_document_number == '':
                 if rec.move_type in ['out_invoice', 'out_refund']:
                     if rec.journal_id.sequence_control_id:        
                         l10n_ve_document_number = rec.env[
@@ -54,7 +56,6 @@ class AccountMove(models.Model):
                         raise ValidationError(
                     _("El diario por el cual está emitiendo la factura no"+
                         " tiene secuencia para número de control"))
-
 
 class AccountMoveLine(models.Model):
     _inherit = "account.move.line"
