@@ -27,9 +27,9 @@ class AccountMoveReversal(models.TransientModel):
         }
 
 
-    def reverse_moves(self):
-        """ Forzamos fecha de la factura original para que el amount total de la linea se calcule bien"""
-        res = super(AccountMoveReversal, self).reverse_moves()
-        for rec in self:
-            self.move_ids.l10n_ve_document_number = ""
-        return res
+    # def reverse_moves(self):
+    #     """ Forzamos fecha de la factura original para que el amount total de la linea se calcule bien"""
+    #     res = super(AccountMoveReversal, self).reverse_moves()
+    #     for rec in self:
+    #         self.move_ids.l10n_ve_document_number = ""
+    #     return res
