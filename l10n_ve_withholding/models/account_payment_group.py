@@ -114,7 +114,7 @@ class AccountPaymentGroup(models.Model):
                         ], limit=1).rate
                     if last_rate == 0:
                         last_rate = 1
-                    rate = round((1 / last_rate), 2)
+                    rate = round((1 / last_rate), 4)
                     finacial_debt_currency = selected_finacial_debt_currency*rate
                     selected_finacial_debt += finacial_debt_currency
                 else:
