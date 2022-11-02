@@ -74,7 +74,6 @@ class AccountPaymentGroup(models.Model):
                 for abg in line.move_id.tax_totals_json:
                     if str(abg[0]).find('IVA') > -1:
                         selected_debt_taxed += abg[1]
-                selected_finacial_debt += line.financial_amount_residual
             rec.selected_debt_taxed = selected_debt_taxed
 
     @api.depends(
