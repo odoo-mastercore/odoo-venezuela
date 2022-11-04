@@ -76,8 +76,8 @@ class AccountTax(models.Model):
                             
                 
             if subtracting > 0.0:
-                withholding = (base_withholding -
-                               withholding_percentage) * subtracting
+                withholding = (base_withholding *
+                               withholding_percentage) - subtracting
             else:
                 withholding = base_withholding * withholding_percentage
     
