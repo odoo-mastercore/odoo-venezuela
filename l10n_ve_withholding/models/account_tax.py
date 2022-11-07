@@ -76,7 +76,8 @@ class AccountTax(models.Model):
                             
                 
             if subtracting > 0.0:
-                withholding = (base_withholding - subtracting) * withholding_percentage 
+                withholding = (base_withholding *
+                               withholding_percentage) * subtracting
             else:
                 withholding = base_withholding * withholding_percentage
     
@@ -91,11 +92,6 @@ class AccountTax(models.Model):
                 payment_group, force_withholding_amount_type)
         return vals
 
-    def get_partner_alicuota_percepcion(self, partner, date):
-        if partner and date:
-            arba = self.get_partner_alicuot(partner)
-            return arba.alicuota_percepcion / 100.0
-        return 0.0
 
     def get_partner_alicuot(self, partner):
         self.ensure_one()
