@@ -72,16 +72,9 @@ class AccountPaymentGroup(models.Model):
             selected_debt_taxed = 0.0
             for line in rec.to_pay_move_line_ids._origin:
                 #this is conditional used to vat retention
-                tax_total_dict = None
-                if line.move_id.tax_totals_json:
-                    jsdict = json.loads(line.move_id.tax_totals_json)
-                    taxex = next(iter(jsdict['groups_by_subtotal']))
-                    tax_total_dict = jsdict['groups_by_subtotal'][taxex]
-                group_tax = sorted(
-                    tax_total_dict, key=lambda x: x['tax_group_name'])
-                for abg in group_tax:
-                    if abg['tax_group_name'] == 'IVA 16%':
-                        selected_debt_taxed += abg['tax_group_amount']
+                for li in line.move_id.line_ids:
+                    if li.name == 'IVA (16.0%) compras':
+                        selected_debt_taxed += li.debit
             rec.selected_debt_taxed = selected_debt_taxed
 
     @api.depends(

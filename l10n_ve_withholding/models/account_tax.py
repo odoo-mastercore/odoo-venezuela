@@ -34,7 +34,7 @@ class AccountTax(models.Model):
                 payment_group, force_withholding_amount_type)
             base_amount = payment_group.selected_debt_taxed
             base_invoice = [
-                int(x.balance) * -1.0 for x in payment_group.to_pay_move_line_ids][0]
+                x.balance * -1.0 for x in payment_group.to_pay_move_line_ids][0]
             amount = base_amount * (alicuota)
             vals['comment_withholding'] = "%s x %s" % (
                 base_amount, alicuota)
