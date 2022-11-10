@@ -3,7 +3,7 @@
     <template id="report_withholding_certificate_document_iva">
         <t t-call="web.external_layout">
             <t t-set="o" t-value="o.with_context(lang=lang)" />
-                <t t-set="report_date" t-value="o.payment_date"/>
+                <t t-set="report_date" t-value="o.date"/>
                 <t t-set="report_number" t-value="o.withholding_number or o.name"/>
                 <t t-set="report_name" t-value="'CERTIFICADO DE RETENCIÓN DEL IMPUESTO AL VALOR AGREGADO IVA'"/>
                 <!-- <t t-set="report_subname" 
@@ -91,8 +91,8 @@
                         <tr>
                             <th class="text-center">1</th>
                             <th class="text-center"><span t-esc="report_date"/></th>
-                            <th class="text-center"><span t-field="o.communication"/></th>
-                            <th class="text-center"><span t-field="o.communication"/></th>
+                            <th class="text-center"><span t-field="o.payment_group_id.matched_move_line_ids[0].move_id.ref"/></th>
+                            <th class="text-center"><span t-field="o.payment_group_id.matched_move_line_ids[0].move_id.l10n_ve_document_number"/></th>
                             <th class="text-center"></th>
                             <th class="text-center"></th>
                             <th class="text-center">01</th>

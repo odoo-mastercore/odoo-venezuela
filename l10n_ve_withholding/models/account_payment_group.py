@@ -7,6 +7,7 @@
 ###############################################################################
 from odoo import models, api, fields, _
 from odoo.exceptions import ValidationError
+import json
 import logging
 
 _logger = logging.getLogger(__name__)
@@ -71,10 +72,9 @@ class AccountPaymentGroup(models.Model):
             selected_debt_taxed = 0.0
             for line in rec.to_pay_move_line_ids._origin:
                 #this is conditional used to vat retention
-                for abg in line.move_id.tax_totals_json:
-                    if str(abg[0]).find('IVA') > -1:
-                        selected_debt_taxed += abg[1]
-                selected_finacial_debt += line.financial_amount_residual
+                for li in line.move_id.line_ids:
+                    if li.name == 'IVA (16.0%) compras':
+                        selected_debt_taxed += li.debit
             rec.selected_debt_taxed = selected_debt_taxed
 
     @api.depends(
