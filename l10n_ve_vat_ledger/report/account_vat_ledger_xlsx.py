@@ -74,7 +74,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
             total_retencion = 0
             i = 0   
             for invoice in reversed(obj.invoice_ids):
-                if obj.type == 'purchase':
+                if obj.type == 'purchase' and invoice.state != 'cancel':
                     # Write Purchase lines 
                     i += 1
                     sheet.write(row, 0, i, line)
