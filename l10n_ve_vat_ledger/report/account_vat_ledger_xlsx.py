@@ -89,33 +89,47 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     sheet.write(row, 7, '', line)
                     sheet.write(row, 8, '', line)
                     sheet.write(row, 9, '01-REG', line)
-                    if invoice.amount_tax_signed == 0:
+                    if invoice.state == 'cancel':
                         sheet.write(row, 10, 0, line)
                         sheet.write(row, 11, 0, line)
-                        sheet.write(row, 12, 
-                            str(invoice.amount_tax_signed * -1), line)
+                        sheet.write(row, 12, 0, line)
                         sheet.write(row, 13, 0, line)
-                        sheet.write(row, 14, 
-                            str(invoice.amount_total_signed * -1), line)
-                        total_amount_other_tax += invoice.amount_total_signed
-                    else:
-                        groups = self.find_values(
-                            'groups_by_subtotal', invoice.tax_totals_json)
-                        sheet.write(row, 10, int((str(
-                            groups[0].get('Base imponible')[0].get(
-                            'tax_group_name')).replace("IVA ", "")).replace("%", "")), line)
-                        sheet.write(row, 11, 
-                            str(invoice.amount_untaxed_signed * -1), line)
-                        sheet.write(row, 12, 
-                            str(invoice.amount_tax_signed * -1), line)
-                        sheet.write(row, 13, 
-                            str(invoice.amount_total_signed * -1), line)
                         sheet.write(row, 14, 0, line)
+                        sheet.write(row, 16, 'ANULADA', line)
+                    else:
+                        if invoice.amount_tax_signed == 0:
+                            sheet.write(row, 10, 0, line)
+                            sheet.write(row, 11, 0, line)
+                            sheet.write(row, 12, 
+                                str(invoice.amount_tax_signed * -1), line)
+                            sheet.write(row, 13, 0, line)
+                            sheet.write(row, 14, 
+                                str(invoice.amount_total_signed * -1), line)
+                            total_amount_other_tax += invoice.amount_total_signed
+                        else:
+                            groups = self.find_values(
+                                'groups_by_subtotal', invoice.tax_totals_json)
+                            sheet.write(row, 10, int((str(
+                                groups[0].get('Base imponible')[0].get(
+                                'tax_group_name')).replace("IVA ", "")).replace("%", "")), line)
+                            sheet.write(row, 11, 
+                                str(invoice.amount_untaxed_signed * -1), line)
+                            sheet.write(row, 12, 
+                                str(invoice.amount_tax_signed * -1), line)
+                            sheet.write(row, 13, 
+                                str(invoice.amount_total_signed * -1), line)
+                            sheet.write(row, 14, 0, line)
                     
                     # Adding totals
-                    total_amount_taxed += invoice.amount_tax_signed * -1
-                    total_amount_untaxed += invoice.amount_untaxed_signed * -1
-                    total_amount += invoice.amount_total_signed * -1
+                    if invoice.state == 'cancel':
+                        total_amount_taxed += 0
+                        total_amount_untaxed += 0
+                        total_amount += 0
+                        total_retencion += 0
+                    else:
+                        total_amount_taxed += invoice.amount_tax_signed * -1
+                        total_amount_untaxed += invoice.amount_untaxed_signed * -1
+                        total_amount += invoice.amount_total_signed * -1
                     row += 1
 
                 elif obj.type == 'sale':
