@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="account_payment_method_in_withholding_vat" model="account.payment.method">
+            <field name="name">Retencion de IVA</field>
+            <field name="code">withholding_vat</field>
+            <field name="payment_type">inbound</field>
+        </record>
+        <record id="account_payment_method_out_withholding_vat" model="account.payment.method">
+            <field name="name">Retencion de IVA</field>
+            <field name="code">withholding_vat</field>
+            <field name="payment_type">outbound</field>
+        </record>
+    </data>
+</odoo>
