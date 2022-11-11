@@ -174,21 +174,25 @@ class AccountTax(models.Model):
             if payment_withholding:
                 payment_withholding.write(vals)
             else:
-                payment_method = ''
+                payment_method = self.env.ref(
+                    'account_withholding.'
+                    'account_payment_method_out_withholding')
                 if payment_group.iva:
-                     payment_method = self.env.ref(
-                         'l10n_ve_withholding.'
-                         'account_payment_method_out_withholding_vat')
+                    journal = self.env['account.journal'].search([
+                        ('company_id', '=', tax.company_id.id),
+                        ('outbound_payment_method_line_ids.payment_method_id',
+                         '=', payment_method.id),
+                        ('type', 'in', ['cash', 'bank']),
+                        ('apply_iva', '=', True),
+                    ], limit=1)
                 else:
-                    payment_method = self.env.ref(
-                        'account_withholding.'
-                        'account_payment_method_out_withholding')
-                journal = self.env['account.journal'].search([
-                    ('company_id', '=', tax.company_id.id),
-                    ('outbound_payment_method_line_ids.payment_method_id',
-                     '=', payment_method.id),
-                    ('type', 'in', ['cash', 'bank']),
-                ], limit=1)
+                    journal = self.env['account.journal'].search([
+                        ('company_id', '=', tax.company_id.id),
+                        ('outbound_payment_method_line_ids.payment_method_id',
+                        '=', payment_method.id),
+                        ('type', 'in', ['cash', 'bank']),
+                        ('apply_islr', '=', True),
+                    ], limit=1)
                 if not journal:
                     raise UserError(_(
                         'No journal for withholdings found on company %s') % (
