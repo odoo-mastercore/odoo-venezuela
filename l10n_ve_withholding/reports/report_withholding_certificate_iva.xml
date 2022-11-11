@@ -91,8 +91,14 @@
                         <tr>
                             <th class="text-center">1</th>
                             <th class="text-center"><span t-esc="report_date"/></th>
-                            <th class="text-center"><span t-field="o.payment_group_id.matched_move_line_ids[0].move_id.ref"/></th>
-                            <th class="text-center"><span t-field="o.payment_group_id.matched_move_line_ids[0].move_id.l10n_ve_document_number"/></th>
+                            <t t-if="o.payment_group_id.state == 'draft'">
+                                <th class="text-center"><span t-field="o.payment_group_id.to_pay_move_line_ids[0].move_id.ref"/></th>
+                                <th class="text-center"><span t-field="o.payment_group_id.to_pay_move_line_ids[0].move_id.l10n_ve_document_number"/></th>
+                            </t>
+                            <t t-else="">
+                                <th class="text-center"><span t-field="o.payment_group_id.matched_move_line_ids[0].move_id.ref"/></th>
+                                <th class="text-center"><span t-field="o.payment_group_id.matched_move_line_ids[0].move_id.l10n_ve_document_number"/></th>
+                            </t>
                             <th class="text-center"></th>
                             <th class="text-center"></th>
                             <th class="text-center">01</th>
