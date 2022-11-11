@@ -16,9 +16,11 @@
                 </div>
             </div>
         </xpath>
-        <xpath expr="//field[@name='inbound_payment_method_line_ids']" position="before">
-            <field name="apply_iva" />
-            <field name="apply_islr" />
+        <xpath expr="//field[@name='outbound_payment_method_line_ids']" position="after">
+            <group>
+                <field name="apply_iva" />
+                <field name="apply_islr" />
+            </group>
         </xpath>
         </field>
     </record>
