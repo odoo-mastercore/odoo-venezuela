@@ -282,14 +282,14 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     # Tipo de Proveedor Compras
                     sheet.write(row, 8, invoice.partner_id.l10n_ve_responsibility_type_id.name or 'FALSE', line)
 
+                    #Base Imponible Compras
+                    sheet.write(row, 9, invoice.amount_untaxed_signed, line)
+
                     # % de Alicuota Compras
                     if invoice.amount_tax_signed == 0:
-                        sheet.write(row, 9, 'Exento', line)
+                        sheet.write(row, 10, 'Exento', line)
                     else:
-                        sheet.write(row, 9, '16', line)
-
-                    #Base Imponible Compras
-                    sheet.write(row, 10, invoice.amount_untaxed_signed, line)
+                        sheet.write(row, 10, '16', line)
 
                     # Impuesto IVA Bs. Compras
                     sheet.write(row, 11, invoice.amount_tax_signed, line)
@@ -524,7 +524,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                 sheet.write((row), 15, 'IVA retenido por el comprador', cell_format_1)
                 sheet.write((row), 16, 'IGTF percibido', cell_format_1)
 
-                sheet.merge_range('J%s:M%s' % (str(row + 2), str(row + 2)), 'Total Compras de Exportación ',
+                sheet.merge_range('J%s:M%s' % (str(row + 2), str(row + 2)), 'Total Compras Internas NO Gravadas',
                                   title_style)
                 sheet.write((row + 1), 13, total_base_exento, line)
                 sheet.write((row + 1), 14, '0', line)
