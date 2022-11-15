@@ -242,6 +242,11 @@ class AccountVatLedgerXlsx(models.AbstractModel):
             total_iva_16 = 0.00
             total_iva_16_retenido = 0.00
             total_iva_16_igtf = 0.00
+            total_base_imponible_8 = 0.00
+            total_iva_8 = 0.00
+            total_iva_8_retenido = 0.00
+            total_iva_8_igtf = 0.00
+            alic = ''
             i = 0
 
             for invoice in reversed(obj.invoice_ids):
@@ -277,37 +282,112 @@ class AccountVatLedgerXlsx(models.AbstractModel):
 
                     # Rif del cliente
                     sheet.write(row, 7, '%s-%s' % (invoice.partner_id. \
-                                                   l10n_latam_identification_type_id.l10n_ve_code or 'FALSE',
-                                                   invoice.partner_id.vat or 'FALSE'), line)
+                        l10n_latam_identification_type_id.l10n_ve_code or 'FALSE',
+                        invoice.partner_id.vat or 'FALSE'), line)
                     # Tipo de Proveedor Compras
                     sheet.write(row, 8, invoice.partner_id.l10n_ve_responsibility_type_id.name or 'FALSE', line)
 
-                    #Base Imponible Compras
-                    sheet.write(row, 9, invoice.amount_untaxed_signed, line)
+                    #Total Compras con IVA
+                    sheet.write(
+                        row, 9, (invoice.amount_total_signed * -1.00), line)
+                    
+                    ####IMPUESTOS##########
+                    if invoice.tax_totals_json:
+                        jsdict = json.loads(invoice.tax_totals_json)
+                        taxex = next(iter(jsdict['groups_by_subtotal']))
+                        tax_total_dict = jsdict['groups_by_subtotal'][taxex]
+                        taxes = sorted(
+                            tax_total_dict, key=lambda x: x['tax_group_name'])
+                        _logger.warning('--------------------------')
+                        _logger.warning(taxes)
+                        base_exento = 0.00
+                        base_imponible = 0.00
+                        iva = 0.00
+                        for tax in taxes:
+                            if tax['tax_group_name'] == 'IVA 0%':
+                                if invoice.currency_id != invoice.company_id.currency_id:
+                                    rate = invoice.invoice_rate(
+                                        invoice.currency_id.id, invoice.invoice_date)
+                                    base_exento = round(
+                                        tax['tax_group_base_amount'] * (1/rate), 2)
+                                else:
+                                    base_exento = tax['tax_group_base_amount']
+                                if invoice.move_type == 'out_refund' or invoice.move_type == 'in_refund':
+                                    base_exento = base_exento * -1.00
+                                total_base_exento += base_exento
 
-                    # % de Alicuota Compras
-                    if invoice.amount_tax_signed == 0:
-                        sheet.write(row, 10, 'Exento', line)
+                            if tax['tax_group_name'] == 'IVA 16%':
+                                if invoice.currency_id != invoice.company_id.currency_id:
+                                    rate = invoice.invoice_rate(
+                                        invoice.currency_id.id, invoice.invoice_date)
+                                    base_imponible = round(
+                                        tax['tax_group_base_amount'] * (1/rate), 2)
+                                    iva = round(
+                                        tax['tax_group_amount'] * (1/rate), 2)
+                                else:
+                                    base_imponible = tax['tax_group_base_amount']
+                                    iva = tax['tax_group_amount']
+                                if invoice.move_type == 'out_refund' or invoice.move_type == 'in_refund':
+                                    base_imponible = base_imponible * -1.00
+                                    iva = iva * -1.00
+                                total_base_imponible_16 += base_imponible
+                                alic = '16%'
+                                total_iva_16 += iva
+
+                    #########
+
+                    # Compras Exento
+                    sheet.write(row, 10, base_exento, line)
+
+                    ################ Art. 33
+                    # Base Imponible
+                    sheet.write(row, 11, '', line)
+                    # % Alic
+                    sheet.write(row, 12, '', line)
+                    #Imp. IVA
+                    sheet.write(row, 13, '', line)
+
+                    ################ Art. 34
+                    # Base Imponible
+                    sheet.write(row, 14, base_imponible, line)
+                    # % Alic
+                    sheet.write(row, 15, alic, line)
+                    #Imp. IVA
+                    sheet.write(row, 16, total_iva_16, line)
+
+
+                    ################ Art. 34 Suj Prorrateo
+                    # Base Imponible
+                    sheet.write(row, 17, '', line)
+                    # % Alic
+                    sheet.write(row, 18, '', line)
+                    #Imp. IVA
+                    sheet.write(row, 19, '', line)
+
+                    ###### IGTF
+                    sheet.write(row, 20, '', line)
+
+                    #Retenciones
+                    sql = """
+                    SELECT p.withholding_number AS number_wh,p.amount AS amount_wh,l.move_id AS invoice
+                    FROM  account_tax AS t INNER JOIN account_payment  AS p ON t.id=p.tax_withholding_id
+                    INNER JOIN account_move_line_payment_group_to_pay_rel AS g ON p.payment_group_id=g.payment_group_id
+                    INNER JOIN account_move_line AS l ON g.to_pay_line_id=l.id
+                    WHERE t.type_tax_use='%s' AND t.withholding_type='partner_tax' AND l.move_id=%d
+                    """ % ('customer', invoice.id)
+                    self._cr.execute(sql)
+                    res = self._cr.fetchone()
+                    reten = 0.00
+                    if res:
+                        reten = float(res[1])
                     else:
-                        sheet.write(row, 10, '16', line)
-
-                    # Impuesto IVA Bs. Compras
-                    sheet.write(row, 11, invoice.amount_tax_signed, line)
-
-                    # Total Compras Bs.Incluyendo IVA
-                    sheet.write(row, 12, invoice.amount_total_signed, line)
-
-                    sheet.write(row, 13, 4, line)
-                    sheet.write(row, 14, 5, line)
-                    sheet.write(row, 14, 6, line)
-                    sheet.write(row, 15, 7, line)
-                    sheet.write(row, 16, 8, line)
-                    sheet.write(row, 17, 9, line)
-                    sheet.write(row, 18, 10, line)
-                    sheet.write(row, 19, 11, line)
-                    sheet.write(row, 20, 12, line)
-                    sheet.write(row, 21, 13, line)
-                    sheet.write(row, 22, 14, line)
+                        reten = 0.00
+                    total_iva_16_retenido += reten
+                    ##### IVA RETENIDO
+                    sheet.write(row, 21, reten, line)
+                    
+                    #### ANTICIPO IVA
+                    sheet.write(row, 22, '', line)
 
 
                 elif obj.type == 'sale':
@@ -386,8 +466,6 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                         tax_total_dict = jsdict['groups_by_subtotal'][taxex]
                         taxes = sorted(
                             tax_total_dict, key=lambda x: x['tax_group_name'])
-                        _logger.warning('--------------------------')
-                        _logger.warning(taxes)
                         base_exento = 0.00
                         base_imponible = 0.00
                         iva = 0.00
@@ -445,27 +523,27 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                         sheet.write(row, 22, '16%', line)
                         sheet.write(row, 23, iva, line)
 
-                #Retenciones
-                sql = """
-                SELECT p.withholding_number AS number_wh,p.amount AS amount_wh,l.move_id AS invoice
-                FROM  account_tax AS t INNER JOIN account_payment  AS p ON t.id=p.tax_withholding_id
-                INNER JOIN account_move_line_payment_group_to_pay_rel AS g ON p.payment_group_id=g.payment_group_id
-                INNER JOIN account_move_line AS l ON g.to_pay_line_id=l.id
-                WHERE t.type_tax_use='%s' AND t.withholding_type='partner_tax' AND l.move_id=%d
-                """ % ('customer', invoice.id)
-                self._cr.execute(sql)
-                res = self._cr.fetchone()
-                reten = 0.00
-                if res:
-                    reten = float(res[1])
-                else:
-                    reten = 0
-                total_iva_16_retenido += reten
-                if reten > 0.00:
-                    sheet.write(row, 24, res[0], line)
-                    sheet.write(row, 25, reten, line)
-                    sheet.write(row, 26, invoice.invoice_date, line)
-                # else:
+                    #Retenciones
+                    sql = """
+                    SELECT p.withholding_number AS number_wh,p.amount AS amount_wh,l.move_id AS invoice
+                    FROM  account_tax AS t INNER JOIN account_payment  AS p ON t.id=p.tax_withholding_id
+                    INNER JOIN account_move_line_payment_group_to_pay_rel AS g ON p.payment_group_id=g.payment_group_id
+                    INNER JOIN account_move_line AS l ON g.to_pay_line_id=l.id
+                    WHERE t.type_tax_use='%s' AND t.withholding_type='partner_tax' AND l.move_id=%d
+                    """ % ('customer', invoice.id)
+                    self._cr.execute(sql)
+                    res = self._cr.fetchone()
+                    reten = 0.00
+                    if res:
+                        reten = float(res[1])
+                    else:
+                        reten = 0
+                    total_iva_16_retenido += reten
+                    if reten > 0.00:
+                        sheet.write(row, 24, res[0], line)
+                        sheet.write(row, 25, reten, line)
+                        sheet.write(row, 26, invoice.invoice_date, line)
+                    # else:
                 #     pass
                     # sheet.write(row, 24, '', line)
                     # sheet.write(row, 25, '', line)
