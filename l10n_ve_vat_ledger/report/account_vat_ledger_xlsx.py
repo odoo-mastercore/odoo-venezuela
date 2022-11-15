@@ -266,13 +266,32 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     elif invoice.move_type == 'in_refund' and invoice.debit_origin_id:
                         sheet.write(row, 2, 'Nota de Debito', line)
                     # Número de Documento
-                    sheet.write(row, 3, invoice.display_name or 'FALSE', line)
+                    sheet.write(row, 3, invoice.ref or 'FALSE', line)
                     # Número de Control
                     sheet.write(row, 4, invoice.l10n_ve_document_number or 'FALSE', line)
                     # Número Factura Afectada si es de debito o credito
-
-
-                    sheet.write(row, 5, 'Factura afectada', line)
+                    # if invoice.move_type == 'in_refund':
+                    #     name_inv = invoice.ref[invoice.ref.find(': ')+2:]
+                    #     _logger.info(
+                    #         '############REF###########' + str(invoice.ref))
+                    #     _logger.warning(name_inv)
+                    #     inv_info = ''
+                    #     if name_inv:
+                    #         _logger.info(
+                    #             '#######################' + str(name_inv))
+                    #         inv_info = self.env['account.move'].search(
+                    #             [('name', '=', name_inv)], limit=1)
+                    #     else:
+                    #         sale_order_id = self.env['sale.order'].search(
+                    #             [('name', '=', invoice.invoice_origin)])
+                    #         for inv_sale_order in sale_order_id.invoice_ids:
+                    #             if inv_sale_order.move_type == 'out_invoice' and inv_sale_order.state == 'posted':
+                    #                 inv_info = inv_sale_order
+                    #     _logger.warning('-----------------------------------')
+                    #     _logger.warning(inv_info)
+                    #     sheet.write(row, 5, inv_info.name, line)
+                    # else:
+                    sheet.write(row, 5, '', line)
 
                     # nombre del partner
                     sheet.write(row, 6, invoice.partner_id.name or 'FALSE', line)
@@ -345,7 +364,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                         sheet.write(row, 2, 'Nota de Debito', line)
 
                     # Número de Documento
-                    sheet.write(row, 3, invoice.display_name or 'FALSE', line)
+                    sheet.write(row, 3, invoice.name or 'FALSE', line)
                     # Número de Control
                     sheet.write(row, 4, invoice.l10n_ve_document_number or 'FALSE', line)
                     # Número Factura Afectada si es de debito o credito
@@ -530,6 +549,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
 
             # Totales de compras
             else:
+                row +=5
                 sheet.merge_range('J9:M9', 'Total Compras Internas No Gravadas', title_style)
                 sheet.merge_range('J10:M10', 'Total Compras de Exportación ', title_style)
                 sheet.merge_range('J11:M11', 'Total Compras  Internas afectadas sólo alícuota general 16.00 ', title_style)
