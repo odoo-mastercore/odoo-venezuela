@@ -275,7 +275,21 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     sheet.write(row, 4, invoice.l10n_ve_document_number or 'FALSE', line)
 
                     # Número Factura Afectada si es de debito o credito
-                    sheet.write(row, 5, '', line)
+                    if invoice.move_type == 'in_refund':
+                        move_reconcileds = invoice._get_reconciled_info_JSON_values()
+                        inv_info = ''
+                        moves = []
+                        if move_reconcileds:
+                            for m in move_reconcileds:
+                                moves.append(m['move_id'])
+                            move_ids = self.env['account.move'].search(
+                                [('id', 'in', moves)])
+                            for mov in move_ids:
+                                if mov.move_type == 'in_invoice' and mov.state == 'posted':
+                                    inv_info = mov.ref
+                            sheet.write(row, 5, inv_info, line)
+                    else:
+                        sheet.write(row, 5, '', line)
 
                     # nombre del partner
                     sheet.write(row, 6, invoice.partner_id.name or 'FALSE', line)
@@ -294,15 +308,17 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     ####IMPUESTOS##########
                     if invoice.tax_totals_json:
                         jsdict = json.loads(invoice.tax_totals_json)
+                        _logger.warning('--------------------------')
+                        _logger.warning(invoice.name)
+                        _logger.warning(invoice.tax_totals_json)
                         taxex = next(iter(jsdict['groups_by_subtotal']))
                         tax_total_dict = jsdict['groups_by_subtotal'][taxex]
                         taxes = sorted(
                             tax_total_dict, key=lambda x: x['tax_group_name'])
-                        _logger.warning('--------------------------')
-                        _logger.warning(taxes)
                         base_exento = 0.00
                         base_imponible = 0.00
                         iva = 0.00
+                        alic = ''
                         for tax in taxes:
                             if tax['tax_group_name'] == 'IVA 0%':
                                 if invoice.currency_id != invoice.company_id.currency_id:
@@ -353,7 +369,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     # % Alic
                     sheet.write(row, 15, alic, line)
                     #Imp. IVA
-                    sheet.write(row, 16, total_iva_16, line)
+                    sheet.write(row, 16, iva, line)
 
 
                     ################ Art. 34 Suj Prorrateo
@@ -415,32 +431,27 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     # Número de Control
                     sheet.write(row, 4, invoice.l10n_ve_document_number or 'FALSE', line)
                     # Número Factura Afectada si es de debito o credito
-                    if invoice.move_type == 'out_refund' or invoice.move_type == 'in_refund':
-                        name_inv = invoice.ref[invoice.ref.find(': ')+2:]
-                        _logger.info('############REF###########' + str(invoice.ref))
-                        _logger.warning(name_inv)
+                    if invoice.move_type == 'out_refund':
+                        move_reconcileds = invoice._get_reconciled_info_JSON_values()
                         inv_info = ''
-                        if name_inv:
-                            _logger.info('#######################' + str(name_inv))
-                            inv_info = self.env['account.move'].search(
-                                [('name', '=', name_inv)], limit=1)
-                        else:
-                            sale_order_id = self.env['sale.order'].search(
-                                [('name', '=', invoice.invoice_origin)])
-                            for inv_sale_order in sale_order_id.invoice_ids:
-                                if inv_sale_order.move_type == 'out_invoice' and inv_sale_order.state == 'posted':
-                                    inv_info = inv_sale_order
-                        _logger.warning('-----------------------------------')
-                        _logger.warning(inv_info)
-                        sheet.write(row, 5, inv_info.name, line)
+                        moves = []
+                        if move_reconcileds:
+                            for m in move_reconcileds:
+                                moves.append(m['move_id'])
+                            move_ids = self.env['account.move'].search(
+                                [('id', 'in', moves)])
+                            for mov in move_ids:
+                                if mov.move_type == 'out_invoice' and mov.state == 'posted':
+                                    inv_info = mov.ref
+                            sheet.write(row, 5, inv_info, line)
                     else:
                         sheet.write(row, 5, '', line)
                     # nombre del partner
                     sheet.write(row, 6, invoice.partner_id.name or 'FALSE', line)
                     # Rif del cliente
                     sheet.write(row, 7, '%s-%s' % (invoice.partner_id. \
-                                                   l10n_latam_identification_type_id.l10n_ve_code or 'FALSE',
-                                                   invoice.partner_id.vat or 'FALSE'), line)
+                        l10n_latam_identification_type_id.l10n_ve_code or 'FALSE',
+                        invoice.partner_id.vat or 'FALSE'), line)
 
                     if invoice.amount_tax_signed == 0:
                         sheet.write(row, 8, 'Exento', line)
@@ -469,6 +480,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                         base_exento = 0.00
                         base_imponible = 0.00
                         iva = 0.00
+                        alic = ''
                         for tax in taxes:
                             if tax['tax_group_name'] == 'IVA 0%':
                                 if invoice.currency_id != invoice.company_id.currency_id:
@@ -497,6 +509,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                                     base_imponible = base_imponible * -1.00
                                     iva = iva * -1.00
                                 total_base_imponible_16 += base_imponible
+                                alic = '16%'
                                 total_iva_16 += iva
 
                     #########
@@ -505,7 +518,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     if invoice.partner_id.l10n_latam_identification_type_id.is_vat:
                         sheet.write(row, 16, base_exento, line)
                         sheet.write(row, 17, base_imponible, line)
-                        sheet.write(row, 18, '16%', line)
+                        sheet.write(row, 18, alic, line)
                         sheet.write(row, 19, iva, line)
                         sheet.write(row, 20, '0', line)
                         sheet.write(row, 21, '0', line)
@@ -520,7 +533,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                         sheet.write(row, 19, '0', line)
                         sheet.write(row, 20, base_exento, line)
                         sheet.write(row, 21, base_imponible, line)
-                        sheet.write(row, 22, '16%', line)
+                        sheet.write(row, 22, alic, line)
                         sheet.write(row, 23, iva, line)
 
                     #Retenciones
