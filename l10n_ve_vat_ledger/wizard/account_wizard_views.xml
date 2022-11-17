@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>
+    <record id='account_resumen_iva_view' model='ir.ui.view'>
+        <field name='name'>Account Resumen IVA view</field>
+        <field name="model">account.wizard.resumen.iva</field>
+        <field name='arch' type='xml'>
+            <form string="Resumen IVA">
+                <group>
+                    <field name="date_from"/>
+                    <field name="date_to"/>
+                </group>
+                <footer>
+                    <button name="generate_xlsx_report_resumen_iva" string="Exportar Excel" type="object" class="oe_highlight"/>
+                    <button special="cancel" string="Cancel" class="oe_highlight"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!--    Resumen IVA-->
+    <record id="action_account_resumen_iva" model="ir.actions.act_window">
+        <field name="name">Resumen IVA</field>
+        <field name="res_model">account.wizard.resumen.iva</field>
+        <!--        <field name="view_id" ref="account_resumen_iva_view"/>-->
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+
+    <menuitem id="menu_account_resumen_iva"
+              action="action_account_resumen_iva"
+              name="Resumen IVA"
+              parent="menu_seniat_reports"
+              sequence="7"/>
+
+</odoo>

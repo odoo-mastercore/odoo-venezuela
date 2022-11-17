@@ -92,11 +92,13 @@
 
     <menuitem id="menu_account_purchase_vat_ledger"
         action="action_account_purchase_vat_ledger"
+        name="Libro I.V.A Compra"
         parent="menu_seniat_reports"
         sequence="6"/>
 
     <menuitem id="menu_account_sale_vat_ledger"
         action="action_account_sale_vat_ledger"
+        name="Libro I.V.A Ventas"
         parent="menu_seniat_reports"
         sequence="4"/>
 </odoo>

@@ -17,7 +17,6 @@ import xlwt
 _logger = logging.getLogger(__name__)
 
 class AccountVatLedgerXlsx(models.AbstractModel):
-
     _name = 'report.l10n_ve_vat_ledger.account_vat_ledger_xlsx'
     _inherit = 'report.report_xlsx.abstract'
     _description = "Xlsx Account VAT Ledger"
@@ -45,6 +44,10 @@ class AccountVatLedgerXlsx(models.AbstractModel):
             sheet = workbook.add_worksheet(report_name[:31])
             title = workbook.add_format({'bold': True})
             bold = workbook.add_format({'bold': True, 'border':1})
+
+
+            # Resumen IVA
+            sheet2 = workbook.add_worksheet('Resumen consolidado de IVA')
 
             # style nuevo
             cell_format = workbook.add_format({
@@ -130,62 +133,35 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                 sheet.set_row(4, 30)
 
                 sheet.write(4, 0, 'Nro Oper.', cell_format)
-                sheet.write(4, 1, 'Fecha de la Factura', cell_format)
+                sheet.write(4, 1, 'Fecha de la Factura o Documento', cell_format)
                 sheet.write(4, 2, 'Tipo de Documento', cell_format)
                 sheet.write(4, 3, 'Número de Documento', cell_format)
                 sheet.write(4, 4, 'Número de Control', cell_format)
                 sheet.write(4, 5, 'Número Factura Afectada', cell_format)
-                sheet.write(4, 6, 'Nombre o Razón Social', cell_format)
-                sheet.write(4, 7, 'RIF', cell_format)
-                sheet.write(4, 8, 'Tipo Proveedor', cell_format)
-                sheet.write(4, 9, 'Total Compras  Bs. Incluyendo IVA.', cell_format)
-                sheet.write(4, 10, 'Compras sin Derecho a Crédito I.V.A.', cell_format)
-                # sheet.write(4, 11, 'Impuesto IVA Bs.', cell_format)
-                # sheet.write(4, 12, 'Total Compras  Bs. Incluyendo IVA.', cell_format)
-                # sheet.write(4, 13, 'Compras no Sujetas ', cell_format)
-                # sheet.write(4, 14, 'Compras sin Derecho a Crédito I.V.A.  ', cell_format)
-                # sheet.write(4, 15, 'I.G.T.F Pagado', cell_format)
+                sheet.write(4, 6, 'Nª planilla de Importaciòn', cell_format)
+                sheet.write(4, 7, 'Nª de Expediente de Importaciòn', cell_format)
+                sheet.write(4, 8, 'Nombre o Razón Social', cell_format)
+                sheet.write(4, 9, 'RIF', cell_format)
+                sheet.write(4, 10, 'Total Compras  Bs. Incluyendo IVA.', cell_format)
+                sheet.write(4, 11, 'Compras sin Derecho a Crédito I.V.A.', cell_format)
 
                 # celda adicional compras por cuenta de terceros
-                sheet.merge_range('L4:N4', 'Inform. de Compras con Cred. Fisc. NO Deduc. (Art. 33)', cell_format)
-                sheet.write(4, 11, 'Base Imponible', cell_format)
-                sheet.write(4, 12, '% Alic.', cell_format)
-                sheet.write(4, 13, 'Imp. I.V.A.', cell_format)
+                sheet.merge_range('M4:O4','Importaciones', cell_format)
+                sheet.write(4, 12, 'Base Imponible', cell_format)
+                sheet.write(4, 13, '% Alic.', cell_format)
+                sheet.write(4, 14, 'Imp. I.V.A.', cell_format)
 
-                # IVA RETENIDO
-                sheet.merge_range('O4:Q4', 'Inform. de Compras con Cred. Fisc. Total. Deduc. (Art. 34)', cell_format)
-                sheet.write(4, 14, 'Base Imponible', cell_format)
-                sheet.write(4, 15, '% Alic.', cell_format)
-                sheet.write(4, 16, 'Imp. I.V.A.', cell_format)
+                # # IVA RETENIDO
+                sheet.merge_range('P4:U4', 'Compras Internas', cell_format)
+                sheet.write(4, 15, 'Base Imponible', cell_format)
+                sheet.write(4, 16, 'Alicuota 16% + Alicuota Adicional', cell_format)
+                sheet.write(4, 17, 'Imp. I.V.A.', cell_format)
+                sheet.write(4, 18, 'B. Imponible', cell_format)
+                sheet.write(4, 19, 'Alicuota 8%', cell_format)
+                sheet.write(4, 20, 'Imp. I.V.A.', cell_format)
 
-                # IVA RETENIDO
-                sheet.merge_range('R4:T4', 'Inform. de Compras con Cred. Fisc. Suj. Prorrateo (Art. 34)', cell_format)
-                sheet.write(4, 17, 'Base Imponible', cell_format)
-                sheet.write(4, 18, '% Alic.', cell_format)
-                sheet.write(4, 19, 'Imp. I.V.A.', cell_format)
-
-                sheet.write(4, 20, 'I.G.T.F Pagado', cell_format)
-                sheet.write(4, 21, 'I.V.A. Retenido por el comprador', cell_format)
-                sheet.write(4, 22, 'Anticipo de I.V.A. (importación)', cell_format)
-
-                #celda adicional Contribuyente
-                # sheet.merge_range('U4:V4', 'Inform. de Compras con Cred. Fisc. Total. Deduc. (Art. 34)', cell_format)
-                # sheet.write(4, 16, 'B. Imponible ', cell_format)
-                # sheet.write(4, 17, 'Imp. I.V.A.', cell_format)
-
-                # celda adicional No Contibuyente
-                # sheet.merge_range('W4:X4', 'Inform. de Compras con Cred. Fisc. Suj. Prorrateo (Art. 34)', cell_format)
-                # sheet.write(4, 18, 'B. Imponible ', cell_format)
-                # sheet.write(4, 19, 'Imp. I.V.A.', cell_format)
-
-                # celda adicional No Contibuyente
-                # sheet.merge_range('Y4:Z4', 'Retención IVA', cell_format)
-                # sheet.write(4, 20, 'I.V.A Retenido', cell_format)
-                # sheet.write(4, 21, 'Fecha de la factura afectada', cell_format)
-                # sheet.write(4, 22, 'I.G.T.F Pagado  ', cell_format)
-                # sheet.write(4, 23, 'I.V.A. Retenido por el comprador', cell_format)
-                # sheet.write(4, 24, 'Anticipo de I.V.A. (importación)', cell_format)
-
+                sheet.write(4, 21, 'I.G.T.F Pagado  ', cell_format)
+                sheet.write(4, 22, 'I.V.A. Retenido por el comprador', cell_format)
 
             elif obj.type == 'sale':
                 sheet.merge_range('A1:D1', obj.company_id.name, title_style)
@@ -201,7 +177,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                 sheet.write(4, 0, 'Nro Oper.', cell_format)
                 sheet.write(4, 1, 'Fecha de la Factura', cell_format)
                 sheet.write(4, 2, 'Tipo de Documento', cell_format)
-                sheet.write(4, 3, 'Número de Documento', cell_format)
+                sheet.write(4, 3, 'Factura o Número de Documento', cell_format)
                 sheet.write(4, 4, 'Número de Control', cell_format)
                 sheet.write(4, 5, 'Número Factura Afectada', cell_format)
                 sheet.write(4, 6, 'Nombre o Razón Social', cell_format)
@@ -212,24 +188,24 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                 sheet.merge_range('J4:M4', 'Ventas por cuenta de terceros', cell_format)
                 sheet.write(4, 9, 'Ventas Internas No Gravadas', cell_format)
                 sheet.write(4, 10, 'Base Imponible', cell_format)
-                sheet.write(4, 11, '% Alic.', cell_format)
+                sheet.write(4, 11, '% Alicuota.', cell_format)
                 sheet.write(4, 12, 'Impuesto I.V.A', cell_format)
 
                 # celda adicional Contribuyente
                 sheet.merge_range('N4:Q4', 'Contribuyente', cell_format)
                 sheet.write(4, 13, 'Ventas Internas No Gravadas', cell_format)
                 sheet.write(4, 14, 'Base Imponible', cell_format)
-                sheet.write(4, 15, '% Alic.', cell_format)
+                sheet.write(4, 15, '% Alicuota.', cell_format)
                 sheet.write(4, 16, 'Impuesto I.V.A', cell_format)
 
                 # celda adicional No Contibuyente
                 sheet.merge_range('R4:U4', 'No Contibuyente', cell_format)
                 sheet.write(4, 17, 'Ventas Internas No Gravadas', cell_format)
                 sheet.write(4, 18, 'Base Imponible', cell_format)
-                sheet.write(4, 19, '% Alic.', cell_format)
+                sheet.write(4, 19, '% Alicuota.', cell_format)
                 sheet.write(4, 20, 'Impuesto I.V.A', cell_format)
 
-                # celda adicional No Contibuyente
+                # celda adicional Retención IVA
                 sheet.merge_range('V4:X4', 'Retención IVA', cell_format)
                 sheet.write(4, 21, 'N° comprobante', cell_format)
                 sheet.write(4, 22, 'I.V.A Retenido', cell_format)
@@ -304,7 +280,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     #Total Compras con IVA
                     sheet.write(
                         row, 9, (invoice.amount_total_signed * -1.00), line)
-                    
+
                     ####IMPUESTOS##########
                     if invoice.tax_totals_json:
                         jsdict = json.loads(invoice.tax_totals_json)
@@ -401,7 +377,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     total_iva_16_retenido += reten
                     ##### IVA RETENIDO
                     sheet.write(row, 21, reten, line)
-                    
+
                     #### ANTICIPO IVA
                     sheet.write(row, 22, '', line)
 
@@ -573,7 +549,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                 sheet.write((row), 14, 'Débito fiscal', cell_format_1)
                 sheet.write((row), 15, 'IVA Retenido', cell_format_1)
                 sheet.write((row), 16, 'IGTF percibido', cell_format_1)
-            
+
                 sheet.merge_range('J%s:M%s' % (str(row+2), str(row+2)),  'Total Ventas Internas No Gravadas', title_style)
                 sheet.write((row+1), 13, total_base_exento, line)
                 sheet.write((row+1), 14, '0', line)
@@ -584,36 +560,45 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                 sheet.write((row+2), 14, '0', line)
                 sheet.write((row+2), 15, '0', line)
                 sheet.write((row+2), 16, '0', line)
-                sheet.merge_range('J%s:M%s' % (str(row+4), str(row+4)), 'Total Ventas Internas afectadas sólo alícuota general 16.00:', title_style)
+                sheet.merge_range('J%s:M%s' % (str(row+4), str(row+4)), 'Total Ventas Internas afectadas sólo alícuota general 16.00', title_style)
                 sheet.write((row+3), 13, total_base_imponible_16, line)
                 sheet.write((row+3), 14, total_iva_16, line)
                 sheet.write((row+3), 15, total_iva_16_retenido, line)
                 sheet.write((row+3), 16, total_iva_16_igtf, line)
-                sheet.merge_range('J%s:M%s' % (str(row+5), str(row+5)), 'Total Ventas Internas afectadas sólo alícuota reducida 8.00:', title_style)
+                sheet.merge_range('J%s:M%s' % (str(row+5), str(row+5)), 'Total Ventas Internas afectadas sólo alícuota reducida 8.00', title_style)
                 sheet.write((row+4), 13, '0', line)
                 sheet.write((row+4), 14, '0', line)
                 sheet.write((row+4), 15, '0', line)
                 sheet.write((row+4), 16, '0', line)
-                sheet.merge_range('J%s:M%s' % (str(row+6), str(row+6)), 'Total Ventas Internas afectadas por alícuota general más adicional 26.00:', title_style)
+                sheet.merge_range('J%s:M%s' % (str(row+6), str(row+6)), 'Total Ventas Internas afectadas  más adicional 31.00', title_style)
                 sheet.write((row+5), 13, '0', line)
                 sheet.write((row+5), 14, '0', line)
                 sheet.write((row+5), 15, '0', line)
                 sheet.write((row+5), 16, '0', line)
-                sheet.merge_range('J%s:M%s' % (str(row+7), str(row+7)), 'Total:', title_style)
+                sheet.merge_range('J%s:M%s' % (str(row+7), str(row+7)), 'Total Notas de Crédito o Devoluciones aplicadas en Ventas', title_style)
                 sheet.write((row+6), 13, (total_base_exento+total_base_imponible_16), line)
                 sheet.write((row+6), 14, total_iva_16, line)
                 sheet.write((row+6), 15, total_iva_16_retenido, line)
                 sheet.write((row+6), 16, total_iva_16_igtf, line)
+                sheet.merge_range('J%s:M%s' % (str(row+8), str(row+8)), 'Total Notas de Débito o recargos aplicadas en Ventas:', title_style)
+                sheet.write((row+7), 13, (total_base_exento+total_base_imponible_16), line)
+                sheet.write((row+7), 14, total_iva_16, line)
+                sheet.write((row+7), 15, total_iva_16_retenido, line)
+                sheet.write((row+7), 16, total_iva_16_igtf, line)
+                sheet.merge_range('J%s:M%s' % (str(row+9), str(row+9)), 'Total:', title_style)
+                sheet.write((row+8), 13, (total_base_exento+total_base_imponible_16), line)
+                sheet.write((row+8), 14, total_iva_16, line)
+                sheet.write((row+8), 15, total_iva_16_retenido, line)
+                sheet.write((row+8), 16, total_iva_16_igtf, line)
 
             # Totales de compras
             else:
-                row +=5
                 row += 5
                 sheet.merge_range('J%s:M%s' % (str(row + 1), str(row + 1)), 'RESUMEN GENERAL', cell_format_2)
                 sheet.write((row), 13, 'Base Imponible', cell_format_1)
                 sheet.write((row), 14, 'Crédito  fiscal', cell_format_1)
                 sheet.write((row), 15, 'IVA retenido por el comprador', cell_format_1)
-                sheet.write((row), 16, 'IGTF percibido', cell_format_1)
+                sheet.write((row), 16, 'IVA retenido por el comprador', cell_format_1)
 
                 sheet.merge_range('J%s:M%s' % (str(row + 2), str(row + 2)), 'Total Compras Internas NO Gravadas',
                                   title_style)
@@ -621,40 +606,46 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                 sheet.write((row + 1), 14, '0', line)
                 sheet.write((row + 1), 15, '0', line)
                 sheet.write((row + 1), 16, '0', line)
-                sheet.merge_range('J%s:M%s' % (str(row + 3), str(row + 3)), 'Total Compras  Internas afectadas sólo alícuota general 16.00', title_style)
+                sheet.merge_range('J%s:M%s' % (str(row + 3), str(row + 3)), 'Total Compras de Importaciòn', title_style)
                 sheet.write((row + 2), 13, '0', line)
                 sheet.write((row + 2), 14, '0', line)
                 sheet.write((row + 2), 15, '0', line)
                 sheet.write((row + 2), 16, '0', line)
                 sheet.merge_range('J%s:M%s' % (str(row + 4), str(row + 4)),
-                                  'Total Compras Internas afectadas sólo alícuota reducida 8.00', title_style)
+                                  'Total Compras  Internas afectadas sólo alícuota general 16.00', title_style)
                 sheet.write((row + 3), 13, total_base_imponible_16, line)
                 sheet.write((row + 3), 14, total_iva_16, line)
                 sheet.write((row + 3), 15, total_iva_16_retenido, line)
                 sheet.write((row + 3), 16, total_iva_16_igtf, line)
                 sheet.merge_range('J%s:M%s' % (str(row + 5), str(row + 5)),
-                                  'Total Compras Internas afectadas por alícuota general más adicional 26.00', title_style)
+                                  'Total Compras Internas afectadas sólo alícuota reducida 8.00', title_style)
                 sheet.write((row + 4), 13, '0', line)
                 sheet.write((row + 4), 14, '0', line)
                 sheet.write((row + 4), 15, '0', line)
                 sheet.write((row + 4), 16, '0', line)
                 sheet.merge_range('J%s:M%s' % (str(row + 6), str(row + 6)),
-                                  'Total Notas de Crédito aplicadas en Compras', title_style)
+                                  'Total Compras Internas afectadas por alícuota general más adicional 31.00', title_style)
                 sheet.write((row + 5), 13, '0', line)
                 sheet.write((row + 5), 14, '0', line)
                 sheet.write((row + 5), 15, '0', line)
                 sheet.write((row + 5), 16, '0', line)
                 sheet.merge_range('J%s:M%s' % (str(row + 7), str(row + 7)),
-                                  'Total Notas de Débito  aplicadas en Compras', title_style)
+                                  'Total Notas de Crédito aplicadas en Compras', title_style)
                 sheet.write((row + 6), 13, '0', line)
                 sheet.write((row + 6), 14, '0', line)
                 sheet.write((row + 6), 15, '0', line)
                 sheet.write((row + 6), 16, '0', line)
-                sheet.merge_range('J%s:M%s' % (str(row + 8), str(row + 8)), 'Total:', title_style)
-                sheet.write((row + 7), 13, (total_base_exento + total_base_imponible_16), line)
-                sheet.write((row + 7), 14, total_iva_16, line)
-                sheet.write((row + 7), 15, total_iva_16_retenido, line)
-                sheet.write((row + 7), 16, total_iva_16_igtf, line)
+                sheet.merge_range('J%s:M%s' % (str(row + 8), str(row + 8)),
+                                  'Total Notas de Débito  aplicadas en Compras', title_style)
+                sheet.write((row + 7), 13, '0', line)
+                sheet.write((row + 7), 14, '0', line)
+                sheet.write((row + 7), 15, '0', line)
+                sheet.write((row + 7), 16, '0', line)
+                sheet.merge_range('J%s:M%s' % (str(row + 9), str(row + 9)), 'Total:', title_style)
+                sheet.write((row + 8), 13, (total_base_exento + total_base_imponible_16), line)
+                sheet.write((row + 8), 14, total_iva_16, line)
+                sheet.write((row + 8), 15, total_iva_16_retenido, line)
+                sheet.write((row + 8), 16, total_iva_16_igtf, line)
 
 
 
