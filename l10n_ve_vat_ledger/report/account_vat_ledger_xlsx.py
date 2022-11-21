@@ -38,7 +38,10 @@ class AccountVatLedgerXlsx(models.AbstractModel):
 
 
     def generate_xlsx_report(self, workbook, data, account_vat):
+        print(account_vat)
         for obj in account_vat:
+            print(obj)
+            print(account_vat)
             report_name = obj.name
             print(report_name)
             sheet = workbook.add_worksheet(report_name[:31])
@@ -47,7 +50,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
 
 
             # Resumen IVA
-            sheet2 = workbook.add_worksheet('Resumen consolidado de IVA')
+            # sheet2 = workbook.add_worksheet('Resumen consolidado de IVA')
 
             # style nuevo
             cell_format = workbook.add_format({
@@ -192,25 +195,28 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                 sheet.write(4, 12, 'Impuesto I.V.A', cell_format)
 
                 # celda adicional Contribuyente
-                sheet.merge_range('N4:Q4', 'Contribuyente', cell_format)
+                sheet.merge_range('N4:T4', 'Contribuyente', cell_format)
                 sheet.write(4, 13, 'Ventas Internas No Gravadas', cell_format)
                 sheet.write(4, 14, 'Base Imponible', cell_format)
-                sheet.write(4, 15, '% Alicuota.', cell_format)
+                sheet.write(4, 15, '% Alicuota General + Adicional', cell_format)
                 sheet.write(4, 16, 'Impuesto I.V.A', cell_format)
+                sheet.write(4, 17, 'Base Imponible', cell_format)
+                sheet.write(4, 18, '% Alicuota Reducida', cell_format)
+                sheet.write(4, 19, 'Impuesto I.V.A', cell_format)
 
                 # celda adicional No Contibuyente
-                sheet.merge_range('R4:U4', 'No Contibuyente', cell_format)
-                sheet.write(4, 17, 'Ventas Internas No Gravadas', cell_format)
-                sheet.write(4, 18, 'Base Imponible', cell_format)
-                sheet.write(4, 19, '% Alicuota.', cell_format)
-                sheet.write(4, 20, 'Impuesto I.V.A', cell_format)
+                sheet.merge_range('U4:X4', 'No Contibuyente', cell_format)
+                sheet.write(4, 20, 'Ventas Internas No Gravadas', cell_format)
+                sheet.write(4, 21, 'Base Imponible', cell_format)
+                sheet.write(4, 22, '% Alicuota.', cell_format)
+                sheet.write(4, 23, 'Impuesto I.V.A', cell_format)
 
                 # celda adicional Retención IVA
-                sheet.merge_range('V4:X4', 'Retención IVA', cell_format)
-                sheet.write(4, 21, 'N° comprobante', cell_format)
-                sheet.write(4, 22, 'I.V.A Retenido', cell_format)
-                sheet.write(4, 23, 'Fecha de la factura afectada', cell_format)
-                sheet.write(4, 24, 'I.G.T.F Percibido', cell_format)
+                sheet.merge_range('Y4:AA4', 'Retención IVA', cell_format)
+                sheet.write(4, 24, 'N° comprobante', cell_format)
+                sheet.write(4, 25, 'I.V.A Retenido', cell_format)
+                sheet.write(4, 26, 'Fecha de la factura afectada', cell_format)
+                sheet.write(4, 27, 'I.G.T.F Percibido', cell_format)
 
             row = 5
             total_base_exento = 0.00
@@ -540,7 +546,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                 #IGTF
                 # sheet.write(row, 27, '', line)
                 row += 1
-
+            print(obj)
             if obj.type == 'sale':
                 # RESUMEN DE LOS TOTALES VENTAS
                 row +=5
