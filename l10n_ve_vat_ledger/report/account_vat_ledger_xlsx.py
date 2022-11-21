@@ -40,10 +40,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
     def generate_xlsx_report(self, workbook, data, account_vat):
         print(account_vat)
         for obj in account_vat:
-            print(obj)
-            print(account_vat)
             report_name = obj.name
-            print(report_name)
             sheet = workbook.add_worksheet(report_name[:31])
             title = workbook.add_format({'bold': True})
             bold = workbook.add_format({'bold': True, 'border':1})
@@ -226,8 +223,10 @@ class AccountVatLedgerXlsx(models.AbstractModel):
             total_iva_16_igtf = 0.00
             total_base_imponible_8 = 0.00
             total_iva_8 = 0.00
-            total_iva_8_retenido = 0.00
             total_iva_8_igtf = 0.00
+            total_base_imponible_15 = 0.00
+            total_iva_15 = 0.00
+            total_iva_15_igtf = 0.00
             alic = ''
             i = 0
 
@@ -331,6 +330,45 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                                 total_base_imponible_16 += base_imponible
                                 alic = '16%'
                                 total_iva_16 += iva
+                                
+                            ###########IVA 8%###########
+                            if tax['tax_group_name'] == 'IVA 8%':
+                                if invoice.currency_id != invoice.company_id.currency_id:
+                                    rate = invoice.invoice_rate(
+                                        invoice.currency_id.id, invoice.invoice_date)
+                                    base_imponible_8 = round(
+                                        tax['tax_group_base_amount'] * (1/rate), 2)
+                                    iva_8 = round(
+                                        tax['tax_group_amount'] * (1/rate), 2)
+                                    
+                                else:
+                                    base_imponible_8 = tax['tax_group_base_amount']
+                                    iva_8 = tax['tax_group_amount']
+                                if invoice.move_type == 'out_refund' or invoice.move_type == 'in_refund':
+                                    base_imponible_8 = base_imponible_8 * -1.00
+                                    iva_8 = iva_8 * -1.00
+                                total_base_imponible_8 += base_imponible_8
+                                alic = '16%'
+                                total_iva_8 += iva_8
+
+                            if tax['tax_group_name'] == 'IVA 15%':
+                                if invoice.currency_id != invoice.company_id.currency_id:
+                                    rate = invoice.invoice_rate(
+                                        invoice.currency_id.id, invoice.invoice_date)
+                                    base_imponible_15 = round(
+                                        tax['tax_group_base_amount'] * (1/rate), 2)
+                                    iva_15 = round(
+                                        tax['tax_group_amount'] * (1/rate), 2)
+                                    
+                                else:
+                                    base_imponible_15 = tax['tax_group_base_amount']
+                                    iva_15 = tax['tax_group_amount']
+                                if invoice.move_type == 'out_refund' or invoice.move_type == 'in_refund':
+                                    base_imponible_15 = base_imponible_15 * -1.00
+                                    iva_15 = iva_15 * -1.00
+                                total_base_imponible_15 += base_imponible_15
+                                alic = '16%'
+                                total_iva_15 += iva_15
 
                     #########
 
@@ -453,6 +491,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     #############################
 
                     ####IMPUESTOS##########
+                    
                     if invoice.tax_totals_json:
                         jsdict = json.loads(invoice.tax_totals_json)
                         taxex = next(iter(jsdict['groups_by_subtotal']))
@@ -464,6 +503,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                         iva = 0.00
                         alic = ''
                         for tax in taxes:
+                            ###########EXENTOS###########
                             if tax['tax_group_name'] == 'IVA 0%':
                                 if invoice.currency_id != invoice.company_id.currency_id:
                                     rate = invoice.invoice_rate(
@@ -475,7 +515,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                                 if invoice.move_type == 'out_refund' or invoice.move_type == 'in_refund':
                                     base_exento = base_exento * -1.00
                                 total_base_exento += base_exento
-
+                            ###########16%###########
                             if tax['tax_group_name'] == 'IVA 16%':
                                 if invoice.currency_id != invoice.company_id.currency_id:
                                     rate = invoice.invoice_rate(
@@ -493,6 +533,44 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                                 total_base_imponible_16 += base_imponible
                                 alic = '16%'
                                 total_iva_16 += iva
+                            ###########IVA 8%###########
+                            if tax['tax_group_name'] == 'IVA 8%':
+                                if invoice.currency_id != invoice.company_id.currency_id:
+                                    rate = invoice.invoice_rate(
+                                        invoice.currency_id.id, invoice.invoice_date)
+                                    base_imponible_8 = round(
+                                        tax['tax_group_base_amount'] * (1/rate), 2)
+                                    iva_8 = round(
+                                        tax['tax_group_amount'] * (1/rate), 2)
+                                    
+                                else:
+                                    base_imponible_8 = tax['tax_group_base_amount']
+                                    iva_8 = tax['tax_group_amount']
+                                if invoice.move_type == 'out_refund' or invoice.move_type == 'in_refund':
+                                    base_imponible_8 = base_imponible_8 * -1.00
+                                    iva_8 = iva_8 * -1.00
+                                total_base_imponible_8 += base_imponible_8
+                                alic = '16%'
+                                total_iva_8 += iva_8
+
+                            if tax['tax_group_name'] == 'IVA 15%':
+                                if invoice.currency_id != invoice.company_id.currency_id:
+                                    rate = invoice.invoice_rate(
+                                        invoice.currency_id.id, invoice.invoice_date)
+                                    base_imponible_15 = round(
+                                        tax['tax_group_base_amount'] * (1/rate), 2)
+                                    iva_15 = round(
+                                        tax['tax_group_amount'] * (1/rate), 2)
+                                    
+                                else:
+                                    base_imponible_15 = tax['tax_group_base_amount']
+                                    iva_15 = tax['tax_group_amount']
+                                if invoice.move_type == 'out_refund' or invoice.move_type == 'in_refund':
+                                    base_imponible_15 = base_imponible_15 * -1.00
+                                    iva_15 = iva_15 * -1.00
+                                total_base_imponible_15 += base_imponible_15
+                                alic = '16%'
+                                total_iva_15 += iva_15
 
                     #########
 
@@ -546,7 +624,6 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                 #IGTF
                 # sheet.write(row, 27, '', line)
                 row += 1
-            print(obj)
             if obj.type == 'sale':
                 # RESUMEN DE LOS TOTALES VENTAS
                 row +=5
