@@ -473,7 +473,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     sheet.write(row, 4, invoice.l10n_ve_document_number or 'FALSE', line)
                     # Número Factura Afectada si es de debito o credito
                     if invoice.move_type == 'out_refund':
-                        name_inv = invoice.ref[inv.ref.find(': ')+2:] or
+                        name_inv = invoice.ref[inv.ref.find(': ')+2:] or ''
                         inv_origin = ''
                         if name_inv:
                             inv_origin = self.env['account.move'].search([('name', '=', name_inv)], limit=1)
