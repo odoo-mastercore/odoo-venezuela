@@ -215,7 +215,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                 sheet.merge_range('AB4:AD4', 'Retención IVA', cell_format)
                 sheet.write(4, 27, 'N° comprobante', cell_format)
                 sheet.write(4, 28, 'I.V.A Retenido', cell_format)
-                sheet.write(4, 29, 'Fecha de la factura afectada', cell_format)
+                sheet.write(4, 29, 'Factura afectada', cell_format)
                 sheet.write(4, 30, 'I.G.T.F Percibido', cell_format)
 
             row = 5
@@ -722,7 +722,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                 sheet.write((row+2), 15, '0', line)
                 sheet.write((row+2), 16, '0', line)
                 sheet.merge_range('J%s:M%s' % (str(row+4), str(row+4)), 'Total Ventas Internas afectadas sólo alícuota general 16.00', title_style)
-                sheet.write((row+3), 13, total_base_imponible_16, line)
+                sheet.write((row+3), 13, round(total_base_imponible_16,2), line)
                 sheet.write((row+3), 14, total_iva_16, line)
                 sheet.write((row+3), 15, total_iva_16_retenido, line)
                 sheet.write((row+3), 16, total_iva_16_igtf, line)
@@ -774,7 +774,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                 sheet.write((row + 2), 16, '0', line)
                 sheet.merge_range('J%s:M%s' % (str(row + 4), str(row + 4)),
                                   'Total Compras  Internas afectadas sólo alícuota general 16.00', title_style)
-                sheet.write((row + 3), 13, total_base_imponible_16, line)
+                sheet.write((row + 3), 13, round(total_base_imponible_16,2), line)
                 sheet.write((row + 3), 14, total_iva_16, line)
                 sheet.write((row + 3), 15, total_iva_16_retenido, line)
                 sheet.write((row + 3), 16, total_iva_16_igtf, line)
