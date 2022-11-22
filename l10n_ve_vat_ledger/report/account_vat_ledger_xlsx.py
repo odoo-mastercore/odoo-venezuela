@@ -482,9 +482,12 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                             for inv_sale_order in sale_order_id.invoice_ids:
                                 if inv_sale_order.move_type == 'out_invoice' and inv_sale_order.state == 'posted':
                                     inv_origin = inv_sale_order
-                        
-                        sheet.write(row, 5, invoice_origin, line)
-                    elif invoice.move_type == 'out_invoice' and invoice.debit_origin_id:
+                        print(inv_origin)
+                        if inv_origin:
+                            sheet.write(row, 5, inv_origin.name, line)
+                        else:
+                            sheet.write(row, 5, '', line)
+                    elif invoice.debit_origin_id:
                         sheet.write(row, 5, invoice.debit_origin_id.name, line)
                     else:
                         sheet.write(row, 5, '', line)
