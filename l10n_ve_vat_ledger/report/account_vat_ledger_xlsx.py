@@ -482,7 +482,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                             for inv_sale_order in sale_order_id.invoice_ids:
                                 if inv_sale_order.move_type == 'out_invoice' and inv_sale_order.state == 'posted':
                                     inv_origin = inv_sale_order
-                        print(inv_origin)
+
                         if inv_origin:
                             sheet.write(row, 5, inv_origin.name, line)
                         else:
@@ -648,8 +648,8 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     total_iva_16_retenido += reten
                     
                     if reten > 0.00:
-                        print('####RETENCION#####')
-                        print(res)
+                        _logger.info('#####################')
+                        _logger.info(inv_origin)
                         sheet.write(row, 27, res[0], line)
                         sheet.write(row, 28, reten, line)
                         sheet.write(row, 29, invoice.invoice_date, line)
