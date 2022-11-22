@@ -261,9 +261,9 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     elif invoice.move_type == 'in_refund' and invoice.debit_origin_id:
                         sheet.write(row, 2, 'Nota de Debito', line)
                     # Número de Documento
-                    sheet.write(row, 3, invoice.ref or 'FALSE', line)
+                    sheet.write(row, 3, invoice.ref or '', line)
                     # Número de Control
-                    sheet.write(row, 4, invoice.l10n_ve_document_number or 'FALSE', line)
+                    sheet.write(row, 4, invoice.l10n_ve_document_number or '', line)
 
                     # Número Factura Afectada si es de debito o credito
                     if invoice.move_type == 'in_refund':
@@ -282,21 +282,26 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     else:
                         sheet.write(row, 5, '', line)
 
+                    # Planilla de importacion
+                    sheet.write(row, 6, '', line)
+                    # Nro Expediente de importacion
+                    sheet.write(row, 7, '', line)
                     # nombre del partner
-                    sheet.write(row, 6, invoice.partner_id.name or 'FALSE', line)
+                    sheet.write(row, 8, invoice.partner_id.name or 'FALSE', line)
 
                     # Rif del cliente
-                    sheet.write(row, 7, '%s-%s' % (invoice.partner_id. \
+                    sheet.write(row, 9, '%s-%s' % (invoice.partner_id. \
                         l10n_latam_identification_type_id.l10n_ve_code or 'FALSE',
                         invoice.partner_id.vat or 'FALSE'), line)
                     # Tipo de Proveedor Compras
-                    sheet.write(row, 8, invoice.partner_id.l10n_ve_responsibility_type_id.name or 'FALSE', line)
+                    # sheet.write(row, 10, invoice.partner_id.l10n_ve_responsibility_type_id.name or 'FALSE', line)
 
                     #Total Compras con IVA
                     sheet.write(
-                        row, 9, (invoice.amount_total_signed * -1.00), line)
+                        row, 10, (invoice.amount_total_signed * -1.00), line)
 
                     ####IMPUESTOS##########
+                    
                     if invoice.tax_totals_json:
                         jsdict = json.loads(invoice.tax_totals_json)
                         taxex = next(iter(jsdict['groups_by_subtotal']))
@@ -305,9 +310,13 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                             tax_total_dict, key=lambda x: x['tax_group_name'])
                         base_exento = 0.00
                         base_imponible = 0.00
-                        iva = 0.00
-                        alic = ''
+                        iva_16 = 0.00
+                        alic_16 = ''
+                        alic_8 = ''
+                        iva_8 = ''
+                        base_imponible_8 = ''
                         for tax in taxes:
+                            ###########EXENTOS###########
                             if tax['tax_group_name'] == 'IVA 0%':
                                 if invoice.currency_id != invoice.company_id.currency_id:
                                     rate = invoice.invoice_rate(
@@ -316,28 +325,28 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                                         tax['tax_group_base_amount'] * (1/rate), 2)
                                 else:
                                     base_exento = tax['tax_group_base_amount']
-                                if invoice.move_type == 'out_refund' or invoice.move_type == 'in_refund':
+                                if invoice.move_type == 'out_refund':
                                     base_exento = base_exento * -1.00
                                 total_base_exento += base_exento
-
+                            ###########16%###########
                             if tax['tax_group_name'] == 'IVA 16%':
                                 if invoice.currency_id != invoice.company_id.currency_id:
                                     rate = invoice.invoice_rate(
                                         invoice.currency_id.id, invoice.invoice_date)
                                     base_imponible = round(
                                         tax['tax_group_base_amount'] * (1/rate), 2)
-                                    iva = round(
+                                    iva_16 = round(
                                         tax['tax_group_amount'] * (1/rate), 2)
                                 else:
                                     base_imponible = tax['tax_group_base_amount']
-                                    iva = tax['tax_group_amount']
-                                if invoice.move_type == 'out_refund' or invoice.move_type == 'in_refund':
+                                    iva_16 = tax['tax_group_amount']
+                                if invoice.move_type == 'out_refund':
                                     base_imponible = base_imponible * -1.00
-                                    iva = iva * -1.00
+                                    iva_16 = iva_16 * -1.00
+                                    total_nota_credito_iva += iva_16
                                 total_base_imponible_16 += base_imponible
-                                alic = '16%'
-                                total_iva_16 += iva
-                                
+                                alic_16 = '16%'
+                                total_iva_16 += iva_16
                             ###########IVA 8%###########
                             if tax['tax_group_name'] == 'IVA 8%':
                                 if invoice.currency_id != invoice.company_id.currency_id:
@@ -347,17 +356,17 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                                         tax['tax_group_base_amount'] * (1/rate), 2)
                                     iva_8 = round(
                                         tax['tax_group_amount'] * (1/rate), 2)
-                                    
                                 else:
                                     base_imponible_8 = tax['tax_group_base_amount']
                                     iva_8 = tax['tax_group_amount']
-                                if invoice.move_type == 'out_refund' or invoice.move_type == 'in_refund':
+                                if invoice.move_type == 'out_refund':
                                     base_imponible_8 = base_imponible_8 * -1.00
                                     iva_8 = iva_8 * -1.00
+                                    total_nota_credito_iva += iva_8
                                 total_base_imponible_8 += base_imponible_8
-                                alic = '8%'
+                                alic_8 = '8%'
                                 total_iva_8 += iva_8
-
+                            ########## IVA 15
                             if tax['tax_group_name'] == 'IVA 15%':
                                 if invoice.currency_id != invoice.company_id.currency_id:
                                     rate = invoice.invoice_rate(
@@ -370,45 +379,49 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                                 else:
                                     base_imponible_15 = tax['tax_group_base_amount']
                                     iva_15 = tax['tax_group_amount']
-                                if invoice.move_type == 'out_refund' or invoice.move_type == 'in_refund':
+                                if invoice.move_type == 'out_refund':
+                                    
                                     base_imponible_15 = base_imponible_15 * -1.00
                                     iva_15 = iva_15 * -1.00
+                                    total_nota_credito_iva += iva_15
                                 total_base_imponible_15 += base_imponible_15
-                                alic = '15%'
+                                alic_15 = '16%'
                                 total_iva_15 += iva_15
+
 
                     #########
 
                     # Compras Exento
-                    sheet.write(row, 10, base_exento, line)
+                    sheet.write(row, 11, base_exento, line)
 
-                    ################ Art. 33
+                    #IMPORTACIONES
                     # Base Imponible
-                    sheet.write(row, 11, '', line)
-                    # % Alic
                     sheet.write(row, 12, '', line)
-                    #Imp. IVA
+                    # % Alic
                     sheet.write(row, 13, '', line)
-
-                    ################ Art. 34
-                    # Base Imponible
-                    sheet.write(row, 14, base_imponible, line)
-                    # % Alic
-                    sheet.write(row, 15, alic, line)
                     #Imp. IVA
-                    sheet.write(row, 16, iva, line)
+                    sheet.write(row, 14, '', line)
 
-
-                    ################ Art. 34 Suj Prorrateo
+                    #Compras internas
                     # Base Imponible
-                    sheet.write(row, 17, '', line)
+                    sheet.write(row, 15, base_imponible, line)
                     # % Alic
-                    sheet.write(row, 18, '', line)
+                    sheet.write(row, 16, alic_16, line)
                     #Imp. IVA
-                    sheet.write(row, 19, '', line)
+                    sheet.write(row, 17, iva_16, line)
+
+                    #IVA 8%
+                    # Base Imponible
+                    sheet.write(row, 18, base_imponible_8, line)
+                    # % Alic
+                    sheet.write(row, 19, alic_8, line)
+                    #Imp. IVA
+                    sheet.write(row, 20, iva_8, line)
+                    
+
 
                     ###### IGTF
-                    sheet.write(row, 20, '', line)
+                    sheet.write(row, 21, 0, line)
 
                     #Retenciones
                     sql = """
@@ -427,10 +440,10 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                         reten = 0.00
                     total_iva_16_retenido += reten
                     ##### IVA RETENIDO
-                    sheet.write(row, 21, reten, line)
+                    sheet.write(row, 22, reten, line)
 
-                    #### ANTICIPO IVA
-                    sheet.write(row, 22, '', line)
+                    # #### ANTICIPO IVA
+                    # sheet.write(row, 23, '', line)
 
 
                 elif obj.type == 'sale':
@@ -747,8 +760,8 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                 sheet.write((row + 3), 16, total_iva_16_igtf, line)
                 sheet.merge_range('J%s:M%s' % (str(row + 5), str(row + 5)),
                                   'Total Compras Internas afectadas sólo alícuota reducida 8.00', title_style)
-                sheet.write((row + 4), 13, '0', line)
-                sheet.write((row + 4), 14, '0', line)
+                sheet.write((row+4), 13, total_base_imponible_8, line)
+                sheet.write((row+4), 14, total_iva_8, line)
                 sheet.write((row + 4), 15, '0', line)
                 sheet.write((row + 4), 16, '0', line)
                 sheet.merge_range('J%s:M%s' % (str(row + 6), str(row + 6)),
@@ -759,21 +772,21 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                 sheet.write((row + 5), 16, '0', line)
                 sheet.merge_range('J%s:M%s' % (str(row + 7), str(row + 7)),
                                   'Total Notas de Crédito aplicadas en Compras', title_style)
-                sheet.write((row + 6), 13, '0', line)
-                sheet.write((row + 6), 14, '0', line)
+                sheet.write((row + 6), 13, total_nota_credito, line)
+                sheet.write((row + 6), 14, total_nota_credito_iva, line)
                 sheet.write((row + 6), 15, '0', line)
                 sheet.write((row + 6), 16, '0', line)
                 sheet.merge_range('J%s:M%s' % (str(row + 8), str(row + 8)),
                                   'Total Notas de Débito  aplicadas en Compras', title_style)
-                sheet.write((row + 7), 13, '0', line)
+                sheet.write((row + 7), 13, total_nota_debito, line)
                 sheet.write((row + 7), 14, '0', line)
                 sheet.write((row + 7), 15, '0', line)
                 sheet.write((row + 7), 16, '0', line)
                 sheet.merge_range('J%s:M%s' % (str(row + 9), str(row + 9)), 'Total:', title_style)
-                sheet.write((row + 8), 13, (total_base_exento + total_base_imponible_16), line)
-                sheet.write((row + 8), 14, total_iva_16, line)
-                sheet.write((row + 8), 15, total_iva_16_retenido, line)
-                sheet.write((row + 8), 16, total_iva_16_igtf, line)
+                sheet.write((row+8), 13, (total_base_exento+total_base_imponible_16+total_base_imponible_8+total_nota_credito), line)
+                sheet.write((row+8), 14, (total_iva_16 + total_iva_8 + total_nota_credito_iva), line)
+                sheet.write((row+8), 15, total_iva_16_retenido, line)
+                sheet.write((row+8), 16, total_iva_16_igtf, line)
 
 
 
