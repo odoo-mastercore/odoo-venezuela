@@ -473,19 +473,15 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     sheet.write(row, 4, invoice.l10n_ve_document_number or 'FALSE', line)
                     # Número Factura Afectada si es de debito o credito
                     if invoice.move_type == 'out_refund':
-                        # move_reconcileds = invoice._get_reconciled_info_JSON_values()
-                        # inv_info = ''
-                        # moves = []
-                        # if move_reconcileds:
-                        #     for m in move_reconcileds:
-                        #         moves.append(m['move_id'])
-                        #     move_ids = self.env['account.move'].search(
-                        #         [('id', 'in', moves)])
-                        #     for mov in move_ids:
-                        #         if mov.move_type == 'out_invoice' and mov.state == 'posted':
-                        #             inv_info = mov.ref
-                        #     sheet.write(row, 5, inv_info, line)
-                        invoice_origin = invoice.ref[invoice.ref.find(': ')+2:]
+                        name_inv = inv.ref[inv.ref.find(': ')+2:]
+                        inv_origin = ''
+                        if name_inv:
+                            inv_origin = self.env['account.move'].search([('name', '=', name_inv)], limit=1)
+                        else:
+                            sale_order_id = self.env['sale.order'].search([('name', '=', invoice.invoice_origin)])
+                            for inv_sale_order in sale_order_id.invoice_ids:
+                                if inv_sale_order.move_type == 'out_invoice' and inv_sale_order.state == 'posted':
+                                    inv_origin = inv_sale_order
                         
                         sheet.write(row, 5, invoice_origin, line)
                     elif invoice.move_type == 'out_invoice' and invoice.debit_origin_id:
@@ -647,11 +643,14 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     else:
                         reten = 0
                     total_iva_16_retenido += reten
+                    
                     if reten > 0.00:
+                        print('####RETENCION#####')
+                        print(res)
                         sheet.write(row, 27, res[0], line)
                         sheet.write(row, 28, reten, line)
                         sheet.write(row, 29, invoice.invoice_date, line)
-                        sheet.write(row, 30, 'asdasdsa', line)
+                        sheet.write(row, 30, '', line)
                     # else:
                 #     pass
                     # sheet.write(row, 24, '', line)
@@ -692,7 +691,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                 sheet.write((row), 16, 'IGTF percibido', cell_format_1)
 
                 sheet.merge_range('J%s:M%s' % (str(row+2), str(row+2)),  'Total Ventas Internas No Gravadas', title_style)
-                sheet.write((row+1), 13, total_base_exento, line)
+                sheet.write((row+1), 13, round(total_base_exento,2), line)
                 sheet.write((row+1), 14, '0', line)
                 sheet.write((row+1), 15, '0', line)
                 sheet.write((row+1), 16, '0', line)
@@ -727,7 +726,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                 sheet.write((row+7), 15, '', line)
                 sheet.write((row+7), 16, '', line)
                 sheet.merge_range('J%s:M%s' % (str(row+9), str(row+9)), 'Total:', title_style)
-                sheet.write((row+8), 13, (total_base_exento+total_base_imponible_16+total_base_imponible_8+total_nota_credito), line)
+                sheet.write((row+8), 13, round(total_base_exento+total_base_imponible_16+total_base_imponible_8+total_nota_credito,2), line)
                 sheet.write((row+8), 14, (total_iva_16 + total_iva_8 + total_nota_credito_iva), line)
                 sheet.write((row+8), 15, total_iva_16_retenido, line)
                 sheet.write((row+8), 16, total_iva_16_igtf, line)
