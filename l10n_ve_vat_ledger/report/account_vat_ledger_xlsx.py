@@ -128,7 +128,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
             if obj.type == 'purchase':
 
                 sheet.merge_range('A1:D1', obj.company_id.name,title_style)
-                sheet.merge_range('A2:D2', _('%s-%s', obj.company_id.l10n_latam_identification_type_id.name, obj.company_id.vat), title_style)
+                sheet.merge_range('A2:D2', _('J-%s', obj.company_id.vat), title_style)
                 sheet.merge_range('A3:G3', obj.name + ' ' + 'Libro de IVA Compras' + ' ' + 'mes' + ' ' + 'Año', title_style)
 
                 # alto de las celdas
