@@ -481,6 +481,8 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     # Número Factura Afectada si es de debito o credito
                     if invoice.move_type == 'out_refund':
                         name_inv = invoice.ref[invoice.ref.find(': ')+2:] or ''
+                        if len(name_inv) > 7:
+                            name_inv = name_inv[:7]
                         inv_origin = ''
                         if name_inv:
                             inv_origin = self.env['account.move'].search([('name', '=', name_inv)], limit=1)
