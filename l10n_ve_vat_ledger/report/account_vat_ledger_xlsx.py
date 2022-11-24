@@ -38,7 +38,6 @@ class AccountVatLedgerXlsx(models.AbstractModel):
 
 
     def generate_xlsx_report(self, workbook, data, account_vat):
-        print(account_vat)
         for obj in account_vat:
             report_name = obj.name
             sheet = workbook.add_worksheet(report_name[:31])
@@ -338,8 +337,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                                         invoice.currency_id.id, invoice.invoice_date)
                                     base_imponible = round(
                                         tax['tax_group_base_amount'] * (1/rate), 2)
-                                    iva_16 = round(
-                                        base_imponible * 0.16, 2)
+                                    iva_16 = base_imponible * 0.16
                                 else:
                                     base_imponible = tax['tax_group_base_amount']
                                     iva_16 = tax['tax_group_amount']
@@ -360,8 +358,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                                         invoice.currency_id.id, invoice.invoice_date)
                                     base_imponible_8 = round(
                                         tax['tax_group_base_amount'] * (1/rate), 2)
-                                    iva_8 = round(
-                                        base_imponible_8 * 0.16, 2)
+                                    iva_8 = base_imponible_8 * 0.08
                                 else:
                                     base_imponible_8 = tax['tax_group_base_amount']
                                     iva_8 = tax['tax_group_amount']
@@ -382,8 +379,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                                         invoice.currency_id.id, invoice.invoice_date)
                                     base_imponible_15 = round(
                                         tax['tax_group_base_amount'] * (1/rate), 2)
-                                    iva_15 = round(
-                                        tax['tax_group_amount'] * (1/rate), 2)
+                                    iva_15 = base_imponible_15 * 0.15
                                     
                                 else:
                                     base_imponible_15 = tax['tax_group_base_amount']
@@ -566,12 +562,8 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                             if tax['tax_group_name'] == 'IVA 16%':
                                 if invoice.state != 'cancel':
                                     if invoice.currency_id != invoice.company_id.currency_id:
-                                        print(invoice.name)
-                                        print('###iva###')
-                                        print(tax['tax_group_amount'])
                                         rate = invoice.invoice_rate(
                                             invoice.currency_id.id, invoice.invoice_date)
-                                        print(rate)
                                         base_imponible = round(
                                             tax['tax_group_base_amount'] * (1/rate), 2)
                                         iva_16 = base_imponible * 0.16
@@ -591,8 +583,6 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                                     total_base_imponible_16 += base_imponible
                                     alic_16 = '16%'
                             ###########IVA 8%###########
-                            print('##################')
-                            print(invoice.state)
                             if tax['tax_group_name'] == 'IVA 8%':
                                 if invoice.state != 'cancel':
                                     if invoice.currency_id != invoice.company_id.currency_id:
@@ -600,8 +590,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                                             invoice.currency_id.id, invoice.invoice_date)
                                         base_imponible_8 = round(
                                             tax['tax_group_base_amount'] * (1/rate), 2)
-                                        iva_8 = round(
-                                            tax['tax_group_amount'] * (1/rate), 2)
+                                        iva_8 = base_imponible_8 * 0.08
                                     else:
                                         base_imponible_8 = tax['tax_group_base_amount']
                                         iva_8 = tax['tax_group_amount']
@@ -623,8 +612,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                                             invoice.currency_id.id, invoice.invoice_date)
                                         base_imponible_15 = round(
                                             tax['tax_group_base_amount'] * (1/rate), 2)
-                                        iva_15 = round(
-                                            tax['tax_group_amount'] * (1/rate), 2)
+                                        iva_15 = base_imponible_15 * 0.15
                                         
                                     else:
                                         base_imponible_15 = tax['tax_group_base_amount']
