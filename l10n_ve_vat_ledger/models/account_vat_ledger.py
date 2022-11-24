@@ -99,6 +99,7 @@ class AccountVatLedger(models.Model):
                 invoices_domain += [
                     ('move_type', 'in',['in_invoice', 'in_refund']),
                     ('date', '>=', rec.date_from),
+                    ('state', '!=', 'cancel'),
                     ('date', '<=', rec.date_to),]
             rec.invoice_ids = rec.env['account.move'].search(invoices_domain,
                 order='invoice_date desc, l10n_ve_document_number desc')
