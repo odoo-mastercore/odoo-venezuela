@@ -574,7 +574,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                                         print(rate)
                                         base_imponible = round(
                                             tax['tax_group_base_amount'] * (1/rate), 2)
-                                        iva_16 = round(base_imponible * (1/rate),2)
+                                        iva_16 = round(base_imponible * 0.16, 2)
                                     else:
                                         base_imponible = tax['tax_group_base_amount']
                                         iva_16 = tax['tax_group_amount']
