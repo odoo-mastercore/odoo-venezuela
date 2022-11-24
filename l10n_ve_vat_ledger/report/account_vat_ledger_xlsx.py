@@ -244,6 +244,8 @@ class AccountVatLedgerXlsx(models.AbstractModel):
 
             for invoice in reversed(obj.invoice_ids):
                 if obj.type == 'purchase':
+                    _logger.info('###################')
+                    _logger.info(str(invoice.name))
                     i += 1
                     # contador de la factura
                     sheet.write(row, 0, i, line)
