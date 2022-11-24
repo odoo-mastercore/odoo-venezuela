@@ -75,6 +75,8 @@ class AccountPaymentGroup(models.Model):
                 for li in line.move_id.line_ids:
                     if li.name == 'IVA (16.0%) compras':
                         selected_debt_taxed += li.debit
+                    elif li.name == 'IVA (8.0%) compras':
+                        selected_debt_taxed += li.debit
             rec.selected_debt_taxed = selected_debt_taxed
 
     @api.depends(
