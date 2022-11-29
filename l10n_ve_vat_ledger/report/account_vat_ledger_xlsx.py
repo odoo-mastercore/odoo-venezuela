@@ -327,8 +327,10 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                                         tax['tax_group_base_amount'] * (1/rate), 2)
                                 else:
                                     base_exento = tax['tax_group_base_amount']
-                                if invoice.move_type == 'out_refund':
+                                if invoice.move_type == 'out_refund' or invoice.move_type == 'in_refund':
                                     base_exento = base_exento * -1.00
+                                    if invoice.debit_origin_id:
+                                            base_exento = base_exento * -1.00
                                 total_base_exento += base_exento
                             ###########16%###########
                             if tax['tax_group_name'] == 'IVA 16%':
@@ -559,8 +561,10 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                                             tax['tax_group_base_amount'] * (1/rate), 2)
                                     else:
                                         base_exento = tax['tax_group_base_amount']
-                                    if invoice.move_type == 'out_refund':
+                                    if invoice.move_type == 'out_refund' or invoice.move_type == 'in_refund':
                                         base_exento = base_exento * -1.00
+                                        if invoice.debit_origin_id:
+                                            base_exento = base_exento * -1.00
                                     total_base_exento += base_exento
                             ###########16%###########
                             if tax['tax_group_name'] == 'IVA 16%':
