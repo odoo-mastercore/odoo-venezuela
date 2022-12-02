@@ -227,7 +227,8 @@ class AccountVatLedgerXlsx(models.AbstractModel):
 
             row = 5
             total_base_exento = 0.00
-
+            total_base_exento_credito = 0.00
+            total_base_exento_debito = 0.00
             total_base_imponible_16 = 0.00
             total_iva_16 = 0.00
             total_iva_16_retenido = 0.00
@@ -367,8 +368,10 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                                 if invoice.move_type == 'out_refund' or invoice.move_type == 'in_refund' \
                                             or (invoice.move_type == 'out_invoice' and invoice.debit_origin_id):
                                     base_exento = base_exento * -1.00
+                                    total_base_exento_credito += base_exento
                                     if invoice.debit_origin_id:
-                                            base_exento = base_exento * -1.00
+                                        base_exento = base_exento * -1.00
+                                        total_base_exento_debito += base_exento
                                 else:
                                     total_base_exento += base_exento
                             ###########16%###########
@@ -623,9 +626,10 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                                     if invoice.move_type == 'out_refund' or invoice.move_type == 'in_refund' \
                                         or (invoice.move_type == 'out_invoice' and invoice.debit_origin_id):
                                         base_exento = base_exento * -1.00
+                                        total_base_exento_credito += base_exento
                                         if invoice.debit_origin_id:
                                             base_exento = base_exento * -1.00
-
+                                        total_base_exento_debito += base_exento
                                     else:
                                         total_base_exento += base_exento
                             ###########16%###########
@@ -898,59 +902,71 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                 sheet.write((row + 1), 14, '0', line)
                 sheet.write((row + 1), 15, '0', line)
                 sheet.write((row + 1), 16, '0', line)
-                sheet.merge_range('J%s:M%s' % (str(row + 3), str(row + 3)), 'Total Compras de Importaciòn', title_style)
-                sheet.write((row + 2), 13, '0', line)
+                sheet.merge_range('J%s:M%s' % (str(row + 3), str(row + 3)), 'Total Notas de credito NO Gravadas',
+                                  title_style)
+                sheet.write((row + 2), 13, total_base_exento_credito, line)
                 sheet.write((row + 2), 14, '0', line)
                 sheet.write((row + 2), 15, '0', line)
                 sheet.write((row + 2), 16, '0', line)
-                sheet.merge_range('J%s:M%s' % (str(row + 4), str(row + 4)),
-                                  'Total Compras Internas afectadas sólo alícuota general 16.00', title_style)
-                sheet.write((row + 3), 13, round(total_base_imponible_16,2), line)
-                sheet.write((row + 3), 14, total_iva_16, line)
-                sheet.write((row + 3), 15, total_iva_16_retenido, line)
-                sheet.write((row + 3), 16, total_iva_16_igtf, line)
-                sheet.merge_range('J%s:M%s' % (str(row + 5), str(row + 5)),
-                                  'Total Compras Internas afectadas sólo alícuota reducida 8.00', title_style)
-                sheet.write((row+4), 13, total_base_imponible_8, line)
-                sheet.write((row+4), 14, total_iva_8, line)
+                sheet.merge_range('J%s:M%s' % (str(row + 4), str(row + 4)), 'Total Notas de debito NO Gravadas',
+                                  title_style)
+                sheet.write((row + 3), 13, total_base_exento_debito, line)
+                sheet.write((row + 3), 14, '0', line)
+                sheet.write((row + 3), 15, '0', line)
+                sheet.write((row + 3), 16, '0', line)
+                sheet.merge_range('J%s:M%s' % (str(row + 5), str(row + 5)), 'Total Compras de Importaciòn', title_style)
+                sheet.write((row + 4), 13, '0', line)
+                sheet.write((row + 4), 14, '0', line)
                 sheet.write((row + 4), 15, '0', line)
                 sheet.write((row + 4), 16, '0', line)
                 sheet.merge_range('J%s:M%s' % (str(row + 6), str(row + 6)),
+                                  'Total Compras Internas afectadas sólo alícuota general 16.00', title_style)
+                sheet.write((row + 5), 13, round(total_base_imponible_16,2), line)
+                sheet.write((row + 5), 14, total_iva_16, line)
+                sheet.write((row + 5), 15, total_iva_16_retenido, line)
+                sheet.write((row + 5), 16, total_iva_16_igtf, line)
+                sheet.merge_range('J%s:M%s' % (str(row + 7), str(row + 7)),
+                                  'Total Compras Internas afectadas sólo alícuota reducida 8.00', title_style)
+                sheet.write((row + 6), 13, total_base_imponible_8, line)
+                sheet.write((row + 6), 14, total_iva_8, line)
+                sheet.write((row + 6), 15, '0', line)
+                sheet.write((row + 6), 16, '0', line)
+                sheet.merge_range('J%s:M%s' % (str(row + 8), str(row + 8)),
                                   'Total Compras Internas afectadas por alícuota general más adicional 31.00', title_style)
-                sheet.write((row + 5), 13, '0', line)
-                sheet.write((row + 5), 14, '0', line)
-                sheet.write((row + 5), 15, '0', line)
-                sheet.write((row + 5), 16, '0', line)
-                sheet.merge_range('J%s:M%s' % (str(row+7), str(row+7)), 'Total Notas de Crédito o Devoluciones aplicadas en Compras 16%', title_style)
-                sheet.write((row+6), 13, total_nota_credito_16, line)
-                sheet.write((row+6), 14, total_nota_credito_iva_16, line)
-                sheet.write((row+6), 15, '', line)
-                sheet.write((row+6), 16, '', line)
-                sheet.merge_range('J%s:M%s' % (str(row+8), str(row+8)), 'Total Notas de Crédito o Devoluciones aplicadas en Compras 8%', title_style)
-                sheet.write((row+7), 13, total_nota_credito_8, line)
-                sheet.write((row+7), 14, total_nota_credito_iva_8, line)
-                sheet.write((row+7), 15, '', line)
-                sheet.write((row+7), 16, '', line)
-                sheet.merge_range('J%s:M%s' % (str(row+9), str(row+9)), 'Total Notas de Débito o recargos aplicadas en Compras 16%:', title_style)
-                sheet.write((row+8), 13, total_nota_debito_16, line)
-                sheet.write((row+8), 14, total_nota_debito_iva_16, line)
+                sheet.write((row + 7), 13, '0', line)
+                sheet.write((row + 7), 14, '0', line)
+                sheet.write((row + 7), 15, '0', line)
+                sheet.write((row + 7), 16, '0', line)
+                sheet.merge_range('J%s:M%s' % (str(row+9), str(row+9)), 'Total Notas de Crédito o Devoluciones aplicadas en Compras 16%', title_style)
+                sheet.write((row+8), 13, total_nota_credito_16, line)
+                sheet.write((row+8), 14, total_nota_credito_iva_16, line)
                 sheet.write((row+8), 15, '', line)
                 sheet.write((row+8), 16, '', line)
-                sheet.merge_range('J%s:M%s' % (str(row+10), str(row+10)), 'Total Notas de Débito o recargos aplicadas en Compras 8%:', title_style)
-                sheet.write((row+9), 13, total_nota_debito_8, line)
-                sheet.write((row+9), 14, total_nota_debito_iva_8, line)
+                sheet.merge_range('J%s:M%s' % (str(row+10), str(row+10)), 'Total Notas de Crédito o Devoluciones aplicadas en Compras 8%', title_style)
+                sheet.write((row+9), 13, total_nota_credito_8, line)
+                sheet.write((row+9), 14, total_nota_credito_iva_8, line)
                 sheet.write((row+9), 15, '', line)
                 sheet.write((row+9), 16, '', line)
-                sheet.merge_range('J%s:M%s' % (str(row+11), str(row+11)), 'Total:', title_style)
-                sheet.write((row+10), 13, round(total_base_exento + total_base_imponible_16 \
+                sheet.merge_range('J%s:M%s' % (str(row+11), str(row+11)), 'Total Notas de Débito o recargos aplicadas en Compras 16%:', title_style)
+                sheet.write((row+10), 13, total_nota_debito_16, line)
+                sheet.write((row+10), 14, total_nota_debito_iva_16, line)
+                sheet.write((row+10), 15, '', line)
+                sheet.write((row+10), 16, '', line)
+                sheet.merge_range('J%s:M%s' % (str(row+12), str(row+12)), 'Total Notas de Débito o recargos aplicadas en Compras 8%:', title_style)
+                sheet.write((row+11), 13, total_nota_debito_8, line)
+                sheet.write((row+11), 14, total_nota_debito_iva_8, line)
+                sheet.write((row+11), 15, '', line)
+                sheet.write((row+11), 16, '', line)
+                sheet.merge_range('J%s:M%s' % (str(row+13), str(row+13)), 'Total:', title_style)
+                sheet.write((row+12), 13, round(total_base_exento + total_base_imponible_16 \
                     + total_base_imponible_8+total_nota_credito_16+\
                         + total_nota_credito_8 +total_nota_debito_16\
                             + total_nota_debito_8,2), line)
-                sheet.write((row+10), 14, (total_iva_16 + total_iva_8 + \
+                sheet.write((row+12), 14, (total_iva_16 + total_iva_8 + \
                     total_nota_credito_iva_16 + total_nota_credito_iva_8 + \
                         total_nota_debito_iva_16 + total_nota_debito_iva_8), line)
-                sheet.write((row+10), 15, total_iva_16_retenido, line)
-                sheet.write((row+10), 16, total_iva_16_igtf, line)
+                sheet.write((row+12), 15, total_iva_16_retenido, line)
+                sheet.write((row+12), 16, total_iva_16_igtf, line)
 
 
 
