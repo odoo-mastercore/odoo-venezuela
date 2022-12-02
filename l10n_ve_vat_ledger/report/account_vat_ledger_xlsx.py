@@ -283,7 +283,12 @@ class AccountVatLedgerXlsx(models.AbstractModel):
           
             i = 0
 
-            for invoice in reversed(obj.invoice_ids):
+            print(obj.invoice_ids)
+            if obj.type == 'sale':
+                invoices = reversed(obj.invoice_ids)
+            elif obj.type == 'purchase':
+                invoices = sorted(obj.invoice_ids, key=lambda x: x.date)
+            for invoice in invoices:
                 if obj.type == 'purchase':
                     i += 1
                     # contador de la factura
@@ -510,17 +515,14 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     """ % ('supplier', invoice.id)
                     self._cr.execute(sql)
                     res = self._cr.fetchone()
-                    print('#######RES#########')
-                    print(res)
                     reten = 0.00
                     if res:
-                        print('entro auqi')
                         reten = float(res[2])
                         reten_number = res[1] if res[1] else ' '
                         date = res[0] if res[0] else ' '
                         doct_afectado = res[3] if res[3] else ' '
                     else:
-                        reten = 0.00
+                        reten = 0
                         reten_number = ' '
                         date = ' '
                         doct_afectado = ' '
