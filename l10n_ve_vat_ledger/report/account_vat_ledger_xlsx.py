@@ -368,10 +368,11 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                                 if invoice.move_type == 'out_refund' or invoice.move_type == 'in_refund' \
                                             or (invoice.move_type == 'out_invoice' and invoice.debit_origin_id):
                                     base_exento = base_exento * -1.00
-                                    total_base_exento_credito += base_exento
                                     if invoice.debit_origin_id:
                                         base_exento = base_exento * -1.00
                                         total_base_exento_debito += base_exento
+                                    else:
+                                        total_base_exento_credito += base_exento
                                 else:
                                     total_base_exento += base_exento
                             ###########16%###########
@@ -626,10 +627,11 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                                     if invoice.move_type == 'out_refund' or invoice.move_type == 'in_refund' \
                                         or (invoice.move_type == 'out_invoice' and invoice.debit_origin_id):
                                         base_exento = base_exento * -1.00
-                                        total_base_exento_credito += base_exento
                                         if invoice.debit_origin_id:
                                             base_exento = base_exento * -1.00
-                                        total_base_exento_debito += base_exento
+                                            total_base_exento_debito += base_exento
+                                        else:
+                                            total_base_exento_credito += base_exento
                                     else:
                                         total_base_exento += base_exento
                             ###########16%###########
