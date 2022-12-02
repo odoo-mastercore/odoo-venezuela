@@ -359,7 +359,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                             if tax['tax_group_name'] == 'IVA 0%':
                                 if invoice.currency_id != invoice.company_id.currency_id:
                                     rate = invoice.invoice_rate(
-                                        invoice.currency_id.id, invoice.invoice_date)
+                                        invoice.currency_id.id, invoice.date)
                                     base_exento = round(
                                         tax['tax_group_base_amount'] * (1/rate), 2)
                                 else:
