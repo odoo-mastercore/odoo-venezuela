@@ -168,7 +168,10 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                 sheet.write(4, 20, 'Imp. I.V.A.', cell_format)
 
                 sheet.write(4, 21, 'I.G.T.F Pagado  ', cell_format)
-                sheet.write(4, 22, 'I.V.A. Retenido por el comprador', cell_format)
+                sheet.write(4, 22, 'Fecha de Retención', cell_format)
+                sheet.write(4, 23, 'N° comprobante', cell_format)
+                sheet.write(4, 24, 'I.V.A. Retenido por el comprador', cell_format)
+                sheet.write(4, 25, 'Factura Afectada', cell_format)
 
             elif obj.type == 'sale':
 
@@ -499,22 +502,39 @@ class AccountVatLedgerXlsx(models.AbstractModel):
 
                     #Retenciones
                     sql = """
-                    SELECT p.withholding_number AS number_wh,p.amount AS amount_wh,l.move_id AS invoice
+                    SELECT l.date AS date_wh,p.withholding_number AS number_wh,p.amount AS amount_wh,l.move_id AS invoice
                     FROM  account_tax AS t INNER JOIN account_payment  AS p ON t.id=p.tax_withholding_id
                     INNER JOIN account_move_line_payment_group_to_pay_rel AS g ON p.payment_group_id=g.payment_group_id
                     INNER JOIN account_move_line AS l ON g.to_pay_line_id=l.id
                     WHERE t.type_tax_use='%s' AND t.withholding_type='partner_tax' AND l.move_id=%d
-                    """ % ('customer', invoice.id)
+                    """ % ('supplier', invoice.id)
                     self._cr.execute(sql)
                     res = self._cr.fetchone()
+                    print('#######RES#########')
+                    print(res)
                     reten = 0.00
                     if res:
-                        reten = float(res[1])
+                        print('entro auqi')
+                        reten = float(res[2])
+                        reten_number = res[1] if res[1] else ' '
+                        date = res[0] if res[0] else ' '
+                        doct_afectado = res[3] if res[3] else ' '
                     else:
                         reten = 0.00
+                        reten_number = ' '
+                        date = ' '
+                        doct_afectado = ' '
                     total_iva_16_retenido += reten
+
+                    # Fecha de retencion
+                    # print(strdate)
+                    sheet.write(row, 22, str(date), line)
+                    #No de comprobante
+                    sheet.write(row, 23, reten_number, line)
                     ##### IVA RETENIDO
-                    sheet.write(row, 22, reten, line)
+                    sheet.write(row, 24, reten, line)
+                    ##### Doc Afectado
+                    sheet.write(row, 25, doct_afectado, line)
 
                     # #### ANTICIPO IVA
                     # sheet.write(row, 23, '', line)
