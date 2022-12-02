@@ -364,16 +364,18 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                                         tax['tax_group_base_amount'] * (1/rate), 2)
                                 else:
                                     base_exento = tax['tax_group_base_amount']
-                                if invoice.move_type == 'out_refund' or invoice.move_type == 'in_refund':
+                                if invoice.move_type == 'out_refund' or invoice.move_type == 'in_refund' \
+                                            or (invoice.move_type == 'out_invoice' and invoice.debit_origin_id):
                                     base_exento = base_exento * -1.00
                                     if invoice.debit_origin_id:
                                             base_exento = base_exento * -1.00
-                                total_base_exento += base_exento
+                                else:
+                                    total_base_exento += base_exento
                             ###########16%###########
                             if tax['tax_group_name'] == 'IVA 16%':
                                 if invoice.currency_id != invoice.company_id.currency_id:
                                     rate = invoice.invoice_rate(
-                                        invoice.currency_id.id, invoice.invoice_date)
+                                            invoice.currency_id.id, invoice.date)
                                     base_imponible = round(
                                         tax['tax_group_base_amount'] * (1/rate), 2)
                                     iva_16 = base_imponible * 0.16
@@ -401,7 +403,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                             if tax['tax_group_name'] == 'IVA 8%':
                                 if invoice.currency_id != invoice.company_id.currency_id:
                                     rate = invoice.invoice_rate(
-                                        invoice.currency_id.id, invoice.invoice_date)
+                                        invoice.currency_id.id, invoice.date)
                                     base_imponible_8 = round(
                                         tax['tax_group_base_amount'] * (1/rate), 2)
                                     iva_8 = base_imponible_8 * 0.08
@@ -428,7 +430,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                             if tax['tax_group_name'] == 'IVA 15%':
                                 if invoice.currency_id != invoice.company_id.currency_id:
                                     rate = invoice.invoice_rate(
-                                        invoice.currency_id.id, invoice.invoice_date)
+                                        invoice.currency_id.id, invoice.date)
                                     base_imponible_15 = round(
                                         tax['tax_group_base_amount'] * (1/rate), 2)
                                     iva_15 = base_imponible_15 * 0.15
@@ -618,11 +620,14 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                                             tax['tax_group_base_amount'] * (1/rate), 2)
                                     else:
                                         base_exento = tax['tax_group_base_amount']
-                                    if invoice.move_type == 'out_refund' or invoice.move_type == 'in_refund':
+                                    if invoice.move_type == 'out_refund' or invoice.move_type == 'in_refund' \
+                                        or (invoice.move_type == 'out_invoice' and invoice.debit_origin_id):
                                         base_exento = base_exento * -1.00
                                         if invoice.debit_origin_id:
                                             base_exento = base_exento * -1.00
-                                    total_base_exento += base_exento
+
+                                    else:
+                                        total_base_exento += base_exento
                             ###########16%###########
                             if tax['tax_group_name'] == 'IVA 16%':
                                 if invoice.state != 'cancel':
