@@ -144,34 +144,35 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                 sheet.write(4, 2, 'Tipo de Documento', cell_format)
                 sheet.write(4, 3, 'Número de Documento', cell_format)
                 sheet.write(4, 4, 'Número de Control', cell_format)
-                sheet.write(4, 5, 'Número Factura Afectada', cell_format)
-                sheet.write(4, 6, 'Nª planilla de Importaciòn', cell_format)
-                sheet.write(4, 7, 'Nª de Expediente de Importaciòn', cell_format)
-                sheet.write(4, 8, 'Nombre o Razón Social', cell_format)
-                sheet.write(4, 9, 'RIF', cell_format)
-                sheet.write(4, 10, 'Total Compras  Bs. Incluyendo IVA.', cell_format)
-                sheet.write(4, 11, 'Compras sin Derecho a Crédito I.V.A.', cell_format)
+                sheet.write(4, 5, 'Número de Comprobante', cell_format)
+                sheet.write(4, 6, 'Número Factura Afectada', cell_format)
+                sheet.write(4, 7, 'Nª planilla de Importaciòn', cell_format)
+                sheet.write(4, 8, 'Nª de Expediente de Importaciòn', cell_format)
+                sheet.write(4, 9, 'Nombre o Razón Social', cell_format)
+                sheet.write(4, 10, 'RIF', cell_format)
+                sheet.write(4, 11, 'Total Compras  Bs. Incluyendo IVA.', cell_format)
+                sheet.write(4, 12, 'Compras sin Derecho a Crédito I.V.A.', cell_format)
 
                 # celda adicional compras por cuenta de terceros
                 sheet.merge_range('M4:O4','Importaciones', cell_format)
-                sheet.write(4, 12, 'Base Imponible', cell_format)
-                sheet.write(4, 13, '% Alic.', cell_format)
-                sheet.write(4, 14, 'Imp. I.V.A.', cell_format)
+                sheet.write(4, 13, 'Base Imponible', cell_format)
+                sheet.write(4, 14, '% Alic.', cell_format)
+                sheet.write(4, 15, 'Imp. I.V.A.', cell_format)
 
                 # # IVA RETENIDO
                 sheet.merge_range('P4:U4', 'Compras Internas', cell_format)
-                sheet.write(4, 15, 'Base Imponible', cell_format)
-                sheet.write(4, 16, 'Alicuota 16% + Alicuota Adicional', cell_format)
-                sheet.write(4, 17, 'Imp. I.V.A.', cell_format)
-                sheet.write(4, 18, 'B. Imponible', cell_format)
-                sheet.write(4, 19, 'Alicuota 8%', cell_format)
-                sheet.write(4, 20, 'Imp. I.V.A.', cell_format)
+                sheet.write(4, 16, 'Base Imponible', cell_format)
+                sheet.write(4, 17, 'Alicuota 16% + Alicuota Adicional', cell_format)
+                sheet.write(4, 18, 'Imp. I.V.A.', cell_format)
+                sheet.write(4, 19, 'B. Imponible', cell_format)
+                sheet.write(4, 20, 'Alicuota 8%', cell_format)
+                sheet.write(4, 21, 'Imp. I.V.A.', cell_format)
 
-                sheet.write(4, 21, 'I.G.T.F Pagado  ', cell_format)
-                sheet.write(4, 22, 'Fecha de Retención', cell_format)
-                sheet.write(4, 23, 'N° comprobante', cell_format)
-                sheet.write(4, 24, 'I.V.A. Retenido por el comprador', cell_format)
-                sheet.write(4, 25, 'Factura Afectada', cell_format)
+                sheet.write(4, 22, 'I.G.T.F Pagado  ', cell_format)
+                sheet.write(4, 23, 'Fecha de Retención', cell_format)
+                sheet.write(4, 24, 'N° comprobante', cell_format)
+                sheet.write(4, 25, 'I.V.A. Retenido por el comprador', cell_format)
+                sheet.write(4, 26, 'Factura Afectada', cell_format)
 
             elif obj.type == 'sale':
 
@@ -283,7 +284,6 @@ class AccountVatLedgerXlsx(models.AbstractModel):
           
             i = 0
 
-            print(obj.invoice_ids)
             if obj.type == 'sale':
                 invoices = reversed(obj.invoice_ids)
             elif obj.type == 'purchase':
@@ -312,6 +312,11 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     sheet.write(row, 3, invoice.ref or '', line)
                     # Número de Control
                     sheet.write(row, 4, invoice.l10n_ve_document_number or '', line)
+                    
+                    
+                    # Retencion
+                    # Numero de comprobante
+                    sheet.write(row, 5, '', line)
 
                     # Número Factura Afectada si es de debito o credito
                     if invoice.move_type == 'in_refund' or invoice.move_type == 'out_refund':
@@ -326,19 +331,19 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                             for mov in move_ids:
                                 if mov.move_type == 'in_invoice' and mov.state == 'posted':
                                     inv_info = mov.ref
-                            sheet.write(row, 5, inv_info, line)
+                            sheet.write(row, 6, inv_info, line)
                     else:
-                        sheet.write(row, 5, '', line)
+                        sheet.write(row, 6, '', line)
 
                     # Planilla de importacion
-                    sheet.write(row, 6, '', line)
-                    # Nro Expediente de importacion
                     sheet.write(row, 7, '', line)
+                    # Nro Expediente de importacion
+                    sheet.write(row, 8, '', line)
                     # nombre del partner
-                    sheet.write(row, 8, invoice.partner_id.name or 'FALSE', line)
+                    sheet.write(row, 9, invoice.partner_id.name or 'FALSE', line)
 
                     # Rif del cliente
-                    sheet.write(row, 9, '%s-%s' % (invoice.partner_id. \
+                    sheet.write(row, 10, '%s-%s' % (invoice.partner_id. \
                         l10n_latam_identification_type_id.l10n_ve_code or 'FALSE',
                         invoice.partner_id.vat or 'FALSE'), line)
                     # Tipo de Proveedor Compras
@@ -346,7 +351,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
 
                     #Total Compras con IVA
                     sheet.write(
-                        row, 10, (invoice.amount_total_signed * -1.00), line)
+                        row, 11, (invoice.amount_total_signed * -1.00), line)
 
                     ####IMPUESTOS##########
                     
@@ -474,40 +479,40 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     c_total_iva_8 += iva_8 if iva_8 else 0.00
 
                     # Compras Exento
-                    sheet.write(row, 11, base_exento, line)
+                    sheet.write(row, 12, base_exento, line)
 
                     #IMPORTACIONES
                     # Base Imponible
-                    sheet.write(row, 12, '', line)
-                    # % Alic
                     sheet.write(row, 13, '', line)
-                    #Imp. IVA
+                    # % Alic
                     sheet.write(row, 14, '', line)
+                    #Imp. IVA
+                    sheet.write(row, 15, '', line)
 
                     #Compras internas
                     # Base Imponible
-                    sheet.write(row, 15, base_imponible, line)
+                    sheet.write(row, 16, base_imponible, line)
                     # % Alic
-                    sheet.write(row, 16, alic_16, line)
+                    sheet.write(row, 17, alic_16, line)
                     #Imp. IVA
-                    sheet.write(row, 17, iva_16, line)
+                    sheet.write(row, 18, iva_16, line)
 
                     #IVA 8%
                     # Base Imponible
-                    sheet.write(row, 18, base_imponible_8, line)
+                    sheet.write(row, 19, base_imponible_8, line)
                     # % Alic
-                    sheet.write(row, 19, alic_8, line)
+                    sheet.write(row, 20, alic_8, line)
                     #Imp. IVA
-                    sheet.write(row, 20, iva_8, line)
+                    sheet.write(row, 21, iva_8, line)
                     
 
 
                     ###### IGTF
-                    sheet.write(row, 21, 0, line)
+                    sheet.write(row, 22, 0, line)
 
                     #Retenciones
                     sql = """
-                    SELECT l.date AS date_wh,p.withholding_number AS number_wh,p.amount AS amount_wh,l.move_id.id AS invoice
+                    SELECT l.date AS date_wh,p.withholding_number AS number_wh,p.amount AS amount_wh,l.move_id AS invoice
                     FROM  account_tax AS t INNER JOIN account_payment AS p ON t.id=p.tax_withholding_id
                     INNER JOIN account_move_line_payment_group_to_pay_rel AS g ON p.payment_group_id=g.payment_group_id
                     INNER JOIN account_move_line AS l ON g.to_pay_line_id=l.id
