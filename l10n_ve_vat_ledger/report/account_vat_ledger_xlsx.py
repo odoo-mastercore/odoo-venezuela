@@ -288,7 +288,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                 invoices = reversed(obj.invoice_ids)
             elif obj.type == 'purchase':
                 invoices = sorted(obj.invoice_ids, key=lambda x: x.date)
-            for invoice in invoices:
+            for invoice in reversed(invoices):
                 if obj.type == 'purchase':
                     i += 1
                     # contador de la factura
@@ -507,8 +507,8 @@ class AccountVatLedgerXlsx(models.AbstractModel):
 
                     #Retenciones
                     sql = """
-                    SELECT l.date AS date_wh,p.withholding_number AS number_wh,p.amount AS amount_wh,l.move_id AS invoice
-                    FROM  account_tax AS t INNER JOIN account_payment  AS p ON t.id=p.tax_withholding_id
+                    SELECT l.date AS date_wh,p.withholding_number AS number_wh,p.amount AS amount_wh,l.move_id.id AS invoice
+                    FROM  account_tax AS t INNER JOIN account_payment AS p ON t.id=p.tax_withholding_id
                     INNER JOIN account_move_line_payment_group_to_pay_rel AS g ON p.payment_group_id=g.payment_group_id
                     INNER JOIN account_move_line AS l ON g.to_pay_line_id=l.id
                     WHERE t.type_tax_use='%s' AND t.withholding_type='partner_tax' AND l.move_id=%d
@@ -516,6 +516,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     self._cr.execute(sql)
                     res = self._cr.fetchone()
                     reten = 0.00
+                    print(res)
                     if res:
                         reten = float(res[2])
                         reten_number = res[1] if res[1] else ' '
