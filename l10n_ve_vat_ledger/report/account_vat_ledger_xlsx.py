@@ -160,7 +160,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                 sheet.write(4, 15, 'Imp. I.V.A.', cell_format)
 
                 # # IVA RETENIDO
-                sheet.merge_range('P4:U4', 'Compras Internas', cell_format)
+                sheet.merge_range('P4:X4', 'Compras Internas', cell_format)
                 sheet.write(4, 16, 'Base Imponible', cell_format)
                 sheet.write(4, 17, 'Alicuota 16% + Alicuota Adicional', cell_format)
                 sheet.write(4, 18, 'Imp. I.V.A.', cell_format)
@@ -168,11 +168,8 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                 sheet.write(4, 20, 'Alicuota 8%', cell_format)
                 sheet.write(4, 21, 'Imp. I.V.A.', cell_format)
 
-                sheet.write(4, 22, 'I.G.T.F Pagado  ', cell_format)
-                sheet.write(4, 23, 'Fecha de Retención', cell_format)
-                sheet.write(4, 24, 'N° comprobante', cell_format)
-                sheet.write(4, 25, 'I.V.A. Retenido por el comprador', cell_format)
-                sheet.write(4, 26, 'Factura Afectada', cell_format)
+                sheet.write(4, 22, 'I.V.A. Retenido por el comprador', cell_format)
+                sheet.write(4, 23, 'I.G.T.F Pagado  ', cell_format)
 
             elif obj.type == 'sale':
 
@@ -283,13 +280,110 @@ class AccountVatLedgerXlsx(models.AbstractModel):
             c_total_iva_8 = 0.00
           
             i = 0
+            
+            """ 
+                Retenciones
+             """
+            # sql =
+            # SELECT p. AS gname,l.date AS date_wh,p.withholding_number AS number_wh,p.amount AS amount_wh,l.move_id AS invoice
+            # FROM  account_tax AS t INNER JOIN account_payment AS p ON t.id=p.tax_withholding_id
+            # INNER JOIN account_move_line_payment_group_to_pay_rel AS g ON p.payment_group_id=g.payment_group_id
+            # INNER JOIN account_move_line AS l ON g.to_pay_line_id=l.id
+            # WHERE t.type_tax_use='%s' AND t.withholding_type='partner_tax'
+            #  % ('supplier' if obj.type == 'purchase' else 'customer')
+            # self._cr.execute(sql)
+            # retenciones = self._cr.fetchall()
+
+            type_tax = 'supplier' if obj.type == 'purchase' else 'customer'
+            tax_withholding_id = self.env['account.tax'].search([
+                ('type_tax_use', '=', type_tax),
+                ('withholding_type', '=', 'partner_tax')
+            ], limit=1)
+
+            retens = self.env['account.payment'].search([
+                ('tax_withholding_id', '=', tax_withholding_id.id),
+                ('date', '>=', obj.date_from),
+                ('date', '<=', obj.date_to)
+            ])
+
+            if retens:
+                retenciones = list(retens)
 
             if obj.type == 'sale':
                 invoices = reversed(obj.invoice_ids)
             elif obj.type == 'purchase':
-                invoices = sorted(obj.invoice_ids, key=lambda x: x.date)
-            for invoice in reversed(invoices):
+                invoices = sorted(obj.invoice_ids, key=lambda x: x.invoice_date)
+            
+            date_reference = obj.date_from
+            
+            for invoice in invoices:
                 if obj.type == 'purchase':
+                    if date_reference <= invoice.invoice_date:
+                        coincident_date = [tup for tup in retenciones if date_reference == tup.date]
+                        if coincident_date:
+                            print('entro en coincidente')
+                            for reten in coincident_date:
+                                print(reten.date)
+                                i += 1
+                                # codigo 
+                                sheet.write(row, 0, i, line)
+                                # fehca
+                                sheet.write(row, 1, reten.date, date_line)
+                                # tipo de documento
+                                sheet.write(row, 2, 'Retención', line)
+                                sheet.write(row, 3, '', line)
+                                sheet.write(row, 4, '', line)
+                                # Numero de comrpobante
+                                sheet.write(row, 5, reten.withholding_number, line)
+                                # Documento afectado
+                                sheet.write(row, 6, reten.reconciled_bill_ids[0].name, line)
+                                sheet.write(row, 7, '', line)
+                                sheet.write(row, 8, '', line)
+                                # Nombre
+                                sheet.write(row, 9, reten.reconciled_bill_ids[0].partner_id.name, line)
+                                # RIF
+                                sheet.write(row, 10, '%s-%s' % (reten.reconciled_bill_ids[0].partner_id. \
+                                    l10n_latam_identification_type_id.l10n_ve_code or 'FALSE',
+                                    reten.reconciled_bill_ids[0].partner_id.vat or 'FALSE'), line)
+                                #Total
+                                sheet.write(row, 11, '', line)
+                                # Compras Exento
+                                sheet.write(row, 12, '', line)
+
+                                #IMPORTACIONES
+                                # Base Imponible
+                                sheet.write(row, 13, '', line)
+                                # % Alic
+                                sheet.write(row, 14, '', line)
+                                #Imp. IVA
+                                sheet.write(row, 15, '', line)
+
+                                #Compras internas
+                                # Base Imponible
+                                sheet.write(row, 16, '', line)
+                                # % Alic
+                                sheet.write(row, 17, '', line)
+                                #Imp. IVA
+                                sheet.write(row, 18, '', line)
+
+                                #IVA 8%
+                                # Base Imponible
+                                sheet.write(row, 19, '', line)
+                                # % Alic
+                                sheet.write(row, 20, '', line)
+                                #Imp. IVA
+                                sheet.write(row, 21, '', line)
+                                
+
+                                #Retenciones
+                                sheet.write(row, 22, reten.amount, line)
+                                ###### IGTF
+                                sheet.write(row, 23, 2, line)
+                                retenciones.remove(reten)
+                                row +=1
+                        else:
+                            date_reference += timedelta(days=1)
+
                     i += 1
                     # contador de la factura
                     sheet.write(row, 0, i, line)
@@ -506,48 +600,12 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     sheet.write(row, 21, iva_8, line)
                     
 
-
-                    ###### IGTF
-                    sheet.write(row, 22, 0, line)
-
                     #Retenciones
-                    sql = """
-                    SELECT l.date AS date_wh,p.withholding_number AS number_wh,p.amount AS amount_wh,l.move_id AS invoice
-                    FROM  account_tax AS t INNER JOIN account_payment AS p ON t.id=p.tax_withholding_id
-                    INNER JOIN account_move_line_payment_group_to_pay_rel AS g ON p.payment_group_id=g.payment_group_id
-                    INNER JOIN account_move_line AS l ON g.to_pay_line_id=l.id
-                    WHERE t.type_tax_use='%s' AND t.withholding_type='partner_tax' AND l.move_id=%d
-                    """ % ('supplier', invoice.id)
-                    self._cr.execute(sql)
-                    res = self._cr.fetchone()
-                    reten = 0.00
-                    print(res)
-                    if res:
-                        reten = float(res[2])
-                        reten_number = res[1] if res[1] else ' '
-                        date = res[0] if res[0] else ' '
-                        doct_afectado = res[3] if res[3] else ' '
-                    else:
-                        reten = 0
-                        reten_number = ' '
-                        date = ' '
-                        doct_afectado = ' '
-                    total_iva_16_retenido += reten
+                    sheet.write(row, 22, 1, line)
+                    ###### IGTF
+                    sheet.write(row, 23, 2, line)
 
-                    # Fecha de retencion
-                    # print(strdate)
-                    sheet.write(row, 22, str(date), line)
-                    #No de comprobante
-                    sheet.write(row, 23, reten_number, line)
-                    ##### IVA RETENIDO
-                    sheet.write(row, 24, reten, line)
-                    ##### Doc Afectado
-                    sheet.write(row, 25, doct_afectado, line)
-
-                    # #### ANTICIPO IVA
-                    # sheet.write(row, 23, '', line)
-
-
+                    
                 elif obj.type == 'sale':
                     i += 1
                     # contador de la factura
@@ -831,6 +889,68 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     sheet.write(row, 30, '', line)
                 row += 1
 
+            if len(retenciones) > 0 and obj.type == 'purchase':
+                for reten in sorted(retenciones, key=lambda x: x.date):
+                    print(reten.date)
+                    i += 1
+                    # codigo 
+                    sheet.write(row, 0, i, line)
+                    # fehca
+                    sheet.write(row, 1, reten.date, date_line)
+                    # tipo de documento
+                    sheet.write(row, 2, 'Retención', line)
+                    sheet.write(row, 3, '', line)
+                    sheet.write(row, 4, '', line)
+                    # Numero de comrpobante
+                    sheet.write(row, 5, reten.withholding_number, line)
+                    # Documento afectado
+                    sheet.write(row, 6, reten.reconciled_bill_ids[0].name, line)
+                    sheet.write(row, 7, '', line)
+                    sheet.write(row, 8, '', line)
+                    # Nombre
+                    sheet.write(row, 9, reten.reconciled_bill_ids[0].partner_id.name, line)
+                    # RIF
+                    sheet.write(row, 10, '%s-%s' % (reten.reconciled_bill_ids[0].partner_id. \
+                        l10n_latam_identification_type_id.l10n_ve_code or 'FALSE',
+                        reten.reconciled_bill_ids[0].partner_id.vat or 'FALSE'), line)
+                    #Total
+                    sheet.write(row, 11, '', line)
+                    # Compras Exento
+                    sheet.write(row, 12, '', line)
+
+                    #IMPORTACIONES
+                    # Base Imponible
+                    sheet.write(row, 13, '', line)
+                    # % Alic
+                    sheet.write(row, 14, '', line)
+                    #Imp. IVA
+                    sheet.write(row, 15, '', line)
+
+                    #Compras internas
+                    # Base Imponible
+                    sheet.write(row, 16, '', line)
+                    # % Alic
+                    sheet.write(row, 17, '', line)
+                    #Imp. IVA
+                    sheet.write(row, 18, '', line)
+
+                    #IVA 8%
+                    # Base Imponible
+                    sheet.write(row, 19, '', line)
+                    # % Alic
+                    sheet.write(row, 20, '', line)
+                    #Imp. IVA
+                    sheet.write(row, 21, '', line)
+                    
+
+                    #Retenciones
+                    sheet.write(row, 22, reten.amount, line)
+                    ###### IGTF
+                    sheet.write(row, 23, 2, line)
+                    retenciones.remove(reten)
+                    row +=1
+            else:
+                date_reference += timedelta(days=1)
             if obj.type == 'sale':
 
                 sheet.write((row), 13, total_base_exento_contribuyente, line_total)
