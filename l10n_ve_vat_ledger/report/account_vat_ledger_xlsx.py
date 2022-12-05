@@ -154,13 +154,13 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                 sheet.write(4, 12, 'Compras sin Derecho a Crédito I.V.A.', cell_format)
 
                 # celda adicional compras por cuenta de terceros
-                sheet.merge_range('M4:O4','Importaciones', cell_format)
+                sheet.merge_range('N4:P4','Importaciones', cell_format)
                 sheet.write(4, 13, 'Base Imponible', cell_format)
                 sheet.write(4, 14, '% Alic.', cell_format)
                 sheet.write(4, 15, 'Imp. I.V.A.', cell_format)
 
                 # # IVA RETENIDO
-                sheet.merge_range('P4:X4', 'Compras Internas', cell_format)
+                sheet.merge_range('Q4:V4', 'Compras Internas', cell_format)
                 sheet.write(4, 16, 'Base Imponible', cell_format)
                 sheet.write(4, 17, 'Alicuota 16% + Alicuota Adicional', cell_format)
                 sheet.write(4, 18, 'Imp. I.V.A.', cell_format)
@@ -1143,11 +1143,11 @@ class AccountVatLedgerXlsx(models.AbstractModel):
             # Totales de compras
             else:
                 
-                sheet.write((row), 11, c_total_base_exento, line_total)
-                sheet.write((row), 15, c_total_base_imponible_16, line_total)
-                sheet.write((row), 17, c_total_iva_16, line_total)
-                sheet.write((row), 18, c_total_base_imponible_8, line_total)
-                sheet.write((row), 20, c_total_iva_8, line_total)
+                sheet.write((row), 12, c_total_base_exento, line_total)
+                sheet.write((row), 16, c_total_base_imponible_16, line_total)
+                sheet.write((row), 18, c_total_iva_16, line_total)
+                sheet.write((row), 19, c_total_base_imponible_8, line_total)
+                sheet.write((row), 21, c_total_iva_8, line_total)
 
 
                 row += 5
