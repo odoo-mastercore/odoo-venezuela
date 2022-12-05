@@ -336,15 +336,15 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                                 # Numero de comrpobante
                                 sheet.write(row, 5, reten.withholding_number, line)
                                 # Documento afectado
-                                sheet.write(row, 6, reten.reconciled_bill_ids[0].name, line)
+                                sheet.write(row, 6, reten.move_id.name, line)
                                 sheet.write(row, 7, '', line)
                                 sheet.write(row, 8, '', line)
                                 # Nombre
-                                sheet.write(row, 9, reten.reconciled_bill_ids[0].partner_id.name, line)
+                                sheet.write(row, 9, reten.move_id.partner_id.name, line)
                                 # RIF
-                                sheet.write(row, 10, '%s-%s' % (reten.reconciled_bill_ids[0].partner_id. \
+                                sheet.write(row, 10, '%s-%s' % (reten.move_id.partner_id. \
                                     l10n_latam_identification_type_id.l10n_ve_code or 'FALSE',
-                                    reten.reconciled_bill_ids[0].partner_id.vat or 'FALSE'), line)
+                                    reten.move_id.partner_id.vat or 'FALSE'), line)
                                 #Total
                                 sheet.write(row, 11, '', line)
                                 # Compras Exento
@@ -904,15 +904,15 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     # Numero de comrpobante
                     sheet.write(row, 5, reten.withholding_number, line)
                     # Documento afectado
-                    sheet.write(row, 6, reten.reconciled_bill_ids[0].name, line)
+                    sheet.write(row, 6, reten.move_id.name, line)
                     sheet.write(row, 7, '', line)
                     sheet.write(row, 8, '', line)
                     # Nombre
-                    sheet.write(row, 9, reten.reconciled_bill_ids[0].partner_id.name, line)
+                    sheet.write(row, 9, reten.move_id.partner_id.name, line)
                     # RIF
-                    sheet.write(row, 10, '%s-%s' % (reten.reconciled_bill_ids[0].partner_id. \
+                    sheet.write(row, 10, '%s-%s' % (reten.move_id.partner_id. \
                         l10n_latam_identification_type_id.l10n_ve_code or 'FALSE',
-                        reten.reconciled_bill_ids[0].partner_id.vat or 'FALSE'), line)
+                        reten.move_id.partner_id.vat or 'FALSE'), line)
                     #Total
                     sheet.write(row, 11, '', line)
                     # Compras Exento
