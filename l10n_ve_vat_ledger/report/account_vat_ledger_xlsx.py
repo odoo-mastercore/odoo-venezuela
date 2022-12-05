@@ -314,7 +314,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                         if coincident_date:
                             for reten in coincident_date:
                                 _logger.info(reten.name)
-                                _logger.info(reten.withholding_number)
+                                _logger.info(reten.reconciled_bill_ids)
                                 total_iva_16_retenido += reten.amount
                                 i += 1
                                 _logger.info(reten.name)
@@ -330,7 +330,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                                 # Numero de comrpobante
                                 sheet.write(row, 5, reten.withholding_number, line)
                                 # Documento afectado
-                                sheet.write(row, 6, reten.reconciled_bill_ids[0].ref, line)
+                                sheet.write(row, 6, reten.reconciled_bill_ids.ref, line)
                                 sheet.write(row, 7, '', line)
                                 sheet.write(row, 8, '', line)
                                 # Nombre
@@ -942,6 +942,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                 for reten in sorted(retenciones, key=lambda x: x.date):
                     _logger.info(reten.name)
                     _logger.info(reten.withholding_number)
+                    _logger.info(reten.reconciled_bill_ids)
                     total_iva_16_retenido += reten.amount
                     i += 1
                     # codigo 
@@ -955,7 +956,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     # Numero de comrpobante
                     sheet.write(row, 5, reten.withholding_number, line)
                     # Documento afectado
-                    sheet.write(row, 6, reten.reconciled_bill_ids[0].ref, line)
+                    sheet.write(row, 6, reten.reconciled_bill_ids.ref, line)
                     sheet.write(row, 7, '', line)
                     sheet.write(row, 8, '', line)
                     # Nombre
