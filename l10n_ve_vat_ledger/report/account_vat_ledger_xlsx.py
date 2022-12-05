@@ -303,7 +303,8 @@ class AccountVatLedgerXlsx(models.AbstractModel):
             retens = self.env['account.payment'].search([
                 ('tax_withholding_id', '=', tax_withholding_id.id),
                 ('date', '>=', obj.date_from),
-                ('date', '<=', obj.date_to)
+                ('date', '<=', obj.date_to),
+
             ])
 
             if retens:
@@ -321,9 +322,8 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     if date_reference <= invoice.invoice_date:
                         coincident_date = [tup for tup in retenciones if date_reference == tup.date]
                         if coincident_date:
-                            print('entro en coincidente')
                             for reten in coincident_date:
-                                print(reten.date)
+                                total_iva_16_retenido += reten.amount
                                 i += 1
                                 # codigo 
                                 sheet.write(row, 0, i, line)
@@ -336,7 +336,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                                 # Numero de comrpobante
                                 sheet.write(row, 5, reten.withholding_number, line)
                                 # Documento afectado
-                                sheet.write(row, 6, reten.move_id.name, line)
+                                sheet.write(row, 6, reten.reconciled_bill_ids.name, line)
                                 sheet.write(row, 7, '', line)
                                 sheet.write(row, 8, '', line)
                                 # Nombre
@@ -891,7 +891,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
 
             if len(retenciones) > 0 and obj.type == 'purchase':
                 for reten in sorted(retenciones, key=lambda x: x.date):
-                    print(reten.date)
+                    total_iva_16_retenido += reten.amount
                     i += 1
                     # codigo 
                     sheet.write(row, 0, i, line)
@@ -904,7 +904,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     # Numero de comrpobante
                     sheet.write(row, 5, reten.withholding_number, line)
                     # Documento afectado
-                    sheet.write(row, 6, reten.move_id.name, line)
+                    sheet.write(row, 6, reten.reconciled_bill_ids.name, line)
                     sheet.write(row, 7, '', line)
                     sheet.write(row, 8, '', line)
                     # Nombre
@@ -1055,7 +1055,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                 sheet.write((row), 13, 'Base Imponible', cell_format_1)
                 sheet.write((row), 14, 'Crédito  fiscal', cell_format_1)
                 sheet.write((row), 15, 'IVA retenido por el comprador', cell_format_1)
-                sheet.write((row), 16, 'IVA retenido por el comprador', cell_format_1)
+                sheet.write((row), 16, 'IVA retenido a terceros', cell_format_1)
 
                 sheet.merge_range('J%s:M%s' % (str(row + 2), str(row + 2)), 'Total Compras Internas NO Gravadas',
                                   title_style)
