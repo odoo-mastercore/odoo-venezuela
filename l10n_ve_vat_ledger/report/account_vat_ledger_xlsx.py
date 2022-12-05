@@ -313,12 +313,8 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                         coincident_date = [tup for tup in retenciones if date_reference == tup.date]
                         if coincident_date:
                             for reten in coincident_date:
-                                _logger.info(reten.name)
-                                _logger.info(reten.reconciled_bill_ids)
                                 total_iva_16_retenido += reten.amount
                                 i += 1
-                                _logger.info(reten.name)
-                                _logger.info(reten.withholding_number)
                                 # codigo 
                                 sheet.write(row, 0, i, line)
                                 # fehca
@@ -605,8 +601,6 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                         coincident_date = [tup for tup in retenciones if date_reference == tup.date]
                         if coincident_date:
                             for reten in coincident_date:
-                                _logger.info(reten.name)
-                                _logger.info(reten.withholding_number)
                                 total_iva_16_retenido += reten.amount
                                 i += 1
                                 # contador de la factura
@@ -940,9 +934,6 @@ class AccountVatLedgerXlsx(models.AbstractModel):
 
             if len(retenciones) > 0 and obj.type == 'purchase':
                 for reten in sorted(retenciones, key=lambda x: x.date):
-                    _logger.info(reten.name)
-                    _logger.info(reten.withholding_number)
-                    _logger.info(reten.reconciled_bill_ids)
                     total_iva_16_retenido += reten.amount
                     i += 1
                     # codigo 
@@ -1004,8 +995,6 @@ class AccountVatLedgerXlsx(models.AbstractModel):
 
             elif len(retenciones) > 0 and obj.type == 'sale':
                 for reten in sorted(retenciones, key=lambda x: x.date):
-                    _logger.info(reten.name)
-                    _logger.info(reten.withholding_number)
                     total_iva_16_retenido += reten.amount
                     i += 1
                     # contador de la factura
