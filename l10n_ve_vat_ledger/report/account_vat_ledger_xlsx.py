@@ -294,6 +294,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                 ('tax_withholding_id', '=', tax_withholding_id.id),
                 ('date', '>=', obj.date_from),
                 ('date', '<=', obj.date_to),
+                ('state', '=', 'posted')
             ])
             retenciones = []
             if retens:
