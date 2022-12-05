@@ -993,11 +993,11 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     sheet.write(row, 23, '', line)
                     retenciones.remove(reten)
                     row +=1
-                    
+
             elif len(retenciones) > 0 and obj.type == 'sale':
                 for reten in sorted(retenciones, key=lambda x: x.date):
-                    print(reten.name)
-                    print(reten.withholding_number)
+                    _logger.info(reten.name)
+                    _logger.info(reten.withholding_number)
                     total_iva_16_retenido += reten.amount
                     i += 1
                     # contador de la factura
