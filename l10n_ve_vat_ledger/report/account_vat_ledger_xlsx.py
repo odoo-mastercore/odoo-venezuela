@@ -600,8 +600,8 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                         coincident_date = [tup for tup in retenciones if date_reference == tup.date]
                         if coincident_date:
                             for reten in coincident_date:
-                                print(reten.name)
-                                print(reten.withholding_number)
+                                _logger.info(reten.name)
+                                _logger.info(reten.withholding_number)
                                 total_iva_16_retenido += reten.amount
                                 i += 1
                                 # contador de la factura
