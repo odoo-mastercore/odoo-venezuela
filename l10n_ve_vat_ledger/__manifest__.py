@@ -17,7 +17,7 @@
 
     'author': "SINAPSYS GLOBAL SA || MASTERCORE SAS",
     'website': "http://sinapsys.global",
-    'version': '15.0.1',
+    'version': '15.0.2',
     'category': 'Localization',
     'license': 'AGPL-3',
     'depends': [
