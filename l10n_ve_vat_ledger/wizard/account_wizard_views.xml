@@ -1,0 +1,34 @@
+<odoo>
+    <record id="wizard_resumen_iva_form" model="ir.ui.view">
+        <field name="name">wizard.census.form</field>
+        <field name="model">resumen.iva</field>
+        <field name="arch" type="xml">
+            <form string="Resumen I.V.A">
+                <group col="4" colspan="2">
+                    <div class="o_row">
+                        <field name="date_to"/>
+                        <field name="date_from"/>
+                    </div>
+                </group>
+                <footer>
+                    <button name="generate_xls_report" string="Exportar Excel" type="object" class="oe_highlight"/>
+                    <button string="Cancelar" class="btn-primary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_wizard_resumen_iva" model="ir.actions.act_window">
+        <field name="name">Resumen I.V.A</field>
+        <field name="res_model">resumen.iva</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="wizard_resumen_iva_form"/>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem name="Resumen I.V.A"
+              parent="menu_seniat_reports"
+              id="resumen_iva"
+              action="action_wizard_resumen_iva"
+              sequence="11"/>
+</odoo>

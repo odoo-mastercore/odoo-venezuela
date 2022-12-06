@@ -99,24 +99,27 @@ class AccountVatLedger(models.Model):
                 invoices_domain += [
                     ('move_type', 'in',['in_invoice', 'in_refund']),
                     ('date', '>=', rec.date_from),
+                    ('state', '!=', 'cancel'),
                     ('date', '<=', rec.date_to),]
             rec.invoice_ids = rec.env['account.move'].search(invoices_domain,
                 order='invoice_date desc, l10n_ve_document_number desc')
-    
+
+
+       
+
+
     @api.depends('type', 'reference',)
     def _compute_name(self):
         date_format = self.env['res.lang']._lang_get(
             self._context.get('lang', 'en_US')).date_format
         for rec in self:
             if rec.type == 'sale':
-                ledger_type = _('Sales')
+                ledger_type = _('Ventas')
             elif rec.type == 'purchase':
-                ledger_type = _('Purchases')
+                ledger_type = _('Compras')
             if rec.date_from and rec.date_to:
-                name = _("Libro IVA ({0})  {1} - {2}").format(
-                    ledger_type,
-                    rec.date_from and fields.Date.from_string(
-                        rec.date_from).strftime(date_format) or '',
+                name = _("Libro IVA ({0})  {1} - {2}").format(ledger_type,
+                                                                rec.date_from and fields.Date.from_string(rec.date_from).strftime(date_format) or '',
                     rec.date_to and fields.Date.from_string(
                         rec.date_to).strftime(date_format) or ''
                 )

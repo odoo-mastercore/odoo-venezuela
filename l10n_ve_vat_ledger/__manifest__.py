@@ -26,6 +26,7 @@
         'security/security.xml',
         'security/ir.model.access.csv',
         'views/account_vat_ledger_views.xml',
+        'wizard/account_wizard_views.xml',
         'report/account_vat_ledger_report.xml',
     ],
 
