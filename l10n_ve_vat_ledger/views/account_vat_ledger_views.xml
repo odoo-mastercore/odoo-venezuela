@@ -75,7 +75,6 @@
         <field name="context">{'default_type':'purchase'}</field>
         <field name="domain">[
             ('type','=','purchase'),
-            ('date_from', '=', date_from)
             ]</field>
     </record>
 
