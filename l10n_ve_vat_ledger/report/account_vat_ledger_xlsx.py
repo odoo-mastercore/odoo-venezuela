@@ -615,7 +615,10 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                                 # Numero de comrpobante
                                 sheet.write(row, 5, reten.withholding_number, line)
                                 # Documento afectado
-                                sheet.write(row, 6, reten.reconciled_invoice_ids[0].name, line)
+                                if len(reten.reconciled_invoice_ids) > 1:
+                                    sheet.write(row, 6, reten.reconciled_invoice_ids[0].name, line)
+                                else:
+                                    sheet.write(row, 6, reten.reconciled_invoice_ids.name, line)
                                 # nombre del partner
                                 sheet.write(row, 7, reten.move_id.partner_id.name or 'FALSE', line)
                                 # Rif del cliente
@@ -1009,7 +1012,10 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     # Numero de comrpobante
                     sheet.write(row, 5, reten.withholding_number, line)
                     # Documento afectado
-                    sheet.write(row, 6, reten.reconciled_invoice_ids[0].name, line)
+                    if len(reten.reconciled_invoice_ids) > 1:
+                        sheet.write(row, 6, reten.reconciled_invoice_ids[0].name, line)
+                    else:
+                        sheet.write(row, 6, reten.reconciled_invoice_ids.name, line)
                     # nombre del partner
                     sheet.write(row, 7, reten.move_id.partner_id.name or 'FALSE', line)
                     # Rif del cliente
