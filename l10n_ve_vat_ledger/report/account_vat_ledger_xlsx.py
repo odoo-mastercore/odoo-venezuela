@@ -284,12 +284,16 @@ class AccountVatLedgerXlsx(models.AbstractModel):
             """ 
                 Retenciones
              """
-            type_tax = 'supplier' if obj.type == 'purchase' else 'customer'
-            tax_withholding_id = self.env['account.tax'].search([
-                ('type_tax_use', '=', type_tax),
-                ('withholding_type', '=', 'partner_tax')
-            ], limit=1)
-
+            if obj.type == 'purchase':
+                tax_withholding_id = self.env['account.tax'].search([
+                    ('type_tax_use', '=', 'purchase'),
+                    ('withholding_type', '=', 'partner_tax')
+                ], limit=1)
+            else:
+                tax_withholding_id = self.env['account.tax'].search([
+                    ('type_tax_use', '=', 'customer'),
+                    ('name', 'like', 'IVA')
+                ], limit=1)
             retens = self.env['account.payment'].search([
                 ('tax_withholding_id', '=', tax_withholding_id.id),
                 ('date', '>=', obj.date_from),
