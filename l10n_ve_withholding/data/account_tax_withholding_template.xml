@@ -3,7 +3,7 @@
   <data noupdate="1">
     <!-- secuencia para las Retenciones -->
         <record id="sequence_tax_retencion_iva" model="ir.sequence">
-            <field name="name">Retención IVA</field>
+            <field name="name">Retención de IVA en compras</field>
             <field name="code">account.tax.withholding</field>
             <field name="implementation">no_gap</field>
             <field name="prefix">%(year)s%(month)s</field>
@@ -27,7 +27,7 @@
     <!-- Retenciones iva -->
         <record id="tax_retencion_iva" model="account.tax">
             <!-- <field name="chart_template_id" ref="l10n_ve.ve_chart_template_amd"/> -->
-            <field name="name">Retención IVA</field>
+            <field name="name">Retención de IVA en compras</field>
             <field name="description">16%</field>
             <field name="sequence">4</field>
             <field name="withholding_sequence_id" ref="sequence_tax_retencion_iva"/>
