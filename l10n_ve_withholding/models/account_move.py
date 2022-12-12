@@ -39,14 +39,14 @@ class AccountMove(models.Model):
             pass
         return super().get_taxes_values()
 
-    def _post(self, soft):
+    def _post(self, soft=True):
         super(AccountMove, self)._post(soft)
         for rec in self:
             if (rec.state == 'posted' and rec.\
                 l10n_ve_document_number == False) or rec.\
                     move_type == 'out_refund' and rec.l10n_ve_document_number == '':
                 if rec.move_type in ['out_invoice', 'out_refund']:
-                    if rec.journal_id.sequence_control_id:        
+                    if rec.journal_id.sequence_control_id:
                         l10n_ve_document_number = rec.env[
                             'ir.sequence'].next_by_code(rec.journal_id.\
                                 sequence_control_id.code)
