@@ -284,6 +284,8 @@ class AccountVatLedgerXlsx(models.AbstractModel):
             """ 
                 Retenciones
              """
+            tax_withholding_id = []
+            retens = []
             if obj.type == 'purchase':
                 tax_withholding_id = self.env['account.tax'].search([
                     ('type_tax_use', '=', 'purchase'),
@@ -294,13 +296,16 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     ('type_tax_use', '=', 'customer'),
                     ('name', 'like', 'IVA')
                 ], limit=1)
-            retens = self.env['account.payment'].search([
-                ('tax_withholding_id', '=', tax_withholding_id.id),
-                ('date', '>=', obj.date_from),
-                ('date', '<=', obj.date_to),
-                ('state', '=', 'posted')
-            ])
+
+            if tax_withholding_id:
+                retens = self.env['account.payment'].search([
+                    ('tax_withholding_id', '=', tax_withholding_id.id),
+                    ('state', '=', 'posted'),
+                    ('date', '>=', obj.date_from),
+                    ('date', '<=', obj.date_to),
+                ])
             retenciones = []
+            
             if retens:
                 retenciones = list(retens)
 
@@ -610,7 +615,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                                 # contador de la factura
                                 sheet.write(row, 0, i, line)
                                 # codigo fecha
-                                sheet.write(row, 1, invoice.invoice_date or 'FALSE', date_line)
+                                sheet.write(row, 1, reten.date or 'FALSE', date_line)
                                 # tipo de documento
                                 sheet.write(row, 2, 'Retención', line)
 
@@ -1228,8 +1233,3 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                         total_nota_debito_iva_16 + total_nota_debito_iva_8), line)
                 sheet.write((row+12), 15, total_iva_16_retenido, line)
                 sheet.write((row+12), 16, total_iva_16_igtf, line)
-
-
-
-
-
