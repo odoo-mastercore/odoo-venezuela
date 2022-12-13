@@ -1012,7 +1012,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     # contador de la factura
                     sheet.write(row, 0, i, line)
                     # codigo fecha
-                    sheet.write(row, 1, invoice.invoice_date or 'FALSE', date_line)
+                    sheet.write(row, 1, reten.date or 'FALSE', date_line)
                     # tipo de documento
                     sheet.write(row, 2, 'Retención', line)
 
