@@ -381,7 +381,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                                 retenciones.remove(reten)
                                 row +=1
                         else:
-                            date_reference += timedelta(days=1)
+                            date_reference = invoice.invoice_date
 
                     i += 1
                     # contador de la factura
@@ -658,7 +658,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                                 retenciones.remove(reten)
                                 row +=1
                         else:
-                            date_reference += timedelta(days=1)
+                            date_reference = invoice.invoice_date
                                 
                     i += 1
                     # contador de la factura
