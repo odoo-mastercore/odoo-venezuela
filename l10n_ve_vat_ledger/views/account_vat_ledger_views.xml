@@ -73,16 +73,14 @@
         <field name="name">Purchases VAT Ledger</field>
         <field name="res_model">account.vat.ledger</field>
         <field name="context">{'default_type':'purchase'}</field>
-        <field name="domain">[
-            ('type','=','purchase'),
-            ]</field>
+        <field name="domain">[('type','=','purchase'),('company_id', 'in', context.get('allowed_company_ids'))]</field>
     </record>
 
     <record id="action_account_sale_vat_ledger" model="ir.actions.act_window">
         <field name="name">Sales VAT Ledger</field>
         <field name="res_model">account.vat.ledger</field>
         <field name="context">{'default_type':'sale'}</field>
-        <field name="domain">[('type','=','sale')]</field>
+        <field name="domain">[('type','=','sale'),('company_id', 'in', context.get('allowed_company_ids'))]</field>
     </record>
 
     <menuitem
@@ -94,13 +92,11 @@
 
     <menuitem id="menu_account_purchase_vat_ledger"
         action="action_account_purchase_vat_ledger"
-        name="Libro I.V.A Compra"
         parent="menu_seniat_reports"
         sequence="6"/>
 
     <menuitem id="menu_account_sale_vat_ledger"
         action="action_account_sale_vat_ledger"
-        name="Libro I.V.A Ventas"
         parent="menu_seniat_reports"
         sequence="4"/>
 </odoo>
