@@ -43,7 +43,31 @@ class AccountTax(models.Model):
             vals['comment_withholding'] = "%s x %s" % (
                 base_amount, alicuota)
             vals['total_amount'] = base_invoice
-            vals['withholdable_invoiced_amount'] = payment_group.selected_debt_untaxed
+            to_pay = payment_group.to_pay_move_line_ids[0]
+            selected_debt_untaxed = 0.00
+            if to_pay:
+                selected_debt_taxed = 0.0
+                _logger.warning(to_pay)
+                if to_pay.currency_id.id != payment_group.company_id.currency_id.id:
+                    for li in to_pay.move_id.line_ids:
+                        if li.name == 'IVA (16.0%) compras':
+                            selected_debt_taxed += li.amount_currency
+                        elif li.name == 'IVA (8.0%) compras':
+                            selected_debt_taxed += li.amount_currency
+                    currency_tax = selected_debt_taxed*alicuota
+                    vals['amount'] = currency_tax
+                    vals['currency_id'] = to_pay.currency_id.id
+                    vals['amount_company_currency'] = amount
+                if to_pay.move_id.line_ids:
+                    for abg in to_pay.move_id.line_ids:
+                        if abg.tax_ids:
+                            _logger.warning(abg.tax_ids[0])
+                            _logger.warning(abg.tax_ids[0].amount)
+                            if abg.tax_ids[0].amount == 16.00:
+                                selected_debt_untaxed += abg.debit
+                            elif abg.tax_ids[0].amount == 8.00:
+                                selected_debt_untaxed += abg.debit
+            vals['withholdable_invoiced_amount'] = selected_debt_untaxed
             vals['withholdable_base_amount'] = base_amount
             vals['period_withholding_amount'] = amount
 
@@ -72,19 +96,18 @@ class AccountTax(models.Model):
                 if regimen.type_subtracting == 'amount' and \
                     band.type_amount == 'ut':
                     subtracting = band.withholding_amount * \
-                        regimen.seniat_ut_id.amount
-                
+                    regimen.seniat_ut_id.amount
+
                 elif regimen.type_subtracting == 'amount' and \
                     band.type_amount == 'bs':
                     subtracting = band.withholding_amount
-                            
-                
+
             if subtracting > 0.0:
                 withholding = (base_withholding *
                                withholding_percentage) - subtracting
             else:
                 withholding = base_withholding * withholding_percentage
-    
+
             vals['comment_withholding'] = str(withholding_percentage*100)+"%"
             vals['total_amount'] = base
             vals['withholdable_invoiced_amount'] = base
@@ -104,7 +127,6 @@ class AccountTax(models.Model):
 
     def get_partner_alicuot(self, partner):
         self.ensure_one()
-        
         if partner.vat_retention:
             alicuot = partner.vat_retention
         else:
@@ -115,7 +137,7 @@ class AccountTax(models.Model):
 
         return alicuot
 
-    #TODO:Ubicar una mejor forma de hacer el inherit    
+    #TODO:Ubicar una mejor forma de hacer el inherit
     def create_payment_withholdings(self, payment_group):
         for tax in self.filtered(lambda x: x.withholding_type != 'none'):
             payment_withholding = self.env[
@@ -165,7 +187,8 @@ class AccountTax(models.Model):
             vals['withholding_base_amount'] = vals.get(
                 'withholdable_advanced_amount') + vals.get(
                 'withholdable_invoiced_amount')
-            vals['amount'] = computed_withholding_amount
+            if vals.get('currency_id') == payment_group.company_id.currency_id.id:
+                vals['amount'] = computed_withholding_amount
             vals['computed_withholding_amount'] = computed_withholding_amount
 
             # por ahora no imprimimos el comment, podemos ver de llevarlo a
@@ -185,11 +208,10 @@ class AccountTax(models.Model):
                         ('type', 'in', ['cash', 'bank']),
                         ('apply_iva', '=', True),
                     ], limit=1)
-                else:
+                if payment_group.islr:
                     journal = self.env['account.journal'].search([
                         ('company_id', '=', tax.company_id.id),
-                        ('outbound_payment_method_line_ids.payment_method_id',
-                        '=', payment_method.id),
+                        ('outbound_payment_method_line_ids.payment_method_id','=', payment_method.id),
                         ('type', 'in', ['cash', 'bank']),
                         ('apply_islr', '=', True),
                     ], limit=1)
