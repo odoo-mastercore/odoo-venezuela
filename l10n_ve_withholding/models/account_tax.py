@@ -47,7 +47,6 @@ class AccountTax(models.Model):
             selected_debt_untaxed = 0.00
             if to_pay:
                 selected_debt_taxed = 0.0
-                _logger.warning(to_pay)
                 if to_pay.currency_id.id != payment_group.company_id.currency_id.id:
                     for li in to_pay.move_id.line_ids:
                         if li.name == 'IVA (16.0%) compras':
@@ -61,12 +60,16 @@ class AccountTax(models.Model):
                 if to_pay.move_id.line_ids:
                     for abg in to_pay.move_id.line_ids:
                         if abg.tax_ids:
-                            _logger.warning(abg.tax_ids[0])
-                            _logger.warning(abg.tax_ids[0].amount)
                             if abg.tax_ids[0].amount == 16.00:
                                 selected_debt_untaxed += abg.debit
+                                if abg.credit:
+                                    selected_debt_untaxed += (
+                                        abg.credit * -1.00)
                             elif abg.tax_ids[0].amount == 8.00:
                                 selected_debt_untaxed += abg.debit
+                                if abg.credit:
+                                    selected_debt_untaxed += (
+                                        abg.credit * -1.00)
             vals['withholdable_invoiced_amount'] = selected_debt_untaxed
             vals['withholdable_base_amount'] = base_amount
             vals['period_withholding_amount'] = amount
