@@ -37,7 +37,7 @@ class AccountMove(models.Model):
         for rec in self:
             applied_withholding_tax = False
             applied_withholding_islr = False
-            if rec.payment_group_ids:
+            if rec.move_type in ['in_invoice'] and rec.payment_group_ids:
                 for pay in rec.payment_group_ids:
                     if pay.iva:
                         applied_withholding_tax = True
