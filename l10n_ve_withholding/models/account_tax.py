@@ -47,7 +47,6 @@ class AccountTax(models.Model):
             selected_debt_untaxed = 0.00
             if to_pay:
                 selected_debt_taxed = 0.0
-                _logger.warning(to_pay)
                 if to_pay.currency_id.id != payment_group.company_id.currency_id.id:
                     for li in to_pay.move_id.line_ids:
                         if li.name == 'IVA (16.0%) compras':
@@ -61,12 +60,17 @@ class AccountTax(models.Model):
                 if to_pay.move_id.line_ids:
                     for abg in to_pay.move_id.line_ids:
                         if abg.tax_ids:
-                            _logger.warning(abg.tax_ids[0])
-                            _logger.warning(abg.tax_ids[0].amount)
                             if abg.tax_ids[0].amount == 16.00:
                                 selected_debt_untaxed += abg.debit
+                                if abg.credit:
+                                    selected_debt_untaxed += (
+                                        abg.credit * -1.00)
                             elif abg.tax_ids[0].amount == 8.00:
-                                selected_debt_untaxed += abg.debit           
+                                selected_debt_untaxed += abg.debit
+                                if abg.credit:
+                                    selected_debt_untaxed += (
+                                        abg.credit * -1.00)
+           
             vals['withholdable_invoiced_amount'] = selected_debt_untaxed
             vals['withholdable_base_amount'] = base_amount
             vals['period_withholding_amount'] = amount
@@ -75,8 +79,21 @@ class AccountTax(models.Model):
             regimen = payment_group.regimen_islr_id
             vals = super(AccountTax, self).get_withholding_vals(
                 payment_group, force_withholding_amount_type)
-
-            base = payment_group.selected_debt_untaxed
+            to_pay = payment_group.to_pay_move_line_ids[0]
+            selected_debt_untaxed = payment_group.selected_debt_untaxed
+            if to_pay:
+                product_off = ''
+                amount_off = 0.00
+                if to_pay.move_id.line_ids:
+                    for li in to_pay.move_id.invoice_line_ids:
+                        if li.product_id.product_tmpl_id.disable_islr:
+                            product_off = li.product_id.display_name
+                    if product_off:
+                        for abg in to_pay.move_id.line_ids:
+                            if abg.name == product_off:
+                                amount_off += abg.debit
+                        selected_debt_untaxed = payment_group.selected_debt_untaxed - amount_off
+            base = selected_debt_untaxed
             base_withholding = base * (
                 regimen.withholding_base_percentage / 100)
             withholding_percentage = 0.0
