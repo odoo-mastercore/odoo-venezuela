@@ -21,31 +21,31 @@ class AccountMove(models.Model):
         help="Number used to manage pre-printed invoices, by law you will"
              " need to put here this number to be able to declarate on"
              " Fiscal reports correctly.",store=True)
-    applied_withholding_tax = fields.Boolean(
-        'Retencion de IVA aplicada', compute='_compute_applied_withholding', 
-        store=True)
-    applied_withholding_islr = fields.Boolean(
-        'Retencion de ISLR aplicada', compute='_compute_applied_withholding',
-        store=True)
+    # applied_withholding_tax = fields.Boolean(
+    #     'Retencion de IVA aplicada', compute='_compute_applied_withholding', 
+    #     store=True)
+    # applied_withholding_islr = fields.Boolean(
+    #     'Retencion de ISLR aplicada', compute='_compute_applied_withholding',
+    #     store=True)
 
 
-    @api.depends(
-        'amount_residual',
-        'amount_residual_signed',
-    )
-    def _compute_applied_withholding(self):
-        for rec in self:
-            applied_withholding_tax = False
-            applied_withholding_islr = False
-            if rec.move_type in ['in_invoice'] and rec.payment_group_ids:
-                for pay in rec.payment_group_ids:
-                    if pay.iva:
-                        applied_withholding_tax = True
-                    if pay.islr:
-                        applied_withholding_islr = True
+    # @api.depends(
+    #     'amount_residual',
+    #     'amount_residual_signed',
+    # )
+    # def _compute_applied_withholding(self):
+    #     for rec in self:
+    #         applied_withholding_tax = False
+    #         applied_withholding_islr = False
+    #         if rec.move_type in ['in_invoice'] and rec.payment_group_ids:
+    #             for pay in rec.payment_group_ids:
+    #                 if pay.iva:
+    #                     applied_withholding_tax = True
+    #                 if pay.islr:
+    #                     applied_withholding_islr = True
             
-            rec.applied_withholding_tax = applied_withholding_tax
-            rec.applied_withholding_islr = applied_withholding_islr
+    #         rec.applied_withholding_tax = applied_withholding_tax
+    #         rec.applied_withholding_islr = applied_withholding_islr
 
     def get_taxes_values(self):
         """
