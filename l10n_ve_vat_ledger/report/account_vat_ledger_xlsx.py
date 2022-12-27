@@ -526,7 +526,8 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                                     base_imponible_8 = base_imponible_8 * -1.00
                                     iva_8 = iva_8 * -1.00
                                     if not invoice.debit_origin_id:
-                                        total_nota_credito_iva += iva_8
+                                        total_nota_credito_8 += base_imponible_8
+                                        total_nota_credito_iva_8 += iva_8
                                     else:
                                         base_imponible_8 = base_imponible_8 * -1.00
                                         iva_8 = iva_8 * -1.00
