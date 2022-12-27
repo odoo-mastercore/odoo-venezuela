@@ -22,9 +22,11 @@ class AccountMove(models.Model):
              " need to put here this number to be able to declarate on"
              " Fiscal reports correctly.",store=True)
     applied_withholding_tax = fields.Boolean(
-        'Retencion de IVA aplicada', copy=False, default=False)
+        'Retencion de IVA aplicada', compute='_compute_applied_withholding',
+        store=True, copy=False, default=False)
     applied_withholding_islr = fields.Boolean(
-        'Retencion de ISLR aplicada', copy=False, default=False)
+        'Retencion de ISLR aplicada', compute='_compute_applied_withholding',
+        store=True, copy=False, default=False)
 
     @api.depends('amount_residual', 'amount_residual_signed',)
     def _compute_applied_withholding(self):
