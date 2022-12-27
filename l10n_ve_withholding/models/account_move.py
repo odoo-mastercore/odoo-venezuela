@@ -35,11 +35,12 @@ class AccountMove(models.Model):
             applied_withholding_tax = False
             applied_withholding_islr = False
             if rec.move_type in ['in_invoice'] and rec.payment_group_ids:
-                for pay in rec.payment_group_ids:
-                    if pay.iva:
-                        applied_withholding_tax = True
-                    if pay.islr:
-                        applied_withholding_islr = True
+                if rec._get_reconciled_payments().mapped(
+                    'payment_group_id').filtered(lambda x: x.iva == True):
+                    applied_withholding_tax = True
+                if rec._get_reconciled_payments().mapped(
+                        'payment_group_id').filtered(lambda x: x.islr == True):
+                    applied_withholding_islr = True
             
             rec.applied_withholding_tax = applied_withholding_tax
             rec.applied_withholding_islr = applied_withholding_islr
