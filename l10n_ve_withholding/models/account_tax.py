@@ -80,7 +80,7 @@ class AccountTax(models.Model):
             vals = super(AccountTax, self).get_withholding_vals(
                 payment_group, force_withholding_amount_type)
             to_pay = payment_group.to_pay_move_line_ids[0]
-            selected_debt_untaxed = payment_group.selected_debt_untaxed
+            selected_debt_untaxed = to_pay.move_id.amount_untaxed_signed
             if to_pay:
                 product_off = ''
                 amount_off = 0.00
@@ -92,7 +92,7 @@ class AccountTax(models.Model):
                         for abg in to_pay.move_id.line_ids:
                             if abg.name == product_off:
                                 amount_off += abg.debit
-                        selected_debt_untaxed = payment_group.selected_debt_untaxed - amount_off
+                        selected_debt_untaxed = to_pay.move_id.amount_untaxed_signed - amount_off
             base = selected_debt_untaxed
             base_withholding = base * (
                 regimen.withholding_base_percentage / 100)
