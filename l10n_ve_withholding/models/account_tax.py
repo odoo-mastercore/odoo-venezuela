@@ -220,7 +220,7 @@ class AccountTax(models.Model):
                 payment_method = self.env.ref(
                     'account_withholding.'
                     'account_payment_method_out_withholding')
-                if payment_group.iva:
+                if tax.withholding_type == 'partner_tax':
                     journal = self.env['account.journal'].search([
                         ('company_id', '=', tax.company_id.id),
                         ('outbound_payment_method_line_ids.payment_method_id',
@@ -228,7 +228,7 @@ class AccountTax(models.Model):
                         ('type', 'in', ['cash', 'bank']),
                         ('apply_iva', '=', True),
                     ], limit=1)
-                if payment_group.islr:
+                if tax.withholding_type == 'tabla_islr':
                     journal = self.env['account.journal'].search([
                         ('company_id', '=', tax.company_id.id),
                         ('outbound_payment_method_line_ids.payment_method_id',
