@@ -86,7 +86,7 @@
                               <span t-field="line.journal_id.name"/>
                                <t t-if="line.other_currency">
                                 <span> (</span>
-                                <span  t-field="line.signed_amount" t-field-options='{"widget": "monetary",  "display_currency": "line.currency_id"}'/>
+                                <span  t-field="line.amount_signed" t-field-options='{"widget": "monetary",  "display_currency": "line.currency_id"}'/>
                                 <span>)</span>
                               </t>
                             </td>
