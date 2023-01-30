@@ -85,15 +85,15 @@ class AccountTax(models.Model):
                 product_off = ''
                 amount_off = 0.00
                 if to_pay.move_id.line_ids:
-                    for li in to_pay.move_id.invoice_line_ids:
-                        if li.product_id.product_tmpl_id.disable_islr:
-                            product_off = li.product_id.display_name
-                    if product_off:
-                        for abg in to_pay.move_id.line_ids:
-                            if abg.name == product_off:
-                                amount_off += abg.debit
-                        selected_debt_untaxed = (
-                            to_pay.move_id.amount_untaxed_signed * -1.00) - amount_off
+                    # for li in to_pay.move_id.invoice_line_ids:
+                    #     if li.product_id.product_tmpl_id.disable_islr:
+                    #         product_off = li.product_id.display_name
+                    # if product_off:
+                    for abg in to_pay.move_id.line_ids:
+                        if abg.name == product_off:
+                            amount_off += abg.debit
+                    selected_debt_untaxed = (
+                        to_pay.move_id.amount_untaxed_signed * -1.00) - amount_off
             base = selected_debt_untaxed
             base_withholding = base * (
                 regimen.withholding_base_percentage / 100)
