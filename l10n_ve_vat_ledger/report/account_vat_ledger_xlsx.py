@@ -843,7 +843,6 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                         sheet.write(row, 25, '', line)
                         sheet.write(row, 26, '', line)
                         sheet.write(row, 27, '', line)
-                    _logger.info('#######2########')
                     #No contribuyentes
                     else:
 
