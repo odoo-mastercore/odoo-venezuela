@@ -1117,7 +1117,9 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                 sheet.write((row+10), 16, '', line)
                 sheet.merge_range('J%s:M%s' % (str(row+12), str(row+12)), 'Total Notas de Débito o recargos aplicadas en Ventas 8%:', title_style)
                 sheet.write((row+11), 13, total_nota_debito_8, line)
+                _logger.info('#######34#######')
                 sheet.write((row+11), 14, total_nota_debito_iva_8, line)
+                _logger.info('#######35########')
                 sheet.write((row+11), 15, '', line)
                 sheet.write((row+11), 16, '', line)
                 sheet.merge_range('J%s:M%s' % (str(row+13), str(row+13)), 'Total:', title_style)
@@ -1126,12 +1128,17 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                         + total_nota_credito_8 +total_nota_debito_16\
                             + total_nota_debito_8 + total_base_exento_credito \
                                 + total_base_exento_debito,2), line)
+                _logger.info('#######36########')
+
                 sheet.write((row+12), 14, (total_iva_16 + total_iva_8 + \
                     total_nota_credito_iva_16 + total_nota_credito_iva_8 + \
                         total_nota_debito_iva_16 + total_nota_debito_iva_8), line)
-                sheet.write((row+12), 15, total_iva_16_retenido, line)
-                sheet.write((row+12), 16, total_iva_16_igtf, line)
+                _logger.info('#######37########')
 
+                sheet.write((row+12), 15, total_iva_16_retenido, line)
+                _logger.info('#######38########')
+                sheet.write((row+12), 16, total_iva_16_igtf, line)
+                _logger.info('#######39########')
             # Totales de compras
             else:
                 
