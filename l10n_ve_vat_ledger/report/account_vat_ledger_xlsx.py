@@ -1072,11 +1072,12 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                 sheet.write((row+11), 15, '', line)
                 sheet.write((row+11), 16, '', line)
                 sheet.merge_range('J%s:M%s' % (str(row+13), str(row+13)), 'Total:', title_style)
-                sheet.write((row+12), 13, round(total_base_exento + total_base_imponible_16 \
-                    + total_base_imponible_8 +total_nota_credito_16+\
-                        + total_nota_credito_8 +total_nota_debito_16\
-                            + total_nota_debito_8 + total_base_exento_credito \
-                                + total_base_exento_debito,2), line)
+                sheet.write((row+12), 13, round(total_base_exento_contribuyente + total_base_exento_no_contribuyente + total_base_imponible_contribuyente_16 \
+                    + total_base_imponible_no_contribuyente_16 \
+                        + total_base_imponible_contribuyente_8 + total_base_imponible_no_contribuyente_8 +total_nota_credito_16+\
+                            + total_nota_credito_8 +total_nota_debito_16\
+                                + total_nota_debito_8 + total_base_exento_credito \
+                                    + total_base_exento_debito,2), line)
                 sheet.write((row+12), 14, (total_iva_16 + total_iva_8 + \
                     total_nota_credito_iva_16 + total_nota_credito_iva_8 + \
                         total_nota_debito_iva_16 + total_nota_debito_iva_8), line)
