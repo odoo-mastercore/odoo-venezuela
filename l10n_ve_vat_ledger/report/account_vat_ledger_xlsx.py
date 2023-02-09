@@ -607,6 +607,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
 
                     
                 elif obj.type == 'sale':
+                    _logger.info('#########EN VENTAS##########')
                     if date_reference <= invoice.invoice_date:
                         while date_reference < invoice.invoice_date:
                             coincident_date = [tup for tup in retenciones if date_reference == tup.date]
@@ -749,10 +750,14 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     alic_8 = ''
                     iva_8 = ''
                     base_imponible_8 = ''
-
+                    _logger.info('###################')
+                    _logger.info(str(invoice.name))
+                    _logger.info(str(invoice.line_ids))
                     if invoice.line_ids:
                         for line in invoice.line_ids:
+                            _logger.info(str(line))
                             if line.tax_ids:
+                                _logger.info(str(line.tax_ids[0]))
                                 if line.tax_ids[0].amount == 16.00:
                                     base_imponible += line.credit
                                     if invoice.move_type == 'out_refund' or \
