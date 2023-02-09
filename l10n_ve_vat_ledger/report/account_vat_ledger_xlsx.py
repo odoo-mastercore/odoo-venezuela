@@ -747,77 +747,78 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     alic_8 = 0.00
                     iva_8 = 0.00
                     base_imponible_8 = 0.00
-
-                    # if invoice.line_ids:
-                    #     for line in invoice.line_ids:
-                    #         if line.tax_ids:
-                    #             if line.tax_ids[0].amount == 16.00:
-                    #                 base_imponible += line.credit
-                    #                 if invoice.move_type == 'out_refund' or \
-                    #                     invoice.move_type == 'in_refund' or (invoice.move_type == 'out_invoice' \
-                    #                         and invoice.debit_origin_id):
-                    #                     base_imponible = base_imponible * -1.00
-                    #                     if not invoice.debit_origin_id:
-                    #                         total_nota_credito_16 += base_imponible
-                    #                     else:
-                    #                         base_imponible = base_imponible * -1.00
-                    #                         total_nota_debito_16 += base_imponible
-                    #                 else:
-                    #                     total_base_imponible_16 += base_imponible
-                    #                 alic_16 = '16%'
-                    #             elif line.tax_ids[0].amount == 0.00:
-                    #                 base_exento += line.credit
-                    #                 if invoice.move_type == 'out_refund' or invoice.move_type == 'in_refund' \
-                    #                     or (invoice.move_type == 'out_invoice' and invoice.debit_origin_id):
-                    #                     base_exento = base_exento * -1.00
-                    #                     if invoice.debit_origin_id:
-                    #                         base_exento = base_exento * -1.00
-                    #                         total_base_exento_debito += base_exento
-                    #                     else:
-                    #                         total_base_exento_credito += base_exento
-                    #                 else:
-                    #                     total_base_exento += base_exento
-                    #             elif line.tax_ids[0].amount == 8.00:
-                    #                 base_imponible_8 += line.credit
-                    #                 if invoice.move_type == 'out_refund' or invoice.move_type == 'in_refund' \
-                    #                     or (invoice.move_type == 'out_invoice' and invoice.debit_origin_id):
-                    #                     base_imponible_8 = base_imponible_8 * -1.00
-                    #                     if not invoice.debit_origin_id:
-                    #                         total_nota_credito_8 += base_imponible_8
-                    #                     else:
-                    #                         base_imponible_8 = base_imponible_8 * -1.00
-                    #                         total_nota_debito_8 = base_imponible_8
-                    #                 else:
-                    #                     total_base_imponible_8 += base_imponible_8
-                    #                 alic_8 = '8%'
-                    #         elif line.name == 'IVA (16.0%) ventas':
-                    #             iva_16 += line.credit
-                    #             if invoice.move_type == 'out_refund' or \
-                    #                     invoice.move_type == 'in_refund' or (invoice.move_type == 'out_invoice' \
-                    #                         and invoice.debit_origin_id):
-                    #                 iva_16 = iva_16 * -1.00
-                    #                 if not invoice.debit_origin_id:
-                    #                     total_nota_credito_iva_16 += iva_16
-                    #                 else:
-                    #                     iva_16 = iva_16 * -1.00
-                    #                     total_nota_debito_iva_16 += iva_16
-                    #             else:
-                    #                 total_iva_16 += iva_16
-                    #         elif line.name == 'IVA (8.0%) ventas':
-                    #             iva_8 += line.credit
-                    #             if invoice.move_type == 'out_refund' or invoice.move_type == 'in_refund' \
-                    #                     or (invoice.move_type == 'out_invoice' and invoice.debit_origin_id):
-                    #                 iva_8 = iva_8 * -1.00
-                    #                 if not invoice.debit_origin_id:
-                    #                     total_nota_credito_iva_8 += iva_8
-                    #                 else:
-                    #                     iva_8 = iva_8 * -1.00
-                    #                     total_nota_debito_iva_8 += iva_8
-                    #             else:
-                    #                 total_iva_8 += iva_8
-                    #             alic_8 = '8%'
-                    #         # elif 'CUENTAS POR COBRAR' in line.account_id.name:
-                    #         #     total_invoice_value = line.debit
+                    _logger.info('############')
+                    _logger.info(str(invoice.name))
+                    if invoice.line_ids:
+                        for line in invoice.line_ids:
+                            if line.tax_ids:
+                                if line.tax_ids[0].amount == 16.00:
+                                    base_imponible += line.credit
+                                    if invoice.move_type == 'out_refund' or \
+                                        invoice.move_type == 'in_refund' or (invoice.move_type == 'out_invoice' \
+                                            and invoice.debit_origin_id):
+                                        base_imponible = base_imponible * -1.00
+                                        if not invoice.debit_origin_id:
+                                            total_nota_credito_16 += base_imponible
+                                        else:
+                                            base_imponible = base_imponible * -1.00
+                                            total_nota_debito_16 += base_imponible
+                                    else:
+                                        total_base_imponible_16 += base_imponible
+                                    alic_16 = '16%'
+                                elif line.tax_ids[0].amount == 0.00:
+                                    base_exento += line.credit
+                                    if invoice.move_type == 'out_refund' or invoice.move_type == 'in_refund' \
+                                        or (invoice.move_type == 'out_invoice' and invoice.debit_origin_id):
+                                        base_exento = base_exento * -1.00
+                                        if invoice.debit_origin_id:
+                                            base_exento = base_exento * -1.00
+                                            total_base_exento_debito += base_exento
+                                        else:
+                                            total_base_exento_credito += base_exento
+                                    else:
+                                        total_base_exento += base_exento
+                                elif line.tax_ids[0].amount == 8.00:
+                                    base_imponible_8 += line.credit
+                                    if invoice.move_type == 'out_refund' or invoice.move_type == 'in_refund' \
+                                        or (invoice.move_type == 'out_invoice' and invoice.debit_origin_id):
+                                        base_imponible_8 = base_imponible_8 * -1.00
+                                        if not invoice.debit_origin_id:
+                                            total_nota_credito_8 += base_imponible_8
+                                        else:
+                                            base_imponible_8 = base_imponible_8 * -1.00
+                                            total_nota_debito_8 = base_imponible_8
+                                    else:
+                                        total_base_imponible_8 += base_imponible_8
+                                    alic_8 = '8%'
+                            elif line.name == 'IVA (16.0%) ventas':
+                                iva_16 += line.credit
+                                if invoice.move_type == 'out_refund' or \
+                                        invoice.move_type == 'in_refund' or (invoice.move_type == 'out_invoice' \
+                                            and invoice.debit_origin_id):
+                                    iva_16 = iva_16 * -1.00
+                                    if not invoice.debit_origin_id:
+                                        total_nota_credito_iva_16 += iva_16
+                                    else:
+                                        iva_16 = iva_16 * -1.00
+                                        total_nota_debito_iva_16 += iva_16
+                                else:
+                                    total_iva_16 += iva_16
+                            elif line.name == 'IVA (8.0%) ventas':
+                                iva_8 += line.credit
+                                if invoice.move_type == 'out_refund' or invoice.move_type == 'in_refund' \
+                                        or (invoice.move_type == 'out_invoice' and invoice.debit_origin_id):
+                                    iva_8 = iva_8 * -1.00
+                                    if not invoice.debit_origin_id:
+                                        total_nota_credito_iva_8 += iva_8
+                                    else:
+                                        iva_8 = iva_8 * -1.00
+                                        total_nota_debito_iva_8 += iva_8
+                                else:
+                                    total_iva_8 += iva_8
+                                alic_8 = '8%'
+                            # elif 'CUENTAS POR COBRAR' in line.account_id.name:
+                            #     total_invoice_value = line.debit
 
                     #Contribuyentes
                     if invoice.partner_id.l10n_latam_identification_type_id.is_vat:
