@@ -820,6 +820,13 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                             # elif 'CUENTAS POR COBRAR' in line.account_id.name:
                             #     total_invoice_value = line.debit
                     _logger.info('#######TERMINO EL FOR DE LOS IMPUESTOS########')
+                    _logger.info(str(base_exento))
+                    _logger.info(str(base_imponible))
+                    _logger.info(str(iva_16))
+                    _logger.info(str(alic_16))
+                    _logger.info(str(alic_8))
+                    _logger.info(str(iva_8))
+                    _logger.info(str(base_imponible_8))
                     #Contribuyentes
                     if invoice.partner_id.l10n_latam_identification_type_id.is_vat:
                         total_base_exento_contribuyente += base_exento if base_exento else 0.00
