@@ -819,7 +819,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                                 alic_8 = '8%'
                             # elif 'CUENTAS POR COBRAR' in line.account_id.name:
                             #     total_invoice_value = line.debit
-
+                    _logger.info('#######TERMINO EL FOR DE LOS IMPUESTOS########')
                     #Contribuyentes
                     if invoice.partner_id.l10n_latam_identification_type_id.is_vat:
                         total_base_exento_contribuyente += base_exento if base_exento else 0.00
@@ -843,7 +843,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                         sheet.write(row, 25, '', line)
                         sheet.write(row, 26, '', line)
                         sheet.write(row, 27, '', line)
-
+                    _logger.info('#######2########')
                     #No contribuyentes
                     else:
 
@@ -870,7 +870,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                         sheet.write(row, 26, alic_8, line)
                         sheet.write(row, 27, iva_8, line)
                         # sheet.write(row, 27, iva, line)
-
+                    _logger.info('#######3########')
                     #Retenciones
                     sql = """
                     SELECT p.withholding_number AS number_wh,p.amount AS amount_wh,l.move_id AS invoice
@@ -1012,7 +1012,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     sheet.write(row, 29, '', line)
                     retenciones.remove(reten)
                     row +=1
-
+            _logger.info('#######4########')
             if obj.type == 'sale':
 
                 sheet.write((row), 14, total_base_exento_contribuyente, line_total)
