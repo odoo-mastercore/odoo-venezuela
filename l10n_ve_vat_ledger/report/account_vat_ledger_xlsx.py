@@ -1014,7 +1014,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                 sheet.write((row), 16, 'IGTF percibido', cell_format_1)
 
                 sheet.merge_range('J%s:M%s' % (str(row+2), str(row+2)),  'Total Ventas Internas No Gravadas', title_style)
-                sheet.write((row+1), 13, round(total_base_exento,2), line)
+                sheet.write((row+1), 13, round(total_base_exento_contribuyente + total_base_exento_no_contribuyente ,2), line)
                 sheet.write((row+1), 14, '0', line)
                 sheet.write((row+1), 15, '0', line)
                 sheet.write((row+1), 16, '0', line)
@@ -1034,12 +1034,12 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                 sheet.write((row+4), 15, '0', line)
                 sheet.write((row+4), 16, '0', line)
                 sheet.merge_range('J%s:M%s' % (str(row+6), str(row+6)), 'Total Ventas Internas afectadas sólo alícuota general 16.00', title_style)
-                sheet.write((row+5), 13, (total_base_imponible_contribuyente_16 + total_base_imponible_no_contribuyente_16), line)
+                sheet.write((row+5), 13, round(total_base_imponible_contribuyente_16 + total_base_imponible_no_contribuyente_16,2), line)
                 sheet.write((row+5), 14, total_iva_16, line)
                 sheet.write((row+5), 15, total_iva_16_retenido, line)
                 sheet.write((row+5), 16, total_iva_16_igtf, line)
                 sheet.merge_range('J%s:M%s' % (str(row+7), str(row+7)), 'Total Ventas Internas afectadas sólo alícuota reducida 8.00', title_style)
-                sheet.write((row+6), 13, (total_base_imponible_contribuyente_8 + total_base_imponible_no_contribuyente_8), line)
+                sheet.write((row+6), 13, round(total_base_imponible_contribuyente_8 + total_base_imponible_no_contribuyente_8,2), line)
                 sheet.write((row+6), 14, total_iva_8, line)
                 sheet.write((row+6), 15, '0', line)
                 sheet.write((row+6), 16, '0', line)
@@ -1069,9 +1069,9 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                 sheet.write((row+11), 15, '', line)
                 sheet.write((row+11), 16, '', line)
                 sheet.merge_range('J%s:M%s' % (str(row+13), str(row+13)), 'Total:', title_style)
-                sheet.write((row+12), 13, round(total_base_exento + total_base_imponible_contribuyente_16 \
+                sheet.write((row+12), 13, round(total_base_exento_contribuyente + total_base_exento_no_contribuyente + total_base_imponible_contribuyente_16 \
                     + total_base_imponible_no_contribuyente_16 \
-                        + total_base_imponible_8+total_nota_credito_16+\
+                        + total_base_imponible_contribuyente_8 + total_base_imponible_no_contribuyente_8 +total_nota_credito_16+\
                             + total_nota_credito_8 +total_nota_debito_16\
                                 + total_nota_debito_8 + total_base_exento_credito \
                                     + total_base_exento_debito,2), line)
