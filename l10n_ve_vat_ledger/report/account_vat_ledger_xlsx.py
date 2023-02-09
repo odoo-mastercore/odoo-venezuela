@@ -292,10 +292,12 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     ('withholding_type', '=', 'partner_tax')
                 ], limit=1)
             else:
+                _logger.info('#######RETENCIONES VENTAS')
                 tax_withholding_id = self.env['account.tax'].search([
                     ('type_tax_use', '=', 'customer'),
                     ('name', 'like', 'IVA')
                 ], limit=1)
+                _logger.info(str(tax_withholding_id))
             if tax_withholding_id:
                 retens = self.env['account.payment'].search([
                     ('tax_withholding_id', '=', tax_withholding_id.id),
@@ -304,10 +306,9 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     ('date', '<=', obj.date_to),
                 ])
             retenciones = []
-            
             if retens:
                 retenciones = list(retens)
-
+            _logger.info(retenciones)
             if obj.type == 'sale':
                 invoices = reversed(obj.invoice_ids)
             elif obj.type == 'purchase':
@@ -871,32 +872,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                         sheet.write(row, 26, alic_8, line)
                         sheet.write(row, 27, iva_8, line)
                         # sheet.write(row, 27, iva, line)
-
-                    #Retenciones
-                    sql = """
-                    SELECT p.withholding_number AS number_wh,p.amount AS amount_wh,l.move_id AS invoice
-                    FROM  account_tax AS t INNER JOIN account_payment  AS p ON t.id=p.tax_withholding_id
-                    INNER JOIN account_move_line_payment_group_to_pay_rel AS g ON p.payment_group_id=g.payment_group_id
-                    INNER JOIN account_move_line AS l ON g.to_pay_line_id=l.id
-                    WHERE t.type_tax_use='%s' AND t.withholding_type='partner_tax' AND l.move_id=%d
-                    """ % ('customer', invoice.id)
-                    # self._cr.execute(sql)
-                    # res = self._cr.fetchone()
-                    # reten = 0.00
-                    # if res:
-                    #     reten = float(res[1])
-                    # else:
-                    #     reten = 0
-                    # total_iva_16_retenido += reten
-                    
-                    # if reten > 0.00:
-                    #     sheet.write(row, 27, res[0], line)
-                    #     sheet.write(row, 28, reten, line)
-                    #     sheet.write(row, 29, invoice.name, line)
-                    # else:
-                    #     sheet.write(row, 27, '', line)
-                    #     sheet.write(row, 28, '', line)
-                    #     sheet.write(row, 29, '', line)
+                   
                     
                 #IGTF
                     sheet.write(row, 28, '', line)
@@ -1092,11 +1068,12 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                 sheet.write((row+11), 15, '', line)
                 sheet.write((row+11), 16, '', line)
                 sheet.merge_range('J%s:M%s' % (str(row+13), str(row+13)), 'Total:', title_style)
-                sheet.write((row+12), 13, round(total_base_exento + total_base_imponible_contribuyente_16 + total_base_imponible_no_contribuyente_16 \
-                    + total_base_imponible_8+total_nota_credito_16+\
-                        + total_nota_credito_8 +total_nota_debito_16\
-                            + total_nota_debito_8 + total_base_exento_credito \
-                                + total_base_exento_debito,2), line)
+                sheet.write((row+12), 13, round(total_base_exento + total_base_imponible_contribuyente_16 \
+                    + total_base_imponible_no_contribuyente_16 \
+                        + total_base_imponible_8+total_nota_credito_16+\
+                            + total_nota_credito_8 +total_nota_debito_16\
+                                + total_nota_debito_8 + total_base_exento_credito \
+                                    + total_base_exento_debito,2), line)
                 sheet.write((row+12), 14, (total_iva_16 + total_iva_8 + \
                     total_nota_credito_iva_16 + total_nota_credito_iva_8 + \
                         total_nota_debito_iva_16 + total_nota_debito_iva_8), line)
