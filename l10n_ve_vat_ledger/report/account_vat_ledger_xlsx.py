@@ -740,22 +740,20 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     #############################
 
                     ####IMPUESTOS##########
+                    
                     base_exento = 0.00
                     base_imponible = 0.00
                     iva_16 = 0.00
-                    alic_16 = 0.00
-                    alic_8 = 0.00
+                    alic_16 = ''
+                    alic_8 = ''
                     iva_8 = 0.00
                     base_imponible_8 = 0.00
-                    _logger.info(str(invoice.name))
+                    base_exento = 0.00
+                    
                     if invoice.line_ids:
-                        _logger.info('############')
                         for linel in invoice.line_ids:
-                            _logger.info(str(linel.name))
                             if linel.tax_ids:
                                 if linel.tax_ids[0].amount == 16.00:
-                                    _logger.info('############')
-
                                     base_imponible += linel.credit
                                     if invoice.move_type == 'out_refund' or \
                                         invoice.move_type == 'in_refund' or (invoice.move_type == 'out_invoice' \
@@ -820,16 +818,9 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                                 else:
                                     total_iva_8 += iva_8
                                 alic_8 = '8%'
-                            # elif 'CUENTAS POR COBRAR' in line.account_id.name:
-                            #     total_invoice_value = line.debit
-                    _logger.info('#######TERMINO EL FOR DE LOS IMPUESTOS########')
-                    _logger.info(str(base_exento))
-                    _logger.info(str(base_imponible))
-                    _logger.info(str(iva_16))
-                    _logger.info(str(alic_16))
-                    _logger.info(str(alic_8))
-                    _logger.info(str(iva_8))
-                    _logger.info(str(base_imponible_8))
+
+                    #########
+
                     #Contribuyentes
                     if invoice.partner_id.l10n_latam_identification_type_id.is_vat:
                         total_base_exento_contribuyente += base_exento if base_exento else 0.00
@@ -853,6 +844,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                         sheet.write(row, 25, '', line)
                         sheet.write(row, 26, '', line)
                         sheet.write(row, 27, '', line)
+
                     #No contribuyentes
                     else:
 
@@ -879,7 +871,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                         sheet.write(row, 26, alic_8, line)
                         sheet.write(row, 27, iva_8, line)
                         # sheet.write(row, 27, iva, line)
-                    _logger.info('#######3########')
+
                     #Retenciones
                     sql = """
                     SELECT p.withholding_number AS number_wh,p.amount AS amount_wh,l.move_id AS invoice
@@ -1021,60 +1013,40 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     sheet.write(row, 29, '', line)
                     retenciones.remove(reten)
                     row +=1
-            _logger.info('#######4########')
+
             if obj.type == 'sale':
 
                 sheet.write((row), 14, total_base_exento_contribuyente, line_total)
-                _logger.info('#######5########')
                 sheet.write((row), 15, total_base_imponible_contribuyente_16, line_total)
-                _logger.info('#######6########')
                 sheet.write((row), 17, total_iva_contribuyente_16, line_total)
-                _logger.info('#######7########')
                 sheet.write((row), 18, total_base_imponible_contribuyente_8, line_total)
-                _logger.info('#######6########')
                 sheet.write((row), 20, total_iva_contribuyente_8, line_total)
-                _logger.info('#######7########')
 
                 sheet.write((row), 21, total_base_exento_no_contribuyente, line_total)
-                _logger.info('#######8########')
                 sheet.write((row), 22, total_base_imponible_no_contribuyente_16, line_total)
-                _logger.info('#######9########')
                 sheet.write((row), 24, total_iva_no_contribuyente_16, line_total)
-                _logger.info('#######10########')
                 sheet.write((row), 25, total_base_imponible_no_contribuyente_8, line_total)
-                _logger.info('#######11########')
                 sheet.write((row), 27, total_iva_no_contribuyente_8, line_total)
-                _logger.info('#######12########')
                 
                 # RESUMEN DE LOS TOTALES VENTAS
                 row +=5
                 sheet.merge_range('J%s:M%s' % (str(row+1), str(row+1)), 'RESUMEN GENERAL', cell_format_2)
-                _logger.info('#######13########')
                 sheet.write((row), 13, 'Base Imponible', cell_format_1)
-                _logger.info('#######14########')
                 sheet.write((row), 14, 'Débito fiscal', cell_format_1)
-                _logger.info('#######15########')
                 sheet.write((row), 15, 'IVA Retenido', cell_format_1)
-                _logger.info('#######16########')
                 sheet.write((row), 16, 'IGTF percibido', cell_format_1)
-                _logger.info('#######17########')
+
                 sheet.merge_range('J%s:M%s' % (str(row+2), str(row+2)),  'Total Ventas Internas No Gravadas', title_style)
                 sheet.write((row+1), 13, round(total_base_exento,2), line)
-                _logger.info('#######18########')
                 sheet.write((row+1), 14, '0', line)
-                _logger.info('#######19########')
                 sheet.write((row+1), 15, '0', line)
-                _logger.info('#######20########')
                 sheet.write((row+1), 16, '0', line)
-                _logger.info('#######21########')
                 sheet.merge_range('J%s:M%s' % (str(row+3), str(row+3)),  'Total Nota de Credito No Gravadas', title_style)
                 sheet.write((row+2), 13, round(total_base_exento_credito,2), line)
-                _logger.info('#######22########')
                 sheet.write((row+2), 14, '0', line)
                 sheet.write((row+2), 15, '0', line)
                 sheet.write((row+2), 16, '0', line)
                 sheet.merge_range('J%s:M%s' % (str(row+4), str(row+4)),  'Total Nota de Debito No Gravadas', title_style)
-                _logger.info('#######22########')
                 sheet.write((row+3), 13, round(total_base_exento_debito,2), line)
                 sheet.write((row+3), 14, '0', line)
                 sheet.write((row+3), 15, '0', line)
@@ -1084,18 +1056,13 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                 sheet.write((row+4), 14, '0', line)
                 sheet.write((row+4), 15, '0', line)
                 sheet.write((row+4), 16, '0', line)
-                _logger.info('#######23########')
                 sheet.merge_range('J%s:M%s' % (str(row+6), str(row+6)), 'Total Ventas Internas afectadas sólo alícuota general 16.00', title_style)
                 sheet.write((row+5), 13, round(total_base_imponible_16,2), line)
-                _logger.info('#######24########')
                 sheet.write((row+5), 14, total_iva_16, line)
-                _logger.info('#######25########')
                 sheet.write((row+5), 15, total_iva_16_retenido, line)
                 sheet.write((row+5), 16, total_iva_16_igtf, line)
                 sheet.merge_range('J%s:M%s' % (str(row+7), str(row+7)), 'Total Ventas Internas afectadas sólo alícuota reducida 8.00', title_style)
-                _logger.info('#######26########')
                 sheet.write((row+6), 13, total_base_imponible_8, line)
-                _logger.info('#######27########')
                 sheet.write((row+6), 14, total_iva_8, line)
                 sheet.write((row+6), 15, '0', line)
                 sheet.write((row+6), 16, '0', line)
@@ -1106,30 +1073,22 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                 sheet.write((row+7), 16, '0', line)
                 sheet.merge_range('J%s:M%s' % (str(row+9), str(row+9)), 'Total Notas de Crédito o Devoluciones aplicadas en Ventas 16%', title_style)
                 sheet.write((row+8), 13, total_nota_credito_16, line)
-                _logger.info('#######28########')
                 sheet.write((row+8), 14, total_nota_credito_iva_16, line)
-                _logger.info('#######29########')
                 sheet.write((row+8), 15, '', line)
                 sheet.write((row+8), 16, '', line)
                 sheet.merge_range('J%s:M%s' % (str(row+10), str(row+10)), 'Total Notas de Crédito o Devoluciones aplicadas en Ventas 8%', title_style)
                 sheet.write((row+9), 13, total_nota_credito_8, line)
-                _logger.info('#######30########')
                 sheet.write((row+9), 14, total_nota_credito_iva_8, line)
-                _logger.info('#######31########')
                 sheet.write((row+9), 15, '', line)
                 sheet.write((row+9), 16, '', line)
                 sheet.merge_range('J%s:M%s' % (str(row+11), str(row+11)), 'Total Notas de Débito o recargos aplicadas en Ventas 16%:', title_style)
                 sheet.write((row+10), 13, total_nota_debito_16, line)
-                _logger.info('#######32########')
                 sheet.write((row+10), 14, total_nota_debito_iva_16, line)
-                _logger.info('#######33########')
                 sheet.write((row+10), 15, '', line)
                 sheet.write((row+10), 16, '', line)
                 sheet.merge_range('J%s:M%s' % (str(row+12), str(row+12)), 'Total Notas de Débito o recargos aplicadas en Ventas 8%:', title_style)
                 sheet.write((row+11), 13, total_nota_debito_8, line)
-                _logger.info('#######34#######')
                 sheet.write((row+11), 14, total_nota_debito_iva_8, line)
-                _logger.info('#######35########')
                 sheet.write((row+11), 15, '', line)
                 sheet.write((row+11), 16, '', line)
                 sheet.merge_range('J%s:M%s' % (str(row+13), str(row+13)), 'Total:', title_style)
@@ -1138,17 +1097,12 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                         + total_nota_credito_8 +total_nota_debito_16\
                             + total_nota_debito_8 + total_base_exento_credito \
                                 + total_base_exento_debito,2), line)
-                _logger.info('#######36########')
-
                 sheet.write((row+12), 14, (total_iva_16 + total_iva_8 + \
                     total_nota_credito_iva_16 + total_nota_credito_iva_8 + \
                         total_nota_debito_iva_16 + total_nota_debito_iva_8), line)
-                _logger.info('#######37########')
-
                 sheet.write((row+12), 15, total_iva_16_retenido, line)
-                _logger.info('#######38########')
                 sheet.write((row+12), 16, total_iva_16_igtf, line)
-                _logger.info('#######39########')
+
             # Totales de compras
             else:
                 
