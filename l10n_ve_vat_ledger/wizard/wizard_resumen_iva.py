@@ -13,7 +13,6 @@ import logging
 import xlsxwriter
 import io
 from io import BytesIO
-import pandas as pd
 import shutil
 import base64
 import csv
