@@ -477,6 +477,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                                     base_exento = base_exento * -1.00
                                     if invoice.debit_origin_id:
                                         base_exento = base_exento * -1.00
+                                        print('##########ENTRO EN COMPRAS')
                                         total_base_exento_debito += base_exento
                                     else:
                                         total_base_exento_credito += base_exento
@@ -774,10 +775,10 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                                         or (invoice.move_type == 'out_invoice' and invoice.debit_origin_id):
                                         base_exento = linel.debit * -1.00
                                         if not invoice.debit_origin_id:
-                                            total_base_exento_debito += base_exento
+                                            total_base_exento_credito += base_exento
                                         else:
                                             base_exento = linel.credit
-                                            total_base_exento_credito += base_exento
+                                            total_base_exento_debito += base_exento
                                     else:
                                         total_base_exento += base_exento
                                 elif linel.tax_ids[0].amount == 8.00:
@@ -1024,6 +1025,8 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                 sheet.write((row+2), 15, '0', line)
                 sheet.write((row+2), 16, '0', line)
                 sheet.merge_range('J%s:M%s' % (str(row+4), str(row+4)),  'Total Nota de Debito No Gravadas', title_style)
+                print('######')
+                print(total_base_exento_debito)
                 sheet.write((row+3), 13, round(total_base_exento_debito,2), line)
                 sheet.write((row+3), 14, '0', line)
                 sheet.write((row+3), 15, '0', line)
