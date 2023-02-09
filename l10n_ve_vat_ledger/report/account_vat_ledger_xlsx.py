@@ -752,12 +752,9 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     base_imponible_8 = 0.00
                     _logger.info('###################')
                     _logger.info(str(invoice.name))
-                    _logger.info(str(invoice.line_ids))
                     if invoice.line_ids:
                         for line in invoice.line_ids:
-                            _logger.info(str(line))
                             if line.tax_ids:
-                                _logger.info(str(line.tax_ids[0]))
                                 if line.tax_ids[0].amount == 16.00:
                                     base_imponible += line.credit
                                     if invoice.move_type == 'out_refund' or \
