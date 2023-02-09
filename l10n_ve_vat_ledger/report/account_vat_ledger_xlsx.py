@@ -746,10 +746,10 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     base_exento = 0.00
                     base_imponible = 0.00
                     iva_16 = 0.00
-                    alic_16 = ''
-                    alic_8 = ''
-                    iva_8 = ''
-                    base_imponible_8 = ''
+                    alic_16 = 0.00
+                    alic_8 = 0.00
+                    iva_8 = 0.00
+                    base_imponible_8 = 0.00
                     _logger.info('###################')
                     _logger.info(str(invoice.name))
                     _logger.info(str(invoice.line_ids))
