@@ -607,7 +607,6 @@ class AccountVatLedgerXlsx(models.AbstractModel):
 
                     
                 elif obj.type == 'sale':
-                    _logger.info('#########EN VENTAS##########')
                     if date_reference <= invoice.invoice_date:
                         while date_reference < invoice.invoice_date:
                             coincident_date = [tup for tup in retenciones if date_reference == tup.date]
@@ -750,8 +749,6 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     alic_8 = 0.00
                     iva_8 = 0.00
                     base_imponible_8 = 0.00
-                    _logger.info('###################')
-                    _logger.info(str(invoice.name))
                     if invoice.line_ids:
                         for line in invoice.line_ids:
                             if line.tax_ids:
