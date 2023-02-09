@@ -526,7 +526,6 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                                     base_imponible_8 = base_imponible_8 * -1.00
                                     iva_8 = iva_8 * -1.00
                                     if not invoice.debit_origin_id:
-                                        total_nota_credito_8 += base_imponible_8
                                         total_nota_credito_iva_8 += iva_8
                                     else:
                                         base_imponible_8 = base_imponible_8 * -1.00
@@ -741,7 +740,6 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     #############################
 
                     ####IMPUESTOS##########
-                    
                     base_exento = 0.00
                     base_imponible = 0.00
                     iva_16 = 0.00
@@ -749,6 +747,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     alic_8 = 0.00
                     iva_8 = 0.00
                     base_imponible_8 = 0.00
+
                     if invoice.line_ids:
                         for line in invoice.line_ids:
                             if line.tax_ids:
@@ -817,9 +816,8 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                                 else:
                                     total_iva_8 += iva_8
                                 alic_8 = '8%'
-                            elif 'CUENTAS POR COBRAR' in line.account_id.name:
-                                total_invoice_value = line.debit
-                    #########
+                            # elif 'CUENTAS POR COBRAR' in line.account_id.name:
+                            #     total_invoice_value = line.debit
 
                     #Contribuyentes
                     if invoice.partner_id.l10n_latam_identification_type_id.is_vat:
