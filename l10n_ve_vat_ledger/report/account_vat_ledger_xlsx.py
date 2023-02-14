@@ -292,12 +292,10 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     ('withholding_type', '=', 'partner_tax')
                 ], limit=1)
             else:
-                _logger.info('#######RETENCIONES VENTAS')
                 tax_withholding_id = self.env['account.tax'].search([
                     ('type_tax_use', '=', 'customer'),
                     ('name', 'like', 'IVA')
                 ], limit=1)
-                _logger.info(str(tax_withholding_id))
             if tax_withholding_id:
                 retens = self.env['account.payment'].search([
                     ('tax_withholding_id', '=', tax_withholding_id.id),
@@ -308,7 +306,6 @@ class AccountVatLedgerXlsx(models.AbstractModel):
             retenciones = []
             if retens:
                 retenciones = list(retens)
-            _logger.info(retenciones)
             if obj.type == 'sale':
                 invoices = reversed(obj.invoice_ids)
             elif obj.type == 'purchase':
@@ -477,7 +474,6 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                                     base_exento = base_exento * -1.00
                                     if invoice.debit_origin_id:
                                         base_exento = base_exento * -1.00
-                                        print('##########ENTRO EN COMPRAS')
                                         total_base_exento_debito += base_exento
                                     else:
                                         total_base_exento_credito += base_exento
@@ -881,9 +877,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                 row += 1
 
             if len(retenciones) > 0 and obj.type == 'purchase':
-                for reten in sorted(retenciones, key=lambda x: x.date):
-                    total_iva_16_retenido += reten.amount
-                    i += 1
+
                     # codigo 
                     sheet.write(row, 0, i, line)
                     # fehca
@@ -992,8 +986,6 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     row +=1
 
             if obj.type == 'sale':
-                _logger.info('#####VAT LEDGER########')
-
                 sheet.write((row), 14, total_base_exento_contribuyente, line_total)
                 sheet.write((row), 15, total_base_imponible_contribuyente_16, line_total)
                 sheet.write((row), 17, total_iva_contribuyente_16, line_total)
@@ -1025,8 +1017,6 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                 sheet.write((row+2), 15, '0', line)
                 sheet.write((row+2), 16, '0', line)
                 sheet.merge_range('J%s:M%s' % (str(row+4), str(row+4)),  'Total Nota de Debito No Gravadas', title_style)
-                print('######')
-                print(total_base_exento_debito)
                 sheet.write((row+3), 13, round(total_base_exento_debito,2), line)
                 sheet.write((row+3), 14, '0', line)
                 sheet.write((row+3), 15, '0', line)
