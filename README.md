@@ -19,8 +19,9 @@ Odoo Venezuela
 - l10n_ve_vat_ledger
 
 ### Más Información:
-- 
+-
 
-### Colaboradores:
+### Organizadores:
 - Reydi Hernández <rhe@sinapsys.global>
 - Freddy Arraez <far@sinapsys.global>
+- Elvis Paez <epa@sinapsys.global>

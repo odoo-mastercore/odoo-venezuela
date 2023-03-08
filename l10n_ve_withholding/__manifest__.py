@@ -1,6 +1,6 @@
 ###############################################################################
 # Author: SINAPSYS GLOBAL SA || MASTERCORE SAS
-# Copyleft: 2020-Present.
+# Copyleft: 2023-Present.
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 #
 #
@@ -10,14 +10,14 @@
     'description': """
         **Localización VENEZUELA Withholding**
 
-        ¡Felicidades!. Este es el módulo Withholding para la implementación de 
-        la **Localización Venezuela** que agrega características y datos 
+        ¡Felicidades!. Este es el módulo Withholding para la implementación de
+        la **Localización Venezuela** que agrega características y datos
         necesarios para un correcto ejercicio fiscal de su empresa.
     """,
 
     'author': "SINAPSYS GLOBAL SA || MASTERCORE SAS",
     'website': "http://sinapsys.global",
-    'version': '15.0.0.5',
+    'version': '16.0.0.1',
     'category': 'Localization',
     'license': 'AGPL-3',
     'depends': [
