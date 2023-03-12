@@ -41,7 +41,7 @@ class AccountMove(models.Model):
                 if rec._get_reconciled_payments().mapped(
                         'payment_group_id').filtered(lambda x: x.islr == True):
                     applied_withholding_islr = True
-            
+
             rec.applied_withholding_tax = applied_withholding_tax
             rec.applied_withholding_islr = applied_withholding_islr
 
