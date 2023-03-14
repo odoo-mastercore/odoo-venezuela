@@ -42,7 +42,7 @@ class AccountMove(models.Model):
                     applied_withholding_islr = True
             rec.applied_withholding_tax = applied_withholding_tax
             rec.applied_withholding_islr = applied_withholding_islr
-            
+
     def get_taxes_values(self):
         """
         Hacemos esto para disponer de fecha de factura y cia para calcular
