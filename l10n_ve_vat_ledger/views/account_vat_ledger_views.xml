@@ -1,19 +1,19 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <odoo>
     <record id='account_vat_ledger_tree' model='ir.ui.view'>
-        <field name='name'>Account VAT Ledger</field> 
+        <field name='name'>Account VAT Ledger</field>
         <field name="model">account.vat.ledger</field>
         <field name='arch' type='xml'>
             <tree  string="VAT Ledger">
                 <field name="name"/>
-                <field name="company_id" groups="base.group_multi_company"/>
+                <field name="company_id" />
                 <field name="state"/>
             </tree>
         </field>
     </record>
 
     <record id='account_vat_ledger_form' model='ir.ui.view'>
-        <field name='name'>Account VAT Ledger</field> 
+        <field name='name'>Account VAT Ledger</field>
         <field name="model">account.vat.ledger</field>
         <field name='arch' type='xml'>
             <form string="VAT Ledger">
@@ -29,7 +29,7 @@
                 <sheet>
                     <group>
                         <group>
-                            <field name="company_id" widget="selection" groups="base.group_multi_company"/>
+                            <field name="company_id" widget="selection" />
                             <field name="date_from"/>
                             <field name="date_to"/>
                         </group>
