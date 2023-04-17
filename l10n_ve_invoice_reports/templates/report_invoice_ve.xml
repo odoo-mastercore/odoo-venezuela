@@ -29,7 +29,6 @@
         </t>
       </xpath>
     </xpath>
-
     <xpath expr="//div[@id='total']" position="replace">
       <t t-if="o.currency_id != o.company_id.currency_id">
         <div id="total" class="row">
@@ -38,12 +37,14 @@
                   <tr class="border-black o_subtotal" style="">
                       <td><strong>Subtotal</strong></td>
                       <td class="text-right">
-                          <span t-field="o.amount_untaxed_signed"/>
+                          <t t-set="amount_untaxed_unsigned" t-value="'{0:,.2f}'.format(round(abs(o.amount_untaxed_signed),2)).replace(',', ' ').replace('.', ',').replace(' ', '.')"/>
+                          <span t-esc="amount_untaxed_unsigned" /> <span t-esc="o.company_id.currency_id.symbol" />
                       </td>
                       <td class="text-right">
                           <span t-field="o.amount_untaxed"/>
                       </td>
                   </tr>
+                  
                   <t t-set="tax_totals" t-value="json.loads(o.tax_totals_json)"/>
                   <t t-foreach="tax_totals['subtotals']" t-as="subtotal">
                       <t t-set="subtotal_to_show" t-value="subtotal['name']"/>
@@ -61,7 +62,6 @@
                               <t t-else="">
                                   <td>
                                       <span t-esc="amount_by_group['tax_group_name']"/>
-
                                   </td>
                                   <td class="text-right o_price_total">
                                       <span class="text-nowrap" t-esc="round(o.amount_str_in_company_currency(amount_by_group['formatted_tax_group_amount'], o.currency_id.id, o.invoice_date), 2)" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.company_id.currency_id}"/>
@@ -73,10 +73,12 @@
                           </tr>   
                       </t>
                   </t>
+
                   <tr class="border-black o_total">
                       <td><strong>Total</strong></td>
                       <td class="text-right">
-                          <span class="text-nowrap" t-field="o.amount_total_signed"/>
+                          <t t-set="amount_total_unsigned" t-value="'{0:,.2f}'.format(round(abs(o.amount_total_signed),2)).replace(',', ' ').replace('.', ',').replace(' ', '.')"/>
+                          <span t-esc="amount_total_unsigned" /> <span t-esc="o.company_id.currency_id.symbol" />
                       </td>
                       <td class="text-right">
                           <span class="text-nowrap" t-field="o.amount_total"/>
