@@ -746,13 +746,11 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     alic_8 = ''
                     iva_8 = 0.00
                     base_imponible_8 = 0.00
-                    base_exento = 0.00
-                    
                     if invoice.line_ids:
                         for linel in invoice.line_ids:
                             if linel.tax_ids:
                                 if linel.tax_ids[0].amount == 16.00:
-                                    base_imponible += linel.credit
+                                    base_imponible += linel.credit if linel.debit == 0 else -linel.debit
                                     if invoice.move_type == 'out_refund' or \
                                         invoice.move_type == 'in_refund' or (invoice.move_type == 'out_invoice' \
                                             and invoice.debit_origin_id):
@@ -766,7 +764,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                                         total_base_imponible_16 += base_imponible
                                     alic_16 = '16%'
                                 elif linel.tax_ids[0].amount == 0.00:
-                                    base_exento += linel.credit
+                                    base_exento += linel.credit if linel.debit == 0 else -linel.debit
                                     if invoice.move_type == 'out_refund' or invoice.move_type == 'in_refund' \
                                         or (invoice.move_type == 'out_invoice' and invoice.debit_origin_id):
                                         base_exento += linel.debit * -1.00
@@ -778,7 +776,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                                     else:
                                         total_base_exento += base_exento
                                 elif linel.tax_ids[0].amount == 8.00:
-                                    base_imponible_8 += linel.credit
+                                    base_imponible_8 += linel.credit if linel.debit == 0 else -linel.debit
                                     if invoice.move_type == 'out_refund' or invoice.move_type == 'in_refund' \
                                         or (invoice.move_type == 'out_invoice' and invoice.debit_origin_id):
                                         base_imponible_8 += linel.debit * -1.00
