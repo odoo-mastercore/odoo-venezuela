@@ -446,119 +446,82 @@ class AccountVatLedgerXlsx(models.AbstractModel):
 
                     ####IMPUESTOS##########
                     
-                    if invoice.tax_totals_json:
-                        jsdict = json.loads(invoice.tax_totals_json)
-                        taxex = next(iter(jsdict['groups_by_subtotal']))
-                        tax_total_dict = jsdict['groups_by_subtotal'][taxex]
-                        taxes = sorted(
-                            tax_total_dict, key=lambda x: x['tax_group_name'])
-                        base_exento = 0.00
-                        base_imponible = 0.00
-                        iva_16 = 0.00
-                        alic_16 = ''
-                        alic_8 = ''
-                        iva_8 = ''
-                        base_imponible_8 = ''
-                        for tax in taxes:
-                            ###########EXENTOS###########
-                            if tax['tax_group_name'] == 'IVA 0%':
-                                if invoice.currency_id != invoice.company_id.currency_id:
-                                    rate = invoice.invoice_rate(
-                                        invoice.currency_id.id, invoice.date)
-                                    base_exento = round(
-                                        tax['tax_group_base_amount'] * (1/rate), 2)
-                                else:
-                                    base_exento = tax['tax_group_base_amount']
-                                if invoice.move_type == 'out_refund' or invoice.move_type == 'in_refund' \
-                                            or (invoice.move_type == 'out_invoice' and invoice.debit_origin_id):
-                                    base_exento = base_exento * -1.00
-                                    if invoice.debit_origin_id:
-                                        base_exento = base_exento * -1.00
-                                        total_base_exento_debito += base_exento
+                    base_exento = 0.00
+                    base_imponible = 0.00
+                    iva_16 = 0.00
+                    alic_16 = ''
+                    alic_8 = ''
+                    iva_8 = 0.00
+                    base_imponible_8 = 0.00
+                    if invoice.line_ids:
+                        for linel in invoice.line_ids:
+                            if linel.tax_ids:
+                                if linel.tax_ids[0].amount == 16.00:
+                                    base_imponible += linel.debit if linel.credit == 0 else -linel.debit
+                                    if invoice.move_type == 'out_refund' or \
+                                        invoice.move_type == 'in_refund' or (invoice.move_type == 'out_invoice' \
+                                            and invoice.debit_origin_id):
+                                        base_imponible += (linel.credit * -1.00) if linel.credit == 0 else 0
+                                        if not invoice.debit_origin_id:
+                                            total_nota_credito_16 += base_imponible
+                                        else:
+                                            base_imponible += linel.debit
+                                            total_nota_debito_16 += base_imponible
                                     else:
-                                        total_base_exento_credito += base_exento
-                                else:
-                                    total_base_exento += base_exento
-                            ###########16%###########
-                            if tax['tax_group_name'] == 'IVA 16%':
-                                if invoice.currency_id != invoice.company_id.currency_id:
-                                    rate = invoice.invoice_rate(
-                                            invoice.currency_id.id, invoice.date)
-                                    base_imponible = round(
-                                        tax['tax_group_base_amount'] * (1/rate), 2)
-                                    iva_16 = base_imponible * 0.16
-                                else:
-                                    base_imponible = tax['tax_group_base_amount']
-                                    iva_16 = tax['tax_group_amount']
-                                if invoice.move_type == 'out_refund' \
-                                        or invoice.move_type == 'in_refund' \
-                                            or (invoice.move_type == 'out_invoice' and invoice.debit_origin_id):
-                                    base_imponible = base_imponible * -1.00
-                                    iva_16 = iva_16 * -1.00
+                                        total_base_imponible_16 += base_imponible
+                                    alic_16 = '16%'
+                                elif linel.tax_ids[0].amount == 0.00:
+                                    base_exento += linel.debit if linel.credit == 0 else -linel.debit
+                                    if invoice.move_type == 'out_refund' or invoice.move_type == 'in_refund' \
+                                        or (invoice.move_type == 'out_invoice' and invoice.debit_origin_id):
+                                        base_exento += linel.credit * -1.00 if linel.credit == 0 else 0
+                                        if not invoice.debit_origin_id:
+                                            total_base_exento_credito += base_exento
+                                        else:
+                                            base_exento += linel.debit
+                                            total_base_exento_debito += base_exento
+                                    else:
+                                        total_base_exento += base_exento
+                                elif linel.tax_ids[0].amount == 8.00:
+                                    base_imponible_8 += linel.debit if linel.credit == 0 else -linel.debit
+                                    if invoice.move_type == 'out_refund' or invoice.move_type == 'in_refund' \
+                                        or (invoice.move_type == 'out_invoice' and invoice.debit_origin_id):
+                                        base_imponible_8 += linel.credit * -1.00 if linel.credit == 0 else 0
+                                        if not invoice.debit_origin_id:
+                                            total_nota_credito_8 += base_imponible_8
+                                        else:
+                                            base_imponible_8 += linel.debit
+                                            total_nota_debito_8 += base_imponible_8
+                                    else:
+                                        total_base_imponible_8 += base_imponible_8
+                                    alic_8 = '8%'
+                            elif linel.name == 'IVA (16.0%) compras':
+                                iva_16 += linel.debit
+                                if invoice.move_type == 'out_refund' or \
+                                        invoice.move_type == 'in_refund' or (invoice.move_type == 'out_invoice' \
+                                            and invoice.debit_origin_id):
+                                    iva_16 += linel.credit * -1.00
                                     if not invoice.debit_origin_id:
-                                        total_nota_credito_16 += base_imponible
                                         total_nota_credito_iva_16 += iva_16
                                     else:
-                                        base_imponible = base_imponible * -1.00
-                                        iva_16 = iva_16 * -1.00
-                                        total_nota_debito_16 += base_imponible
+                                        iva_16 += linel.debit
                                         total_nota_debito_iva_16 += iva_16
                                 else:
                                     total_iva_16 += iva_16
-                                    total_base_imponible_16 += base_imponible
-                                alic_16 = '16%'
-                            ###########IVA 8%###########
-                            if tax['tax_group_name'] == 'IVA 8%':
-                                if invoice.currency_id != invoice.company_id.currency_id:
-                                    rate = invoice.invoice_rate(
-                                        invoice.currency_id.id, invoice.date)
-                                    base_imponible_8 = round(
-                                        tax['tax_group_base_amount'] * (1/rate), 2)
-                                    iva_8 = base_imponible_8 * 0.08
-                                else:
-                                    base_imponible_8 = tax['tax_group_base_amount']
-                                    iva_8 = tax['tax_group_amount']
-                                if invoice.move_type == 'out_refund' \
-                                        or invoice.move_type == 'in_refund' \
-                                            or (invoice.move_type == 'out_invoice' and invoice.debit_origin_id):
-                                    base_imponible_8 = base_imponible_8 * -1.00
-                                    iva_8 = iva_8 * -1.00
+                            elif linel.name == 'IVA (8.0%) compras':
+                                iva_8 += linel.debit
+                                if invoice.move_type == 'out_refund' or invoice.move_type == 'in_refund' \
+                                        or (invoice.move_type == 'out_invoice' and invoice.debit_origin_id):
+                                    iva_8 += linel.credit * -1.00
                                     if not invoice.debit_origin_id:
                                         total_nota_credito_iva_8 += iva_8
                                     else:
-                                        base_imponible_8 = base_imponible_8 * -1.00
-                                        iva_8 = iva_8 * -1.00
-                                        total_nota_debito_8 = base_imponible_8
+                                        iva_8 += linel.debit
                                         total_nota_debito_iva_8 += iva_8
                                 else:
-                                    total_base_imponible_8 += base_imponible_8
                                     total_iva_8 += iva_8
                                 alic_8 = '8%'
-                            ########## IVA 15
-                            if tax['tax_group_name'] == 'IVA 15%':
-                                if invoice.currency_id != invoice.company_id.currency_id:
-                                    rate = invoice.invoice_rate(
-                                        invoice.currency_id.id, invoice.date)
-                                    base_imponible_15 = round(
-                                        tax['tax_group_base_amount'] * (1/rate), 2)
-                                    iva_15 = base_imponible_15 * 0.15
-                                    
-                                else:
-                                    base_imponible_15 = tax['tax_group_base_amount']
-                                    iva_15 = tax['tax_group_amount']
-                                if invoice.move_type == 'out_refund' \
-                                        or invoice.move_type == 'in_refund' \
-                                            or (invoice.move_type == 'out_invoice' and invoice.debit_origin_id):
-                                    base_imponible_15 = base_imponible_15 * -1.00
-                                    iva_15 = iva_15 * -1.00
-                                    if not invoice.debit_origin_id:
-                                        total_nota_credito_iva += iva_15
-                                    else:
-                                        total_nota_debito_iva += iva_15 * -1.00
-                                else:
-                                    total_base_imponible_15 += base_imponible_15
-                                    total_iva_15 += iva_15
-                                alic = '15%'
+
 
 
                     #########
