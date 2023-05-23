@@ -11,10 +11,11 @@
                   name="vat_retention" 
                   string="Retención I.V.A" />
                 <field name="seniat_partner_type_id" />
-                <field 
-                    name="seniat_regimen_islr_ids" 
-                    attrs="{'invisible': [('seniat_partner_type_id', '==', False)]}"/>
+               
           </field>
+          <xpath expr="//group[@name='purchase']" position="after">
+                <field name="seniat_regimen_islr_ids" attrs="{'invisible': [('seniat_partner_type_id', '==', False)]}"/>
+          </xpath>
         </field>
     </record>
 
