@@ -53,6 +53,8 @@ class AccountTax(models.Model):
                             selected_debt_taxed += li.amount_currency
                         elif li.name == 'IVA (8.0%) compras':
                             selected_debt_taxed += li.amount_currency
+                        elif li.name == 'IVA (31.0%) compras':
+                            selected_debt_taxed += li.amount_currency
                     currency_tax = selected_debt_taxed*alicuota
                     vals['amount'] = currency_tax
                     vals['currency_id'] = to_pay.currency_id.id
