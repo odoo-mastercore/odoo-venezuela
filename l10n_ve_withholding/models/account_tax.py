@@ -25,7 +25,7 @@ class AccountTax(models.Model):
         ]), ondelete={'tabla_islr': 'set default', 'partner_tax': 'set default'}
     )
 
-    def get_withholding_vals(self, payment_group):
+    def get_withholding_vals(self, payment_group, force_withholding_amount_type):
         commercial_partner = payment_group.commercial_partner_id
 
         force_withholding_amount_type = None
