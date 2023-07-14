@@ -25,7 +25,7 @@ class AccountTax(models.Model):
         ]), ondelete={'tabla_islr': 'set default', 'partner_tax': 'set default'}
     )
 
-    def get_withholding_vals(self, payment_group):
+    def get_withholding_vals(self, payment_group, force_withholding_amount_type):
         commercial_partner = payment_group.commercial_partner_id
 
         force_withholding_amount_type = None
@@ -53,6 +53,8 @@ class AccountTax(models.Model):
                             selected_debt_taxed += li.amount_currency
                         elif li.name == 'IVA (8.0%) compras':
                             selected_debt_taxed += li.amount_currency
+                        elif li.name == 'IVA (31.0%) compras':
+                            selected_debt_taxed += li.amount_currency
                     currency_tax = selected_debt_taxed*alicuota
                     vals['amount'] = currency_tax
                     vals['currency_id'] = to_pay.currency_id.id
@@ -70,6 +72,7 @@ class AccountTax(models.Model):
                                 if abg.credit:
                                     selected_debt_untaxed += (
                                         abg.credit * -1.00)
+                            
             vals['withholdable_invoiced_amount'] = selected_debt_untaxed
             vals['withholdable_base_amount'] = base_amount
             vals['period_withholding_amount'] = amount
