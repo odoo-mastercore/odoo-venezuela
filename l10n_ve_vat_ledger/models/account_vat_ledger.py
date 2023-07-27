@@ -85,14 +85,15 @@ class AccountVatLedger(models.Model):
             invoices_domain = []
 
             invoices_domain += [
-                ('state', 'not in', ['draft', 'cancel']),
-                # ('l10n_ve_document_number', '!=', False),
+                ('state', 'not in', ['draft']),  
                 ('journal_id', 'in', rec.journal_ids.ids),
                 ('company_id', '=', rec.company_id.id),
             ]
             if rec.type == 'sale':
                 invoices_domain += [
                     ('move_type', 'in',['out_invoice', 'out_refund']),
+                    ('l10n_ve_document_number', '!=', False),
+                    ('name', '!=', False),
                     ('invoice_date', '>=', rec.date_from),
                     ('invoice_date', '<=', rec.date_to),]
             elif rec.type == 'purchase':
