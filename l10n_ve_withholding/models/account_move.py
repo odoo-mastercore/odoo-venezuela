@@ -27,12 +27,6 @@ class AccountMove(models.Model):
     applied_withholding_islr = fields.Boolean(
         'Retencion de ISLR aplicada', compute='_compute_applied_withholding',
         store=True, copy=False, default=False)
-    
-    igtf_base_purchase = fields.Float('Igtf base')
-    igtf_amount_purchase = fields.Float('Monto igtf')
-    igtf_base_purchase_usd = fields.Float('Igtf base usd')
-    igtf_amount_purchase_usd = fields.Float('Monto igtf usd')
-    igtf_purchase_apply_purchase = fields.Boolean('Aplicar igtf')
 
     @api.depends('amount_residual', 'amount_residual_signed',)
     def _compute_applied_withholding(self):
