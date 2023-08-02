@@ -19,18 +19,7 @@
     'license': 'AGPL-3',
     'depends': ['account', 'l10n_ve_base'],
     'data': [
-        'security/ir.model.access.csv',
-        'data/l10n_latam_identification_type_data.xml',
-        'data/l10n_ve_responsibility_type_data.xml',
-        'data/res_bank.xml',
-        'data/account_tax_data.xml',
-        'views/seniat_menuitem.xml',
-        'views/l10n_ve_responsibility_type_view.xml',
-        'views/res_partner_view.xml',
-        'views/res_partner_bank_view.xml',
-        'views/res_company_view.xml',
-        'views/res_currency_view.xml',
-        'wizard/currency_rate_wizard_view.xml'
+        "views/account_move_view.xml"
     ],
 
 }
