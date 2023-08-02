@@ -20,6 +20,17 @@
                         invisible="context.get('default_move_type') not in ('in_invoice', 'in_refund','in_receipt')" 
                         attrs="{'readonly': [('state','!=','draft')]}" string="Control Number"/>
                 </xpath>
+                <xpath expr="//notebook" position="inside">
+                    <page name="igtf_purchase" string="Igtf compras" attrs="{'invisible':[('move_type','not in',['in_invoice','in_refund'])]}">
+                        <group>
+                            <field name="igtf_purchase_apply_purchase" />
+                            <field name="igtf_base_purchase" attrs="{'invisible': [('igtf_purchase_apply','=',False)]}" />
+                            <field name="igtf_amount_purchase" attrs="{'invisible': [('igtf_purchase_apply','=',False)]}"  />
+                            <field name="igtf_base_purchase_usd" attrs="{'invisible': [('igtf_purchase_apply','=',False)]}"  />
+                            <field name="igtf_amount_purchase_usd" attrs="{'invisible': [('igtf_purchase_apply','=',False)]}"  />
+                        </group>
+                    </page>
+                </xpath>
             </field>
         </record>
 
