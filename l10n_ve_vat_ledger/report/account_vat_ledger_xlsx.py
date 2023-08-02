@@ -487,12 +487,12 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                                             and invoice.debit_origin_id):
                                         base_imponible += (linel.credit * -1.00) if linel.credit == 0 else 0
                                         if not invoice.debit_origin_id:
-                                            total_nota_credito_16 += base_imponible
+                                            total_nota_credito_16 += linel.credit * -1.00
                                         else:
                                             base_imponible += linel.debit
-                                            total_nota_debito_16 += base_imponible
+                                            total_nota_debito_16 += linel.debit
                                     else:
-                                        total_base_imponible_16 += base_imponible
+                                        total_base_imponible_16 += linel.debit if linel.credit == 0 else -linel.debit
                                     alic_16 = '16%'
                                 elif linel.tax_ids[0].amount == 0.00:
                                     base_exento += linel.debit if linel.credit == 0 else -linel.debit
@@ -500,17 +500,12 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                                         or (invoice.move_type == 'out_invoice' and invoice.debit_origin_id):
                                         base_exento += linel.credit * -1.00 if linel.credit == 0 else 0
                                         if not invoice.debit_origin_id:
-                                            total_base_exento_credito += base_exento
+                                            total_base_exento_credito += linel.credit * -1.00
                                         else:
                                             base_exento += linel.debit
-                                            total_base_exento_debito += base_exento
+                                            total_base_exento_debito += linel.debit
                                     else:
-                                        print('######')
-                                        print(total_base_exento)
-                                        print(base_exento)
-                                        total_base_exento += base_exento
-                                        print(total_base_exento)
-                                        print('########')
+                                        total_base_exento += linel.debit if linel.credit == 0 else -linel.debit
 
                                 elif linel.tax_ids[0].amount == 8.00:
                                     base_imponible_8 += linel.debit if linel.credit == 0 else -linel.debit
@@ -518,12 +513,12 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                                         or (invoice.move_type == 'out_invoice' and invoice.debit_origin_id):
                                         base_imponible_8 += linel.credit * -1.00 if linel.credit == 0 else 0
                                         if not invoice.debit_origin_id:
-                                            total_nota_credito_8 += base_imponible_8
+                                            total_nota_credito_8 +=  linel.credit * -1.00
                                         else:
                                             base_imponible_8 += linel.debit
-                                            total_nota_debito_8 += base_imponible_8
+                                            total_nota_debito_8 += linel.debit
                                     else:
-                                        total_base_imponible_8 += base_imponible_8
+                                        total_base_imponible_8 += linel.debit if linel.credit == 0 else -linel.debit
                                     alic_8 = '8%'
                                 
                                 ## BASE IMPONIBLE 31% 
@@ -534,12 +529,12 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                                         or (invoice.move_type == 'out_invoice' and invoice.debit_origin_id):
                                         base_imponible_31 += linel.credit * -1.00 if linel.credit == 0 else 0
                                         if not invoice.debit_origin_id:
-                                            total_nota_credito_31 += base_imponible_31
+                                            total_nota_credito_31 +=  linel.credit * -1.00
                                         else:
                                             base_imponible_31 += linel.debit
-                                            total_nota_debito_31 += base_imponible_31
+                                            total_nota_debito_31 += linel.debit
                                     else:
-                                        total_base_imponible_31 += base_imponible_31
+                                        total_base_imponible_31 += linel.debit if linel.credit == 0 else -linel.debit
                                     alic_31 = '31%'
                             elif linel.name == 'IVA (16.0%) compras':
                                 iva_16 += linel.debit
