@@ -85,7 +85,7 @@ class AccountVatLedger(models.Model):
             invoices_domain = []
 
             invoices_domain += [
-                ('state', 'not in', ['draft', 'cancel']),
+                ('state', 'not in', ['draft']),
                 # ('l10n_ve_document_number', '!=', False),
                 ('journal_id', 'in', rec.journal_ids.ids),
                 ('company_id', '=', rec.company_id.id),
