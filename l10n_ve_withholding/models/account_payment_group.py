@@ -77,6 +77,8 @@ class AccountPaymentGroup(models.Model):
                         selected_debt_taxed += li.debit
                     elif li.name == 'IVA (8.0%) compras':
                         selected_debt_taxed += li.debit
+                    elif li.name == 'IVA (31.0%) compras':
+                        selected_debt_taxed += li.debit
             rec.selected_debt_taxed = selected_debt_taxed
 
     @api.depends(

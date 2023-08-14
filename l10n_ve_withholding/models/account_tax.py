@@ -40,37 +40,46 @@ class AccountTax(models.Model):
             base_invoice = [
                 x.balance * -1.0 for x in payment_group.to_pay_move_line_ids][0]
             amount = base_amount * (alicuota)
-            vals['comment_withholding'] = "%s x %s" % (
-                base_amount, alicuota)
-            vals['total_amount'] = base_invoice
             to_pay = payment_group.to_pay_move_line_ids[0]
-            selected_debt_untaxed = 0.00
+            withholdable_invoiced_amount = 0.00
+            distribution = []
+            foreign_currency = False
             if to_pay:
                 selected_debt_taxed = 0.0
                 if to_pay.currency_id.id != payment_group.company_id.currency_id.id:
-                    for li in to_pay.move_id.line_ids:
-                        if li.name == 'IVA (16.0%) compras':
-                            selected_debt_taxed += li.amount_currency
-                        elif li.name == 'IVA (8.0%) compras':
-                            selected_debt_taxed += li.amount_currency
-                    currency_tax = selected_debt_taxed*alicuota
-                    vals['amount'] = currency_tax
-                    vals['currency_id'] = to_pay.currency_id.id
-                    vals['amount_company_currency'] = amount
+                    foreign_currency =True
+                taxes = [
+                    'IVA (16.0%) compras','IVA (8.0%) compras',
+                    'IVA (31.0%) compras'
+                ]
                 if to_pay.move_id.line_ids:
                     for abg in to_pay.move_id.line_ids:
-                        if abg.tax_ids:
-                            if abg.tax_ids[0].amount == 16.00:
-                                selected_debt_untaxed += abg.debit
-                                if abg.credit:
-                                    selected_debt_untaxed += (
-                                        abg.credit * -1.00)
-                            elif abg.tax_ids[0].amount == 8.00:
-                                selected_debt_untaxed += abg.debit
-                                if abg.credit:
-                                    selected_debt_untaxed += (
-                                        abg.credit * -1.00)
-            vals['withholdable_invoiced_amount'] = selected_debt_untaxed
+                        if abg.name in taxes:
+                            withholdable_invoiced_amount += abg.tax_base_amount
+                            invoice_amount = abg.tax_base_amount
+                            tax_amount = abg.debit
+                            alic = alicuota
+                            withholding_amount = abg.debit*alicuota
+                            if foreign_currency:
+                                selected_debt_taxed += abg.amount_currency
+                            else:
+                                selected_debt_taxed += abg.debit
+                            distribution.append((0, 0, {
+                                'invoice_amount': invoice_amount,
+                                'tax_amount': tax_amount,
+                                'alic': alicuota_retencion,
+                                'withholding_amount': withholding_amount,
+                            }))
+                    if distribution:
+                        _logger.warning(distribution)
+                        vals['withholding_distribution_ids'] = distribution
+            currency_tax = selected_debt_taxed*alicuota
+            vals['amount'] = currency_tax
+            vals['currency_id'] = to_pay.currency_id.id
+            vals['amount_company_currency'] = amount
+            vals['comment_withholding'] = "%s x %s" % (base_amount, alicuota)
+            vals['total_amount'] = base_invoice
+            vals['withholdable_invoiced_amount'] = withholdable_invoiced_amount
             vals['withholdable_base_amount'] = base_amount
             vals['period_withholding_amount'] = amount
 
@@ -80,8 +89,21 @@ class AccountTax(models.Model):
                 payment_group, force_withholding_amount_type)
 
             to_pay = payment_group.to_pay_move_line_ids[0]
-            base = (
-                to_pay.move_id.amount_untaxed_signed * -1.00)
+            selected_debt_untaxed = (to_pay.move_id.amount_untaxed_signed * -1.00)
+            if to_pay:
+                product_off = ''
+                amount_off = 0.00
+                if to_pay.move_id.line_ids:
+                    for li in to_pay.move_id.invoice_line_ids:
+                        if li.product_id.product_tmpl_id.disable_islr:
+                            product_off = li.product_id.display_name
+                    if product_off:
+                        for abg in to_pay.move_id.line_ids:
+                            if abg.name == product_off:
+                                amount_off += abg.debit
+                        selected_debt_untaxed = (
+                            to_pay.move_id.amount_untaxed_signed * -1.00) - amount_off
+            base = selected_debt_untaxed
             base_withholding = base * (
                 regimen.withholding_base_percentage / 100)
             withholding_percentage = 0.0
@@ -205,7 +227,7 @@ class AccountTax(models.Model):
                 payment_method = self.env.ref(
                     'account_withholding.'
                     'account_payment_method_out_withholding')
-                if payment_group.iva:
+                if tax.withholding_type == 'partner_tax':
                     journal = self.env['account.journal'].search([
                         ('company_id', '=', tax.company_id.id),
                         ('outbound_payment_method_line_ids.payment_method_id',
@@ -213,7 +235,7 @@ class AccountTax(models.Model):
                         ('type', 'in', ['cash', 'bank']),
                         ('apply_iva', '=', True),
                     ], limit=1)
-                if payment_group.islr:
+                if tax.withholding_type == 'tabla_islr':
                     journal = self.env['account.journal'].search([
                         ('company_id', '=', tax.company_id.id),
                         ('outbound_payment_method_line_ids.payment_method_id','=', payment_method.id),

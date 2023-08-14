@@ -4,3 +4,4 @@ access_seniat_factor_all,seniat.factor.all,model_seniat_factor,,1,1,1,1
 access_seniat_partner_type_all,seniat.partner.type.all,model_seniat_partner_type,,1,1,1,1
 access_seniat_tabla_islr_all,seniat.tabla.islr.all,model_seniat_tabla_islr,,1,1,1,1
 access_banda_calculo_all,banda.calculo.all,model_banda_calculo,,1,1,1,1
+access_withholding_distribution_all,withholding.distribution.all,model_withholding_distribution,,1,1,1,1

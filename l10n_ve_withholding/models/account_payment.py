@@ -15,6 +15,12 @@ class AccountPayment(models.Model):
 
     #created to record retention percentages
     comment_withholding = fields.Char('Comment withholding')
+    withholding_distribution = fields.Boolean(
+        'tiene una distribucion de retencion?')
+    withholding_distribution_ids = fields.One2many(
+        'withholding.distribution', 'payment_id',
+        string='distribucion de retencion'
+    )
 
     def _get_fiscal_period(self, date):
         str_date = str(date).split('-')
