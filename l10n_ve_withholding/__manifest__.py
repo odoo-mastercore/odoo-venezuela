@@ -17,11 +17,7 @@
 
     'author': "SINAPSYS GLOBAL SA || MASTERCORE SAS",
     'website': "http://sinapsys.global",
-<<<<<<< Updated upstream
-    'version': '16.0.0.2',
-=======
-    'version': '16.0.0.1.0.3',
->>>>>>> Stashed changes
+    'version': '16.0.0.1.3',
     'category': 'Localization',
     'license': 'AGPL-3',
     'depends': [

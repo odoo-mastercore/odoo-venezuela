@@ -44,6 +44,7 @@ class AccountTax(models.Model):
             withholdable_invoiced_amount = 0.00
             distribution = []
             foreign_currency = False
+            iva_retencion = 0.00
             if to_pay:
                 selected_debt_taxed = 0.0
                 if to_pay.currency_id.id != payment_group.company_id.currency_id.id:
@@ -64,14 +65,14 @@ class AccountTax(models.Model):
                                 selected_debt_taxed += abg.amount_currency
                             else:
                                 selected_debt_taxed += abg.debit
+                            tax = abg.name.split('(')[1].split('%')[0]
                             distribution.append((0, 0, {
                                 'invoice_amount': invoice_amount,
                                 'tax_amount': tax_amount,
-                                'alic': alicuota_retencion,
+                                'alic': float(tax),
                                 'withholding_amount': withholding_amount,
                             }))
                     if distribution:
-                        _logger.warning(distribution)
                         vals['withholding_distribution_ids'] = distribution
             currency_tax = selected_debt_taxed*alicuota
             vals['amount'] = currency_tax
