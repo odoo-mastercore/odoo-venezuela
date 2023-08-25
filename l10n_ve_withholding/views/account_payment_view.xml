@@ -22,20 +22,20 @@
         <field name="arch" type="xml">
             <tree>
                 <field name="payment_method_code" invisible="1"/>
-                <button 
-                    name="%(action_report_withholding_certificate)d" 
-                    icon="fa-print " 
-                    string="Print withholding voucher" 
-                    type="action" 
-                    attrs="{'invisible': ['|','|', 
+                <button
+                    name="%(action_report_withholding_certificate)d"
+                    icon="fa-print "
+                    string="Print withholding voucher"
+                    type="action"
+                    attrs="{'invisible': ['|','|',
                         ('payment_method_code', '!=', 'withholding'), ('partner_type', '!=', 'supplier'),
                         ('payment_method_description', '==', 'Retención de IVA en compras')
                     ]}"/>
-                <button 
-                    name="%(action_report_withholding_certificate_iva)d" 
-                    icon="fa-print " 
-                    string="Print withholding voucher" 
-                    type="action" 
+                <button
+                    name="%(action_report_withholding_certificate_iva)d"
+                    icon="fa-print "
+                    string="Print withholding voucher"
+                    type="action"
                     attrs="{'invisible': ['|','|',
                         ('payment_method_code', '!=', 'withholding'), ('partner_type', '!=', 'supplier'),
                         ('payment_method_description', '!=', 'Retención de IVA en compras')
@@ -43,4 +43,55 @@
             </tree>
         </field>
     </record>
+    <record id="view_account_payment_withholding_list" model="ir.ui.view">
+      <field name="name">inherit.payment.wittholding.list</field>
+      <field name="model">account.payment</field>
+      <field name="arch" type="xml">
+          <tree create="false" edit="false" sample="1" decoration-info="state == 'draft'" decoration-muted="state == 'cancel'">
+            <field name="company_currency_id" invisible="1"/>
+            <field name="date"/>
+            <field name="withholding_number"/>
+            <field name="name"/>
+            <field name="partner_id" string="Proveedor"/>
+            <field name="journal_id"/>
+            <field name="payment_method_line_id"/>
+            <field name="amount"/>
+            <field name="amount_company_currency"/>
+            <field name="amount_signed" string="Amount in Currency" groups="base.group_multi_currency" optional="hide"/>
+            <field name="currency_id" string="Payment Currency" groups="base.group_multi_currency" optional="hide"/>
+            <field name="state" widget="badge" decoration-info="state == 'draft'" decoration-success="state == 'posted'"/>
+        </tree>
+      </field>
+    </record>
+    <record id="action_view_account_payment_tree_withholding_iva" model="ir.actions.act_window">
+        <field name="name">Retenciones IVA</field>
+        <field name="res_model">account.payment</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('tax_withholding_id.withholding_type', '=', 'partner_tax')]</field>
+        <field name="view_ids"
+                   eval="[(5, 0, 0),(0, 0, {'view_mode': 'tree', 'view_id': ref('l10n_ve_withholding.view_account_payment_withholding_list')})]"/>
+    </record>
+    <record id="action_view_account_payment_tree_withholding_islr" model="ir.actions.act_window">
+        <field name="name">Retenciones ISLR</field>
+        <field name="res_model">account.payment</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('tax_withholding_id.withholding_type', '=', 'tabla_islr')]</field>
+        <field name="view_ids"
+                   eval="[(5, 0, 0),(0, 0, {'view_mode': 'tree', 'view_id': ref('l10n_ve_withholding.view_account_payment_withholding_list')})]"/>
+    </record>
+
+    <menuitem id="menu_view_account_payment_withholding_iva"
+        name="Retenciones IVA"
+        parent="account.menu_finance_payables"
+        action="action_view_account_payment_tree_withholding_iva"
+        sequence="20"
+    />
+    <menuitem id="menu_view_account_payment_withholding_islr"
+        name="Retenciones ISLR"
+        parent="account.menu_finance_payables"
+        action="action_view_account_payment_tree_withholding_islr"
+        sequence="21"
+    />
 </odoo>
