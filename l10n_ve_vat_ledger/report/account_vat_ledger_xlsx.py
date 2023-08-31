@@ -685,6 +685,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     sheet.write(row, 4, invoice.l10n_ve_document_number or 'FALSE', line)
 
                     if invoice.state == 'cancel':
+                        sheet.write(row, 4, '', line)
                         sheet.write(row, 5, '', line)
                         sheet.write(row, 6, '', line)
                         sheet.write(row, 7, 'ANULADA', line)
