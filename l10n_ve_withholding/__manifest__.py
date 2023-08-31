@@ -17,7 +17,7 @@
 
     'author': "SINAPSYS GLOBAL SA || MASTERCORE SAS",
     'website': "http://sinapsys.global",
-    'version': '16.0.0.1',
+    'version': '16.0.0.1.3',
     'category': 'Localization',
     'license': 'AGPL-3',
     'depends': [
@@ -43,6 +43,8 @@
         'views/seniat_partner_type_view.xml',
         'views/seniat_tabla_islr_view.xml',
         'views/account_payment_group_view.xml',
+        'views/product_template.xml',
+        'views/withholding_distribution_view.xml',
     ],
 
 }
