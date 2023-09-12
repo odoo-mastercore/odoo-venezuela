@@ -714,26 +714,15 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     # Número de Control
                     sheet.write(row, 4, invoice.l10n_ve_document_number or 'FALSE', line)
 
-<<<<<<< Updated upstream
                     if invoice.state == 'cancel':
                         sheet.write(row, 4, '', line)
                         sheet.write(row, 5, '', line)
                         sheet.write(row, 6, '', line)
                         sheet.write(row, 7, 'ANULADA', line)
-=======
-                    # Factura cancelada
-                    if invoice.state == 'cancel':
-                        sheet.write(row, 5, '', line)
-                        sheet.write(row, 6, '', line)
-                        sheet.write(row, 7, 'ANULADA', line)
-
-                    
->>>>>>> Stashed changes
                     else:
                         sheet.write(row, 5, '', line)
                         # Número Factura Afectada si es de debito o credito
                         if invoice.move_type == 'out_refund':
-<<<<<<< Updated upstream
                             name_inv = invoice.ref[invoice.ref.find(': ')+2:] or ''
                             if len(name_inv) > 7:
                                 name_inv = name_inv[:7]
@@ -748,10 +737,6 @@ class AccountVatLedgerXlsx(models.AbstractModel):
 
                             if inv_origin:
                                 sheet.write(row, 6, inv_origin.name, line)
-=======
-                            if invoice.reversed_entry_id:
-                                sheet.write(row, 6, invoice.reversed_entry_id.name, line)
->>>>>>> Stashed changes
                             else:
                                 sheet.write(row, 6, '', line)
                         elif invoice.debit_origin_id:
@@ -805,7 +790,6 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                                         base_imponible += linel.credit if linel.debit == 0 else -linel.debit
                                         if invoice.move_type == 'out_refund' or \
                                             invoice.move_type == 'in_refund' or (invoice.move_type == 'out_invoice' \
-<<<<<<< Updated upstream
                                                 and invoice.debit_origin_id):
                                             base_imponible += (linel.debit * -1.00) if linel.debit == 0 else 0
                                             if not invoice.debit_origin_id:
@@ -815,17 +799,6 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                                                 total_nota_debito_16 += base_imponible
                                         else:
                                             total_base_imponible_16 += base_imponible
-=======
-                                                and invoice.debit_origin_id):       
-                                            base_imponible += (linel.debit * -1.00) if linel.debit == 0 else 0
-                                            if not invoice.debit_origin_id:
-                                                total_nota_credito_16 += linel.debit * -1.00
-                                            else:
-                                                base_imponible += linel.credit
-                                                total_nota_debito_16 += linel.credit
-                                        else:
-                                            total_base_imponible_16 += linel.credit if linel.debit == 0 else -linel.debit
->>>>>>> Stashed changes
                                         alic_16 = '16%'
                                     elif linel.tax_ids[0].amount == 0.00:
                                         base_exento += linel.credit if linel.debit == 0 else -linel.debit
@@ -833,42 +806,24 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                                             or (invoice.move_type == 'out_invoice' and invoice.debit_origin_id):
                                             base_exento += linel.debit * -1.00 if linel.debit == 0 else 0
                                             if not invoice.debit_origin_id:
-<<<<<<< Updated upstream
                                                 total_base_exento_credito += base_exento
                                             else:
                                                 base_exento += linel.credit
                                                 total_base_exento_debito += base_exento
                                         else:
                                             total_base_exento += base_exento
-=======
-                                                total_base_exento_credito += linel.debit * -1.00
-                                            else:
-                                                base_exento += linel.credit
-                                                total_base_exento_debito += linel.credit
-                                        else:
-                                            total_base_exento += linel.credit if linel.debit == 0 else -linel.debit
->>>>>>> Stashed changes
                                     elif linel.tax_ids[0].amount == 8.00:
                                         base_imponible_8 += linel.credit if linel.debit == 0 else -linel.debit
                                         if invoice.move_type == 'out_refund' or invoice.move_type == 'in_refund' \
                                             or (invoice.move_type == 'out_invoice' and invoice.debit_origin_id):
                                             base_imponible_8 += linel.debit * -1.00 if linel.debit == 0 else 0
                                             if not invoice.debit_origin_id:
-<<<<<<< Updated upstream
                                                 total_nota_credito_8 += base_imponible_8
                                             else:
                                                 base_imponible_8 += linel.credit
                                                 total_nota_debito_8 += base_imponible_8
                                         else:
                                             total_base_imponible_8 += base_imponible_8
-=======
-                                                total_nota_credito_8 += linel.debit * -1.00
-                                            else:
-                                                base_imponible_8 += linel.credit
-                                                total_nota_debito_8 += linel.credit
-                                        else:
-                                            total_base_imponible_8 += linel.credit if linel.debit == 0 else -linel.debit
->>>>>>> Stashed changes
                                         alic_8 = '8%'
                                 elif linel.name == 'IVA (16.0%) ventas':
                                     iva_16 += linel.credit
@@ -896,7 +851,6 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                                     else:
                                         total_iva_8 += iva_8
                                     alic_8 = '8%'
-<<<<<<< Updated upstream
 
                         #Contribuyentes
                         if invoice.partner_id.l10n_latam_identification_type_id.is_vat:
@@ -931,42 +885,6 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                             total_base_imponible_no_contribuyente_8 += base_imponible_8 if base_imponible_8 else 0.00
                             total_iva_no_contribuyente_8 += iva_8 if iva_8 else 0.00
 
-=======
-                        
-                        #Contribuyentes
-                        if invoice.partner_id.l10n_latam_identification_type_id.is_vat:
-                            total_base_exento_contribuyente += base_exento if base_exento else 0.00
-                            total_base_imponible_contribuyente_16 += base_imponible if base_imponible else 0.00
-                            total_iva_contribuyente_16 += iva_16 if iva_16 else 0.00
-                            total_base_imponible_contribuyente_8 += base_imponible_8 if base_imponible_8 else 0.00
-                            total_iva_contribuyente_8 += iva_8 if iva_8 else 0.00
-
-                            sheet.write(row, 14, base_exento, line)
-                            sheet.write(row, 15, base_imponible, line)
-                            sheet.write(row, 16, alic_16, line)
-                            sheet.write(row, 17, iva_16, line)
-                            sheet.write(row, 18, base_imponible_8, line)
-                            sheet.write(row, 19, alic_8, line)
-                            sheet.write(row, 20, iva_8, line)
-
-                            sheet.write(row, 21, '', line)
-                            sheet.write(row, 22, '', line)
-                            sheet.write(row, 23, '', line)
-                            sheet.write(row, 24, '', line)
-                            sheet.write(row, 25, '', line)
-                            sheet.write(row, 26, '', line)
-                            sheet.write(row, 27, '', line)
-
-                        #No contribuyentes
-                        else:
-
-                            total_base_exento_no_contribuyente += base_exento if base_exento else 0.00
-                            total_base_imponible_no_contribuyente_16 += base_imponible if base_imponible else 0.00
-                            total_iva_no_contribuyente_16 += iva_16 if iva_16 else 0.00
-                            total_base_imponible_no_contribuyente_8 += base_imponible_8 if base_imponible_8 else 0.00
-                            total_iva_no_contribuyente_8 += iva_8 if iva_8 else 0.00
-
->>>>>>> Stashed changes
                             sheet.write(row, 14, '', line)
                             sheet.write(row, 15, '', line)
                             sheet.write(row, 16, '', line)
