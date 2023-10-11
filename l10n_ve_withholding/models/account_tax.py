@@ -92,15 +92,15 @@ class AccountTax(models.Model):
             to_pay = payment_group.to_pay_move_line_ids[0]
             selected_debt_untaxed = (to_pay.move_id.amount_untaxed_signed * -1.00)
             if to_pay:
-                product_off = ''
+                product_off = []
                 amount_off = 0.00
                 if to_pay.move_id.line_ids:
                     for li in to_pay.move_id.invoice_line_ids:
                         if li.product_id.product_tmpl_id.disable_islr:
-                            product_off = li.product_id.display_name
+                            product_off.append(li.product_id.display_name)
                     if product_off:
                         for abg in to_pay.move_id.line_ids:
-                            if abg.name == product_off:
+                            if abg.name in product_off:
                                 amount_off += abg.debit
                         selected_debt_untaxed = (
                             to_pay.move_id.amount_untaxed_signed * -1.00) - amount_off
