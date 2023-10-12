@@ -97,7 +97,7 @@ class AccountTax(models.Model):
                 if to_pay.move_id.line_ids:
                     for li in to_pay.move_id.invoice_line_ids:
                         if li.product_id.product_tmpl_id.disable_islr:
-                            product_off.append(li.product_id.display_name)
+                            product_off.append(li.name)
                     if product_off:
                         for abg in to_pay.move_id.line_ids:
                             if abg.name in product_off:
