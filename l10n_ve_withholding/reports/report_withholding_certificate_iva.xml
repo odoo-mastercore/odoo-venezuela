@@ -83,6 +83,7 @@
                             <th class="text-center"><strong>Compras sin crédito</strong></th>
                             <th class="text-center"><strong>Base Imponible</strong></th>
                             <th class="text-center"><strong>% Alic</strong></th>
+                            <th class="text-center"><strong>% Ret</strong></th>
                             <th class="text-center"><strong>Monto IVA</strong></th>
                             <th class="text-center"><strong>IVA Retenido</strong></th>
                         </tr>
@@ -108,6 +109,7 @@
                                 <th class="text-center">0,00</th>
                                 <th class="text-center"><span t-field="distribution.invoice_amount"/></th>
                                 <th class="text-center"><span t-field="distribution.alic"/></th>
+                                <th class="text-center"><span t-field="o.partner_id.vat_retention"/></th>
                                 <th class="text-center"><span t-field="distribution.tax_amount"/></th>
                                 <th class="text-center"><span t-field="distribution.withholding_amount"/></th>
                             </tr>
