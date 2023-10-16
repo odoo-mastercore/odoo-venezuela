@@ -100,7 +100,7 @@ class AccountTax(models.Model):
                             product_off.append(li.name)
                     if product_off:
                         for abg in to_pay.move_id.line_ids:
-                            if abg.name == product_off:
+                            if abg.name in product_off:
                                 amount_off += abg.debit
                         selected_debt_untaxed = (
                             to_pay.move_id.amount_untaxed_signed * -1.00) - amount_off
