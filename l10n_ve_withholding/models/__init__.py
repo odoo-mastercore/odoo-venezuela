@@ -15,3 +15,4 @@ from . import res_partner
 from . import account_payment
 from . import product_template
 from . import withholding_distribution
+from . import withholding_distribution_islr
