@@ -15,6 +15,7 @@ class AccountPayment(models.Model):
 
     #created to record retention percentages
     comment_withholding = fields.Char('Comment withholding')
+    concept_withholding = fields.Char('Concept withholding')
     withholding_distribution_ids = fields.One2many(
         'withholding.distribution', 'payment_id',
         string='distribucion de retencion'

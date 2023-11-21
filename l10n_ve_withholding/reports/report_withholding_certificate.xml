@@ -14,7 +14,7 @@
                         <h4><b><t t-esc="report_name"/></b></h4>
                         <p style="font-size: 14px;">
                             <b>N° de Comprobante: </b><span t-esc="report_number"/><br/>
-                            <b>Fecha de emisión: </b><span t-esc="report_date"/><br/>
+                            <b>Fecha de emisión: </b><span t-esc="report_date.strftime('%d-%m-%Y')"/><br/>
                             <b>Periodo Fiscal: </b><span t-esc="o._get_fiscal_period(report_date)"/>
                         </p>
                     </div>
@@ -53,7 +53,7 @@
                                 Por Concepto:
                             </td>
                             <td class="text-left">
-                                <span t-field="o.payment_group_id.regimen_islr_id.code_seniat"/> - <span t-field="o.payment_group_id.regimen_islr_id.activity_name"/>
+                                <span t-field="o.concept_withholding"/>
                             </td>
                         </tr>
                         <tr>

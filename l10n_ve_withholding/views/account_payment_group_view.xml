@@ -13,25 +13,27 @@
                 <field name="communication" position="after">
                     <field name="iva"/>
                     <field name="islr" attrs="{'invisible': [('partner_regimen_islr_ids', '=', [])]}"/>
-                    <field 
-                        name="regimen_islr_id" 
-                        attrs="{'invisible': [('islr', '!=', True)], 'required': [('islr', '!=', False), ('state', 'in', ['draft', 'confirmed'])]}" 
-                        domain="[('id', 'in', partner_regimen_islr_ids)]" 
-                        options='{"no_open": True, "no_create": True}'/>                        
+                     <field name="withholding_distributin_islr"
+                        attrs="{'invisible': [('islr', '!=', True)], 'required': [('islr', '!=', False), ('state', 'in', ['draft', 'confirmed'])]}" />
+                    <field
+                        name="regimen_islr_id"
+                        attrs="{'invisible': ['|',('islr', '!=', True),('withholding_distributin_islr', '!=', False)], 'required': [('islr', '!=', False),('withholding_distributin_islr', '!=', True), ('state', 'in', ['draft', 'confirmed'])]}"
+                        domain="[('id', 'in', partner_regimen_islr_ids)]"
+                        options='{"no_open": True, "no_create": True}'/>
                 </field>
                 <field name="selected_debt" position="replace">
                     <field name="debt_multicurrency" invisible="1"/>
                     <field name="selected_debt_currency_id" invisible="1" />
-                    <field 
-                        name="selected_debt" 
-                        attrs="{'invisible': [('state', 'not in', ['draft', 'confirmed'])]}" 
+                    <field
+                        name="selected_debt"
+                        attrs="{'invisible': [('state', 'not in', ['draft', 'confirmed'])]}"
                         options="{'currency_field': 'currency_id'}"/>
-                    <field 
-                        name="selected_finacial_debt" 
+                    <field
+                        name="selected_finacial_debt"
                         attrs="{'invisible': ['|',('debt_multicurrency', '=', False),  ('state', 'not in', ['draft', 'confirmed'])]}" 
                         options="{'currency_field': 'currency_id'}"/>
-                    <field 
-                        name="selected_finacial_debt_currency" 
+                    <field
+                        name="selected_finacial_debt_currency"
                         attrs="{'invisible': ['|',('debt_multicurrency', '=', False),  ('state', 'not in', ['draft', 'confirmed'])]}" 
                         options="{'currency_field': 'selected_debt_currency_id'}"/>
                 </field>
@@ -46,6 +48,23 @@
                             '|','|', ('partner_type', '!=', 'supplier'), ('state', 'not in', ['draft', 'confirmed']),
                             ('iva', '!=', True),('islr', '!=', True)
                         ]}"/>
+                </xpath>
+                <xpath expr="//notebook" position="inside">
+                    <page name="withholding_distributin_islr" string="Distribucion ISLR" attrs="{'invisible': [('withholding_distributin_islr', '!=', True)]}">
+                        <group colspan="2">
+                            <field name="withholding_distributin_islr_ids">
+                                <tree string="Lineas de factura" create="false" delete="0" editable="bottom">
+                                    <field name="payment_group_id" invisible="1" />
+                                    <field name="move_line_id" invisible="1" />
+                                    <field name="product_id" />
+                                    <field name="price_subtotal" />
+                                    <field name="currency_id" />
+                                    <field name="regimen_islr_id" domain="[('id', 'in', partner_regimen_islr_ids)]"/>
+                                    <field name="partner_regimen_islr_ids" invisible="1" />
+                                </tree>
+                            </field>
+                        </group>
+                    </page>
                 </xpath>
             </field>
         </record>
