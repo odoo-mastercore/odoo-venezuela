@@ -150,8 +150,7 @@ class AccountTax(models.Model):
             else:
                 withholding = base_withholding * withholding_percentage
 
-            vals['concept_withholding'] = str(regimen.code_seniat)+' -
-             '+str(regimen.activity_name)
+            vals['concept_withholding'] = str(regimen.code_seniat)+' - '+str(regimen.activity_name)
             vals['comment_withholding'] = str(withholding_percentage*100)+"%"
             vals['total_amount'] = base
             vals['withholdable_invoiced_amount'] = base
