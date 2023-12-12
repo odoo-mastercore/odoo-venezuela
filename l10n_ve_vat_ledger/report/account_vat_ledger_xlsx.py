@@ -333,7 +333,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                             coincident_date = [tup for tup in retenciones if date_reference == tup.date ]
                             if coincident_date:
                                 for reten in coincident_date:
-                                    total_iva_16_retenido += reten.amount if reten.amount else reten.amount_company_currency
+                                    total_iva_16_retenido += reten.amount if reten.currency_id == reten.company_id.currency_id else reten.amount_company_currency
                                     i += 1
                                     # codigo 
                                     sheet.write(row, 0, i, line)
