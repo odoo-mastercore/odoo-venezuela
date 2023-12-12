@@ -394,7 +394,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                                     
 
                                     #Retenciones
-                                    sheet.write(row, 25, reten.amount if reten.amount else reten.amount_company_currency, line)
+                                    sheet.write(row, 25, reten.amount if reten.currency_id == reten.company_id.currency_id else reten.amount_company_currency, line)
                                     ###### IGTF
                                     sheet.write(row, 26, '', line)
                                     retenciones.remove(reten)
