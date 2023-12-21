@@ -433,21 +433,21 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     sheet.write(row, 5, '', line)
 
                     # Número Factura Afectada si es de debito o credito
-                    if invoice.move_type == 'in_refund' or invoice.move_type == 'out_refund':
-                        move_reconcileds = invoice._get_reconciled_info_JSON_values()
-                        inv_info = ''
-                        moves = []
-                        if move_reconcileds:
-                            for m in move_reconcileds:
-                                moves.append(m['move_id'])
-                            move_ids = self.env['account.move'].search(
-                                [('id', 'in', moves)])
-                            for mov in move_ids:
-                                if mov.move_type == 'in_invoice' and mov.state == 'posted':
-                                    inv_info = mov.ref
-                            sheet.write(row, 6, inv_info, line)
-                    else:
-                        sheet.write(row, 6, '', line)
+                    # if invoice.move_type == 'in_refund' or invoice.move_type == 'out_refund':
+                    #     move_reconcileds = invoice._get_reconciled_info_JSON_values()
+                    #     inv_info = ''
+                    #     moves = []
+                    #     if move_reconcileds:
+                    #         for m in move_reconcileds:
+                    #             moves.append(m['move_id'])
+                    #         move_ids = self.env['account.move'].search(
+                    #             [('id', 'in', moves)])
+                    #         for mov in move_ids:
+                    #             if mov.move_type == 'in_invoice' and mov.state == 'posted':
+                    #                 inv_info = mov.ref
+                    #         sheet.write(row, 6, inv_info, line)
+                    # else:
+                    sheet.write(row, 6, '', line)
 
                     # Planilla de importacion
                     sheet.write(row, 7, '', line)
