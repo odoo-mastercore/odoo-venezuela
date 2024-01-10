@@ -25,7 +25,7 @@
                 <button
                     name="%(action_report_withholding_certificate)d"
                     icon="fa-print "
-                    string="Print withholding voucher"
+                    string="Print withholding voucher ISLR"
                     type="action"
                     attrs="{'invisible': ['|','|',
                         ('payment_method_code', '!=', 'withholding'), ('partner_type', '!=', 'supplier'),
@@ -34,7 +34,7 @@
                 <button
                     name="%(action_report_withholding_certificate_iva)d"
                     icon="fa-print "
-                    string="Print withholding voucher"
+                    string="Print withholding voucher IVA"
                     type="action"
                     attrs="{'invisible': ['|','|',
                         ('payment_method_code', '!=', 'withholding'), ('partner_type', '!=', 'supplier'),
