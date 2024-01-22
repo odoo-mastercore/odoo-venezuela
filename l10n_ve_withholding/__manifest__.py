@@ -21,7 +21,7 @@
     'category': 'Localization',
     'license': 'AGPL-3',
     'depends': [
-        'account', 'l10n_ve_base','account_withholding_automatic',],
+        'account', 'l10n_ve_base','account_withholding_automatic','account_debit_note'],
     'data': [
         'data/account_tax_withholding_template.xml',
         'data/seniat_factor.xml',
