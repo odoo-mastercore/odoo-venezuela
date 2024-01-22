@@ -25,6 +25,7 @@ class AccountMoveReversal(models.TransientModel):
             'invoice_user_id': move.invoice_user_id.id,
             'l10n_ve_document_number': ""
         }
+    
 
 
     #TODO: ver si esto es necesario.
