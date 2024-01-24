@@ -56,8 +56,8 @@ class AccountTax(models.Model):
                 if to_pay.move_id.line_ids:
                     for abg in to_pay.move_id.line_ids:
                         if abg.name in taxes:
-                            withholdable_invoiced_amount += abg.tax_base_amount
-                            invoice_amount = abg.tax_base_amount
+                            withholdable_invoiced_amount += abg.debit
+                            invoice_amount = abg.debit
                             tax_amount = abg.debit
                             alic = alicuota
                             withholding_amount = abg.debit*alicuota
