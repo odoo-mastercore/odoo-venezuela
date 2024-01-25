@@ -10,7 +10,7 @@
 from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
 import logging
-
+#16.0.1
 class UniVat(models.Model):
     _inherit = 'res.partner'
 
