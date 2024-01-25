@@ -7,11 +7,10 @@
         <field name="model">res.partner</field>
         <field name="arch" type="xml">
             <field name="property_supplier_payment_term_id" position="after">
-                <field
-                  name="vat_retention"
+                <field 
+                  name="vat_retention" 
                   string="Retención I.V.A" />
                 <field name="seniat_partner_type_id" />
-
           </field>
           <xpath expr="//group[@name='purchase']" position="after">
               <group name="regimen_islr" string="Régimen ISLR Aplicar" attrs="{'invisible': [('seniat_partner_type_id', '==', False)]}">

@@ -51,7 +51,7 @@ class AccountPayment(models.Model):
     @api.onchange('date')
     def _onchange_compute_amount_currency_date(self):
         for rec in self:
-            if rec.other_currency:
+            if rec.other_currency and rec.payment_group_id:
                 rec.amount_company_currency = rec.currency_id._convert(
                     rec.amount, rec.company_id.currency_id,
                     rec.company_id, rec.date)
