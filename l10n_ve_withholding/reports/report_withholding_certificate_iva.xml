@@ -27,7 +27,6 @@
                             <b>N° de Comprobante: </b><span t-esc="report_number"/><br/>
                             <b>Fecha de emisión: </b><span t-esc="report_date.strftime('%d-%m-%Y')"/><br/>
                             <b>Periodo Fiscal: </b><span t-esc="o._get_fiscal_period(report_date)"/>
-                            
                         </p>
                     </div>
                 </div><br/>

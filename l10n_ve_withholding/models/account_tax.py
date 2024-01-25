@@ -85,7 +85,6 @@ class AccountTax(models.Model):
             vals['period_withholding_amount'] = amount
 
         elif self.withholding_type == 'tabla_islr':
-            regimen = payment_group.regimen_islr_id
             ctx = self._context.copy()
             default_regimen_islr_id = ctx.get('default_regimen_islr_id', None)
             if default_regimen_islr_id:
@@ -149,7 +148,6 @@ class AccountTax(models.Model):
                                withholding_percentage) - subtracting
             else:
                 withholding = base_withholding * withholding_percentage
-
             vals['concept_withholding'] = str(regimen.code_seniat)+' - '+str(regimen.activity_name)
             vals['comment_withholding'] = str(withholding_percentage*100)+"%"
             vals['total_amount'] = base
@@ -202,7 +200,11 @@ class AccountTax(models.Model):
                 domain.append(('id', '=', payment_group.id))
                 if payment_group.search(domain):
                     raise ValidationError(tax.withholding_user_error_message)
+            _logger.warning('------------------------------- PENDEINTE')
+            _logger.warning(payment_group)
             if payment_group.withholding_distributin_islr_ids:
+                _logger.warning('-------------------------')
+                _logger.warning(payment_group.withholding_distributin_islr_ids.mapped('regimen_islr_id'))
                 if payment_withholding:
                     payment_withholdings = self.env[
                     'account.payment'].search([

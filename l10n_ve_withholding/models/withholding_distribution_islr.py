@@ -42,3 +42,4 @@ class withholdingDistributionIslr(models.Model):
         'seniat.tabla.islr',
         related='payment_group_id.partner_regimen_islr_ids',
     )
+
