@@ -21,5 +21,5 @@ class UniVat(models.Model):
                 continue
             if record.same_vat_partner_id:
                 raise ValidationError(
-                    _("El VAT %s ya existe actualmente en otro proveedor.") % record.vat
+                    _("El número de identificación (%s) ya existe actualmente en otro contacto.") % record.vat
                 )
