@@ -23,4 +23,5 @@ Odoo Venezuela
 
 ### Colaboradores:
 - Reydi Hernández <rhe@sinapsys.global>
+- Elvis Paez <epa@sinapsys.global>
 - Freddy Arraez <far@sinapsys.global>
