@@ -359,11 +359,7 @@ msgstr "Calcular Retenciones"
 msgid "Caracteristicas"
 msgstr "Características"
 
-#. module: l10n_ve_withholding
-#: model:ir.actions.report,name:l10n_ve_withholding.action_report_withholding_certificate
-#: model:ir.actions.report,name:l10n_ve_withholding.action_report_withholding_certificate_iva
-msgid "Certificado de Retención"
-msgstr "Certificado de Retención"
+
 
 #. module: l10n_ve_withholding
 #: model:ir.model.fields,help:l10n_ve_withholding.field_account_bank_statement_import_journal_creation__sequence_control_id
@@ -681,9 +677,13 @@ msgstr "Porcentaje de retención"
 
 #. module: l10n_ve_withholding
 #: model_terms:ir.ui.view,arch_db:l10n_ve_withholding.view_account_payment_from_group_tree
-#: model_terms:ir.ui.view,arch_db:l10n_ve_withholding.view_account_payment_tree
-msgid "Print withholding voucher"
-msgstr "Imprimir comprobante de retención"
+msgid "Print withholding voucher ISLR"
+msgstr "Imprimir comprobante de ISLR"
+
+#. module: l10n_ve_withholding
+#: model_terms:ir.ui.view,arch_db:l10n_ve_withholding.view_account_payment_from_group_tree
+msgid "Print withholding voucher IVA"
+msgstr "Imprimir comprobante de IVA"
 
 #. module: l10n_ve_withholding
 #: model:ir.model.fields,field_description:l10n_ve_withholding.field_seniat_ut__ref

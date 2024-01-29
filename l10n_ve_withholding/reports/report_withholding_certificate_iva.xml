@@ -159,15 +159,16 @@
         <field name="orientation">Landscape</field>
     </record>
 
-    <report
-        string="Certificado de Retención"
-        id="action_report_withholding_certificate_iva"
-        model="account.payment"
-        report_type="qweb-pdf"
-        name="l10n_ve_withholding.report_withholding_certificate_iva"
-        file="l10n_ve_withholding.report_withholding_certificate_iva"
-        print_report_name="'Certificado de Retención - %s' % (object.withholding_number or '')"
-        paperformat="report_qweb_paperformat_l"
-    />
+    <record id="action_report_withholding_certificate_iva" model="ir.actions.report">
+            <field name="name">Certificado de Retención de IVA</field>
+            <field name="model">account.payment</field>
+            <field name="binding_model_id" ref="model_account_payment"/>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">l10n_ve_withholding.report_withholding_certificate_iva</field>
+            <field name="report_file">l10n_ve_withholding.report_withholding_certificate_iva</field>
+            <field name="attachment">'Certificado de Retención - %s' % (object.withholding_number or '')</field>
+            <field name="binding_type">report</field>
+            <field name="paperformat_id" ref="report_qweb_paperformat_l"/>
+    </record>
 
 </odoo>
