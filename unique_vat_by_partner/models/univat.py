@@ -9,17 +9,31 @@
 
 from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
-import logging
 
 class UniVat(models.Model):
     _inherit = 'res.partner'
 
-    @api.constrains("vat")
-    def _check_vat_unique(self):
-        for record in self:
-            if record.parent_id or not record.vat:
-                continue
-            if record.same_vat_partner_id:
-                raise ValidationError(
-                    _("El VAT %s ya existe actualmente en otro proveedor.") % record.vat
-                )
+    @api.model_create_multi
+    def create(self, vals_list):
+        recs = super(UniVat, self).create(vals_list)
+
+        for rec in recs:
+            if rec.vat:
+                same_vat = self.env['res.partner'].search([
+                    ('vat', '=', rec.vat),
+                    ('id', '!=', rec.id),
+                    ('l10n_latam_identification_type_id', '=',
+                        rec.l10n_latam_identification_type_id.id),
+                ])
+
+                if same_vat:
+                    child = []
+                    if rec.child_ids:
+                        child = [p.id for p in rec.child_ids]
+                    if rec.parent_id:
+                        child.append(rec.parent_id.id)
+                    if same_vat.id not in child:
+                        raise ValidationError(
+                            _('Ya se encuentra registrado el Número de Identificación %s para el Contacto (%s)') % (rec.vat, same_vat.name))
+
+        return recs
