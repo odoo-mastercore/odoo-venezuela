@@ -37,9 +37,6 @@ class AccountTax(models.Model):
             vals = super(AccountTax, self).get_withholding_vals(
                 payment_group, force_withholding_amount_type)
             base_amount = payment_group.selected_debt_taxed
-            #_logger.warning('##################################### LOGGER #####################')
-            #_logger.warning(base_amount)
-            #_logger.warning(Odoo-STOP-SERVER)
             base_invoice = [
                 x.balance * -1.0 for x in payment_group.to_pay_move_line_ids][0]
             amount = base_amount * (alicuota)
@@ -99,10 +96,7 @@ class AccountTax(models.Model):
                 payment_group)
             default_regimen_islr_id = ctx.get('default_regimen_islr_id', None)
             to_pay = payment_group.to_pay_move_line_ids[0]
-            selected_debt_untaxed = to_pay.move_id.\
-                amount_untaxed_signed if to_pay.move_id.\
-                amount_untaxed_signed >= 0 else -to_pay.\
-                move_id.amount_untaxed_signed
+            selected_debt_untaxed = (to_pay.move_id.amount_untaxed_signed * -1.00)
             if default_regimen_islr_id:
                 lines_base = 0
                 for line in payment_group.withholding_distributin_islr_ids:
@@ -120,11 +114,9 @@ class AccountTax(models.Model):
                         if product_off:
                             for abg in to_pay.move_id.line_ids:
                                 if abg.name in product_off:
-                                    if to_pay.move_id.move_type == 'in_refund':
-                                        amount_off += abg.credit
-                                    else:
-                                        amount_off += abg.debit
-                            selected_debt_untaxed = selected_debt_untaxed - amount_off
+                                    amount_off += abg.debit
+                            selected_debt_untaxed = (
+                                to_pay.move_id.amount_untaxed_signed * -1.00) - amount_off
             base = selected_debt_untaxed
             base_withholding = base * (
                 regimen.withholding_base_percentage / 100)
