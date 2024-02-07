@@ -56,18 +56,18 @@ class AccountTax(models.Model):
                 if to_pay.move_id.line_ids:
                     for abg in to_pay.move_id.line_ids:
                         if abg.name in taxes:
-                            withholdable_invoiced_amount += abg.debit
-                            invoice_amount = abg.debit
                             tax_amount = abg.debit
                             alic = alicuota
                             withholding_amount = abg.debit*alicuota
+                            for abg_base in to_pay.move_id.line_ids.filtered(lambda x: x.tax_ids.name in [abg.name]):
+                                withholdable_invoiced_amount += abg_base.debit
                             if foreign_currency:
                                 selected_debt_taxed += abg.amount_currency
                             else:
                                 selected_debt_taxed += abg.debit
                             tax = abg.name.split('(')[1].split('%')[0]
                             distribution.append((0, 0, {
-                                'invoice_amount': invoice_amount,
+                                'invoice_amount': withholdable_invoiced_amount,
                                 'tax_amount': tax_amount,
                                 'alic': float(tax),
                                 'withholding_amount': withholding_amount,
