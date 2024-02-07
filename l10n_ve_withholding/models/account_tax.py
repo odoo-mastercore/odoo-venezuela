@@ -59,9 +59,10 @@ class AccountTax(models.Model):
                             tax_amount = abg.debit
                             alic = alicuota
                             withholding_amount = abg.debit*alicuota
+                            invoice_amount = 0.00
                             for abg_base in to_pay.move_id.line_ids.filtered(lambda x: x.tax_ids.name in [abg.name]):
                                 withholdable_invoiced_amount += abg_base.debit
-                                invoice_amount = abg_base.debit
+                                invoice_amount += abg_base.debit
                             if foreign_currency:
                                 selected_debt_taxed += abg.amount_currency
                             else:
