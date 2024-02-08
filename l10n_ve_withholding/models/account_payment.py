@@ -58,7 +58,7 @@ class AccountPayment(models.Model):
 
     def action_post(self):
         for pay in self:
-            if pay.payment_group_id:
+            if pay.payment_group_id and pay.payment_group_id.to_pay_move_line_ids:
                 to_pay = pay.payment_group_id.to_pay_move_line_ids[0]
                 if to_pay.move_id.move_type == 'in_refund' and  pay.computed_withholding_amount:
                     pay.write({
