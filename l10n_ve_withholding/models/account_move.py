@@ -28,18 +28,20 @@ class AccountMove(models.Model):
         'Retencion de ISLR aplicada', compute='_compute_applied_withholding',
         store=True, copy=False, default=False)
 
-    @api.depends('amount_residual', 'amount_residual_signed',)
+
+    @api.depends('amount_residual','amount_residual_signed',)
     def _compute_applied_withholding(self):
         for rec in self:
             applied_withholding_tax = False
             applied_withholding_islr = False
             if rec.move_type in ['in_invoice'] and rec.payment_group_ids:
                 if rec._get_reconciled_payments().mapped(
-                        'payment_group_id').filtered(lambda x: x.iva == True):
+                    'payment_group_id').filtered(lambda x: x.iva == True):
                     applied_withholding_tax = True
                 if rec._get_reconciled_payments().mapped(
                         'payment_group_id').filtered(lambda x: x.islr == True):
                     applied_withholding_islr = True
+
             rec.applied_withholding_tax = applied_withholding_tax
             rec.applied_withholding_islr = applied_withholding_islr
 

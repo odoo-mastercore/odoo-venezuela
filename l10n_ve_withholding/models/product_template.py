@@ -14,3 +14,4 @@ class ProductTemplate(models.Model):
 
 
     disable_islr = fields.Boolean('No sujeto a ISLR')
+

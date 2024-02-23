@@ -30,19 +30,19 @@
                         options="{'currency_field': 'currency_id'}"/>
                     <field
                         name="selected_finacial_debt"
-                        attrs="{'invisible': ['|',('debt_multicurrency', '=', False),  ('state', 'not in', ['draft', 'confirmed'])]}"
+                        attrs="{'invisible': ['|',('debt_multicurrency', '=', False),  ('state', 'not in', ['draft', 'confirmed'])]}" 
                         options="{'currency_field': 'currency_id'}"/>
                     <field
                         name="selected_finacial_debt_currency"
-                        attrs="{'invisible': ['|',('debt_multicurrency', '=', False),  ('state', 'not in', ['draft', 'confirmed'])]}"
+                        attrs="{'invisible': ['|',('debt_multicurrency', '=', False),  ('state', 'not in', ['draft', 'confirmed'])]}" 
                         options="{'currency_field': 'selected_debt_currency_id'}"/>
                 </field>
 
                 <xpath expr="//button[@name='compute_withholdings']" position="replace">
-
-                    <button name="compute_withholdings"
-                        string="Calcular Retenciones"
-                        type="object"
+                    
+                    <button name="compute_withholdings" 
+                        string="Calcular Retenciones" 
+                        type="object" 
                         confirm="El computar la retención realizara un solo registro por la factura correspondiente, para ello solo puede pagar una factura a la vez."
                         attrs="{'invisible': [
                             '|','|', ('partner_type', '!=', 'supplier'), ('state', 'not in', ['draft', 'confirmed']),

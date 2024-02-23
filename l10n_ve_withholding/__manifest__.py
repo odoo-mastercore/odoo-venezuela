@@ -10,14 +10,14 @@
     'description': """
         **Localización VENEZUELA Withholding**
 
-        ¡Felicidades!. Este es el módulo Withholding para la implementación de 
+        ¡Felicidades!. Este es el módulo Withholding para la implementación de
         la **Localización Venezuela** que agrega características y datos
         necesarios para un correcto ejercicio fiscal de su empresa.
     """,
 
     'author': "SINAPSYS GLOBAL SA || MASTERCORE SAS",
     'website': "http://sinapsys.global",
-    'version': '15.0.0.7',
+    'version': '15.0.0.11',
     'category': 'Localization',
     'license': 'AGPL-3',
     'depends': [
@@ -43,7 +43,7 @@
         'views/seniat_partner_type_view.xml',
         'views/seniat_tabla_islr_view.xml',
         'views/account_payment_group_view.xml',
-        'views/product_template_view.xml',
+        'views/product_template.xml',
         #'views/withholding_distribution_view.xml',
     ],
 

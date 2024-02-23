@@ -85,3 +85,13 @@ class AccountPayment(models.Model):
             lines = (payment.move_id.line_ids + paired_payment.move_id.line_ids).filtered(
                 lambda l: l.account_id == payment.destination_account_id and not l.reconciled)
             lines.reconcile()
+
+    def action_post(self):
+        for pay in self:
+            if pay.payment_group_id and pay.payment_group_id.to_pay_move_line_ids:
+                to_pay = pay.payment_group_id.to_pay_move_line_ids[0]
+                if to_pay.move_id.move_type == 'in_refund' and  pay.computed_withholding_amount:
+                    pay.write({
+                        'payment_type': 'inbound',
+                    })
+        return super(AccountPayment, self).action_post()

@@ -6,7 +6,7 @@
                 <t t-set="report_date" t-value="o.date"/>
                 <t t-set="report_number" t-value="o.withholding_number or o.name"/>
                 <t t-set="report_name" t-value="'CERTIFICADO DE RETENCIÓN DEL IMPUESTO AL VALOR AGREGADO IVA'"/>
-                <!-- <t t-set="report_subname"
+                <!-- <t t-set="report_subname" 
                     t-value=""/> -->
             <div class="page">
                 <div>
@@ -27,7 +27,7 @@
                             <b>N° de Comprobante: </b><span t-esc="report_number"/><br/>
                             <b>Fecha de emisión: </b><span t-esc="report_date.strftime('%d-%m-%Y')"/><br/>
                             <b>Periodo Fiscal: </b><span t-esc="o._get_fiscal_period(report_date)"/>
-
+                            
                         </p>
                     </div>
                 </div><br/>
@@ -83,6 +83,7 @@
                             <th class="text-center"><strong>Compras sin crédito</strong></th>
                             <th class="text-center"><strong>Base Imponible</strong></th>
                             <th class="text-center"><strong>% Alic</strong></th>
+                            <th class="text-center"><strong>% Ret</strong></th>
                             <th class="text-center"><strong>Monto IVA</strong></th>
                             <th class="text-center"><strong>IVA Retenido</strong></th>
                         </tr>
@@ -93,28 +94,36 @@
                                 <th class="text-center">1</th>
                                 <th class="text-center"><span t-field="o.payment_group_id.to_pay_move_line_ids[0].move_id.invoice_date"/></th>
                                 <t t-if="o.payment_group_id.state == 'draft'">
-                                    <th class="text-center"><span t-field="o.payment_group_id.to_pay_move_line_ids[0].move_id.ref"/></th>
+                                    <th class="text-center" t-if="not o.payment_group_id.to_pay_move_line_ids[0].move_id.reversed_entry_id"><span t-field="o.payment_group_id.to_pay_move_line_ids[0].move_id.ref"/></th>
+                                    <th t-else=""></th>
                                     <th class="text-center"><span t-field="o.payment_group_id.to_pay_move_line_ids[0].move_id.l10n_ve_document_number"/></th>
                                 </t>
                                 <t t-else="">
-                                    <th class="text-center"><span t-field="o.payment_group_id.matched_move_line_ids[0].move_id.ref"/></th>
+                                    <th class="text-center" t-if="not o.payment_group_id.to_pay_move_line_ids[0].move_id.reversed_entry_id"><span t-field="o.payment_group_id.matched_move_line_ids[0].move_id.ref"/></th>
+                                    <th t-else=""></th>
                                     <th class="text-center"><span t-field="o.payment_group_id.matched_move_line_ids[0].move_id.l10n_ve_document_number"/></th>
                                 </t>
                                 <th class="text-center"></th>
-                                <th class="text-center"></th>
+                                <th class="text-center" t-if="o.payment_group_id.to_pay_move_line_ids[0].move_id.reversed_entry_id"><span t-field="o.payment_group_id.matched_move_line_ids[0].move_id.ref"/></th>
                                 <th class="text-center">01</th>
-                                <th class="text-center"></th>
-                                <th class="text-center"><span t-field="o.total_amount"/></th>
+                                <t t-if="o.payment_group_id.state != 'draft' and o.payment_group_id.matched_move_line_ids and o.payment_group_id.matched_move_line_ids[0].move_id.reversed_entry_id">
+                                    <th class="text-center"><span t-esc="o.payment_group_id.matched_move_line_ids[0].move_id.reversed_entry_id.ref"/></th>
+                                </t>
+                                <t t-else="">
+                                    <th class="text-center"></th>
+                                </t>
+                                <th class="text-center"><span t-esc="o.total_amount if not o.total_amount &lt; 0 else o.total_amount * -1"/></th>
                                 <th class="text-center">0,00</th>
                                 <th class="text-center"><span t-field="distribution.invoice_amount"/></th>
                                 <th class="text-center"><span t-field="distribution.alic"/></th>
-                                <th class="text-center"><span t-field="distribution.tax_amount"/></th>
-                                <th class="text-center"><span t-field="distribution.withholding_amount"/></th>
+                                <th class="text-center"><span t-field="o.partner_id.vat_retention"/></th>
+                                <th class="text-center"><span t-field="o.withholdable_base_amount"/></th>
+                                <th class="text-center"><span t-field="o.computed_withholding_amount"/></th>
                             </tr>
                         </t>
                     </tbody>
                 </table>
-
+                
                 <br/><br/><br/>
             </div>
             <div class="row">
