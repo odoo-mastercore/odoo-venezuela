@@ -61,10 +61,13 @@ class AccountTax(models.Model):
                             tax_amount = abg.debit
                             alic = alicuota
                             withholding_amount = abg.debit*alicuota
+                            for abg_base in to_pay.move_id.line_ids.filtered(lambda x: x.tax_ids.name in [abg.name]):
+                                withholdable_invoiced_amount += abg_base.debit if to_pay.move_id.move_type == 'in_refund' else abg_base.credit
+                                invoice_amount += abg_base.debit if to_pay.move_id.move_type == 'in_refund' else abg_base.credit
                             if foreign_currency:
-                                selected_debt_taxed += abg.amount_currency
+                                selected_debt_taxed += abg.amount_currency if abg.amount_currency  >= 0 else -abg.amount_currency
                             else:
-                                selected_debt_taxed += abg.debit
+                                selected_debt_taxed += abg_base.debit if to_pay.move_id.move_type == 'in_refund' else abg_base.credit
                             tax = abg.name.split('(')[1].split('%')[0]
                             distribution.append((0, 0, {
                                 'invoice_amount': invoice_amount,
