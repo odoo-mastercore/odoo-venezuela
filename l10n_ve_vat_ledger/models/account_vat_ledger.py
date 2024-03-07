@@ -75,12 +75,9 @@ class AccountVatLedger(models.Model):
     invoice_ids = fields.Many2many(
         'account.move',
         string="Invoices",
-        compute="_compute_invoices",
-        store=True
     )
 
-    @api.depends('journal_ids', 'date_from', 'date_to')
-    def _compute_invoices(self):
+    def compute_invoices(self):
         for rec in self:
             invoices_domain = []
 
@@ -144,6 +141,7 @@ class AccountVatLedger(models.Model):
         self.journal_ids = journals
 
     def action_present(self):
+        self.compute_invoices()
         self.state = 'presented'
 
     def action_cancel(self):
