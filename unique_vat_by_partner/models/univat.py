@@ -16,23 +16,36 @@ class UniVat(models.Model):
     @api.model_create_multi
     def create(self, vals_list):
         recs = super(UniVat, self).create(vals_list)
-
-        for rec in recs:
-            if rec.vat:
-                same_vat = self.env['res.partner'].search([
-                    ('vat', '=', rec.vat),
-                    ('id', '!=', rec.id),
-                    ('l10n_latam_identification_type_id', '=', rec.l10n_latam_identification_type_id.id),
-                ])
-
-                for partner in same_vat:
-                    child = []
-                    if partner.child_ids:
-                        child = [p.id for p in partner.child_ids]
-                    if partner.parent_id:
-                        child.append(partner.parent_id.id)
-                    if rec.id not in child:
-                        raise ValidationError(
-                            _('Ya se encuentra registrado el Número de Identificación %s para el Contacto (%s)') % (rec.vat, partner.name))
-
+        self._validate_duplicate_vat(recs)
         return recs
+
+    def write(self, vals):
+        res = super(UniVat, self).write(vals)
+        if 'vat' in vals:
+            self._validate_duplicate_vat(self)
+        return res
+
+    def _validate_duplicate_vat(self, partners):
+        if not isinstance(partners, models.BaseModel):
+            for partner in partners:
+                self._validate_single_duplicate_vat(partner)
+        else:
+            self._validate_single_duplicate_vat(partners)
+
+    def _validate_single_duplicate_vat(self, partner):
+        if partner.vat:
+            same_vats = self.env['res.partner'].search([
+                ('vat', '=', partner.vat),
+                ('id', '!=', partner.id),
+                ('l10n_latam_identification_type_id', '=', partner.l10n_latam_identification_type_id.id),
+            ])
+
+            for same_vat in same_vats:
+                child = []
+                if partner.child_ids:
+                    child = [p.id for p in partner.child_ids]
+                if partner.parent_id:
+                    child.append(partner.parent_id.id)
+                if same_vat.id not in child:
+                    raise ValidationError(
+                        _('Ya se encuentra registrado el Número de Identificación %s para el Contacto (%s)') % (partner.vat, same_vat.name))
