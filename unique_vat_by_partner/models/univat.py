@@ -8,7 +8,7 @@
 ###############################################################################
 
 from odoo import models, fields, api, _
-from odoo.exceptions import ValidationError
+from odoo.exceptions import ValidationError, UserError
 
 class UniVat(models.Model):
     _inherit = 'res.partner'
@@ -39,13 +39,20 @@ class UniVat(models.Model):
                 ('id', '!=', partner.id),
                 ('l10n_latam_identification_type_id', '=', partner.l10n_latam_identification_type_id.id),
             ])
-
             for same_vat in same_vats:
-                child = []
-                if partner.child_ids:
-                    child = [p.id for p in partner.child_ids]
-                if partner.parent_id:
-                    child.append(partner.parent_id.id)
-                if same_vat.id not in child:
+                if same_vat.child_ids:
+                   if same_vat not in same_vat.child_ids.parent_id:
+                        raise ValidationError(
+                            _('Ya se encuentra registrado el Número de Identificación %s para el Contacto (%s)') % (partner.vat, same_vat.name))
+                else:
                     raise ValidationError(
-                        _('Ya se encuentra registrado el Número de Identificación %s para el Contacto (%s)') % (partner.vat, same_vat.name))
+                            _('Ya se encuentra registrado el Número de Identificación %s para el Contacto (%s)') % (partner.vat, same_vat.name))
+    
+    @api.constrains('vat')
+    def _constrains_validate_vat(self):
+        for rec in self:
+            validate = True
+            if rec.vat:
+                validate = rec.vat.isdigit()
+            if not validate:
+                raise UserError(_('El Número de Identificación %s sólo debe contener números') % (rec.vat))
