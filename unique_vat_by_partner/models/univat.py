@@ -33,20 +33,17 @@ class UniVat(models.Model):
             self._validate_single_duplicate_vat(partners)
 
     def _validate_single_duplicate_vat(self, partner):
-        if partner.vat:
-            same_vats = self.env['res.partner'].search([
-                ('vat', '=', partner.vat),
-                ('id', '!=', partner.id),
-                ('l10n_latam_identification_type_id', '=', partner.l10n_latam_identification_type_id.id),
-            ])
-            for same_vat in same_vats:
-                if same_vat.child_ids:
-                   if same_vat not in same_vat.child_ids.parent_id:
-                        raise ValidationError(
-                            _('Ya se encuentra registrado el Número de Identificación %s para el Contacto (%s)') % (partner.vat, same_vat.name))
-                else:
+        for rec in partner:
+            if rec.vat:
+                same_vats = self.env['res.partner'].search([
+                    ('vat', '=', rec.vat),
+                    ('parent_id','=',False),
+                    ('l10n_latam_identification_type_id', '=', rec.l10n_latam_identification_type_id.id),
+                ])
+                if len(same_vats)>1:
                     raise ValidationError(
-                            _('Ya se encuentra registrado el Número de Identificación %s para el Contacto (%s)') % (partner.vat, same_vat.name))
+                                _('Ya se encuentra registrado el Número de Identificación %s para el Contacto (%s)') % (rec.vat, same_vats[0].name))
+
     
     @api.constrains('vat')
     def _constrains_validate_vat(self):
@@ -54,5 +51,7 @@ class UniVat(models.Model):
             validate = True
             if rec.vat:
                 validate = rec.vat.isdigit()
+            else:
+                raise UserError(_('El Número de Identificación es requerido'))
             if not validate:
                 raise UserError(_('El Número de Identificación %s sólo debe contener números') % (rec.vat))
