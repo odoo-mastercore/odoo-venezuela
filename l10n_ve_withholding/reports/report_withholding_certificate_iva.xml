@@ -85,7 +85,7 @@
                             <th class="text-center"><strong>% Alic</strong></th>
                             <th class="text-center"><strong>% Ret</strong></th>
                             <th class="text-center"><strong>Monto IVA</strong></th>
-                            <th class="text-center"><strong>IVA Retenido</strong></th>
+                            <th class="text-center"><strong>IVA Retenido <span t-esc="o.partner_id.vat_retention"/>%</strong></th>
                         </tr>
                     </thead>
                     <tbody>
