@@ -38,6 +38,7 @@ class UniVat(models.Model):
                 same_vats = self.env['res.partner'].search([
                     ('vat', '=', rec.vat),
                     ('parent_id','=',False),
+                    ('active','=',True),
                     ('l10n_latam_identification_type_id', '=', rec.l10n_latam_identification_type_id.id),
                 ])
                 if len(same_vats)>1:
