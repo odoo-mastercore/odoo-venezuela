@@ -10,7 +10,7 @@
 from odoo import models, api, _
 from odoo.exceptions import ValidationError
 
-class UniVat(models.Model):
+class ResPartner(models.Model):
     _inherit = 'res.partner'
 
     @api.constrains('l10n_latam_identification_type_id','company_type')
@@ -18,7 +18,7 @@ class UniVat(models.Model):
         document_type_person =['V', 'P', 'E']
         document_type_company =['J', 'G', 'C']
         for record in self:
-            if record.company_type == 'person' and record.parent_id==False:
+            if record.company_type == 'person' and len(record.parent_id)==0:
                 if record.l10n_latam_identification_type_id.l10n_ve_code not in document_type_person:
                     raise ValidationError('El tipo de identificación no corresponde con la compañía tipo persona')
             elif record.company_type == 'company':
