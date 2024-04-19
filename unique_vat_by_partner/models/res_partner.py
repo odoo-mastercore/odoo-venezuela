@@ -31,6 +31,7 @@ class UniVat(models.Model):
     def _constrains_validate_vat(self):
         for rec in self:
             validate = True
+            
             if rec.vat:
                 validate = rec.vat.isdigit()
             else:
