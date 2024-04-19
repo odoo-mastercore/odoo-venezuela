@@ -7,33 +7,15 @@
 #
 ###############################################################################
 
-from odoo import models, fields, api, _
+from odoo import api, models, _
 from odoo.exceptions import ValidationError, UserError
 
 class UniVat(models.Model):
     _inherit = 'res.partner'
 
-    @api.model_create_multi
-    def create(self, vals_list):
-        recs = super(UniVat, self).create(vals_list)
-        self._validate_duplicate_vat(recs)
-        return recs
-
-    def write(self, vals):
-        res = super(UniVat, self).write(vals)
-        if 'vat' in vals:
-            self._validate_duplicate_vat(self)
-        return res
-
-    def _validate_duplicate_vat(self, partners):
-        if not isinstance(partners, models.BaseModel):
-            for partner in partners:
-                self._validate_single_duplicate_vat(partner)
-        else:
-            self._validate_single_duplicate_vat(partners)
-
-    def _validate_single_duplicate_vat(self, partner):
-        for rec in partner:
+    @api.constrains('vat','l10n_latam_identification_type_id','company_type')
+    def _validate_single_duplicate_vat(self):
+        for rec in self:
             if rec.vat:
                 same_vats = self.env['res.partner'].search([
                     ('vat', '=', rec.vat),
@@ -45,7 +27,6 @@ class UniVat(models.Model):
                     raise ValidationError(
                                 _('Ya se encuentra registrado el Número de Identificación %s para el Contacto (%s)') % (rec.vat, same_vats[0].name))
 
-    
     @api.constrains('vat')
     def _constrains_validate_vat(self):
         for rec in self:
