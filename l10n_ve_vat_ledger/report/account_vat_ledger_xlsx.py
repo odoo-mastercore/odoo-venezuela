@@ -1036,7 +1036,6 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                 sheet.write((row), 25, total_base_imponible_no_contribuyente_8, line_total)
                 sheet.write((row), 27, total_iva_no_contribuyente_8, line_total)
                 sheet.write((row), 29, total_igtf, line_total)
-                total_igtf
                 
                 # RESUMEN DE LOS TOTALES VENTAS
                 row +=5
