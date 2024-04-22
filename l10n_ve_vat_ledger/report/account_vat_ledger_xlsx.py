@@ -263,7 +263,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
             total_nota_debito_iva_8 = 0.00
             total_nota_debito_31 = 0.00
             total_nota_debito_iva_31 = 0.00
-
+            total_igtf = 0.00
             """ 
                 Totales columnas ventas
              """
@@ -895,8 +895,12 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     
                         
                     #IGTF
+                        amount_igtf = 0
+                        if 'igtf_amount' in self.env['account.move']._fields and invoice.igtf_amount > 0:
+                            amount_igtf = invoice.igtf_amount
                         sheet.write(row, 28, '', line)
-                        sheet.write(row, 29, '', line)
+                        sheet.write(row, 29, amount_igtf, line)
+                        total_igtf += amount_igtf
                 row += 1
 
             if len(retenciones) > 0 and obj.type == 'purchase':
@@ -1031,6 +1035,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                 sheet.write((row), 24, total_iva_no_contribuyente_16, line_total)
                 sheet.write((row), 25, total_base_imponible_no_contribuyente_8, line_total)
                 sheet.write((row), 27, total_iva_no_contribuyente_8, line_total)
+                sheet.write((row), 29, total_igtf, line_total)
                 
                 # RESUMEN DE LOS TOTALES VENTAS
                 row +=5
@@ -1103,7 +1108,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     total_nota_credito_iva_16 + total_nota_credito_iva_8 + \
                         total_nota_debito_iva_16 + total_nota_debito_iva_8), line)
                 sheet.write((row+12), 15, total_iva_16_retenido, line)
-                sheet.write((row+12), 16, total_iva_16_igtf, line)
+                sheet.write((row+12), 16, total_igtf, line)
 
             # Totales de compras
             else:
