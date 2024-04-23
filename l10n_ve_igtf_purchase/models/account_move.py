@@ -40,7 +40,7 @@ class AccountMove(models.Model):
             if move.tax_totals and move.tax_totals.get('groups_by_subtotal'):
                 base_imponible = move.tax_totals.get('groups_by_subtotal').get('Base imponible')
                 if move.igtf_purchase_apply_purchase:
-                    igtf = self.env['account.tax'].search([('name','=','IGTF (3.0%) compras')])
+                    igtf = self.env['account.tax'].search([('name','=','IGTF (3%) Compras')])
                     igtf_tax = False
                     
                     if move.currency_id.name != 'USD':
