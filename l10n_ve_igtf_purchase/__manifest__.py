@@ -19,6 +19,7 @@
     'license': 'AGPL-3',
     'depends': ['account', 'l10n_ve_base'],
     'data': [
+        "data/account_tax_data.xml",
         "views/account_move_view.xml"
     ],
 
