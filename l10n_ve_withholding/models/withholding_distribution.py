@@ -22,4 +22,5 @@ class withholdingDistribution(models.Model):
     tax_amount = fields.Float('Monto Impuesto')
     alic = fields.Float('alicuota')
     withholding_amount = fields.Float('Monto Retenido')
+    untaxed_amount = fields.Float('Monto exento')
 

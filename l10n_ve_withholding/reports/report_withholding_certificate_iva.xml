@@ -104,7 +104,7 @@
                                 <th class="text-center">01</th>
                                 <th class="text-center"></th>
                                 <th class="text-center"><span t-field="o.total_amount"/></th>
-                                <th class="text-center">0,00</th>
+                                <th class="text-center"><span t-field="distribution.untaxed_amount"/></th>
                                 <th class="text-center"><span t-field="distribution.invoice_amount"/></th>
                                 <th class="text-center"><span t-field="distribution.alic"/></th>
                                 <th class="text-center"><span t-field="distribution.tax_amount"/></th>
