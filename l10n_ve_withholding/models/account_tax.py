@@ -51,12 +51,11 @@ class AccountTax(models.Model):
                     foreign_currency =True
                 taxes = [
                     'IVA (16.0%) compras','IVA (8.0%) compras',
-                    'IVA (31.0%) compras'
+                    'IVA (31.0%) compras',
                 ]
                 if to_pay.move_id.line_ids:
                     for abg in to_pay.move_id.line_ids:
                         if abg.name in taxes:
-                            
                             tax_amount = abg.debit
                             alic = alicuota
                             withholding_amount = abg.debit*alicuota
@@ -69,11 +68,22 @@ class AccountTax(models.Model):
                             else:
                                 selected_debt_taxed += abg_base.debit if to_pay.move_id.move_type == 'in_refund' else abg_base.credit
                             tax = abg.name.split('(')[1].split('%')[0]
+                            exent_amount_ids = to_pay.move_id.line_ids\
+                                .filtered(lambda x: x.tax_ids\
+                                          .filtered(lambda y: y.amount == 0.00))
+                            base_exento = 0
+                            for exent in exent_amount_ids:
+                                if exent.tax_ids:
+                                    if exent.tax_ids[0].amount == 0.00:
+                                        base_exento += exent.debit
+                                        if exent.credit:
+                                            base_exento += (exent.credit * -1.00)
                             distribution.append((0, 0, {
                                 'invoice_amount': invoice_amount,
                                 'tax_amount': tax_amount,
                                 'alic': float(tax),
                                 'withholding_amount': withholding_amount,
+                                'untaxed_amount': base_exento
                             }))
                     if distribution:
                         vals['withholding_distribution_ids'] = distribution
