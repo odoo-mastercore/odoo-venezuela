@@ -117,7 +117,7 @@
                                     <th class="text-center"/>
                                 </t>
                                 <th class="text-center"><span t-esc="o.total_amount if not o.total_amount &lt; 0 else o.total_amount * -1"/></th>
-                                <th class="text-center"><span t-field="distribution.untaxed_amount"/></th>
+                                <th class="text-center">0,00</th>
                                 <th class="text-center"><span t-field="distribution.invoice_amount"/></th>
                                 <th class="text-center"><span t-field="distribution.alic"/></th>
                                 <th class="text-center"><span t-field="o.partner_id.vat_retention"/></th>

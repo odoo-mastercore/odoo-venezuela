@@ -73,11 +73,11 @@ class AccountTax(models.Model):
                                           .filtered(lambda y: y.amount == 0.00))
                             base_exento = 0
                             for exent in exent_amount_ids:
-                                if abg.tax_ids:
-                                    if abg.tax_ids[0].amount == 0.00:
-                                        base_exento += abg.debit
-                                        if abg.credit:
-                                            base_exento += (abg.credit * -1.00)
+                                if exent.tax_ids:
+                                    if exent.tax_ids[0].amount == 0.00:
+                                        base_exento += exent.debit
+                                        if exent.credit:
+                                            base_exento += (exent.credit * -1.00)
                             distribution.append((0, 0, {
                                 'invoice_amount': invoice_amount,
                                 'tax_amount': tax_amount,
