@@ -29,7 +29,7 @@
                     type="action"
                     attrs="{'invisible': ['|','|',
                         ('payment_method_code', '!=', 'withholding'), ('partner_type', '!=', 'supplier'),
-                        ('payment_method_description', '!=', 'Retención de ISLR en Compras')
+                        ('payment_method_description', '!=', 'Retención ISLR en compras')
                     ]}"/>
                 <button
                     name="%(action_report_withholding_certificate_iva)d"
