@@ -29,7 +29,7 @@ class AccountPayment(models.Model):
             state = True
             if rec.payment_type == 'inbound' and rec.state == 'draft':
                 state = False
-            return state
+            rec.withholding_number_state = state
 
     def _get_fiscal_period(self, date):
         str_date = str(date).split('-')
