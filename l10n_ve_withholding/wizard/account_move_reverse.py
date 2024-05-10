@@ -27,7 +27,8 @@ class AccountMoveReversal(models.TransientModel):
             'invoice_payment_term_id': None,
             'invoice_user_id': move.invoice_user_id.id,
             'auto_post': 'at_date' if reverse_date > fields.Date.context_today(self) else 'no',
-            'l10n_ve_document_number': ""
+            'l10n_ve_document_number': "",
+            'invoice_origin': move.name
         }
 
 
