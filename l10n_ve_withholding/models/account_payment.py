@@ -20,7 +20,16 @@ class AccountPayment(models.Model):
         'withholding.distribution', 'payment_id',
         string='distribucion de retencion'
     )
+    withholding_number_state = fields.Boolean(string=_('Número de retención editable'),
+        compute="_compute_withholding_number_readonly")
 
+    @api.depends('payment_type','state')
+    def _compute_withholding_number_readonly(self):
+        for rec in self:
+            state = True
+            if rec.payment_type == 'inbound' and rec.state == 'draft':
+                state = False
+            return state
 
     def _get_fiscal_period(self, date):
         str_date = str(date).split('-')

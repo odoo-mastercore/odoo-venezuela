@@ -43,6 +43,21 @@
             </tree>
         </field>
     </record>
+
+    <record id="view_account_payment_form_account_withholding" model="ir.ui.view">
+        <field name="name">account.payment.form</field>
+        <field name="model">account.payment</field>
+        <field name="inherit_id" ref="account_withholding.view_account_payment_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='withholding_number']" position="before">
+                <field name="withholding_number_state" invisible="1"/>
+            </xpath>
+            <xpath expr="//field[@name='withholding_number']" position="attributes">
+                <attribute name="attrs">{'readonly':[('withholding_number_state','=',True)]}</attribute>
+            </xpath>
+        </field>
+    </record>
+
     <record id="view_account_payment_withholding_list" model="ir.ui.view">
       <field name="name">inherit.payment.wittholding.list</field>
       <field name="model">account.payment</field>
