@@ -108,6 +108,7 @@
                                 <t t-else="">
                                   <th class="text-center">03</th>
                                 </t>
+                                <th class="text-center"/>
                                 <th class="text-center"><span t-field="o.total_amount"/></th>
                                 <th class="text-center"><span t-field="distribution.untaxed_amount"/></th>
                                 <th class="text-center"><span t-field="distribution.invoice_amount"/></th>
