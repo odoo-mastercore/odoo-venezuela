@@ -17,7 +17,7 @@ class UniVat(models.Model):
     def _validate_single_duplicate_vat(self):
         for rec in self:
             #Validación
-            if rec.vat and rec.country_id.code != 'VE':
+            if rec.vat and rec.country_id.code == 'VE':
                 same_vats = self.env['res.partner'].search([
                     ('vat', '=', rec.vat),
                     ('parent_id','=',False),
