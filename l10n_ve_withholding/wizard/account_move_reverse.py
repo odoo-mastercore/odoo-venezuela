@@ -15,7 +15,7 @@ class AccountMoveReversal(models.TransientModel):
 
 
     def _prepare_default_reversal(self, move):
-        reverse_date = self.date if self.date_mode == 'custom' else move.date        
+        reverse_date = self.date if self.date_mode == 'custom' else move.date
         return {
             'ref': _('Reversal of: %(move_name)s, %(reason)s', move_name=move.name, reason=self.reason)
                    if self.reason
@@ -28,7 +28,7 @@ class AccountMoveReversal(models.TransientModel):
             'invoice_user_id': move.invoice_user_id.id,
             'auto_post': 'at_date' if reverse_date > fields.Date.context_today(self) else 'no',
             'l10n_ve_document_number': "",
-            'invoice_origin': move.name
+            'invoice_origin': move.ref
         }
 
 
