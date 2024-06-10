@@ -19,8 +19,8 @@ class ResPartner(models.Model):
         document_type_company =['J', 'G', 'C']
         for record in self:
             if record.company_type == 'person' and len(record.parent_id)==0:
-                if record.l10n_latam_identification_type_id.l10n_ve_code not in document_type_person:
+                if record.l10n_latam_identification_type_id.l10n_ve_code not in document_type_person and record.country_id.code == 'VE':
                     raise ValidationError('El tipo de identificación no corresponde con la compañía tipo persona')
             elif record.company_type == 'company':
-                if record.l10n_latam_identification_type_id.l10n_ve_code not in document_type_company:
+                if record.l10n_latam_identification_type_id.l10n_ve_code not in document_type_company and record.country_id.code == 'VE':
                     raise ValidationError('El tipo de identificación no corresponde con la compañía tipo compañía')
