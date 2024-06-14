@@ -15,6 +15,7 @@ class ResPartner(models.Model):
 
     @api.constrains('l10n_latam_identification_type_id','company_type')
     def _constrains_validate_document_type(self):
+        #validaciones
         document_type_person =['V', 'P', 'E']
         document_type_company =['J', 'G', 'C']
         for record in self:
