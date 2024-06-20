@@ -63,10 +63,10 @@
                             <td class="text-left">
                                 <t t-foreach="o.payment_group_id.to_pay_move_line_ids" t-as="i">
                                     Nro: <span t-field="i.move_id.l10n_ve_document_number"/>, 
-                                    <t t-if="o.payment_group_id.to_pay_move_line_ids and o.payment_group_id.to_pay_move_line_ids[0].move_id.move_type == 'in_refund'">
-                                        Fact Afectada: <span t-field="o.payment_group_id.matched_move_line_ids[0].move_id.ref"/>
+                                    <t t-if="i.move_id.move_type == 'in_refund'">Factura afectada: <span t-field="i.move_id.reversed_entry_id.ref"/>,
+                                        Nota de crédito: <span t-field="i.move_id.ref"/>
                                     </t>
-                                    <t t-else-if="i.move_id.move_type == out_invoice">
+                                    <t t-elif="i.move_id.move_type == out_invoice">
                                         Fact: <span t-field="i.move_id.name"/>
                                     </t>
                                     
