@@ -6,7 +6,7 @@
 #
 #
 ###############################################################################
-from odoo import models, fields, api, _
+from odoo import models, fields, api, _, Command
 from odoo.exceptions import UserError, ValidationError
 from datetime import datetime
 import logging
@@ -40,7 +40,7 @@ class AccountMove(models.Model):
             if move.tax_totals and move.tax_totals.get('groups_by_subtotal'):
                 base_imponible = move.tax_totals.get('groups_by_subtotal').get('Base imponible')
                 if move.igtf_purchase_apply_purchase:
-                    igtf = self.env['account.tax'].search([('name','=','IGTF (3%) Compras')])
+                    igtf = self.env['account.tax'].search([('igtf_purchase','=',True)], limit=1)
                     igtf_tax = False
                     
                     if move.currency_id.name != 'USD':
@@ -68,3 +68,55 @@ class AccountMove(models.Model):
 
                         base_imponible.append(igtf_tax)
     
+    
+    @api.constrains('partner_id','igtf_purchase_apply_purchase','igtf_amount_purchase','igtf_amount_purchase_usd')
+    def _constrains_igtf(self):
+        if self.igtf_purchase_apply_purchase and self.igtf_amount_purchase>=0:
+            igtf = self.env['account.tax'].search([('igtf_purchase','=',True)], limit=1)
+            account_id = self.env['account.tax.repartition.line'].search([('repartition_type','=','tax'),
+                                                                        ('invoice_tax_id','=',igtf.id)])[0].account_id
+            get_line_igtf = self.env['account.move.line'].search([('move_id','=', self._origin.id)]).mapped('igtf_purchase')
+            is_igtf = False
+            for rec in get_line_igtf:
+                if rec:
+                    is_igtf = rec
+            
+            if self.currency_id.name != 'USD':
+                if not is_igtf and self.igtf_amount_purchase>=0:
+                    
+                    self.invoice_line_ids  += self.env['account.move.line'].new({
+                        'display_type':'tax',
+                        'name': igtf.name,
+                        'partner_id': self.partner_id,
+                        'account_id': account_id.id,
+                        'igtf_purchase': True,
+                        'currency_id': self.currency_id.id,
+                        'debit':self.igtf_amount_purchase,
+                        'tax_ids': False,
+                        'move_id': self._origin.id
+                    })
+            elif self.currency_id.name == 'USD':
+                if not is_igtf and self.igtf_amount_purchase_usd>=0:
+                    self.invoice_line_ids  += self.env['account.move.line'].new({
+                        'display_type':'tax',
+                        'name': igtf.name,
+                        'partner_id': self.partner_id,
+                        'account_id': account_id.id,
+                        'igtf_purchase': True,
+                        'currency_id': self.currency_id.id,
+                        'debit':self.igtf_amount_purchase_usd,
+                        'tax_ids': False,
+                        'move_id': self._origin.id
+                    })
+        invoice_line = self.invoice_line_ids.search([('igtf_purchase','=',True),('move_id','=', self._origin.id)])
+        if self.currency_id.name != 'USD':
+            invoice_line.sudo().write({'debit': self.igtf_amount_purchase})
+        elif self.currency_id.name == 'USD':
+            invoice_line.sudo().write({'debit': self.igtf_amount_purchase_usd})
+        
+    
+    @api.constrains('igtf_purchase_apply_purchase')
+    def _constrains_delete_igtf(self):
+        invoice_line = self.invoice_line_ids.search([('igtf_purchase','=',True),('move_id','=', self._origin.id)])
+        if not self.igtf_purchase_apply_purchase and invoice_line:
+            invoice_line.unlink()
