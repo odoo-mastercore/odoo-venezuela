@@ -16,10 +16,10 @@ from odoo.tools import formatLang
 class AccountMove(models.Model):
     _inherit = "account.move"
 
-    igtf_base_purchase = fields.Float('IGTF base')
-    igtf_amount_purchase = fields.Float('Monto IGTF')
-    igtf_base_purchase_usd = fields.Float('IGTF base usd')
-    igtf_amount_purchase_usd = fields.Float('Monto IGTF usd')
+    igtf_base_purchase = fields.Float('IGTF base Bs.')
+    igtf_amount_purchase = fields.Float('Monto IGTF Bs.')
+    igtf_base_purchase_usd = fields.Float('IGTF base USD')
+    igtf_amount_purchase_usd = fields.Float('Monto IGTF USD')
     igtf_purchase_apply_purchase = fields.Boolean('Aplicar IGTF')
     
     @api.depends_context('lang')

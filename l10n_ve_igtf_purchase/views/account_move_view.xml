@@ -13,10 +13,10 @@
                     <page name="igtf_purchase" string="IGTF Aplicado" attrs="{'invisible':[('move_type','not in',['in_invoice','in_refund'])]}">
                         <group>
                             <field name="igtf_purchase_apply_purchase" attrs="{'readonly': [('state','!=','draft')]}" />
-                            <field name="igtf_base_purchase" attrs="{'readonly': [('state','!=','draft')], 'invisible': [('igtf_purchase_apply_purchase','=',False)]}" />
-                            <field name="igtf_amount_purchase" attrs="{'readonly': [('state','!=','draft')], 'invisible': [('igtf_purchase_apply_purchase','=',False)]}"  />
                             <field name="igtf_base_purchase_usd" attrs="{'readonly': [('state','!=','draft')], 'invisible': [('igtf_purchase_apply_purchase','=',False)]}"  />
                             <field name="igtf_amount_purchase_usd" attrs="{'readonly': [('state','!=','draft')], 'invisible': [('igtf_purchase_apply_purchase','=',False)]}"  />
+                            <field name="igtf_base_purchase" attrs="{'readonly': [('state','!=','draft')], 'invisible': [('igtf_purchase_apply_purchase','=',False)]}" />
+                            <field name="igtf_amount_purchase" attrs="{'readonly': [('state','!=','draft')], 'invisible': [('igtf_purchase_apply_purchase','=',False)]}"  />
                         </group>
                     </page>
                 </xpath>
