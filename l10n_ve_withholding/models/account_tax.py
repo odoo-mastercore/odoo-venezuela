@@ -266,6 +266,7 @@ class AccountTax(models.Model):
                         #payment_withholding.write(vals)
                         #pass
                     #else:
+                    journal = ''
                     payment_method = self.env.ref(
                         'account_withholding.'
                         'account_payment_method_out_withholding')
@@ -276,10 +277,10 @@ class AccountTax(models.Model):
                             ('type', 'in', ['cash', 'bank']),
                             ('apply_islr', '=', True),
                         ], limit=1)
-                        if not journal:
-                            raise UserError(_(
-                                'No journal for withholdings found on company %s') % (
-                                tax.company_id.name))
+                    if not journal:
+                        raise UserError(_(
+                            'No journal for withholdings found on company %s') % (
+                            tax.company_id.name))
 
                     method = journal._get_available_payment_method_lines('outbound').filtered(
                         lambda x: x.code == 'withholding')
