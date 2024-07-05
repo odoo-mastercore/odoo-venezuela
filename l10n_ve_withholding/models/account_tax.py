@@ -266,9 +266,6 @@ class AccountTax(models.Model):
                         #payment_withholding.write(vals)
                         #pass
                     #else:
-<<<<<<< Updated upstream
-                    journal = ''
-=======
 
                     journal = ''
                     if tax.withholding_type == 'partner_tax':
@@ -279,7 +276,6 @@ class AccountTax(models.Model):
                             ('type', 'in', ['cash', 'bank']),
                             ('apply_iva', '=', True),
                         ], limit=1)
->>>>>>> Stashed changes
                     payment_method = self.env.ref(
                         'account_withholding.'
                         'account_payment_method_out_withholding')
