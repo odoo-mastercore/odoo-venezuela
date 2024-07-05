@@ -266,7 +266,20 @@ class AccountTax(models.Model):
                         #payment_withholding.write(vals)
                         #pass
                     #else:
+<<<<<<< Updated upstream
                     journal = ''
+=======
+
+                    journal = ''
+                    if tax.withholding_type == 'partner_tax':
+                        journal = self.env['account.journal'].search([
+                            ('company_id', '=', tax.company_id.id),
+                            ('outbound_payment_method_line_ids.payment_method_id',
+                            '=', payment_method.id),
+                            ('type', 'in', ['cash', 'bank']),
+                            ('apply_iva', '=', True),
+                        ], limit=1)
+>>>>>>> Stashed changes
                     payment_method = self.env.ref(
                         'account_withholding.'
                         'account_payment_method_out_withholding')
@@ -290,7 +303,16 @@ class AccountTax(models.Model):
                     vals['payment_type'] = 'outbound'
                     vals['partner_type'] = payment_group.partner_type
                     vals['partner_id'] = payment_group.partner_id.id
-                    payment_withholding = payment_withholding.create(vals)
+
+                    # Evitamos que se generen retenciones de iva duplicadas
+                    # Cuando se tiene mas de una distribucion de islr
+                    create_withholding = True
+                    if payment_group.payment_ids.filtered(lambda x: \
+                        x.tax_withholding_id.id == vals['tax_withholding_id']) \
+                            and tax.withholding_type != 'tabla_islr':
+                        create_withholding = False
+                    if create_withholding:
+                        payment_withholding = payment_withholding.create(vals)
 
             else:
                 vals = tax.get_withholding_vals(payment_group)
