@@ -56,21 +56,34 @@ class AccountTax(models.Model):
                 if to_pay.move_id.line_ids:
                     for abg in to_pay.move_id.line_ids:
                         if abg.name in taxes:
-                            withholdable_invoiced_amount += abg.tax_base_amount
-                            invoice_amount = abg.tax_base_amount
                             tax_amount = abg.debit
                             alic = alicuota
                             withholding_amount = abg.debit*alicuota
+                            invoice_amount = 0.00
+                            for abg_base in to_pay.move_id.line_ids.filtered(lambda x: x.tax_ids.name in [abg.name]):
+                                withholdable_invoiced_amount += abg_base.debit if to_pay.move_id.move_type == 'in_refund' else abg_base.credit
+                                invoice_amount += abg_base.debit if to_pay.move_id.move_type == 'in_refund' else abg_base.credit
                             if foreign_currency:
-                                selected_debt_taxed += abg.amount_currency
+                                selected_debt_taxed += abg.amount_currency if abg.amount_currency  >= 0 else -abg.amount_currency
                             else:
-                                selected_debt_taxed += abg.debit
+                                selected_debt_taxed += abg_base.debit if to_pay.move_id.move_type == 'in_refund' else abg_base.credit
                             tax = abg.name.split('(')[1].split('%')[0]
+                            exent_amount_ids = to_pay.move_id.line_ids\
+                                .filtered(lambda x: x.tax_ids\
+                                          .filtered(lambda y: y.amount == 0.00))
+                            base_exento = 0
+                            for exent in exent_amount_ids:
+                                if exent.tax_ids:
+                                    if exent.tax_ids[0].amount == 0.00:
+                                        base_exento += exent.debit
+                                        if exent.credit:
+                                            base_exento += (exent.credit * -1.00)
                             distribution.append((0, 0, {
                                 'invoice_amount': invoice_amount,
                                 'tax_amount': tax_amount,
                                 'alic': float(tax),
                                 'withholding_amount': withholding_amount,
+                                'untaxed_amount': base_exento,
                             }))
                     if distribution:
                         vals['withholding_distribution_ids'] = distribution
@@ -256,6 +269,16 @@ class AccountTax(models.Model):
                     payment_method = self.env.ref(
                         'account_withholding.'
                         'account_payment_method_out_withholding')
+                    journal = ''
+                    if tax.withholding_type == 'partner_tax':
+                        journal = self.env['account.journal'].search([
+                            ('company_id', '=', tax.company_id.id),
+                            ('outbound_payment_method_line_ids.payment_method_id',
+                            '=', payment_method.id),
+                            ('type', 'in', ['cash', 'bank']),
+                            ('apply_iva', '=', True),
+                        ], limit=1)
+
                     if tax.withholding_type == 'tabla_islr':
                         journal = self.env['account.journal'].search([
                             ('company_id', '=', tax.company_id.id),
@@ -276,7 +299,16 @@ class AccountTax(models.Model):
                     vals['payment_type'] = 'outbound'
                     vals['partner_type'] = payment_group.partner_type
                     vals['partner_id'] = payment_group.partner_id.id
-                    payment_withholding = payment_withholding.create(vals)
+
+                    # Evitamos que se generen retenciones de iva duplicadas
+                    # Cuando se tiene mas de una distribucion de islr
+                    create_withholding = True
+                    if payment_group.payment_ids.filtered(lambda x: \
+                        x.tax_withholding_id.id == vals['tax_withholding_id']) \
+                            and tax.withholding_type != 'tabla_islr':
+                        create_withholding = False
+                    if create_withholding:
+                        payment_withholding = payment_withholding.create(vals)
 
             else:
                 vals = tax.get_withholding_vals(payment_group)

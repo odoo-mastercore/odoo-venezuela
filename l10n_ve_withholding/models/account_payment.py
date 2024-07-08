@@ -65,3 +65,18 @@ class AccountPayment(models.Model):
                         'payment_type': 'inbound',
                     })
         return super(AccountPayment, self).action_post()
+
+    def get_sustraendo(self):
+        if self.concept_withholding:
+            code_seniat = self.concept_withholding.split(' - ')[0]
+            activity_name = self.concept_withholding.split(' - ')[1]
+            regimen_id = self.env['seniat.tabla.islr']\
+                .search([('code_seniat','=',code_seniat), 
+                            ('activity_name','=',activity_name)],limit=1)
+            if regimen_id:
+                if regimen_id.type_subtracting == 'amount':
+                    return self.format_miles_number(regimen_id.banda_calculo_ids[0].withholding_amount)
+        return False
+    
+    def format_miles_number(self, number):
+        return '{:,.2f}'.format(number).replace(",", "@").replace(".", ",").replace("@", ".")

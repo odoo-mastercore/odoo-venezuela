@@ -102,6 +102,7 @@ class AccountPaymentGroup(models.Model):
                             selected_debt_taxed += li.credit
                         else:
                             selected_debt_taxed += li.debit
+
             rec.selected_debt_taxed = selected_debt_taxed
 
     @api.depends(
