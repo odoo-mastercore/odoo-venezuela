@@ -80,6 +80,14 @@
                                 </t>
                             </td>
                         </tr>
+                        <tr t-if="o.get_sustraendo()">
+                            <td class="text-right">
+                                Sustraendo:
+                            </td>
+                            <td class="text-left">
+                                <span t-if="o.get_sustraendo()" t-esc="o.get_sustraendo()"/>
+                            </td>
+                        </tr>
                         <tr>
                             <td class="text-right">
                                 Importe del comprobante que origina la retención:
