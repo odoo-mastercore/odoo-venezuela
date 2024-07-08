@@ -278,7 +278,7 @@ class AccountTax(models.Model):
                             ('type', 'in', ['cash', 'bank']),
                             ('apply_iva', '=', True),
                         ], limit=1)
-                    
+
                     if tax.withholding_type == 'tabla_islr':
                         journal = self.env['account.journal'].search([
                             ('company_id', '=', tax.company_id.id),
