@@ -77,3 +77,6 @@ class AccountPayment(models.Model):
                 if regimen_id.type_subtracting == 'amount':
                     return self.format_miles_number(regimen_id.banda_calculo_ids[0].withholding_amount)
         return False
+    
+    def format_miles_number(self, number):
+        return '{:,.2f}'.format(number).replace(",", "@").replace(".", ",").replace("@", ".")
