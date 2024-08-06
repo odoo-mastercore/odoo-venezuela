@@ -117,7 +117,14 @@ class AccountTax(models.Model):
                 lines_base = 0
                 for line in payment_group.withholding_distributin_islr_ids:
                     if line.regimen_islr_id == regimen:
-                        lines_base += line.price_subtotal
+                        if line.currency_id.id == self.company_id.currency_id.id:
+                            lines_base += line.price_subtotal
+                        else:
+                            date_payment = line.payment_group_id.payment_date
+                            currency_rate = self.env['res.currency.rate'].search([
+                                ('currency_id.id','=',line.currency_id.id),
+                                ('name', '<=', date_payment)],limit=1).inverse_company_rate
+                            lines_base += line.price_subtotal * currency_rate
                 selected_debt_untaxed = lines_base
             else:
                 if to_pay:
