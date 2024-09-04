@@ -435,7 +435,6 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     # Número Factura Afectada si es de debito o credito
                     if invoice.move_type == 'in_refund' or invoice.move_type == 'out_refund':
                         inv_info = invoice.reversed_entry_id
-                        inv_info = ''
                         sheet.write(row, 6, inv_info.ref, line)
                     else:
                         sheet.write(row, 6, '', line)
