@@ -135,13 +135,6 @@
                     Beneficiario
                 </div>
             </div>
-            <t t-set="custom_footer">
-                <div class="row">
-                    <div class="col-12 text-center">
-                        <p class="mb-0"> Este comprobante se emite según lo establecido en el Artículo Nº16 de la Providencia Administrativa SNAT/2015/0049 de fecha 14/07/2015 publicada en Gaceta Oficial Nº 40.720 de fecha 10 de agosto de 2015 </p>
-                    </div>
-                </div>
-            </t>
         </t>
     </template>
 

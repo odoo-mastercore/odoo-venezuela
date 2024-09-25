@@ -1,4 +1,4 @@
-from odoo import models, fields, api, _
+from odoo import models, fields, api, _, Command
 from odoo.exceptions import UserError, ValidationError
 from ast import literal_eval
 from odoo.tools.safe_eval import safe_eval
@@ -42,7 +42,7 @@ class AccountTax(models.Model):
             amount = base_amount * (alicuota)
             to_pay = payment_group.to_pay_move_line_ids[0]
             withholdable_invoiced_amount = 0.00
-            distribution = []
+            distribution = [Command.clear()]
             foreign_currency = False
             iva_retencion = 0.00
             if to_pay:
@@ -62,7 +62,8 @@ class AccountTax(models.Model):
                             invoice_amount = 0.00
                             for abg_base in to_pay.move_id.line_ids.filtered(lambda x: x.tax_ids.name in [abg.name]):
                                 withholdable_invoiced_amount += abg_base.debit if to_pay.move_id.move_type == 'in_refund' else abg_base.credit
-                                invoice_amount += abg_base.debit if to_pay.move_id.move_type == 'in_refund' else abg_base.credit
+                                invoice_amount += abg_base.debit if to_pay.move_id.move_type != 'in_refund' else abg_base.credit
+
                             if foreign_currency:
                                 selected_debt_taxed += abg.amount_currency if abg.amount_currency  >= 0 else -abg.amount_currency
                             else:
@@ -225,11 +226,8 @@ class AccountTax(models.Model):
                 domain.append(('id', '=', payment_group.id))
                 if payment_group.search(domain):
                     raise ValidationError(tax.withholding_user_error_message)
-            _logger.warning('------------------------------- PENDEINTE')
-            _logger.warning(payment_group)
+
             if payment_group.withholding_distributin_islr_ids:
-                _logger.warning('-------------------------')
-                _logger.warning(payment_group.withholding_distributin_islr_ids.mapped('regimen_islr_id'))
                 if payment_withholding:
                     payment_withholdings = self.env[
                     'account.payment'].search([
