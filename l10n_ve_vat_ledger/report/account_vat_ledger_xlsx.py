@@ -472,7 +472,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     igtf_amount = 0.00
                     if invoice.line_ids:
                         for linel in invoice.line_ids:
-                            if linel.tax_ids:
+                            if linel.tax_ids and linel.purchase_order_id:
                                 if linel.tax_ids[0].amount == 16.00:
                                     base_imponible += linel.debit if linel.credit == 0 else -linel.debit
                                     if invoice.move_type == 'out_refund' or \
