@@ -114,7 +114,7 @@
                                 <th class="text-center"><span t-field="distribution.invoice_amount"/></th>
                                 <th class="text-center"><span t-field="distribution.alic"/></th>
                                 <th class="text-center"><span t-field="distribution.tax_amount"/></th>
-                                <th class="text-center"><span t-esc="format(distribution.withholding_amount, '.2f')"/></th>
+                                <th class="text-center"><span t-esc="distribution.withholding_amount"/></th>
                             </tr>
                         </t>
                     </tbody>
