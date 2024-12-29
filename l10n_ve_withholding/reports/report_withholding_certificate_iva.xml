@@ -142,7 +142,7 @@
                 
                 <br/><br/><br/>
             </div>
-            <div class="row">
+            <div class="row" id="footer_signature">
                 <br/><br/><br/>
                 <div class="col-2"></div>
                 <div name="footer_left_column" class="col-4">
