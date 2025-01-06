@@ -19,11 +19,11 @@
         <field name="name">seniat.responsibility.type.tree</field>
         <field name="model">l10n_ve.responsibility.type</field>
         <field name="arch" type="xml">
-            <tree string="Seniat Responsibility Type" decoration-muted="(not active)">
+            <list string="Seniat Responsibility Type" decoration-muted="(not active)">
                 <field name="name"/>
                 <field name="code"/>
                 <field name='active'/>
-            </tree>
+            </list>
         </field>
     </record>
 

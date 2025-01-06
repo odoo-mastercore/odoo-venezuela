@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 ################################################################################
 # Author: SINAPSYS GLOBAL SA || MASTERCORE SAS
-# Copyleft: 2020-Present.
+# Copyleft: 2025-Present.
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 #
 #
@@ -86,7 +86,5 @@ class ResPartner(models.Model):
     def check_vat(self):
         """ Since we validate more documents than the vat for Venezuelan partners (RIF, CI) we
         extend this method in order to process it. """
-        #TODO create validation method for each type of vat
         l10n_ve_partners = self.filtered(lambda x: x.l10n_latam_identification_type_id)
-        #l10n_ve_partners.l10n_ve_identification_validation()
         return super(ResPartner, self - l10n_ve_partners).check_vat()

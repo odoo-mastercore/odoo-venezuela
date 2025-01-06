@@ -17,13 +17,13 @@
       <record id="view_res_partner_bank_tree_inherit" model="ir.ui.view">
         <field name="name">res_partner_tree_inherit</field>
         <field name="model">res.partner.bank</field>
-        <field name="type">tree</field>
+        <field name="type">list</field>
         <field name="arch" type="xml">
-          <tree string="Cuentas bancarias">
+          <list string="Cuentas bancarias">
             <field name="bank_id" />
             <field name="acc_number"/>
             <field name="l10n_ve_acc_type" string="Tipo de cuenta" />
-          </tree>
+          </list>
         </field>
       </record>
     </data>

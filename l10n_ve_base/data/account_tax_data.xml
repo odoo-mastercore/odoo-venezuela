@@ -23,7 +23,7 @@
             (0,0, {
                 'factor_percent': 100,
                 'repartition_type': 'tax',
-                'account_id': ref('l10n_ve.account_activa_account_2172003'),
+                'account_id': ref('account.1_account_activa_account_1151004'),
             }),
         ]"/>
         <field name="refund_repartition_line_ids" eval="[(5, 0, 0),
@@ -34,7 +34,7 @@
             (0,0, {
                 'factor_percent': 100,
                 'repartition_type': 'tax',
-                'account_id': ref('l10n_ve.account_activa_account_2172003'),
+                'account_id': ref('account.1_account_activa_account_1151004'),
             }),
         ]"/>
     </record>
@@ -53,7 +53,7 @@
             (0,0, {
                 'factor_percent': 100,
                 'repartition_type': 'tax',
-                'account_id': ref('l10n_ve.account_activa_account_1151004'),
+                'account_id': ref('account.1_account_activa_account_1151004'),
             }),
         ]"/>
         <field name="refund_repartition_line_ids" eval="[(5, 0, 0),
@@ -64,7 +64,7 @@
             (0,0, {
                 'factor_percent': 100,
                 'repartition_type': 'tax',
-                'account_id': ref('l10n_ve.account_activa_account_1151004'),
+                'account_id': ref('account.1_account_activa_account_1151004'),
             }),
         ]"/>
     </record>

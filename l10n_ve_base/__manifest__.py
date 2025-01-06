@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 ###############################################################################
 # Author: SINAPSYS GLOBAL SA || MASTERCORE SAS
-# Copyleft: 2023-Present.
+# Copyleft: 2025-Present.
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 #
 #
@@ -24,22 +24,27 @@
 
     'author': "SINAPSYS GLOBAL SA || MASTERCORE SAS",
     'website': "http://sinapsys.global",
-    'version': '16.0.1',
+    'version': '18.0.0.0.1',
     'category': 'Localization',
     'license': 'AGPL-3',
-    'depends': ['base','contacts','l10n_ve','territorial_pd','l10n_latam_base'],
+    'depends': ['base','contacts','l10n_ve','l10n_latam_base'],
     'data': [
         'security/ir.model.access.csv',
         'data/l10n_latam_identification_type_data.xml',
         'data/l10n_ve_responsibility_type_data.xml',
         'data/res_bank.xml',
         'data/account_tax_data.xml',
+        'data/res.country.state.csv',
+        'data/res.country.state.municipality.csv',
+        'data/res.country.state.municipality.parish.csv',
         'views/seniat_menuitem.xml',
         'views/l10n_ve_responsibility_type_view.xml',
         'views/res_partner_view.xml',
         'views/res_partner_bank_view.xml',
         'views/res_company_view.xml',
         'views/res_currency_view.xml',
+        'views/res_country_state_municipality.xml',
+        'views/res_country_state_municipality_parish.xml',
         'wizard/currency_rate_wizard_view.xml'
     ],
 

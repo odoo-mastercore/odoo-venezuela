@@ -1,0 +1,336 @@
+"id","state_id:id","name","code"
+municipio_101,l10n_ve_base.state_ve_1,Libertador,101
+municipio_201,l10n_ve_base.state_ve_2,Anaco,201
+municipio_202,l10n_ve_base.state_ve_2,Aragua,202
+municipio_203,l10n_ve_base.state_ve_2,Simón Bolívar,203
+municipio_204,l10n_ve_base.state_ve_2,Manuel Ezequiel Bruzual,204
+municipio_205,l10n_ve_base.state_ve_2,Juan Manuel Cajigal,205
+municipio_206,l10n_ve_base.state_ve_2,Pedro María Freites,206
+municipio_207,l10n_ve_base.state_ve_2,Independencia,207
+municipio_208,l10n_ve_base.state_ve_2,Libertad,208
+municipio_209,l10n_ve_base.state_ve_2,Francisco De Miranda,209
+municipio_210,l10n_ve_base.state_ve_2,José Gregorio Monagas,210
+municipio_211,l10n_ve_base.state_ve_2,Fernando De Peñalver,211
+municipio_212,l10n_ve_base.state_ve_2,Simón Rodríguez,212
+municipio_213,l10n_ve_base.state_ve_2,Juan Antonio Sotillo,213
+municipio_214,l10n_ve_base.state_ve_2,San José De Guanipa,214
+municipio_215,l10n_ve_base.state_ve_2,Guanta,215
+municipio_216,l10n_ve_base.state_ve_2,Píritu,216
+municipio_217,l10n_ve_base.state_ve_2,Diego Bautista Urbaneja,217
+municipio_218,l10n_ve_base.state_ve_2,Francisco Del Carmen Carvajal,218
+municipio_219,l10n_ve_base.state_ve_2,Santa  Ana,219
+municipio_220,l10n_ve_base.state_ve_2,Sir Arthur Mc Gregor,220
+municipio_221,l10n_ve_base.state_ve_2,San Juan De Capistrano,221
+municipio_301,l10n_ve_base.state_ve_3,Autónomo Atures,301
+municipio_302,l10n_ve_base.state_ve_3,Autónomo Atabapo,302
+municipio_303,l10n_ve_base.state_ve_3,Autónomo Guainía,303
+municipio_304,l10n_ve_base.state_ve_3,Autónomo Río Negro,304
+municipio_305,l10n_ve_base.state_ve_3,Autónomo Autana,305
+municipio_306,l10n_ve_base.state_ve_3,Autónomo Manapiare,306
+municipio_307,l10n_ve_base.state_ve_3,Autónomo Alto Orinoco,307
+municipio_401,l10n_ve_base.state_ve_4,Achaguas,401
+municipio_402,l10n_ve_base.state_ve_4,Muñoz,402
+municipio_403,l10n_ve_base.state_ve_4,Páez,403
+municipio_404,l10n_ve_base.state_ve_4,Pedro Camejo,404
+municipio_405,l10n_ve_base.state_ve_4,Rómulo Gallegos,405
+municipio_406,l10n_ve_base.state_ve_4,San Fernando,406
+municipio_407,l10n_ve_base.state_ve_4,Biruaca,407
+municipio_501,l10n_ve_base.state_ve_5,Atanasio Girardot,501
+municipio_502,l10n_ve_base.state_ve_5,Santiago Mariño,502
+municipio_503,l10n_ve_base.state_ve_5,José Félix Ribas,503
+municipio_504,l10n_ve_base.state_ve_5,San Casimiro,504
+municipio_505,l10n_ve_base.state_ve_5,San Sebastián,505
+municipio_506,l10n_ve_base.state_ve_5,Sucre,506
+municipio_507,l10n_ve_base.state_ve_5,Urdaneta,507
+municipio_508,l10n_ve_base.state_ve_5,Zamora,508
+municipio_509,l10n_ve_base.state_ve_5,Libertador,509
+municipio_510,l10n_ve_base.state_ve_5,José Angel Lamas,510
+municipio_511,l10n_ve_base.state_ve_5,Bolívar,511
+municipio_512,l10n_ve_base.state_ve_5,Santos Michelena,512
+municipio_513,l10n_ve_base.state_ve_5,Mario Briceño Iragorry,513
+municipio_514,l10n_ve_base.state_ve_5,Tovar,514
+municipio_515,l10n_ve_base.state_ve_5,Camatagua,515
+municipio_516,l10n_ve_base.state_ve_5,José Rafael Revenga,516
+municipio_517,l10n_ve_base.state_ve_5,Francisco Linares Alcántara,517
+municipio_518,l10n_ve_base.state_ve_5,Ocumare De La Costa De Oro,518
+municipio_601,l10n_ve_base.state_ve_6,Arismendi,601
+municipio_602,l10n_ve_base.state_ve_6,Barinas,602
+municipio_603,l10n_ve_base.state_ve_6,Bolívar,603
+municipio_604,l10n_ve_base.state_ve_6,Ezequiel Zamora,604
+municipio_605,l10n_ve_base.state_ve_6,Obispos,605
+municipio_606,l10n_ve_base.state_ve_6,Pedraza,606
+municipio_607,l10n_ve_base.state_ve_6,Rojas,607
+municipio_608,l10n_ve_base.state_ve_6,Sosa,608
+municipio_609,l10n_ve_base.state_ve_6,Alberto Arvelo Torrealba,609
+municipio_610,l10n_ve_base.state_ve_6,Antonio José De Sucre,610
+municipio_611,l10n_ve_base.state_ve_6,Cruz Paredes,611
+municipio_612,l10n_ve_base.state_ve_6,Andrés Eloy Blanco,612
+municipio_701,l10n_ve_base.state_ve_7,Caroní,701
+municipio_702,l10n_ve_base.state_ve_7,Cedeño,702
+municipio_703,l10n_ve_base.state_ve_7,Heres,703
+municipio_704,l10n_ve_base.state_ve_7,Piar,704
+municipio_705,l10n_ve_base.state_ve_7,Roscio,705
+municipio_706,l10n_ve_base.state_ve_7,Sucre,706
+municipio_707,l10n_ve_base.state_ve_7,Sifontes,707
+municipio_708,l10n_ve_base.state_ve_7,Angostura,708
+municipio_709,l10n_ve_base.state_ve_7,Gran Sabana,709
+municipio_710,l10n_ve_base.state_ve_7,El Callao,710
+municipio_711,l10n_ve_base.state_ve_7,Padre Pedro Chien,711
+municipio_801,l10n_ve_base.state_ve_8,Bejuma,801
+municipio_802,l10n_ve_base.state_ve_8,Carlos Arvelo,802
+municipio_803,l10n_ve_base.state_ve_8,Diego Ibarra,803
+municipio_804,l10n_ve_base.state_ve_8,Guacara,804
+municipio_805,l10n_ve_base.state_ve_8,Montalbán,805
+municipio_806,l10n_ve_base.state_ve_8,Juan José Mora,806
+municipio_807,l10n_ve_base.state_ve_8,Puerto Cabello,807
+municipio_808,l10n_ve_base.state_ve_8,San Joaquín,808
+municipio_809,l10n_ve_base.state_ve_8,Valencia,809
+municipio_810,l10n_ve_base.state_ve_8,Miranda,810
+municipio_811,l10n_ve_base.state_ve_8,Los Guayos,811
+municipio_812,l10n_ve_base.state_ve_8,Naguanagua,812
+municipio_813,l10n_ve_base.state_ve_8,San Diego,813
+municipio_814,l10n_ve_base.state_ve_8,Libertador,814
+municipio_901,l10n_ve_base.state_ve_9,Anzoátegui,901
+municipio_902,l10n_ve_base.state_ve_9,Falcón,902
+municipio_903,l10n_ve_base.state_ve_9,Girardot,903
+municipio_904,l10n_ve_base.state_ve_9,Pao De San Juan Bautista,904
+municipio_905,l10n_ve_base.state_ve_9,Ricaurte,905
+municipio_906,l10n_ve_base.state_ve_9,San Carlos,906
+municipio_907,l10n_ve_base.state_ve_9,Tinaco,907
+municipio_908,l10n_ve_base.state_ve_9,Lima Blanco,908
+municipio_909,l10n_ve_base.state_ve_9,Rómulo Gallegos,909
+municipio_1001,l10n_ve_base.state_ve_10,Acosta,1001
+municipio_1002,l10n_ve_base.state_ve_10,Bolívar,1002
+municipio_1003,l10n_ve_base.state_ve_10,Buchivacoa,1003
+municipio_1004,l10n_ve_base.state_ve_10,Carirubana,1004
+municipio_1005,l10n_ve_base.state_ve_10,Colina,1005
+municipio_1006,l10n_ve_base.state_ve_10,Democracia,1006
+municipio_1007,l10n_ve_base.state_ve_10,Falcón,1007
+municipio_1008,l10n_ve_base.state_ve_10,Federación,1008
+municipio_1009,l10n_ve_base.state_ve_10,Mauroa,1009
+municipio_1010,l10n_ve_base.state_ve_10,Miranda,1010
+municipio_1011,l10n_ve_base.state_ve_10,Petit,1011
+municipio_1012,l10n_ve_base.state_ve_10,Silva,1012
+municipio_1013,l10n_ve_base.state_ve_10,Zamora,1013
+municipio_1014,l10n_ve_base.state_ve_10,Dabajuro,1014
+municipio_1015,l10n_ve_base.state_ve_10,Monseñor Iturriza,1015
+municipio_1016,l10n_ve_base.state_ve_10,Los Taques,1016
+municipio_1017,l10n_ve_base.state_ve_10,Píritu,1017
+municipio_1018,l10n_ve_base.state_ve_10,Unión,1018
+municipio_1019,l10n_ve_base.state_ve_10,San Francisco,1019
+municipio_1020,l10n_ve_base.state_ve_10,Jacura,1020
+municipio_1021,l10n_ve_base.state_ve_10,Cacique Manaure,1021
+municipio_1022,l10n_ve_base.state_ve_10,Palmasola,1022
+municipio_1023,l10n_ve_base.state_ve_10,Sucre,1023
+municipio_1024,l10n_ve_base.state_ve_10,Urumaco,1024
+municipio_1025,l10n_ve_base.state_ve_10,Tocópero,1025
+municipio_1101,l10n_ve_base.state_ve_11,Leonardo Infante,1101
+municipio_1102,l10n_ve_base.state_ve_11,Julián Mellado,1102
+municipio_1103,l10n_ve_base.state_ve_11,Francisco De Miranda,1103
+municipio_1104,l10n_ve_base.state_ve_11,José Tadeo Monagas,1104
+municipio_1105,l10n_ve_base.state_ve_11,José Félix Ribas,1105
+municipio_1106,l10n_ve_base.state_ve_11,Juan Germán Roscio,1106
+municipio_1107,l10n_ve_base.state_ve_11,Pedro Zaraza,1107
+municipio_1108,l10n_ve_base.state_ve_11,Camaguán,1108
+municipio_1109,l10n_ve_base.state_ve_11,San José De Guaribe,1109
+municipio_1110,l10n_ve_base.state_ve_11,Las Mercedes,1110
+municipio_1111,l10n_ve_base.state_ve_11,El Socorro,1111
+municipio_1112,l10n_ve_base.state_ve_11,Ortíz,1112
+municipio_1113,l10n_ve_base.state_ve_11,Santa María De Ipire,1113
+municipio_1114,l10n_ve_base.state_ve_11,Chaguaramas,1114
+municipio_1115,l10n_ve_base.state_ve_11,San Gerónimo De Guayabal,1115
+municipio_1201,l10n_ve_base.state_ve_12,Crespo,1201
+municipio_1202,l10n_ve_base.state_ve_12,Iribarren,1202
+municipio_1203,l10n_ve_base.state_ve_12,Jiménez,1203
+municipio_1204,l10n_ve_base.state_ve_12,Morán,1204
+municipio_1205,l10n_ve_base.state_ve_12,Palavecino,1205
+municipio_1206,l10n_ve_base.state_ve_12,Torres,1206
+municipio_1207,l10n_ve_base.state_ve_12,Urdaneta,1207
+municipio_1208,l10n_ve_base.state_ve_12,Andrés Eloy Blanco,1208
+municipio_1209,l10n_ve_base.state_ve_12,Simón Planas,1209
+municipio_1301,l10n_ve_base.state_ve_13,Alberto Adriani,1301
+municipio_1302,l10n_ve_base.state_ve_13,Andrés Bello,1302
+municipio_1303,l10n_ve_base.state_ve_13,Arzobispo Chacón,1303
+municipio_1304,l10n_ve_base.state_ve_13,Campo Elías,1304
+municipio_1305,l10n_ve_base.state_ve_13,Guaraque,1305
+municipio_1306,l10n_ve_base.state_ve_13,Julio César Salas,1306
+municipio_1307,l10n_ve_base.state_ve_13,Justo Briceño,1307
+municipio_1308,l10n_ve_base.state_ve_13,Libertador,1308
+municipio_1309,l10n_ve_base.state_ve_13,Santos Marquina,1309
+municipio_1310,l10n_ve_base.state_ve_13,Miranda,1310
+municipio_1311,l10n_ve_base.state_ve_13,Antonio Pinto Salinas,1311
+municipio_1312,l10n_ve_base.state_ve_13,Obispo Ramos De Lora,1312
+municipio_1313,l10n_ve_base.state_ve_13,Caracciolo Parra Olmedo,1313
+municipio_1314,l10n_ve_base.state_ve_13,Cardenal Quintero,1314
+municipio_1315,l10n_ve_base.state_ve_13,Pueblo Llano,1315
+municipio_1316,l10n_ve_base.state_ve_13,Rangel,1316
+municipio_1317,l10n_ve_base.state_ve_13,Rivas Dávila,1317
+municipio_1318,l10n_ve_base.state_ve_13,Sucre,1318
+municipio_1319,l10n_ve_base.state_ve_13,Tovar,1319
+municipio_1320,l10n_ve_base.state_ve_13,Tulio Febres Cordero,1320
+municipio_1321,l10n_ve_base.state_ve_13,Padre Noguera,1321
+municipio_1322,l10n_ve_base.state_ve_13,Aricagua,1322
+municipio_1323,l10n_ve_base.state_ve_13,Zea,1323
+municipio_1401,l10n_ve_base.state_ve_14,Acevedo,1401
+municipio_1402,l10n_ve_base.state_ve_14,Brión,1402
+municipio_1403,l10n_ve_base.state_ve_14,Guaicaipuro,1403
+municipio_1404,l10n_ve_base.state_ve_14,Independencia,1404
+municipio_1405,l10n_ve_base.state_ve_14,Lander,1405
+municipio_1406,l10n_ve_base.state_ve_14,Páez,1406
+municipio_1407,l10n_ve_base.state_ve_14,Paz Castillo,1407
+municipio_1408,l10n_ve_base.state_ve_14,Plaza,1408
+municipio_1409,l10n_ve_base.state_ve_14,Sucre,1409
+municipio_1410,l10n_ve_base.state_ve_14,Urdaneta,1410
+municipio_1411,l10n_ve_base.state_ve_14,Zamora,1411
+municipio_1412,l10n_ve_base.state_ve_14,Cristóbal Rojas,1412
+municipio_1413,l10n_ve_base.state_ve_14,Los Salias,1413
+municipio_1414,l10n_ve_base.state_ve_14,Andrés Bello,1414
+municipio_1415,l10n_ve_base.state_ve_14,Simón Bolívar,1415
+municipio_1416,l10n_ve_base.state_ve_14,Baruta,1416
+municipio_1417,l10n_ve_base.state_ve_14,Carrizal,1417
+municipio_1418,l10n_ve_base.state_ve_14,Chacao,1418
+municipio_1419,l10n_ve_base.state_ve_14,El Hatillo,1419
+municipio_1420,l10n_ve_base.state_ve_14,Buroz,1420
+municipio_1421,l10n_ve_base.state_ve_14,Pedro Gual,1421
+municipio_1501,l10n_ve_base.state_ve_15,Acosta,1501
+municipio_1502,l10n_ve_base.state_ve_15,Bolívar,1502
+municipio_1503,l10n_ve_base.state_ve_15,Caripe,1503
+municipio_1504,l10n_ve_base.state_ve_15,Cedeño,1504
+municipio_1505,l10n_ve_base.state_ve_15,Ezequiel Zamora,1505
+municipio_1506,l10n_ve_base.state_ve_15,Libertador,1506
+municipio_1507,l10n_ve_base.state_ve_15,Maturín,1507
+municipio_1508,l10n_ve_base.state_ve_15,Piar,1508
+municipio_1509,l10n_ve_base.state_ve_15,Punceres,1509
+municipio_1510,l10n_ve_base.state_ve_15,Sotillo,1510
+municipio_1511,l10n_ve_base.state_ve_15,Aguasay,1511
+municipio_1512,l10n_ve_base.state_ve_15,Santa Bárbara,1512
+municipio_1513,l10n_ve_base.state_ve_15,Uracoa,1513
+municipio_1601,l10n_ve_base.state_ve_16,Arismendi,1601
+municipio_1602,l10n_ve_base.state_ve_16,Díaz,1602
+municipio_1603,l10n_ve_base.state_ve_16,Gómez,1603
+municipio_1604,l10n_ve_base.state_ve_16,Maneiro,1604
+municipio_1605,l10n_ve_base.state_ve_16,Marcano,1605
+municipio_1606,l10n_ve_base.state_ve_16,Mariño,1606
+municipio_1607,l10n_ve_base.state_ve_16,Península De Macanao,1607
+municipio_1608,l10n_ve_base.state_ve_16,Villalba,1608
+municipio_1609,l10n_ve_base.state_ve_16,Tubores,1609
+municipio_1610,l10n_ve_base.state_ve_16,Antolín Del Campo,1610
+municipio_1611,l10n_ve_base.state_ve_16,García,1611
+municipio_1701,l10n_ve_base.state_ve_17,Araure,1701
+municipio_1702,l10n_ve_base.state_ve_17,Esteller,1702
+municipio_1703,l10n_ve_base.state_ve_17,Guanare,1703
+municipio_1704,l10n_ve_base.state_ve_17,Guanarito,1704
+municipio_1705,l10n_ve_base.state_ve_17,Ospino,1705
+municipio_1706,l10n_ve_base.state_ve_17,Páez,1706
+municipio_1707,l10n_ve_base.state_ve_17,Sucre,1707
+municipio_1708,l10n_ve_base.state_ve_17,Turén,1708
+municipio_1709,l10n_ve_base.state_ve_17,Monseñor José Vicente De Unda,1709
+municipio_1710,l10n_ve_base.state_ve_17,Agua Blanca,1710
+municipio_1711,l10n_ve_base.state_ve_17,Papelón,1711
+municipio_1712,l10n_ve_base.state_ve_17,San Genaro De Boconoito,1712
+municipio_1713,l10n_ve_base.state_ve_17,San Rafael De Onoto,1713
+municipio_1714,l10n_ve_base.state_ve_17,Santa Rosalía,1714
+municipio_1801,l10n_ve_base.state_ve_18,Arismendi,1801
+municipio_1802,l10n_ve_base.state_ve_18,Benítez,1802
+municipio_1803,l10n_ve_base.state_ve_18,Bermúdez,1803
+municipio_1804,l10n_ve_base.state_ve_18,Cajigal,1804
+municipio_1805,l10n_ve_base.state_ve_18,Mariño,1805
+municipio_1806,l10n_ve_base.state_ve_18,Mejía,1806
+municipio_1807,l10n_ve_base.state_ve_18,Montes,1807
+municipio_1808,l10n_ve_base.state_ve_18,Ribero,1808
+municipio_1809,l10n_ve_base.state_ve_18,Sucre,1809
+municipio_1810,l10n_ve_base.state_ve_18,Valdez,1810
+municipio_1811,l10n_ve_base.state_ve_18,Andrés Eloy Blanco,1811
+municipio_1812,l10n_ve_base.state_ve_18,Libertador,1812
+municipio_1813,l10n_ve_base.state_ve_18,Andrés Mata,1813
+municipio_1814,l10n_ve_base.state_ve_18,Bolívar,1814
+municipio_1815,l10n_ve_base.state_ve_18,Cruz Salmerón Acosta,1815
+municipio_1901,l10n_ve_base.state_ve_19,Ayacucho,1901
+municipio_1902,l10n_ve_base.state_ve_19,Bolívar,1902
+municipio_1903,l10n_ve_base.state_ve_19,Independencia,1903
+municipio_1904,l10n_ve_base.state_ve_19,Cárdenas,1904
+municipio_1905,l10n_ve_base.state_ve_19,Jáuregui,1905
+municipio_1906,l10n_ve_base.state_ve_19,Junín,1906
+municipio_1907,l10n_ve_base.state_ve_19,Lobatera,1907
+municipio_1908,l10n_ve_base.state_ve_19,San Cristóbal,1908
+municipio_1909,l10n_ve_base.state_ve_19,Uribante,1909
+municipio_1910,l10n_ve_base.state_ve_19,Córdoba,1910
+municipio_1911,l10n_ve_base.state_ve_19,García De Hevia,1911
+municipio_1912,l10n_ve_base.state_ve_19,Guásimos,1912
+municipio_1913,l10n_ve_base.state_ve_19,Michelena,1913
+municipio_1914,l10n_ve_base.state_ve_19,Libertador,1914
+municipio_1915,l10n_ve_base.state_ve_19,Panamericano,1915
+municipio_1916,l10n_ve_base.state_ve_19,Pedro María Ureña,1916
+municipio_1917,l10n_ve_base.state_ve_19,Sucre,1917
+municipio_1918,l10n_ve_base.state_ve_19,Andrés Bello,1918
+municipio_1919,l10n_ve_base.state_ve_19,Fernández Feo,1919
+municipio_1920,l10n_ve_base.state_ve_19,Libertad,1920
+municipio_1921,l10n_ve_base.state_ve_19,Samuel Darío Maldonado,1921
+municipio_1922,l10n_ve_base.state_ve_19,Seboruco,1922
+municipio_1923,l10n_ve_base.state_ve_19,Antonio Rómulo Costa,1923
+municipio_1924,l10n_ve_base.state_ve_19,Francisco De Miranda,1924
+municipio_1925,l10n_ve_base.state_ve_19,José María Vargas,1925
+municipio_1926,l10n_ve_base.state_ve_19,Rafael Urdaneta,1926
+municipio_1927,l10n_ve_base.state_ve_19,Simón Rodríguez,1927
+municipio_1928,l10n_ve_base.state_ve_19,Torbes,1928
+municipio_1929,l10n_ve_base.state_ve_19,San Judas Tadeo,1929
+municipio_2001,l10n_ve_base.state_ve_20,Rafael Rangel,2001
+municipio_2002,l10n_ve_base.state_ve_20,Boconó,2002
+municipio_2003,l10n_ve_base.state_ve_20,Carache,2003
+municipio_2004,l10n_ve_base.state_ve_20,Escuque,2004
+municipio_2005,l10n_ve_base.state_ve_20,Trujillo,2005
+municipio_2006,l10n_ve_base.state_ve_20,Urdaneta,2006
+municipio_2007,l10n_ve_base.state_ve_20,Valera,2007
+municipio_2008,l10n_ve_base.state_ve_20,Candelaria,2008
+municipio_2009,l10n_ve_base.state_ve_20,Miranda,2009
+municipio_2010,l10n_ve_base.state_ve_20,Monte Carmelo,2010
+municipio_2011,l10n_ve_base.state_ve_20,Motatán,2011
+municipio_2012,l10n_ve_base.state_ve_20,Pampán,2012
+municipio_2013,l10n_ve_base.state_ve_20,San Rafael De Carvajal,2013
+municipio_2014,l10n_ve_base.state_ve_20,Sucre,2014
+municipio_2015,l10n_ve_base.state_ve_20,Andrés Bello,2015
+municipio_2016,l10n_ve_base.state_ve_20,Bolívar,2016
+municipio_2017,l10n_ve_base.state_ve_20,José Felipe Márquez Cañizales,2017
+municipio_2018,l10n_ve_base.state_ve_20,Juan Vicente Campo Elías,2018
+municipio_2019,l10n_ve_base.state_ve_20,La Ceiba,2019
+municipio_2020,l10n_ve_base.state_ve_20,Pampanito,2020
+municipio_2101,l10n_ve_base.state_ve_21,Bolívar,2101
+municipio_2102,l10n_ve_base.state_ve_21,Bruzual,2102
+municipio_2103,l10n_ve_base.state_ve_21,Nirgua,2103
+municipio_2104,l10n_ve_base.state_ve_21,San Felipe,2104
+municipio_2105,l10n_ve_base.state_ve_21,Sucre,2105
+municipio_2106,l10n_ve_base.state_ve_21,Urachiche,2106
+municipio_2107,l10n_ve_base.state_ve_21,Peña,2107
+municipio_2108,l10n_ve_base.state_ve_21,José Antonio Páez,2108
+municipio_2109,l10n_ve_base.state_ve_21,La Trinidad,2109
+municipio_2110,l10n_ve_base.state_ve_21,Cocorote,2110
+municipio_2111,l10n_ve_base.state_ve_21,Independencia,2111
+municipio_2112,l10n_ve_base.state_ve_21,Arístides Bastidas,2112
+municipio_2113,l10n_ve_base.state_ve_21,Manuel Monge,2113
+municipio_2114,l10n_ve_base.state_ve_21,Veroes,2114
+municipio_2201,l10n_ve_base.state_ve_22,Baralt,2201
+municipio_2202,l10n_ve_base.state_ve_22,Santa Rita,2202
+municipio_2203,l10n_ve_base.state_ve_22,Colón,2203
+municipio_2204,l10n_ve_base.state_ve_22,Mara,2204
+municipio_2205,l10n_ve_base.state_ve_22,Maracaibo,2205
+municipio_2206,l10n_ve_base.state_ve_22,Miranda,2206
+municipio_2207,l10n_ve_base.state_ve_22,Páez,2207
+municipio_2208,l10n_ve_base.state_ve_22,Machiques De Perijá,2208
+municipio_2209,l10n_ve_base.state_ve_22,Sucre,2209
+municipio_2210,l10n_ve_base.state_ve_22,La Cañada De Urdaneta,2210
+municipio_2211,l10n_ve_base.state_ve_22,Lagunillas,2211
+municipio_2212,l10n_ve_base.state_ve_22,Catatumbo,2212
+municipio_2213,l10n_ve_base.state_ve_22,Rosario De Perijá,2213
+municipio_2214,l10n_ve_base.state_ve_22,Cabimas,2214
+municipio_2215,l10n_ve_base.state_ve_22,Valmore Rodríguez,2215
+municipio_2216,l10n_ve_base.state_ve_22,Jesús Enrique Lossada,2216
+municipio_2217,l10n_ve_base.state_ve_22,Almirante Padilla,2217
+municipio_2218,l10n_ve_base.state_ve_22,San Francisco,2218
+municipio_2219,l10n_ve_base.state_ve_22,Jesús María Semprún,2219
+municipio_2220,l10n_ve_base.state_ve_22,Francisco Javier Pulgar,2220
+municipio_2221,l10n_ve_base.state_ve_22,Simón Bolívar,2221
+municipio_2301,l10n_ve_base.state_ve_23,Tucupita,2301
+municipio_2302,l10n_ve_base.state_ve_23,Pedernales,2302
+municipio_2303,l10n_ve_base.state_ve_23,Antonio Díaz,2303
+municipio_2304,l10n_ve_base.state_ve_23,Casacoima,2304
+municipio_2401,l10n_ve_base.state_ve_24,Vargas,2401

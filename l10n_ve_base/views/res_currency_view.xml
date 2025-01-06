@@ -12,7 +12,7 @@
                 icon="fa-repeat"
                 class="oe_stat_button"
                 type="object" 
-                attrs="{'invisible':[('name','==','VEF')]}" 
+                invisible="name == 'VEF'"
                 widget="statinfo" />
         </xpath>
         </field>

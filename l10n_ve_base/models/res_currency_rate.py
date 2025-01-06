@@ -1,6 +1,6 @@
 ###############################################################################
 # Author: SINAPSYS GLOBAL SA || MASTERCORE SAS
-# Copyleft: 2020-Present.
+# Copyleft: 2025-Present.
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 #
 #
@@ -8,6 +8,7 @@
 
 
 from odoo import api, fields, models
+from odoo.exceptions import UserError
 from odoo.tools import float_compare
 import logging
 
@@ -27,8 +28,8 @@ class resCurrency(models.Model):
 
     rate = fields.Float(
         compute='_compute_current_rate', 
-        string='Current Rate', 
-        digits=(16, 16),                
+        string='Current Rate',
+        digits=(16, 16),
         help='The rate of the currency to the currency of rate 1.')
 
 
