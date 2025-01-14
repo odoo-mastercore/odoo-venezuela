@@ -8,6 +8,7 @@
         <field name='country' ref='base.ve'/>
         <field name='phone'>0212-2775444</field>
         <field name='email'>atencionalcliente@100x100banco.com</field>
+        <field name='bic'>0156</field>
     </record>
     <record model='res.bank' id='0172'>
         <field name='name'>BANCAMIGA BANCO MICROFINANCIERO, C.A</field>
@@ -18,6 +19,7 @@
         <field name='country' ref='base.ve'/>
         <field name='phone'>0212-9583333</field>
         <field name='email'></field>
+        <field name='bic'>0172</field>
     </record>
     <record model='res.bank' id='0171'>
         <field name='name'>BANCO ACTIVO BANCO COMERCIAL, C.A</field>
@@ -28,6 +30,7 @@
         <field name='country' ref='base.ve'/>
         <field name='phone'>0212-9583333</field>
         <field name='email'></field>
+        <field name='bic'>0171</field>
     </record>
     <record model='res.bank' id='0166'>
         <field name='name'>BANCO AGRICOLA, C.A</field>
@@ -38,9 +41,10 @@
         <field name='country' ref='base.ve'/>
         <field name='phone'></field>
         <field name='email'></field>
+        <field name='bic'>0166</field>
     </record>
     <record model='res.bank' id='0175'>
-        <field name='name'>BANCO BICENTENARIO DEL PUEBLO, BANCO UNIVERSAL</field>
+        <field name='name'>BANCO DIGITAL DE LOS TRABAJADORES</field>
         <field name='active'>1</field>
         <field name='street'></field>
         <field name='street2'></field>
@@ -48,6 +52,7 @@
         <field name='country' ref='base.ve'/>
         <field name='phone'>0212-9583333</field>
         <field name='email'></field>
+        <field name='bic'>0175</field>
     </record>
     <record model='res.bank' id='0128'>
         <field name='name'>BANCO CARONI, BANCO UNIVERSAL</field>
@@ -58,16 +63,7 @@
         <field name='country' ref='base.ve'/>
         <field name='phone'></field>
         <field name='email'></field>
-    </record>
-    <record model='res.bank' id='0164'>
-        <field name='name'>BANCO DE DESARROLLO DEL MICROEMPRESARIO</field>
-        <field name='active'>1</field>
-        <field name='street'></field>
-        <field name='street2'></field>
-        <field name='city'>Caracas</field>
-        <field name='country' ref='base.ve'/>
-        <field name='phone'></field>
-        <field name='email'></field>
+        <field name='bic'>0128</field>
     </record>
     <record model='res.bank' id='0102'>
         <field name='name'>BANCO DE VENEZUELA S.A.I.C.A</field>
@@ -78,6 +74,7 @@
         <field name='country' ref='base.ve'/>
         <field name='phone'></field>
         <field name='email'></field>
+        <field name='bic'>0102</field>
     </record>
     <record model='res.bank' id='0114'>
         <field name='name'>BANCARIBE C.A</field>
@@ -88,6 +85,7 @@
         <field name='country' ref='base.ve'/>
         <field name='phone'></field>
         <field name='email'></field>
+        <field name='bic'>0114</field>
     </record>
     <record model='res.bank' id='0163'>
         <field name='name'>BANCO DEL TESORO</field>
@@ -98,6 +96,7 @@
         <field name='country' ref='base.ve'/>
         <field name='phone'></field>
         <field name='email'></field>
+        <field name='bic'>0163</field>
     </record>
     <record model='res.bank' id='0105'>
         <field name='name'>BANCO MERCANTIL C.A.</field>
@@ -108,6 +107,7 @@
         <field name='country' ref='base.ve'/>
         <field name='phone'></field>
         <field name='email'></field>
+        <field name='bic'>0105</field>
     </record>
     <record model='res.bank' id='0191'>
         <field name='name'>BANCO NACIONAL DE CREDITO</field>
@@ -118,19 +118,10 @@
         <field name='country' ref='base.ve'/>
         <field name='phone'></field>
         <field name='email'></field>
-    </record>
-    <record model='res.bank' id='0116'>
-        <field name='name'>BANCO OCCIDENTAL DE DESCUENTO.</field>
-        <field name='active'>1</field>
-        <field name='street'></field>
-        <field name='street2'></field>
-        <field name='city'>Caracas</field>
-        <field name='country' ref='base.ve'/>
-        <field name='phone'></field>
-        <field name='email'></field>
+        <field name='bic'>0191</field>
     </record>
     <record model='res.bank' id='0138'>
-        <field name='name'>BANCO PLAZA.</field>
+        <field name='name'>BANCO PLAZA</field>
         <field name='active'>1</field>
         <field name='street'></field>
         <field name='street2'></field>
@@ -138,6 +129,7 @@
         <field name='country' ref='base.ve'/>
         <field name='phone'></field>
         <field name='email'></field>
+        <field name='bic'>0138</field>
     </record>
     <record model='res.bank' id='0108'>
         <field name='name'>BANCO PROVINCIAL BBVA</field>
@@ -148,6 +140,7 @@
         <field name='country' ref='base.ve'/>
         <field name='phone'></field>
         <field name='email'></field>
+        <field name='bic'>0108</field>
     </record>
     <record model='res.bank' id='0104'>
         <field name='name'>BANCO VENEZOLANO DE CREDITO S.A.</field>
@@ -158,6 +151,7 @@
         <field name='country' ref='base.ve'/>
         <field name='phone'></field>
         <field name='email'></field>
+        <field name='bic'>0104</field>
     </record>
     <record model='res.bank' id='0168'>
         <field name='name'>BANCRECER S.A. BANCO DE DESARROLLO</field>
@@ -168,6 +162,7 @@
         <field name='country' ref='base.ve'/>
         <field name='phone'></field>
         <field name='email'></field>
+        <field name='bic'>0168</field>
     </record>
     <record model='res.bank' id='0134'>
         <field name='name'>BANESCO BANCO UNIVERSAL</field>
@@ -178,6 +173,7 @@
         <field name='country' ref='base.ve'/>
         <field name='phone'></field>
         <field name='email'></field>
+        <field name='bic'>0134</field>
     </record>
     <record model='res.bank' id='0177'>
         <field name='name'>BANFANB</field>
@@ -188,16 +184,7 @@
         <field name='country' ref='base.ve'/>
         <field name='phone'></field>
         <field name='email'></field>
-    </record>
-    <record model='res.bank' id='0146'>
-        <field name='name'>BANGENTE</field>
-        <field name='active'>1</field>
-        <field name='street'></field>
-        <field name='street2'></field>
-        <field name='city'>Caracas</field>
-        <field name='country' ref='base.ve'/>
-        <field name='phone'></field>
-        <field name='email'></field>
+        <field name='bic'>0177</field>
     </record>
     <record model='res.bank' id='0174'>
         <field name='name'>BANPLUS BANCO COMERCIAL C.A</field>
@@ -208,6 +195,7 @@
         <field name='country' ref='base.ve'/>
         <field name='phone'></field>
         <field name='email'></field>
+        <field name='bic'>0174</field>
     </record>
     <record model='res.bank' id='0157'>
         <field name='name'>DELSUR BANCO UNIVERSAL</field>
@@ -218,6 +206,7 @@
         <field name='country' ref='base.ve'/>
         <field name='phone'></field>
         <field name='email'></field>
+        <field name='bic'>0157</field>
     </record>
     <record model='res.bank' id='0151'>
         <field name='name'>BANCO FONDO COMUN</field>
@@ -228,6 +217,7 @@
         <field name='country' ref='base.ve'/>
         <field name='phone'></field>
         <field name='email'></field>
+        <field name='bic'>0151</field>
     </record>
     <record model='res.bank' id='0169'>
         <field name='name'>MIBANCO BANCO DE DESARROLLO, C.A.</field>
@@ -238,6 +228,7 @@
         <field name='country' ref='base.ve'/>
         <field name='phone'></field>
         <field name='email'></field>
+        <field name='bic'>0169</field>
     </record>
     <record model='res.bank' id='0137'>
         <field name='name'>SOFITASA</field>
@@ -248,5 +239,6 @@
         <field name='country' ref='base.ve'/>
         <field name='phone'></field>
         <field name='email'></field>
+        <field name='bic'>0137</field>
     </record>
 </odoo>
