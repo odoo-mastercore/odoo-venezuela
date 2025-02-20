@@ -361,8 +361,6 @@ class AccountVatLedgerXlsx(models.AbstractModel):
             date_reference = obj.date_from
             
             for idx, invoice in enumerate(invoices):
-                print(invoice.name)
-                print(invoice.id)
                 if obj.type == 'purchase':
                     if date_reference <= invoice.invoice_date:
                         while date_reference < invoice.invoice_date:
@@ -1076,12 +1074,12 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                 sheet.write((row+4), 15, 0, line_number)
                 sheet.write((row+4), 16, '', line_number)
                 sheet.merge_range('J%s:M%s' % (str(row+6), str(row+6)), 'Total Ventas Internas afectadas sólo alícuota general 16.00', title_style)
-                sheet.write((row+5), 13, round(total_base_imponible_contribuyente_16 + total_base_imponible_no_contribuyente_16 - total_nota_credito_16 + total_nota_debito_16,2), line_number)
+                sheet.write((row+5), 13, round(total_base_imponible_contribuyente_16 + total_base_imponible_no_contribuyente_16 - total_nota_credito_16 - total_nota_debito_16,2), line_number)
                 sheet.write((row+5), 14, total_iva_16, line_number)
                 sheet.write((row+5), 15, total_iva_16_retenido, line_number)
                 sheet.write((row+5), 16, '', line_number)
                 sheet.merge_range('J%s:M%s' % (str(row+7), str(row+7)), 'Total Ventas Internas afectadas sólo alícuota reducida 8.00', title_style)
-                sheet.write((row+6), 13, round(total_base_imponible_contribuyente_8 + total_base_imponible_no_contribuyente_8 - total_nota_credito_8 + total_nota_debito_8,2), line_number)
+                sheet.write((row+6), 13, round(total_base_imponible_contribuyente_8 + total_base_imponible_no_contribuyente_8 - total_nota_credito_8 - total_nota_debito_8,2), line_number)
                 sheet.write((row+6), 14, total_iva_8, line_number)
                 sheet.write((row+6), 15, 0, line_number)
                 sheet.write((row+6), 16, '', line_number)
