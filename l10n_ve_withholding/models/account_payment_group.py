@@ -177,3 +177,10 @@ class AccountPaymentGroup(models.Model):
                 rec.unreconciled_amount = rec.to_pay_amount - rec.selected_finacial_debt
             else:
                 rec.unreconciled_amount = rec.to_pay_amount - rec.selected_debt
+
+    def format_number(self, number):
+        return "{:,.2f}".format(number).replace(",", "X").replace(".", ",").replace("X", ".")
+
+    # Example usage:
+    # formatted_number = format_number(1500.03)
+    # print(formatted_number)  # Output: 1.500,03
