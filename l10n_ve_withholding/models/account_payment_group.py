@@ -177,3 +177,4 @@ class AccountPaymentGroup(models.Model):
                 rec.unreconciled_amount = rec.to_pay_amount - rec.selected_finacial_debt
             else:
                 rec.unreconciled_amount = rec.to_pay_amount - rec.selected_debt
+
