@@ -19,13 +19,11 @@
     'category': 'Localization / Venezuela',
     'depends': [
         'base',
+        'web',
         'account',
-        'l10n_ve_base',
-        'l10n_ve_withholding',
     ],
     'data': [
-        'templates/report_invoice_ve.xml',
-        'data/external_layout_report.xml',
+        "views/external_layout.xml",
     ],
     'auto_install': False,
     'application': False,
