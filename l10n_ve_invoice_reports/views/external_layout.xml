@@ -4,7 +4,7 @@
         <div t-attf-class="footer o_standard_footer o_company_#{company.id}_layout" position="inside">
             <div class="text-center" style="border-top: 1px solid black;" t-if="o._name in ['sale.order','stock.picking']">
                 <div class="text-center">
-                    <h1>Documento sin derecho a crédito fiscal</h1>
+                    <h5><strong>Documento sin derecho a crédito fiscal</strong></h5>
                 </div>
             </div>
         </div>
@@ -14,7 +14,7 @@
         <div t-attf-class="footer o_boxed_footer o_company_#{company.id}_layout" position='inside'>
             <div class="text-center" style="border-top: 1px solid black;" t-if="o._name in ['sale.order','stock.picking']">
                 <div class="text-center">
-                    <h1>Documento sin derecho a crédito fiscal</h1>
+                    <h5><strong>Documento sin derecho a crédito fiscal</strong></h5>
                 </div>
             </div>
         </div>
@@ -24,7 +24,7 @@
         <div t-attf-class="o_company_#{company.id}_layout footer o_background_footer" position="inside">
             <div class="text-center" style="border-top: 1px solid black;" t-if="o._name in ['sale.order','stock.picking']">
                 <div class="text-center">
-                    <h1>Documento sin derecho a crédito fiscal</h1>
+                    <h5><strong>Documento sin derecho a crédito fiscal</strong></h5>
                 </div>
             </div>
         </div>
@@ -34,7 +34,7 @@
         <div t-attf-class="footer o_clean_footer o_company_#{company.id}_layout" position="inside">
             <div class="text-center" style="border-top: 1px solid black;" t-if="o._name in ['sale.order','stock.picking']">
                 <div class="text-center">
-                    <h1>Documento sin derecho a crédito fiscal</h1>
+                    <h5><strong>Documento sin derecho a crédito fiscal</strong></h5>
                 </div>
             </div>
         </div>
