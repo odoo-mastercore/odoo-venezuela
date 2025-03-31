@@ -1,0 +1,42 @@
+<odoo>
+    <!-- Standard -->
+    <template id="custom_footer_l10n_ve_reports_standard" inherit_id="web.external_layout_standard">
+        <div t-attf-class="footer o_standard_footer o_company_#{company.id}_layout" position="inside">
+            <div class="text-center" style="border-top: 1px solid black;" t-if="o._name in ['sale.order','stock.picking']">
+                <div class="text-center">
+                    <h5><strong>Documento sin derecho a crédito fiscal</strong></h5>
+                </div>
+            </div>
+        </div>
+    </template>
+    <!-- boxed -->
+    <template id="custom_footer_l10n_ve_reports_boxed" inherit_id="web.external_layout_boxed">
+        <div t-attf-class="footer o_boxed_footer o_company_#{company.id}_layout" position='inside'>
+            <div class="text-center" style="border-top: 1px solid black;" t-if="o._name in ['sale.order','stock.picking']">
+                <div class="text-center">
+                    <h5><strong>Documento sin derecho a crédito fiscal</strong></h5>
+                </div>
+            </div>
+        </div>
+    </template>
+    <!-- Striped -->
+    <template id="custom_footer_l10n_ve_reports_striped" inherit_id="web.external_layout_striped">
+        <div t-attf-class="o_company_#{company.id}_layout footer o_background_footer" position="inside">
+            <div class="text-center" style="border-top: 1px solid black;" t-if="o._name in ['sale.order','stock.picking']">
+                <div class="text-center">
+                    <h5><strong>Documento sin derecho a crédito fiscal</strong></h5>
+                </div>
+            </div>
+        </div>
+    </template>
+    <!-- Bold -->
+    <template id="custom_footer_l10n_ve_reports_bold" inherit_id="web.external_layout_bold">
+        <div t-attf-class="footer o_clean_footer o_company_#{company.id}_layout" position="inside">
+            <div class="text-center" style="border-top: 1px solid black;" t-if="o._name in ['sale.order','stock.picking']">
+                <div class="text-center">
+                    <h5><strong>Documento sin derecho a crédito fiscal</strong></h5>
+                </div>
+            </div>
+        </div>
+    </template>
+</odoo>

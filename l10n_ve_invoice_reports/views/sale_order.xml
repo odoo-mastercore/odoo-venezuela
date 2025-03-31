@@ -1,0 +1,16 @@
+<odoo>
+    <data>
+        <record id="action_uninvoiced_confirmed_sale_orders" model="ir.actions.act_window">
+            <field name="name">Presupuesto por facturar</field>
+            <field name="res_model">sale.order</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('invoice_status', '=', 'to invoice'), ('state', '=', 'sale')]</field>
+        </record>
+
+        <menuitem id="menu_uninvoiced_confirmed_sale_orders"
+                  name="Presupuesto por facturar"
+                  parent="sale.sale_order_menu"
+                  action="action_uninvoiced_confirmed_sale_orders"
+                  sequence="10"/>
+    </data>
+</odoo>
