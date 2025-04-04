@@ -9,6 +9,7 @@
 
 from odoo import api, fields, models
 from odoo.tools import float_compare
+from odoo.exceptions import UserError
 import logging
 
 _logger = logging.getLogger(__name__)
@@ -26,11 +27,10 @@ class resCurrency(models.Model):
     _inherit = 'res.currency'
 
     rate = fields.Float(
-        compute='_compute_current_rate', 
-        string='Current Rate', 
-        digits=(16, 16),                
+        compute='_compute_current_rate',
+        string='Current Rate',
+        digits=(16, 16),
         help='The rate of the currency to the currency of rate 1.')
-
 
     def action_get_currency_rate(self):
         currency_id = self.id
