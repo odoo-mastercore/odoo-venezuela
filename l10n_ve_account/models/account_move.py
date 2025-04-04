@@ -8,6 +8,9 @@
 ###############################################################################
 from odoo import api, fields, models, _
 from odoo.exceptions import ValidationError, UserError
+import logging
+from datetime import datetime
+_logger = logging.getLogger(__name__)
 
 
 class AccountMove(models.Model):
@@ -22,5 +25,14 @@ class AccountMove(models.Model):
         super()._post(soft=soft)
         for rec in self:
             if rec.state == 'posted':
-                rec.l10n_ve_invoice_date = fields.Datetime.context_timestamp(
-                    self, fields.Datetime.now())
+                rec.l10n_ve_invoice_date = fields.Datetime.now()
+
+    def _get_l10n_ve_invoice_date(self, split=False):
+        date, time = False, False
+        if self.l10n_ve_invoice_date:
+            date_tz = fields.Datetime.context_timestamp(self, self.l10n_ve_invoice_date)
+            date = date_tz.strftime("%d-%m-%Y")
+            time = date_tz.strftime("%H:%M:%S")
+        if split:
+            return (date, time)
+        return f"{date} {time}" if date else False
