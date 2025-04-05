@@ -97,7 +97,7 @@
                                 Importe del comprobante que origina la retención:
                             </td>
                             <td class="text-left">
-                                <span t-field="o.withholding_base_amount"/>
+                                <span t-esc="o.withholding_base_amount"/>
                             </td>
                         </tr>
                         <tr>
@@ -113,7 +113,7 @@
                                 Importe de la retención:
                             </td>
                             <td class="text-left">
-                                <span t-field="o.amount"/>
+                                <span t-esc="o.amount"/>
                             </td>
                         </tr>
                     </tbody>
