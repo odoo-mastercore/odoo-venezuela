@@ -9,6 +9,7 @@
 from odoo import api, fields, models, _
 from odoo.exceptions import ValidationError, UserError
 import logging
+import re
 from datetime import datetime
 _logger = logging.getLogger(__name__)
 
@@ -38,9 +39,9 @@ class AccountMove(models.Model):
         return f"{date} {time}" if date else False
 
     def _check_lines_price(self):
+        FORBIDDEN_PATTER = r'\b(descuento|desc|des|discount)\b'
         """
           Para descuentos en líneas de factura, se permite el precio cero o negativo,
-          pero el tipo de producto debe ser 'consumible' o 'servicio'.
           dejamos el comodin de 'skip_check_price' para que no se valide el precio
           en caso de que se necesite validar el precio en otro momento.
         """
@@ -49,7 +50,7 @@ class AccountMove(models.Model):
         for line in self.invoice_line_ids:
             if line.price_unit <= 0 and\
                 self.move_type in ['out_invoice'] and\
-                line.product_id.type == 'product':
+                re.search(FORBIDDEN_PATTER, line.product_id.name, re.IGNORECASE):
                 raise ValidationError(
                     _("No se permiten precios cero o negativos en las líneas de factura. Línea con producto: %s")
                     % line.product_id.display_name
