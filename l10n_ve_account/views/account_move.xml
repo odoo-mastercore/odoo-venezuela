@@ -8,8 +8,13 @@
             <xpath expr="//group[@name='accounting_info_group']//field[@name='company_id']" position="after">
                 <field name="l10n_ve_invoice_date" />
             </xpath>
+            <xpath expr="//header/button[@name='button_draft']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
         </field>
     </record>
+
+
 
     <!-- <record id="inherit_menu_action_move_out_refund_type" model="ir.ui.menu">
         <field name="name">Nota de crédito</field>
