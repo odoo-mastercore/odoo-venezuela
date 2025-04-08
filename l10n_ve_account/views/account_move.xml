@@ -10,4 +10,14 @@
             </xpath>
         </field>
     </record>
+
+    <record id="inherit_menu_action_move_out_refund_type" model="ir.ui.menu">
+        <field name="name">Nota de crédito</field>
+        <field name="inherit_id" ref="account.menu_action_move_out_refund_type"/>
+    </record>
+
+    <record id="inherit_menu_action_move_in_refund_type" model="ir.ui.menu">
+        <field name="name">Nota de crédito</field>
+        <field name="inherit_id" ref="account.menu_action_move_in_refund_type"/>
+    </record>
 </odoo>
