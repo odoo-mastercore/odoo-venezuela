@@ -90,7 +90,7 @@
                                     Fecha de factura afectada:
                                 </td>
                                 <td class="text-left">
-                                    <span t-field="i.move_id.invoice_date('%d/%m/%Y')"/>
+                                    <span t-field="i.move_id.invoice_date"/>
                                 </td>
                             </tr>
                             <tr>
