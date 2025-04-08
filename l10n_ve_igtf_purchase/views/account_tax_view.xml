@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>
+    <data>
+        <record id="view_account_tax_form" model="ir.ui.view">
+            <field name="name">account.tax.form.inherit</field>
+            <field name="model">account.tax</field>
+            <field name="inherit_id" ref="account.view_tax_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//notebook/page[@name='advanced_options']//group[@name='advanced_booleans']" position="inside">
+                    <field name="igtf_purchase" />
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>
