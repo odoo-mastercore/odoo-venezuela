@@ -328,8 +328,8 @@ class AccountVatLedgerXlsx(models.AbstractModel):
             
             for idx, invoice in enumerate(invoices):
                 if obj.type == 'purchase':
-                    if date_reference <= invoice.invoice_date:
-                        while date_reference < invoice.invoice_date:
+                    if date_reference <= invoice.l10n_ve_invoice_date:
+                        while date_reference < invoice.l10n_ve_invoice_date:
                             coincident_date = [tup for tup in retenciones if date_reference == tup.date ]
                             if coincident_date:
                                 for reten in coincident_date:
@@ -406,7 +406,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     # contador de la factura
                     sheet.write(row, 0, i, line)
                     # codigo fecha
-                    sheet.write(row, 1, invoice.invoice_date or 'FALSE', date_line)
+                    sheet.write(row, 1, invoice.l10n_ve_invoice_date or 'FALSE', date_line)
                     # tipo de documento
                     if invoice.move_type == 'out_invoice':
                         sheet.write(row, 2, 'Factura', line)
