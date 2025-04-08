@@ -84,7 +84,7 @@ class AccountMove(models.Model):
                 if move.currency_id.name != 'USD':
                     if not is_igtf and move.igtf_amount_purchase>=0:
                         move.invoice_line_ids  += self.env['account.move.line'].create({
-                            'display_type':'tax',
+                            # 'display_type':'tax',
                             'name': igtf.name,
                             'partner_id': move.partner_id.id,
                             'account_id': account_id.id,
@@ -97,7 +97,7 @@ class AccountMove(models.Model):
                 elif move.currency_id.name == 'USD':
                     if not is_igtf and move.igtf_amount_purchase_usd>=0:
                         move.invoice_line_ids  += move.env['account.move.line'].create({
-                            'display_type':'tax',
+                            # 'display_type':'tax',
                             'name': igtf.name,
                             'partner_id': move.partner_id.id,
                             'account_id': account_id.id,
