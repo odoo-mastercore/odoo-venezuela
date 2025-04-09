@@ -56,9 +56,9 @@ class AccountTax(models.Model):
                 if to_pay.move_id.line_ids:
                     for abg in to_pay.move_id.line_ids:
                         if abg.name in taxes:
-                            tax_amount = abg.debit
+                            tax_amount = abg.debit if abg.debit else abg.credit
                             alic = alicuota
-                            withholding_amount = abg.debit*alicuota
+                            withholding_amount = abg.debit*alicuota if abg.debit else abg.credit*alicuota
                             invoice_amount = 0.00
                             for abg_base in to_pay.move_id.line_ids.filtered(lambda x: x.tax_ids.name in [abg.name] and x.display_type != 'cogs'):
                                 withholdable_invoiced_amount += abg_base.debit if to_pay.move_id.move_type == 'in_refund' else abg_base.credit
