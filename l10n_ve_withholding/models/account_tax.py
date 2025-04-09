@@ -56,9 +56,9 @@ class AccountTax(models.Model):
                 if to_pay.move_id.line_ids:
                     for abg in to_pay.move_id.line_ids:
                         if abg.name in taxes:
-                            tax_amount = abg.debit
+                            tax_amount = abg.debit if abg.debit else abg.credit
                             alic = alicuota
-                            withholding_amount = abg.debit*alicuota
+                            withholding_amount = abg.debit*alicuota if abg.debit else abg.credit*alicuota
                             invoice_amount = 0.00
                             for abg_base in to_pay.move_id.line_ids.filtered(lambda x: x.tax_ids.name in [abg.name] and x.display_type != 'cogs'):
                                 withholdable_invoiced_amount += abg_base.debit if to_pay.move_id.move_type == 'in_refund' else abg_base.credit
@@ -97,6 +97,7 @@ class AccountTax(models.Model):
             vals['withholdable_invoiced_amount'] = withholdable_invoiced_amount
             vals['withholdable_base_amount'] = base_amount
             vals['period_withholding_amount'] = amount
+            _logger.warning(vals)
 
         elif self.withholding_type == 'tabla_islr':
             ctx = self._context.copy()
@@ -114,21 +115,27 @@ class AccountTax(models.Model):
                 amount_untaxed_signed if to_pay.move_id.\
                 amount_untaxed_signed >= 0 else -to_pay.\
                 move_id.amount_untaxed_signed
+            
+            currency = False
+            
             if default_regimen_islr_id:
                 lines_base = 0
                 for line in payment_group.withholding_distributin_islr_ids:
                     if line.regimen_islr_id == regimen:
                         if line.currency_id.id == self.company_id.currency_id.id:
                             lines_base += line.price_subtotal
+                            currency = line.currency_id.id
                         else:
                             date_payment = line.payment_group_id.payment_date
                             currency_rate = self.env['res.currency.rate'].search([
                                 ('currency_id.id','=',line.currency_id.id),
                                 ('name', '<=', date_payment)],limit=1).inverse_company_rate
                             lines_base += line.price_subtotal * currency_rate
+                            currency = line.currency_id.id
                 selected_debt_untaxed = lines_base
             else:
                 if to_pay:
+                    currency = to_pay.currency_id
                     product_off = []
                     amount_off = 0.00
                     if to_pay.move_id.line_ids:
@@ -174,13 +181,25 @@ class AccountTax(models.Model):
                                withholding_percentage) - subtracting
             else:
                 withholding = base_withholding * withholding_percentage
+            
+            if currency.id != self.company_id.currency_id.id:
+                date = payment_group.payment_date
+                currency_rate = self.env['res.currency.rate'].search([
+                                ('currency_id.id','=',currency.id),
+                                ('name', '<=', date)],limit=1).inverse_company_rate
+                amount = withholding / (currency_rate or 1)
+            else:
+                amount = withholding
             vals['concept_withholding'] = str(regimen.code_seniat)+' - '+str(regimen.activity_name)
             vals['comment_withholding'] = str(withholding_percentage*100)+"%"
             vals['total_amount'] = base
+            vals['amount'] = amount
+            vals['amount_company_currency'] = withholding
+            vals['currency_id'] = currency.id
             vals['withholdable_invoiced_amount'] = base
             vals['withholdable_base_amount'] = base_withholding
             vals['period_withholding_amount'] = withholding
-
+            _logger.warning(vals)
         else:
             vals = super(AccountTax, self).get_withholding_vals(
                 payment_group, force_withholding_amount_type)

@@ -56,7 +56,7 @@ class AccountPaymentGroup(models.Model):
 
     third_partner_withholding = fields.Boolean(string='Retención a terceros',
                                                default=False)
-    
+
     third_partner_id = fields.Many2one(
         string=_('Tercero'),
         comodel_name='res.partner',
