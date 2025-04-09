@@ -113,7 +113,7 @@
                                 Importe de la retención:
                             </td>
                             <td class="text-left">
-                                <span t-esc="o.amount"/>
+                                <span t-esc="o.amount if o.currency_id.name != 'USD' else o.amount_company_currency"/>
                             </td>
                         </tr>
                     </tbody>
