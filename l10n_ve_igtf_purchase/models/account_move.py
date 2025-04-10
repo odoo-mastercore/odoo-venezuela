@@ -9,9 +9,10 @@
 from odoo import models, fields, api, _, Command
 from odoo.exceptions import UserError, ValidationError
 from datetime import datetime
-import logging
 from odoo.tools import formatLang
-
+import json
+import logging
+_logger = logging.getLogger(__name__)
 
 class AccountMove(models.Model):
     _inherit = "account.move"
@@ -40,8 +41,9 @@ class AccountMove(models.Model):
     def _compute_amount(self):
         super(AccountMove, self)._compute_amount()
         for move in self:
-            if move.tax_totals and move.tax_totals.get('groups_by_subtotal'):
-                base_imponible = move.tax_totals.get('groups_by_subtotal').get('Base imponible')
+            tax_total_json = json.loads(move.tax_totals_json)
+            if tax_total_json and tax_total_json.get('groups_by_subtotal'):
+                base_imponible = tax_total_json.get('groups_by_subtotal').get('Base imponible')
                 if move.igtf_purchase_apply_purchase:
                     igtf = self.env['account.tax'].search([('igtf_purchase','=',True)], limit=1)
                     igtf_tax = False
@@ -66,9 +68,7 @@ class AccountMove(models.Model):
                             'formatted_tax_group_amount': formatLang(self.env, move.igtf_amount_purchase_usd , currency_obj=move.currency_id),
                             'formatted_tax_group_base_amount': formatLang(self.env, move.igtf_base_purchase_usd, currency_obj=move.currency_id)
                         }
-                    
                     if igtf_tax:
-
                         base_imponible.append(igtf_tax)
     
     
