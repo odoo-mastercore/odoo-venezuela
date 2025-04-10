@@ -22,20 +22,23 @@ class AccountMove(models.Model):
     igtf_amount_purchase_usd = fields.Float('Monto IGTF USD')
     igtf_purchase_apply_purchase = fields.Boolean('Aplicar IGTF')
     
-    @api.depends_context('lang')
     @api.depends(
-        'invoice_line_ids.currency_rate',
-        'invoice_line_ids.tax_base_amount',
-        'invoice_line_ids.tax_line_id',
-        'invoice_line_ids.price_total',
-        'invoice_line_ids.price_subtotal',
-        'invoice_payment_term_id',
-        'partner_id',
-        'currency_id',
-        'igtf_purchase_apply_purchase'
-    )
-    def _compute_tax_totals(self):
-        super(AccountMove, self)._compute_tax_totals()
+        'line_ids.matched_debit_ids.debit_move_id.move_id.payment_id.is_matched',
+        'line_ids.matched_debit_ids.debit_move_id.move_id.line_ids.amount_residual',
+        'line_ids.matched_debit_ids.debit_move_id.move_id.line_ids.amount_residual_currency',
+        'line_ids.matched_credit_ids.credit_move_id.move_id.payment_id.is_matched',
+        'line_ids.matched_credit_ids.credit_move_id.move_id.line_ids.amount_residual',
+        'line_ids.matched_credit_ids.credit_move_id.move_id.line_ids.amount_residual_currency',
+        'line_ids.debit',
+        'line_ids.credit',
+        'line_ids.currency_id',
+        'line_ids.amount_currency',
+        'line_ids.amount_residual',
+        'line_ids.amount_residual_currency',
+        'line_ids.payment_id.state',
+        'line_ids.full_reconcile_id')
+    def _compute_amount(self):
+        super(AccountMove, self)._compute_amount()
         for move in self:
             if move.tax_totals and move.tax_totals.get('groups_by_subtotal'):
                 base_imponible = move.tax_totals.get('groups_by_subtotal').get('Base imponible')
