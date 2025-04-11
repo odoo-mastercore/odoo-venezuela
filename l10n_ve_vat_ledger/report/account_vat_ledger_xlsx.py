@@ -693,7 +693,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     # contador de la factura
                     sheet.write(row, 0, i, line)
                     # codigo fecha
-                    sheet.write(row, 1, invoice.invoice_date or 'FALSE', date_line)
+                    sheet.write(row, 1, invoice.l10n_ve_invoice_date or 'FALSE', date_line)
                     # tipo de documento
                     
                     if invoice.move_type == 'out_invoice' and not invoice.debit_origin_id:
