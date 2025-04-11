@@ -329,7 +329,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
             if retens:
                 retenciones = list(retens)
             if obj.type == 'sale':
-                invoices = reversed(obj.invoice_ids)
+                invoices = sorted(obj.invoice_ids, key=lambda x: x.l10n_ve_invoice_date)
             elif obj.type == 'purchase':
                 invoices = sorted(obj.invoice_ids, key=lambda x: x.invoice_date)
             
