@@ -23,10 +23,10 @@ class AccountMove(models.Model):
              " Fiscal reports correctly.",store=True, copy=False)
     applied_withholding_tax = fields.Boolean(
         'Retencion de IVA aplicada', compute='_compute_applied_withholding',
-        store=True, copy=False, default=False, copy=False)
+        store=True, copy=False, default=False)
     applied_withholding_islr = fields.Boolean(
         'Retencion de ISLR aplicada', compute='_compute_applied_withholding',
-        store=True, copy=False, default=False, copy=False)
+        store=True, copy=False, default=False)
 
 
     @api.depends('amount_residual','amount_residual_signed',)
