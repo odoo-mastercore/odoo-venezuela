@@ -18,7 +18,7 @@ class AccountMove(models.Model):
     _inherit = 'account.move'
 
     l10n_ve_invoice_date = fields.Datetime(
-        string='Invoice Date and Time',
+        string='Fecha y hora de la factura',
         readonly=True
     )
 
