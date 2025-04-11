@@ -332,8 +332,8 @@ class AccountVatLedgerXlsx(models.AbstractModel):
             
             for idx, invoice in enumerate(invoices):
                 if obj.type == 'purchase':
-                    if date_reference <= invoice.l10n_ve_invoice_date:
-                        while date_reference < invoice.l10n_ve_invoice_date:
+                    if date_reference <= invoice.invoice_date:
+                        while date_reference < invoice.invoice_date:
                             coincident_date = [tup for tup in retenciones if date_reference == tup.date ]
                             if coincident_date:
                                 for reten in coincident_date:
