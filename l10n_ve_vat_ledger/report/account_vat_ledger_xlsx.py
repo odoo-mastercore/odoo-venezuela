@@ -96,6 +96,10 @@ class AccountVatLedgerXlsx(models.AbstractModel):
             date_line = workbook.add_format(
                 {'border': 1, 'num_format': 'dd-mm-yyyy',
                  'align': 'center'})
+            
+            date_time_line = workbook.add_format(
+                {'border': 1, 'num_format': 'dd-mm-yyyy hh:mm',
+                 'align': 'center'})
 
             sheet.set_column(0, 0, 9)
             sheet.set_column(1, 4, 20)
@@ -406,7 +410,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     # contador de la factura
                     sheet.write(row, 0, i, line)
                     # codigo fecha
-                    sheet.write(row, 1, invoice.l10n_ve_invoice_date or 'FALSE', date_line)
+                    sheet.write(row, 1, invoice.l10n_ve_invoice_date or 'FALSE', date_time_line)
                     # tipo de documento
                     if invoice.move_type == 'out_invoice':
                         sheet.write(row, 2, 'Factura', line)
@@ -693,7 +697,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     # contador de la factura
                     sheet.write(row, 0, i, line)
                     # codigo fecha
-                    sheet.write(row, 1, invoice.l10n_ve_invoice_date or 'FALSE', date_line)
+                    sheet.write(row, 1, invoice.l10n_ve_invoice_date or 'FALSE', date_time_line)
                     # tipo de documento
                     
                     if invoice.move_type == 'out_invoice' and not invoice.debit_origin_id:
