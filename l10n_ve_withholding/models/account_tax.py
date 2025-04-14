@@ -124,14 +124,14 @@ class AccountTax(models.Model):
                     if line.regimen_islr_id == regimen:
                         if line.currency_id.id == self.company_id.currency_id.id:
                             lines_base += line.price_subtotal
-                            currency = line.currency_id.id
+                            currency = line.currency_id
                         else:
                             date_payment = line.payment_group_id.payment_date
                             currency_rate = self.env['res.currency.rate'].search([
                                 ('currency_id.id','=',line.currency_id.id),
                                 ('name', '<=', date_payment)],limit=1).inverse_company_rate
                             lines_base += line.price_subtotal * currency_rate
-                            currency = line.currency_id.id
+                            currency = line.currency_id
                 selected_debt_untaxed = lines_base
             else:
                 if to_pay:
@@ -181,7 +181,6 @@ class AccountTax(models.Model):
                                withholding_percentage) - subtracting
             else:
                 withholding = base_withholding * withholding_percentage
-            
             if currency.id != self.company_id.currency_id.id:
                 date = payment_group.payment_date
                 currency_rate = self.env['res.currency.rate'].search([
