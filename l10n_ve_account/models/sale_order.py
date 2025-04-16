@@ -25,7 +25,7 @@ class saleOrder(models.Model):
         res = super(saleOrder, self).action_confirm()
         for rec in self:
             for line in rec.order_line:
-                if not line.order_line.tax_id:
+                if not line.tax_id:
                     raise ValidationError(
                         _("El producto %s no tiene impuestos asignados.") % line.product_id.display_name
                     )
