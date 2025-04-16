@@ -342,7 +342,10 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                             coincident_date = [tup for tup in retenciones if date_reference == tup.date ]
                             if coincident_date:
                                 for reten in coincident_date:
-                                    total_iva_16_retenido += reten.amount if reten.currency_id == reten.company_id.currency_id else reten.amount_company_currency
+                                    amount_reten = reten.amount if reten.currency_id == reten.company_id.currency_id else reten.amount_company_currency
+                                    amount_reten = amount_reten if reten.reconciled_bill_ids.move_type != 'in_refund' else amount_reten * -1.00
+                                    total_iva_16_retenido += amount_reten
+
                                     i += 1
                                     # codigo 
                                     sheet.write(row, 0, i, line)
@@ -403,7 +406,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                                     
 
                                     #Retenciones
-                                    sheet.write(row, 25, reten.amount if reten.currency_id == reten.company_id.currency_id else reten.amount_company_currency, line)
+                                    sheet.write(row, 25, amount_reten, line)
                                     ###### IGTF
                                     sheet.write(row, 26, '', line)
                                     retenciones.remove(reten)
@@ -977,8 +980,6 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     sheet.write(row, 25, reten.amount if reten.currency_id == reten.company_id.currency_id else reten.amount_company_currency, line_number)
                     ###### IGTF
                     sheet.write(row, 26, '', line)
-                    print(reten)
-                    print(retenciones)
                     retenciones.remove(reten)
                     row +=1
 
