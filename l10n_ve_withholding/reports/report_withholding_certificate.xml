@@ -8,11 +8,11 @@
                     <br/>
                     <t t-set="report_date" t-value="o.date"/>
                     <t t-set="report_number" t-value="o.withholding_number or o.name"/>
-                    <t t-set="report_name" t-value="'CERTIFICADO DE RETENCIÓN ISLR'"/>
+                    <t t-set="report_name" t-value="'COMPROBANTE DE RETENCIÓN ISLR'"/>
                     <t t-set="header_address" t-value="o.company_id.partner_id"/>
                     <div class="text-right">
                         <h4><b><t t-esc="report_name"/></b></h4>
-                        <small>REGLAMENTO PARCIAL DE LA LEY DE IMPUESTO SOBRE LA RENTA EN MATERIA DE RETENCIONES Decreto N° 1.808 de fecha 23 de abril de 1997
+                        <small>REGLAMENTO PARCIAL DE LA LEY DE IMPUESTO SOBRE LA RENTA EN MATERIA DE RETENCIONES Decreto N° 1.808 de fecha 23 de abril de 1997. Gaceta Oficial N° 36.203 de fecha 12 de mayo de 1997.
 "Artículo 24: Los agentes de retención están obligados a entregar a  los contribuyentes, un comprobante por cada retención de impuesto que les practiquen en el cual se indique, entre otra información, el monto de lo pagado o abonado en cuenta y la cantidad retenida. (...)"</small>
                         <p style="font-size: 14px;">
                             <b>N° de Comprobante: </b><span t-esc="report_number"/><br/>
@@ -165,13 +165,13 @@
     </template>
 
     <record id="action_report_withholding_certificate" model="ir.actions.report">
-            <field name="name">Certificado de Retención de ISLR</field>
+            <field name="name">Comprobante de Retención de ISLR</field>
             <field name="model">account.payment</field>
             <field name="binding_model_id" ref="model_account_payment"/>
             <field name="report_type">qweb-pdf</field>
             <field name="report_name">l10n_ve_withholding.report_withholding_certificate</field>
             <field name="report_file">l10n_ve_withholding.report_withholding_certificate</field>
-            <field name="attachment">'Certificado de Retención - %s' % (object.withholding_number or '')</field>
+            <field name="attachment">'Comprobante de Retención - %s' % (object.withholding_number or '')</field>
             <field name="binding_type">report</field>
     </record>
 

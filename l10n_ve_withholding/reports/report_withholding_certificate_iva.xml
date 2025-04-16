@@ -5,7 +5,7 @@
             <t t-set="o" t-value="o.with_context(lang=lang)"/>
                 <t t-set="report_date" t-value="o.date"/>
                 <t t-set="report_number" t-value="o.withholding_number or o.name"/>
-                <t t-set="report_name" t-value="'CERTIFICADO DE RETENCIÓN DEL IMPUESTO AL VALOR AGREGADO IVA'"/>
+                <t t-set="report_name" t-value="'COMPROBANTE DE RETENCIÓN DEL IMPUESTO AL VALOR AGREGADO IVA'"/>
                 <!-- <t t-set="report_subname" 
                     t-value=""/> -->
             <div class="page">
@@ -103,10 +103,10 @@
                                 <th class="text-center"/>
                                 <th class="text-center" t-if="o.payment_group_id.to_pay_move_line_ids[0].move_id.move_type == 'in_refund'"><span t-field="o.payment_group_id.matched_move_line_ids[0].move_id.ref"/></th>
                                 <th class="text-center" t-else="'"></th>
-                                
+
                                 <th class="text-center" t-if="o.payment_group_id.to_pay_move_line_ids and o.payment_group_id.to_pay_move_line_ids[0].move_id.move_type == 'in_refund'">03</th>
                                 <th class="text-center" t-else="">01</th>
-                                
+
                                 <t t-if="o.payment_group_id.state != 'draft' and o.payment_group_id.matched_move_line_ids and o.payment_group_id.matched_move_line_ids[0].move_id.reversed_entry_id">
                                     <th class="text-center"><span t-esc="o.payment_group_id.matched_move_line_ids[0].move_id.reversed_entry_id.ref"/></th>
                                 </t>
@@ -124,8 +124,10 @@
                         </t>
                     </tbody>
                 </table>
-                
-                <br/><br/><br/>
+
+                <br/><br/>
+                <small> Este comprobante se emite según lo establecido en el Artículo N° 16 de la Providencia Administrativa SNAT/2015/0049 de fecha 14/07/2015 Publicada Gaceta Oficial N° 40.720 de fecha 10 de agosto de 2015.</small>
+                <br/>
             </div>
             <div class="row">
                 <br/><br/><br/>
@@ -170,13 +172,13 @@
     </record>
 
     <record id="action_report_withholding_certificate_iva" model="ir.actions.report">
-            <field name="name">Certificado de Retención de IVA</field>
+            <field name="name">Comprobante de Retención de IVA</field>
             <field name="model">account.payment</field>
             <field name="binding_model_id" ref="model_account_payment"/>
             <field name="report_type">qweb-pdf</field>
             <field name="report_name">l10n_ve_withholding.report_withholding_certificate_iva</field>
             <field name="report_file">l10n_ve_withholding.report_withholding_certificate_iva</field>
-            <field name="attachment">'Certificado de Retención - %s' % (object.withholding_number or '')</field>
+            <field name="attachment">'Comprobante de Retención - %s' % (object.withholding_number or '')</field>
             <field name="binding_type">report</field>
             <field name="paperformat_id" ref="report_qweb_paperformat_l"/>
     </record>
