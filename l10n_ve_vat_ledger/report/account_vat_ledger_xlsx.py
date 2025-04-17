@@ -512,6 +512,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                                             and invoice.debit_origin_id):
                                         base_imponible += (linel.credit * -1.00) if linel.credit == 0 else 0
                                         if not invoice.debit_origin_id:
+                                            base_imponible += linel.credit * -1 if invoice.move_type == 'in_refund' else 0.0
                                             total_nota_credito_16 += linel.credit * -1.00
                                         else:
                                             base_imponible += linel.debit
@@ -1125,7 +1126,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                 sheet.write((row), 30, total_iva_no_contribuyente_8, line_total)
                 sheet.write((row), 32, total_base_imponible_no_contribuyente_8, line_total)
                 sheet.write((row), 33, total_iva_no_contribuyente_31, line_total)
-                sheet.write((row), 35, total_igtf, line_total)
+                sheet.write((row), 3, total_igtf, line_total)
                 
                 # RESUMEN DE LOS TOTALES VENTAS
                 row +=5
