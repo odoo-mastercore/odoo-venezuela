@@ -33,7 +33,7 @@ class AccountMove(models.Model):
     @api.depends('currency_id','invoice_date')
     def _compute_currency_rate_ve(self):
         for rec in self:
-            rec.currency_rate_ve = self.invoice_rate(rec.currency_id.id, rec.invoice_date)
+            rec.currency_rate_ve = (1/self.invoice_rate(rec.currency_id.id, rec.invoice_date))
 
     def invoice_rate(self, currency_id, invoice_date):
         for rec in self:
