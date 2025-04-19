@@ -23,54 +23,54 @@ class AccountMove(models.Model):
     igtf_amount_purchase_usd = fields.Float('Monto IGTF USD')
     igtf_purchase_apply_purchase = fields.Boolean('Aplicar IGTF')
     
-    @api.depends(
-        'line_ids.matched_debit_ids.debit_move_id.move_id.payment_id.is_matched',
-        'line_ids.matched_debit_ids.debit_move_id.move_id.line_ids.amount_residual',
-        'line_ids.matched_debit_ids.debit_move_id.move_id.line_ids.amount_residual_currency',
-        'line_ids.matched_credit_ids.credit_move_id.move_id.payment_id.is_matched',
-        'line_ids.matched_credit_ids.credit_move_id.move_id.line_ids.amount_residual',
-        'line_ids.matched_credit_ids.credit_move_id.move_id.line_ids.amount_residual_currency',
-        'line_ids.debit',
-        'line_ids.credit',
-        'line_ids.currency_id',
-        'line_ids.amount_currency',
-        'line_ids.amount_residual',
-        'line_ids.amount_residual_currency',
-        'line_ids.payment_id.state',
-        'line_ids.full_reconcile_id')
-    def _compute_amount(self):
-        super(AccountMove, self)._compute_amount()
-        for move in self:
-            if move.tax_totals_json:
-                tax_total_json = json.loads(move.tax_totals_json)
-                if tax_total_json and tax_total_json.get('groups_by_subtotal'):
-                    base_imponible = tax_total_json.get('groups_by_subtotal').get('Base imponible')
-                    if move.igtf_purchase_apply_purchase:
-                        igtf = self.env['account.tax'].search([('igtf_purchase','=',True)], limit=1)
-                        igtf_tax = False
+    # @api.depends(
+    #     'line_ids.matched_debit_ids.debit_move_id.move_id.payment_id.is_matched',
+    #     'line_ids.matched_debit_ids.debit_move_id.move_id.line_ids.amount_residual',
+    #     'line_ids.matched_debit_ids.debit_move_id.move_id.line_ids.amount_residual_currency',
+    #     'line_ids.matched_credit_ids.credit_move_id.move_id.payment_id.is_matched',
+    #     'line_ids.matched_credit_ids.credit_move_id.move_id.line_ids.amount_residual',
+    #     'line_ids.matched_credit_ids.credit_move_id.move_id.line_ids.amount_residual_currency',
+    #     'line_ids.debit',
+    #     'line_ids.credit',
+    #     'line_ids.currency_id',
+    #     'line_ids.amount_currency',
+    #     'line_ids.amount_residual',
+    #     'line_ids.amount_residual_currency',
+    #     'line_ids.payment_id.state',
+    #     'line_ids.full_reconcile_id')
+    # def _compute_amount(self):
+    #     super(AccountMove, self)._compute_amount()
+    #     for move in self:
+    #         if move.tax_totals_json:
+    #             tax_total_json = json.loads(move.tax_totals_json)
+    #             if tax_total_json and tax_total_json.get('groups_by_subtotal'):
+    #                 base_imponible = tax_total_json.get('groups_by_subtotal').get('Base imponible')
+    #                 if move.igtf_purchase_apply_purchase:
+    #                     igtf = self.env['account.tax'].search([('igtf_purchase','=',True)], limit=1)
+    #                     igtf_tax = False
                         
-                        if move.currency_id.name != 'USD':
-                            igtf_tax = {
-                                'group_key': igtf.tax_group_id.id, 
-                                'tax_group_id': igtf.tax_group_id.id, 
-                                'tax_group_name': igtf.tax_group_id.name, 
-                                'tax_group_amount': move.igtf_amount_purchase, 
-                                'tax_group_base_amount': move.igtf_base_purchase, 
-                                'formatted_tax_group_amount': formatLang(self.env,  move.igtf_amount_purchase , currency_obj=move.currency_id), 
-                                'formatted_tax_group_base_amount': formatLang(self.env, move.igtf_base_purchase, currency_obj=move.currency_id)
-                            }
-                        elif move.currency_id.name == 'USD':
-                            igtf_tax = {
-                                'group_key': igtf.tax_group_id.id, 
-                                'tax_group_id': igtf.tax_group_id.id, 
-                                'tax_group_name': igtf.tax_group_id.name, 
-                                'tax_group_amount': move.igtf_amount_purchase_usd, 
-                                'tax_group_base_amount': move.igtf_base_purchase_usd,
-                                'formatted_tax_group_amount': formatLang(self.env, move.igtf_amount_purchase_usd , currency_obj=move.currency_id),
-                                'formatted_tax_group_base_amount': formatLang(self.env, move.igtf_base_purchase_usd, currency_obj=move.currency_id)
-                            }
-                        if igtf_tax:
-                            base_imponible.append(igtf_tax)
+    #                     if move.currency_id.name != 'USD':
+    #                         igtf_tax = {
+    #                             'group_key': igtf.tax_group_id.id, 
+    #                             'tax_group_id': igtf.tax_group_id.id, 
+    #                             'tax_group_name': igtf.tax_group_id.name, 
+    #                             'tax_group_amount': move.igtf_amount_purchase, 
+    #                             'tax_group_base_amount': move.igtf_base_purchase, 
+    #                             'formatted_tax_group_amount': formatLang(self.env,  move.igtf_amount_purchase , currency_obj=move.currency_id), 
+    #                             'formatted_tax_group_base_amount': formatLang(self.env, move.igtf_base_purchase, currency_obj=move.currency_id)
+    #                         }
+    #                     elif move.currency_id.name == 'USD':
+    #                         igtf_tax = {
+    #                             'group_key': igtf.tax_group_id.id, 
+    #                             'tax_group_id': igtf.tax_group_id.id, 
+    #                             'tax_group_name': igtf.tax_group_id.name, 
+    #                             'tax_group_amount': move.igtf_amount_purchase_usd, 
+    #                             'tax_group_base_amount': move.igtf_base_purchase_usd,
+    #                             'formatted_tax_group_amount': formatLang(self.env, move.igtf_amount_purchase_usd , currency_obj=move.currency_id),
+    #                             'formatted_tax_group_base_amount': formatLang(self.env, move.igtf_base_purchase_usd, currency_obj=move.currency_id)
+    #                         }
+    #                     if igtf_tax:
+    #                         base_imponible.append(igtf_tax)
     
     
     @api.constrains('partner_id','igtf_purchase_apply_purchase','igtf_amount_purchase','igtf_amount_purchase_usd')
@@ -95,7 +95,7 @@ class AccountMove(models.Model):
                             'igtf_purchase': True,
                             'currency_id': move.currency_id.id,
                             'debit': move.igtf_amount_purchase,
-                            'tax_ids': False,
+                            'tax_ids': [Command.set([igtf.id])],
                             'move_id': move._origin.id,
                         })
                 elif move.currency_id.name == 'USD':
@@ -108,7 +108,7 @@ class AccountMove(models.Model):
                             'igtf_purchase': True,
                             'currency_id': move.currency_id.id,
                             'debit':move.igtf_amount_purchase_usd,
-                            'tax_ids': False,
+                            'tax_ids': [Command.set([igtf.id])],
                             'move_id': move._origin.id
                         })
                 invoice_line = move.invoice_line_ids.search([('igtf_purchase','=',True),('move_id','=', move._origin.id)])
