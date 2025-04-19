@@ -28,6 +28,13 @@ class AccountMove(models.Model):
 
     reversed_entry_code = fields.Char(compute='_compute_reversed_entry_code')
 
+    currency_rate_ve = fields.Float(string=_('Tasa de cambio'), digits='', compute='_compute_currency_rate_ve', store=True)
+
+    @api.depends('currency_id','invoice_date')
+    def _compute_currency_rate_ve(self):
+        for rec in self:
+            rec.currency_rate_ve = self.invoice_rate(rec.currency_id.id, rec.invoice_date)
+
     def invoice_rate(self, currency_id, invoice_date):
         for rec in self:
             last_rate = self.env['res.currency.rate'].search([
