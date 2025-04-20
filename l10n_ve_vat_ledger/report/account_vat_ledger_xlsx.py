@@ -164,6 +164,11 @@ class AccountVatLedgerXlsx(models.AbstractModel):
             sheet.set_column(5, 28, 30)
             sheet.set_column(5, 29, 30)
             sheet.set_column(5, 30, 30)
+            sheet.set_column(5, 31, 31)
+            sheet.set_column(5, 32, 32)
+            sheet.set_column(5, 33, 33)
+            sheet.set_column(5, 34, 34)
+            sheet.set_column(5, 35, 35)
 # _____________________________________________________________________________________
 # _____________________________________________________________________________________
             if obj.type == 'purchase':
@@ -203,7 +208,6 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                 sheet.write(4, 19, 'B. Imponible', cell_format)
                 sheet.write(4, 20, 'Alicuota 8%', cell_format)
                 sheet.write(4, 21, 'Imp. I.V.A.', cell_format)
-
                 sheet.write(4, 22, 'B. Imponible', cell_format)
                 sheet.write(4, 23, 'Alicuota 31%', cell_format)
                 sheet.write(4, 24, 'Imp. I.V.A.', cell_format)
@@ -244,27 +248,31 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                 sheet.merge_range('O4:U4', 'Contribuyente', cell_format)
                 sheet.write(4, 14, 'Ventas Internas No Gravadas', cell_format)
                 sheet.write(4, 15, 'Base Imponible', cell_format)
-                sheet.write(4, 16, '% Alicuota General + Adicional', cell_format)
+                sheet.write(4, 16, '% Alicuota General', cell_format)
                 sheet.write(4, 17, 'Impuesto I.V.A', cell_format)
                 sheet.write(4, 18, 'Base Imponible', cell_format)
                 sheet.write(4, 19, '% Alicuota Reducida', cell_format)
                 sheet.write(4, 20, 'Impuesto I.V.A', cell_format)
+                sheet.write(4, 21, 'Base Imponible', cell_format)
+                sheet.write(4, 22, '% Alicuota Adicional', cell_format)
+                sheet.write(4, 23, 'Impuesto I.V.A', cell_format)
 
                 # celda adicional No Contribuyente
                 sheet.merge_range('V4:AB4', 'No Contribuyente', cell_format)
-                sheet.write(4, 21, 'Ventas Internas No Gravadas', cell_format)
-                sheet.write(4, 22, 'Base Imponible', cell_format)
-                sheet.write(4, 23, '% Alicuota.', cell_format)
-                sheet.write(4, 24, 'Impuesto I.V.A', cell_format)
+                sheet.write(4, 24, 'Ventas Internas No Gravadas', cell_format)
                 sheet.write(4, 25, 'Base Imponible', cell_format)
-                sheet.write(4, 26, '% Alicuota Reducida', cell_format)
+                sheet.write(4, 26, '% Alicuota.', cell_format)
                 sheet.write(4, 27, 'Impuesto I.V.A', cell_format)
+                sheet.write(4, 28, 'Base Imponible', cell_format)
+                sheet.write(4, 29, '% Alicuota Reducida', cell_format)
+                sheet.write(4, 30, 'Impuesto I.V.A', cell_format)
+                sheet.write(4, 31, 'Base Imponible', cell_format)
+                sheet.write(4, 32, '% Alicuota Adicional', cell_format)
+                sheet.write(4, 33, 'Impuesto I.V.A', cell_format)
 
                 # celda adicional Retención IVA
-                # sheet.merge_range('AB4:AD4', 'Retención IVA', cell_format)
-                sheet.write(4, 28, 'I.V.A Retenido', cell_format)
-                # sheet.write(4, 29, 'Factura afectada', cell_format)
-                sheet.write(4, 29, 'I.G.T.F Percibido', cell_format)
+                sheet.write(4, 34, 'I.V.A Retenido', cell_format)
+                sheet.write(4, 35, 'I.G.T.F Percibido', cell_format)
 
             row = 5
             total_base_exento = 0.00
