@@ -17,7 +17,7 @@
 
     'author': "SINAPSYS GLOBAL SA || MASTERCORE SAS",
     'website': "http://sinapsys.global",
-    'version': '16.0.1',
+    'version': '16.0.0.2',
     'category': 'Localization',
     'license': 'AGPL-3',
     'depends': [
@@ -25,6 +25,7 @@
         'l10n_ve_base',
         'l10n_ve_withholding', 
         'report_xlsx', 
+        'l10n_ve_account', 
         'l10n_ve_igtf_purchase'],
     'data': [
         # 'security/security.xml',
