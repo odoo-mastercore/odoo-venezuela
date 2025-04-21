@@ -511,16 +511,11 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                                     if invoice.move_type == 'out_refund' or \
                                         invoice.move_type == 'in_refund' or (invoice.move_type == 'out_invoice' \
                                             and invoice.debit_origin_id):
-                                        
                                         base_imponible += (linel.credit * -1.00) if linel.credit == 0 else 0
                                         if not invoice.debit_origin_id:
-                                            _logger.warning('## 1 ##')
-                                            _logger.warning(linel.credit)
-                                            _logger.warning(base_imponible)
                                             base_imponible += linel.credit * -1 if invoice.move_type == 'in_refund' else 0.0
                                             total_nota_credito_16 += linel.credit * -1.00
                                         else:
-                                            _logger.warning('## 2 ##')
                                             base_imponible += linel.debit
                                             total_nota_debito_16 += linel.debit
                                     else:
@@ -533,7 +528,6 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                                         or (invoice.move_type == 'out_invoice' and invoice.debit_origin_id):
                                         base_exento += linel.credit * -1.00 if linel.credit == 0 else 0
                                         if not invoice.debit_origin_id:
-                                            
                                             total_base_exento_credito += linel.credit * -1.00
                                         else:
                                             base_exento += linel.debit
@@ -547,6 +541,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                                         or (invoice.move_type == 'out_invoice' and invoice.debit_origin_id):
                                         base_imponible_8 += linel.credit * -1.00 if linel.credit == 0 else 0
                                         if not invoice.debit_origin_id:
+                                            base_imponible_8 += linel.credit * -1 if invoice.move_type == 'in_refund' else 0.0
                                             total_nota_credito_8 +=  linel.credit * -1.00
                                         else:
                                             base_imponible_8 += linel.debit
@@ -563,6 +558,8 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                                         or (invoice.move_type == 'out_invoice' and invoice.debit_origin_id):
                                         base_imponible_31 += linel.credit * -1.00 if linel.credit == 0 else 0
                                         if not invoice.debit_origin_id:
+                                            base_imponible_31 += linel.credit * -1 if invoice.move_type == 'in_refund' else 0.0
+
                                             total_nota_credito_31 +=  linel.credit * -1.00
                                         else:
                                             base_imponible_31 += linel.debit
@@ -1176,7 +1173,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                 sheet.write((row+6), 16, '0',line_number)
                 sheet.merge_range('J%s:M%s' % (str(row+8), str(row+8)), 'Total Ventas Internas afectadas  más adicional 31.00', title_style)
                 sheet.write((row+7), 13, total_base_imponible_contribuyente_31 + total_base_imponible_no_contribuyente_31 - total_nota_credito_31 + total_nota_debito_31,line_number)
-                sheet.write((row+7), 14, '0',line_number)
+                sheet.write((row+7), 14, total_iva_31,line_number)
                 sheet.write((row+7), 15, '0',line_number)
                 sheet.write((row+7), 16, '0',line_number)
                 sheet.merge_range('J%s:M%s' % (str(row+9), str(row+9)), 'Total Notas de Crédito o Devoluciones aplicadas en Ventas 16%', title_style)
