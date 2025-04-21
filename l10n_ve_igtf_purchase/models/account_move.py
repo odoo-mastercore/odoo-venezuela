@@ -121,10 +121,10 @@ class AccountMove(models.Model):
                             'move_id': move._origin.id
                         })
                 invoice_line = move.invoice_line_ids.search([('name','ilike','IGTF 3%'),('move_id','=', move._origin.id)])
-                # if move.currency_id.name != 'USD':
-                #     invoice_line.sudo().write({'price_unit': move.igtf_amount_purchase})
-                # elif move.currency_id.name == 'USD':
-                #     invoice_line.sudo().write({'price_unit': move.igtf_base_purchase_usd})
+                if move.currency_id.name != 'USD':
+                    invoice_line.sudo().write({'debit': move.igtf_amount_purchase})
+                elif move.currency_id.name == 'USD':
+                    invoice_line.sudo().write({'debit': move.igtf_amount_purchase})
         
     
     @api.constrains('igtf_purchase_apply_purchase')
