@@ -113,7 +113,8 @@
                                 <t t-else="">
                                     <th class="text-center"/>
                                 </t>
-                                <th class="text-center"><span t-esc="o.total_amount if not o.total_amount &lt; 0 else o.total_amount * -1"/></th>
+                                <t t-set="amount_total" t-value="round(o.total_amount - o.payment_group_id.matched_move_line_ids[0].move_id.igtf_amount_purchase,2)"/>
+                                <th class="text-center"><span t-esc="amount_total if not amount_total &lt; 0 else amount_total * -1"/></th>
                                 <th class="text-center"><span t-field="distribution.untaxed_amount"/></th>
                                 <th class="text-center"><span t-field="distribution.invoice_amount"/></th>
                                 <th class="text-center"><span t-field="distribution.alic"/></th>
