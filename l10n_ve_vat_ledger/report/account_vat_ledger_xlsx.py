@@ -803,7 +803,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                                         base_imponible += linel.credit if linel.debit == 0 else -linel.debit
                                         if invoice.move_type == 'out_refund' or \
                                             invoice.move_type == 'in_refund' or (invoice.move_type == 'out_invoice' \
-                                                and invoice.debit_origin_id):       
+                                                and invoice.debit_origin_id):
                                             base_imponible += (linel.debit * -1.00) if linel.debit == 0 else 0
                                             if not invoice.debit_origin_id:
                                                 total_nota_credito_16 += linel.debit * -1.00
@@ -839,15 +839,14 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                                             total_base_imponible_8 += linel.credit if linel.debit == 0 else -linel.debit
                                         alic_8 = '8%'
                                     elif linel.tax_ids[0].amount == 31.00:
-                                        base_imponible += linel.credit if linel.debit == 0 else -linel.debit
-                                        if invoice.move_type == 'out_refund' or \
-                                            invoice.move_type == 'in_refund' or (invoice.move_type == 'out_invoice' \
-                                                and invoice.debit_origin_id):       
-                                            base_imponible_31 += (linel.debit * -1.00) if linel.debit == 0 else 0
+                                        base_imponible_31 += linel.credit if linel.debit == 0 else -linel.debit
+                                        if invoice.move_type == 'out_refund' or invoice.move_type == 'in_refund' \
+                                            or (invoice.move_type == 'out_invoice' and invoice.debit_origin_id):
+                                            base_imponible_31 += linel.debit * -1.00 if linel.debit == 0 else 0
                                             if not invoice.debit_origin_id:
                                                 total_nota_credito_31 += linel.debit * -1.00
                                             else:
-                                                # base_imponible += linel.credit
+                                                # base_imponible_31 += linel.credit
                                                 total_nota_debito_31 += linel.credit
                                         else:
                                             total_base_imponible_31 += linel.credit if linel.debit == 0 else -linel.debit
