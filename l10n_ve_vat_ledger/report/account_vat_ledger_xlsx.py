@@ -384,7 +384,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                             if coincident_date:
                                 for reten in coincident_date:
                                     amount_reten = reten.amount if reten.currency_id.id == reten.company_id.currency_id.id else reten.amount_company_currency
-                                    amount_reten = amount_reten if invoice.move_type != 'in_refund' else amount_reten * -1
+                                    amount_reten = amount_reten * -1 if reten.total_amount < 0 else amount_reten
                                     total_iva_16_retenido += amount_reten
                                     i += 1
                                     # codigo 
@@ -977,7 +977,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
             if len(retenciones) > 1 and obj.type == 'purchase':
                 for reten in retenciones:
                     amount_reten = reten.amount if reten.currency_id.id == reten.company_id.currency_id.id else reten.amount_company_currency
-                    amount_reten = amount_reten if invoice.move_type != 'in_refund' else amount_reten * -1
+                    amount_reten = amount_reten * -1 if reten.total_amount < 0 else amount_reten
                     total_iva_16_retenido += amount_reten
                     i += 1
                     # codigo 
