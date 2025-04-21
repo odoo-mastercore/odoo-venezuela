@@ -762,7 +762,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
 
                         # Total Ventas Bs.Incluyendo IVA
                         if invoice.state != 'cancel':
-                            sheet.write(row, 9, invoice.amount_total_signed, line)
+                            sheet.write(row, 9, invoice.amount_total_signed, line_number)
                         else:
                             sheet.write(row, 9, '0', line)
                         
@@ -901,16 +901,16 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                             total_base_imponible_contribuyente_31 += base_imponible_31 if base_imponible_31 else 0.00
                             total_iva_contribuyente_31 += iva_31 if iva_31 else 0.00
 
-                            sheet.write(row, 14, base_exento, line)
-                            sheet.write(row, 15, base_imponible, line)
-                            sheet.write(row, 16, alic_16, line)
-                            sheet.write(row, 17, iva_16, line)
-                            sheet.write(row, 18, base_imponible_8, line)
-                            sheet.write(row, 19, alic_8, line)
-                            sheet.write(row, 20, iva_8, line)
-                            sheet.write(row, 21, base_imponible_31, line)
-                            sheet.write(row, 22, alic_31, line)
-                            sheet.write(row, 23, iva_31, line)
+                            sheet.write(row, 14, base_exento, line_number)
+                            sheet.write(row, 15, base_imponible, line_number)
+                            sheet.write(row, 16, alic_16, line_number)
+                            sheet.write(row, 17, iva_16, line_number)
+                            sheet.write(row, 18, base_imponible_8, line_number)
+                            sheet.write(row, 19, alic_8, line_number)
+                            sheet.write(row, 20, iva_8, line_number)
+                            sheet.write(row, 21, base_imponible_31, line_number)
+                            sheet.write(row, 22, alic_31, line_number)
+                            sheet.write(row, 23, iva_31, line_number)
 
                             sheet.write(row, 24, '', line)
                             sheet.write(row, 25, '', line)
@@ -946,16 +946,16 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                             sheet.write(row, 23, '', line)
 
 
-                            sheet.write(row, 24, base_exento, line)
-                            sheet.write(row, 25, base_imponible, line)
-                            sheet.write(row, 26, alic_16, line)
-                            sheet.write(row, 27, iva_16, line)
-                            sheet.write(row, 28, base_imponible_8, line)
-                            sheet.write(row, 29, alic_8, line)
-                            sheet.write(row, 30, iva_8, line)
-                            sheet.write(row, 31, base_imponible_31, line)
-                            sheet.write(row, 32, alic_31, line)
-                            sheet.write(row, 33, iva_31, line)
+                            sheet.write(row, 24, base_exento, line_number)
+                            sheet.write(row, 25, base_imponible, line_number)
+                            sheet.write(row, 26, alic_16, line_number)
+                            sheet.write(row, 27, iva_16, line_number)
+                            sheet.write(row, 28, base_imponible_8, line_number)
+                            sheet.write(row, 29, alic_8, line_number)
+                            sheet.write(row, 30, iva_8, line_number)
+                            sheet.write(row, 31, base_imponible_31, line_number)
+                            sheet.write(row, 32, alic_31, line_number)
+                            sheet.write(row, 33, iva_31, line_number)
                             # sheet.write(row, 27, iva, line)
                     
                         
@@ -969,8 +969,8 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                                 for pay in payments_with_igtf:
                                     igtf_amount += pay.igtf_amount_signed
                         total_igtf += igtf_amount
-                        sheet.write(row, 34, '', line)
-                        sheet.write(row, 35, igtf_amount if igtf_amount > 0 else '' , line)
+                        sheet.write(row, 34, '', line_number)
+                        sheet.write(row, 35, igtf_amount if igtf_amount > 0 else '' , line_number)
                 row += 1
             if len(retenciones) > 1 and obj.type == 'purchase':
                 for reten in retenciones:
@@ -1092,7 +1092,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     sheet.write(row, 31, '', line)
                     sheet.write(row, 32, '', line)
                     sheet.write(row, 33, '', line)
-                    sheet.write(row, 34, reten.amount if reten.currency_id.id == reten.company_id.currency_id.id else reten.amount_company_currency, line)
+                    sheet.write(row, 34, reten.amount if reten.currency_id.id == reten.company_id.currency_id.id else reten.amount_company_currency, line_number)
                     sheet.write(row, 35, '', line)
                     retenciones.remove(reten)
                     row +=1
