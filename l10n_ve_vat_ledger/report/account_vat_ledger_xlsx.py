@@ -245,7 +245,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                 sheet.write(4, 13, 'Impuesto I.V.A', cell_format)
 
                 # celda adicional Contribuyente
-                sheet.merge_range('O4:U4', 'Contribuyente', cell_format)
+                sheet.merge_range('O4:X4', 'Contribuyente', cell_format)
                 sheet.write(4, 14, 'Ventas Internas No Gravadas', cell_format)
                 sheet.write(4, 15, 'Base Imponible', cell_format)
                 sheet.write(4, 16, '% Alicuota General', cell_format)
@@ -258,7 +258,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                 sheet.write(4, 23, 'Impuesto I.V.A', cell_format)
 
                 # celda adicional No Contribuyente
-                sheet.merge_range('V4:AB4', 'No Contribuyente', cell_format)
+                sheet.merge_range('Y4:AH4', 'No Contribuyente', cell_format)
                 sheet.write(4, 24, 'Ventas Internas No Gravadas', cell_format)
                 sheet.write(4, 25, 'Base Imponible', cell_format)
                 sheet.write(4, 26, '% Alicuota.', cell_format)
