@@ -219,7 +219,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                 sheet.write(4, 13, 'Impuesto I.V.A', cell_format)
 
                 # celda adicional Contribuyente
-                sheet.merge_range('O4:U4', 'Contribuyente', cell_format)
+                sheet.merge_range('O4:X4', 'Contribuyente', cell_format)
                 sheet.write(4, 14, 'Ventas Internas No Gravadas', cell_format)
                 sheet.write(4, 15, 'Base Imponible', cell_format)
                 sheet.write(4, 16, '% Alicuota General', cell_format)
@@ -232,7 +232,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                 sheet.write(4, 23, 'Impuesto I.V.A', cell_format)
 
                 # celda adicional No Contribuyente
-                sheet.merge_range('V4:AB4', 'No Contribuyente', cell_format)
+                sheet.merge_range('Y4:AH4', 'No Contribuyente', cell_format)
                 sheet.write(4, 24, 'Ventas Internas No Gravadas', cell_format)
                 sheet.write(4, 25, 'Base Imponible', cell_format)
                 sheet.write(4, 26, '% Alicuota.', cell_format)
@@ -1212,11 +1212,12 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                         + total_base_imponible_contribuyente_31 + total_base_imponible_no_contribuyente_31
                               + total_base_exento_credito \
                                     + total_base_exento_debito,line_number)
-                sheet.write((row+14), 14, (total_iva_16 + total_iva_8 + \
+                sheet.write((row+14), 14, (total_iva_16 + total_iva_8 + total_iva_31 + \
                     total_nota_credito_iva_16 + total_nota_credito_iva_8 + total_nota_credito_iva_31 + \
                         total_nota_debito_iva_16 + total_nota_debito_iva_8 + total_nota_debito_iva_31),line_number)
                 sheet.write((row+14), 15, total_iva_16_retenido,line_number)
                 sheet.write((row+14), 16, total_igtf,line_number)
+
 
             # Totales de compras
             else:
