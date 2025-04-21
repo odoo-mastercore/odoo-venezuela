@@ -103,7 +103,7 @@ class AccountMove(models.Model):
                             'account_id': account_id.id,
                             'igtf_purchase': True,
                             'currency_id': move.currency_id.id,
-                            'debit':move.igtf_amount_purchase_usd,
+                            'debit':move.igtf_amount_purchase,
                             'tax_ids': False,
                             'move_id': move._origin.id
                         })
@@ -111,7 +111,7 @@ class AccountMove(models.Model):
                 if move.currency_id.name != 'USD':
                     invoice_line.sudo().write({'debit': move.igtf_amount_purchase})
                 elif move.currency_id.name == 'USD':
-                    invoice_line.sudo().write({'debit': move.igtf_amount_purchase_usd})
+                    invoice_line.sudo().write({'debit': move.igtf_amount_purchase})
         
     
     @api.constrains('igtf_purchase_apply_purchase')
