@@ -701,8 +701,8 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                                     sheet.write(row, 25, '', line)
                                     sheet.write(row, 26, '', line)
                                     sheet.write(row, 27, '', line)
-                                    sheet.write(row, 28, reten.amount if reten.currency_id.id == reten.company_id.currency_id.id else reten.amount_company_currency, line)
-                                    sheet.write(row, 29, '', line)
+                                    sheet.write(row, 34, reten.amount if reten.currency_id.id == reten.company_id.currency_id.id else reten.amount_company_currency, line)
+                                    sheet.write(row, 35, '', line)
                                     retenciones.remove(reten)
                                     row +=1
                             else:
@@ -1155,7 +1155,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                 sheet.write((row+6), 16, '', line_number)
                 sheet.merge_range('J%s:M%s' % (str(row+8), str(row+8)), 'Total Ventas Internas afectadas  más adicional 31.00', title_style)
                 sheet.write((row+7), 13, round(total_base_imponible_contribuyente_31 + total_base_imponible_no_contribuyente_31 - total_nota_credito_31 - total_nota_debito_31,2), line_number)
-                sheet.write((row+7), 14, 0, line_number)
+                sheet.write((row+7), 14, total_iva_31, line_number)
                 sheet.write((row+7), 15, 0, line_number)
                 sheet.write((row+7), 16, '', line_number)
                 sheet.merge_range('J%s:M%s' % (str(row+9), str(row+9)), 'Total Notas de Crédito o Devoluciones aplicadas en Ventas 16%', title_style)
@@ -1194,7 +1194,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                         + total_base_imponible_contribuyente_31 + total_base_imponible_no_contribuyente_31
                               + total_base_exento_credito \
                                     + total_base_exento_debito,line_number)
-                sheet.write((row+14), 14, (total_iva_16 + total_iva_8 + \
+                sheet.write((row+14), 14, (total_iva_16 + total_iva_8 + total_iva_31 + \
                     total_nota_credito_iva_16 + total_nota_credito_iva_8 + total_nota_credito_iva_31 + \
                         total_nota_debito_iva_16 + total_nota_debito_iva_8 + total_nota_debito_iva_31),line_number)
                 sheet.write((row+14), 15, total_iva_16_retenido,line_number)
