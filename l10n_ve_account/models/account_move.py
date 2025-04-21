@@ -25,7 +25,7 @@ class AccountMove(models.Model):
     def _post(self, soft=True):
         super()._post(soft=soft)
         for rec in self:
-            if rec.state == 'posted':
+            if rec.state == 'posted' and rec.move_type in ['out_invoice', 'out_refund']:
                 rec.l10n_ve_invoice_date = fields.Datetime.now()
             if rec.invoice_line_ids:
                 for line in rec.invoice_line_ids:
