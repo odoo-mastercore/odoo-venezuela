@@ -27,12 +27,12 @@ class AccountMove(models.Model):
         for rec in self:
             if rec.state == 'posted':
                 rec.l10n_ve_invoice_date = fields.Datetime.now()
-            if rec.invoice_line_ids:
-                for line in rec.invoice_line_ids:
-                    if not line.tax_ids:
-                        raise ValidationError(
-                            _("El producto %s no tiene impuestos asignados.") % line.product_id.display_name
-                        )
+            # if rec.invoice_line_ids:
+            #     for line in rec.invoice_line_ids:
+            #         if not line.tax_ids:
+            #             raise ValidationError(
+            #                 _("El producto %s no tiene impuestos asignados.") % line.product_id.display_name
+            #             )
 
     def _get_l10n_ve_invoice_date(self, split=False):
         date, time = False, False
