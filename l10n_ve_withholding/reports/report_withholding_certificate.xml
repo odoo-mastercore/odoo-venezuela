@@ -116,7 +116,7 @@
                                 Importe del comprobante que origina la retención:
                             </td>
                             <td class="text-left">
-                                <span t-field="o.withholding_base_amount"/>
+                                 <span t-esc="o.format_miles_number(o.withholding_base_amount)"/>
                             </td>
                         </tr>
                         <tr>
@@ -132,7 +132,7 @@
                                 Importe de la retención:
                             </td>
                             <td class="text-left">
-                                <span t-field="o.amount"/>
+                                <span t-esc="o.format_miles_number(o.amount) if o.currency_id.name != 'USD' else o.format_miles_number(o.amount_company_currency)"/>
                             </td>
                         </tr>
                     </tbody>
