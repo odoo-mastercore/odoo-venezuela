@@ -383,7 +383,9 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                             coincident_date = [tup for tup in retenciones if date_reference == tup.date ]
                             if coincident_date:
                                 for reten in coincident_date:
-                                    total_iva_16_retenido += reten.amount if reten.currency_id.id == reten.company_id.currency_id.id else reten.amount_company_currency
+                                    amount_reten = reten.amount if reten.currency_id.id == reten.company_id.currency_id.id else reten.amount_company_currency
+                                    amount_reten = amount_reten if invoice.move_type != 'in_refund' else amount_reten * -1
+                                    total_iva_16_retenido += amount_reten
                                     i += 1
                                     # codigo 
                                     sheet.write(row, 0, i, line)
@@ -444,7 +446,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                                     
 
                                     #Retenciones
-                                    sheet.write(row, 25, reten.amount if reten.currency_id.id == reten.company_id.currency_id.id else reten.amount_company_currency, line_number)
+                                    sheet.write(row, 25, amount_reten, line_number)
                                     ###### IGTF
                                     sheet.write(row, 26, '', line_number)
                                     retenciones.remove(reten)
@@ -974,8 +976,9 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                 row += 1
             if len(retenciones) > 1 and obj.type == 'purchase':
                 for reten in retenciones:
-                    total_iva_16_retenido += reten.amount if reten.currency_id.id == reten.company_id.currency_id.id else reten.amount_company_currency
-                    _logger.warning(reten.withholding_number)
+                    amount_reten = reten.amount if reten.currency_id.id == reten.company_id.currency_id.id else reten.amount_company_currency
+                    amount_reten = amount_reten if invoice.move_type != 'in_refund' else amount_reten * -1
+                    total_iva_16_retenido += amount_reten
                     i += 1
                     # codigo 
                     sheet.write(row, 0, i, line)
@@ -1034,9 +1037,8 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     #Imp. IVA
                     sheet.write(row, 24, '', line_number)
                     
-
                     #Retenciones
-                    sheet.write(row, 25, reten.amount if reten.currency_id.id == reten.company_id.currency_id.id else reten.amount_company_currency, line_number)
+                    sheet.write(row, 25, amount_reten, line_number)
                     ###### IGTF
                     sheet.write(row, 26, '', line_number)
                     # retenciones.remove(reten)
