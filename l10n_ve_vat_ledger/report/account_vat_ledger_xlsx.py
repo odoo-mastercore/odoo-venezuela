@@ -128,6 +128,10 @@ class AccountVatLedgerXlsx(models.AbstractModel):
             date_line = workbook.add_format(
                 {'border': 1, 'num_format': 'dd-mm-yyyy',
                  'align': 'center'})
+            
+            date_time_line = workbook.add_format(
+                {'border': 1, 'num_format': 'dd-mm-yyyy hh:mm',
+                 'align': 'center'})
 
             sheet.set_column(0, 0, 9)
             sheet.set_column(1, 4, 20)
@@ -160,6 +164,11 @@ class AccountVatLedgerXlsx(models.AbstractModel):
             sheet.set_column(5, 28, 30)
             sheet.set_column(5, 29, 30)
             sheet.set_column(5, 30, 30)
+            sheet.set_column(5, 31, 31)
+            sheet.set_column(5, 32, 32)
+            sheet.set_column(5, 33, 33)
+            sheet.set_column(5, 34, 34)
+            sheet.set_column(5, 35, 35)
 # _____________________________________________________________________________________
 # _____________________________________________________________________________________
             if obj.type == 'purchase':
@@ -199,7 +208,6 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                 sheet.write(4, 19, 'B. Imponible', cell_format)
                 sheet.write(4, 20, 'Alicuota 8%', cell_format)
                 sheet.write(4, 21, 'Imp. I.V.A.', cell_format)
-
                 sheet.write(4, 22, 'B. Imponible', cell_format)
                 sheet.write(4, 23, 'Alicuota 31%', cell_format)
                 sheet.write(4, 24, 'Imp. I.V.A.', cell_format)
@@ -237,30 +245,34 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                 sheet.write(4, 13, 'Impuesto I.V.A', cell_format)
 
                 # celda adicional Contribuyente
-                sheet.merge_range('O4:U4', 'Contribuyente', cell_format)
+                sheet.merge_range('O4:X4', 'Contribuyente', cell_format)
                 sheet.write(4, 14, 'Ventas Internas No Gravadas', cell_format)
                 sheet.write(4, 15, 'Base Imponible', cell_format)
-                sheet.write(4, 16, '% Alicuota General + Adicional', cell_format)
+                sheet.write(4, 16, '% Alicuota General', cell_format)
                 sheet.write(4, 17, 'Impuesto I.V.A', cell_format)
                 sheet.write(4, 18, 'Base Imponible', cell_format)
                 sheet.write(4, 19, '% Alicuota Reducida', cell_format)
                 sheet.write(4, 20, 'Impuesto I.V.A', cell_format)
+                sheet.write(4, 21, 'Base Imponible', cell_format)
+                sheet.write(4, 22, '% Alicuota Adicional', cell_format)
+                sheet.write(4, 23, 'Impuesto I.V.A', cell_format)
 
                 # celda adicional No Contribuyente
-                sheet.merge_range('V4:AB4', 'No Contribuyente', cell_format)
-                sheet.write(4, 21, 'Ventas Internas No Gravadas', cell_format)
-                sheet.write(4, 22, 'Base Imponible', cell_format)
-                sheet.write(4, 23, '% Alicuota.', cell_format)
-                sheet.write(4, 24, 'Impuesto I.V.A', cell_format)
+                sheet.merge_range('Y4:AH4', 'No Contribuyente', cell_format)
+                sheet.write(4, 24, 'Ventas Internas No Gravadas', cell_format)
                 sheet.write(4, 25, 'Base Imponible', cell_format)
-                sheet.write(4, 26, '% Alicuota Reducida', cell_format)
+                sheet.write(4, 26, '% Alicuota.', cell_format)
                 sheet.write(4, 27, 'Impuesto I.V.A', cell_format)
+                sheet.write(4, 28, 'Base Imponible', cell_format)
+                sheet.write(4, 29, '% Alicuota Reducida', cell_format)
+                sheet.write(4, 30, 'Impuesto I.V.A', cell_format)
+                sheet.write(4, 31, 'Base Imponible', cell_format)
+                sheet.write(4, 32, '% Alicuota Adicional', cell_format)
+                sheet.write(4, 33, 'Impuesto I.V.A', cell_format)
 
                 # celda adicional Retención IVA
-                # sheet.merge_range('AB4:AD4', 'Retención IVA', cell_format)
-                sheet.write(4, 28, 'I.V.A Retenido', cell_format)
-                # sheet.write(4, 29, 'Factura afectada', cell_format)
-                sheet.write(4, 29, 'I.G.T.F Percibido', cell_format)
+                sheet.write(4, 34, 'I.V.A Retenido', cell_format)
+                sheet.write(4, 35, 'I.G.T.F Percibido', cell_format)
 
             row = 5
             total_base_exento = 0.00
@@ -305,12 +317,16 @@ class AccountVatLedgerXlsx(models.AbstractModel):
             total_iva_contribuyente_16 = 0.00
             total_base_imponible_contribuyente_8 = 0.00
             total_iva_contribuyente_8 = 0.00
+            total_base_imponible_contribuyente_31 = 0.00
+            total_iva_contribuyente_31 = 0.00
 
             total_base_exento_no_contribuyente = 0.00
             total_base_imponible_no_contribuyente_16 = 0.00
             total_iva_no_contribuyente_16 = 0.00
             total_base_imponible_no_contribuyente_8 = 0.00
             total_iva_no_contribuyente_8 = 0.00
+            total_base_imponible_no_contribuyente_31 = 0.00
+            total_iva_no_contribuyente_31 = 0.00
             total_igtf = 0.00
 
             """ 
@@ -367,7 +383,9 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                             coincident_date = [tup for tup in retenciones if date_reference == tup.date ]
                             if coincident_date:
                                 for reten in coincident_date:
-                                    total_iva_16_retenido += reten.amount
+                                    amount_reten = reten.amount if reten.currency_id.id == reten.company_id.currency_id.id else reten.amount_company_currency
+                                    amount_reten = amount_reten * -1 if reten.total_amount < 0 else amount_reten
+                                    total_iva_16_retenido += amount_reten
                                     i += 1
                                     # codigo 
                                     sheet.write(row, 0, i, line)
@@ -428,7 +446,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                                     
 
                                     #Retenciones
-                                    sheet.write(row, 25, reten.amount, line_number)
+                                    sheet.write(row, 25, amount_reten, line_number)
                                     ###### IGTF
                                     sheet.write(row, 26, '', line_number)
                                     retenciones.remove(reten)
@@ -440,7 +458,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     # contador de la factura
                     sheet.write(row, 0, i, line)
                     # codigo fecha
-                    sheet.write(row, 1, invoice.invoice_date or 'FALSE', date_line)
+                    sheet.write(row, 1, invoice.invoice_date or 'FALSE', date_time_line)
                     # tipo de documento
                     if invoice.move_type == 'out_invoice':
                         sheet.write(row, 2, 'Factura', line)
@@ -642,7 +660,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                             coincident_date = [tup for tup in retenciones if date_reference == tup.date]
                             if coincident_date:
                                 for reten in coincident_date:
-                                    total_iva_16_retenido += reten.amount
+                                    total_iva_16_retenido += reten.amount if reten.currency_id.id == reten.company_id.currency_id.id else reten.amount_company_currency
                                     i += 1
                                     # contador de la factura
                                     sheet.write(row, 0, i, line)
@@ -685,8 +703,8 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                                     sheet.write(row, 25, '', line)
                                     sheet.write(row, 26, '', line)
                                     sheet.write(row, 27, '', line)
-                                    sheet.write(row, 28, reten.amount, line)
-                                    sheet.write(row, 29, '', line)
+                                    sheet.write(row, 34, reten.amount if reten.currency_id.id == reten.company_id.currency_id.id else reten.amount_company_currency, line)
+                                    sheet.write(row, 35, '', line)
                                     retenciones.remove(reten)
                                     row +=1
                             else:
@@ -697,7 +715,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     # contador de la factura
                     sheet.write(row, 0, i, line)
                     # codigo fecha
-                    sheet.write(row, 1, invoice.invoice_date or 'FALSE', date_line)
+                    sheet.write(row, 1, invoice.invoice_date or 'FALSE', date_time_line)
                     # tipo de documento
                     
                     if invoice.move_type == 'out_invoice' and not invoice.debit_origin_id:
@@ -746,7 +764,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
 
                         # Total Ventas Bs.Incluyendo IVA
                         if invoice.state != 'cancel':
-                            sheet.write(row, 9, invoice.amount_total_signed, line)
+                            sheet.write(row, 9, invoice.amount_total_signed, line_number)
                         else:
                             sheet.write(row, 9, '0', line)
                         
@@ -777,6 +795,9 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                         alic_8 = ''
                         iva_8 = 0.00
                         base_imponible_8 = 0.00
+                        alic_31 = ''
+                        iva_31 = 0.00
+                        base_imponible_31 = 0.00
                         if invoice.line_ids:
                             for linel in invoice.line_ids:
                                 if linel.tax_ids:
@@ -784,7 +805,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                                         base_imponible += linel.credit if linel.debit == 0 else -linel.debit
                                         if invoice.move_type == 'out_refund' or \
                                             invoice.move_type == 'in_refund' or (invoice.move_type == 'out_invoice' \
-                                                and invoice.debit_origin_id):       
+                                                and invoice.debit_origin_id):
                                             base_imponible += (linel.debit * -1.00) if linel.debit == 0 else 0
                                             if not invoice.debit_origin_id:
                                                 total_nota_credito_16 += linel.debit * -1.00
@@ -819,6 +840,19 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                                         else:
                                             total_base_imponible_8 += linel.credit if linel.debit == 0 else -linel.debit
                                         alic_8 = '8%'
+                                    elif linel.tax_ids[0].amount == 31.00:
+                                        base_imponible_31 += linel.credit if linel.debit == 0 else -linel.debit
+                                        if invoice.move_type == 'out_refund' or invoice.move_type == 'in_refund' \
+                                            or (invoice.move_type == 'out_invoice' and invoice.debit_origin_id):
+                                            base_imponible_31 += linel.debit * -1.00 if linel.debit == 0 else 0
+                                            if not invoice.debit_origin_id:
+                                                total_nota_credito_31 += linel.debit * -1.00
+                                            else:
+                                                # base_imponible_31 += linel.credit
+                                                total_nota_debito_31 += linel.credit
+                                        else:
+                                            total_base_imponible_31 += linel.credit if linel.debit == 0 else -linel.debit
+                                        alic_31 = '31%'
                                 elif linel.name == 'IVA (16.0%) ventas':
                                     iva_16 += linel.credit
                                     if invoice.move_type == 'out_refund' or \
@@ -845,6 +879,19 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                                     else:
                                         total_iva_8 += iva_8
                                     alic_8 = '8%'
+                                elif linel.name == 'IVA (31.0%) ventas':
+                                    iva_31 += linel.credit
+                                    if invoice.move_type == 'out_refund' or invoice.move_type == 'in_refund' \
+                                            or (invoice.move_type == 'out_invoice' and invoice.debit_origin_id):
+                                        iva_31 += linel.debit * -1.00
+                                        if not invoice.debit_origin_id:
+                                            total_nota_credito_iva_31 += iva_31
+                                        else:
+                                            # iva_8 += linel.credit
+                                            total_nota_debito_iva_31 += iva_31
+                                    else:
+                                        total_iva_31 += iva_31
+                                    alic_31 = '31%'
                         
                         #Contribuyentes
                         if invoice.partner_id.l10n_latam_identification_type_id.is_vat:
@@ -853,22 +900,30 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                             total_iva_contribuyente_16 += iva_16 if iva_16 else 0.00
                             total_base_imponible_contribuyente_8 += base_imponible_8 if base_imponible_8 else 0.00
                             total_iva_contribuyente_8 += iva_8 if iva_8 else 0.00
+                            total_base_imponible_contribuyente_31 += base_imponible_31 if base_imponible_31 else 0.00
+                            total_iva_contribuyente_31 += iva_31 if iva_31 else 0.00
 
-                            sheet.write(row, 14, base_exento, line)
-                            sheet.write(row, 15, base_imponible, line)
-                            sheet.write(row, 16, alic_16, line)
-                            sheet.write(row, 17, iva_16, line)
-                            sheet.write(row, 18, base_imponible_8, line)
-                            sheet.write(row, 19, alic_8, line)
-                            sheet.write(row, 20, iva_8, line)
+                            sheet.write(row, 14, base_exento, line_number)
+                            sheet.write(row, 15, base_imponible, line_number)
+                            sheet.write(row, 16, alic_16, line_number)
+                            sheet.write(row, 17, iva_16, line_number)
+                            sheet.write(row, 18, base_imponible_8, line_number)
+                            sheet.write(row, 19, alic_8, line_number)
+                            sheet.write(row, 20, iva_8, line_number)
+                            sheet.write(row, 21, base_imponible_31, line_number)
+                            sheet.write(row, 22, alic_31, line_number)
+                            sheet.write(row, 23, iva_31, line_number)
 
-                            sheet.write(row, 21, '', line)
-                            sheet.write(row, 22, '', line)
-                            sheet.write(row, 23, '', line)
                             sheet.write(row, 24, '', line)
                             sheet.write(row, 25, '', line)
                             sheet.write(row, 26, '', line)
                             sheet.write(row, 27, '', line)
+                            sheet.write(row, 28, '', line)
+                            sheet.write(row, 29, '', line)
+                            sheet.write(row, 30, '', line)
+                            sheet.write(row, 31, '', line)
+                            sheet.write(row, 32, '', line)
+                            sheet.write(row, 33, '', line)
 
                         #No contribuyentes
                         else:
@@ -878,6 +933,8 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                             total_iva_no_contribuyente_16 += iva_16 if iva_16 else 0.00
                             total_base_imponible_no_contribuyente_8 += base_imponible_8 if base_imponible_8 else 0.00
                             total_iva_no_contribuyente_8 += iva_8 if iva_8 else 0.00
+                            total_base_imponible_no_contribuyente_31 += base_imponible_31 if base_imponible_31 else 0.00
+                            total_iva_no_contribuyente_31 += iva_31 if iva_31 else 0.00
 
                             sheet.write(row, 14, '', line)
                             sheet.write(row, 15, '', line)
@@ -886,15 +943,21 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                             sheet.write(row, 18, '', line)
                             sheet.write(row, 19, '', line)
                             sheet.write(row, 20, '', line)
+                            sheet.write(row, 21, '', line)
+                            sheet.write(row, 22, '', line)
+                            sheet.write(row, 23, '', line)
 
 
-                            sheet.write(row, 21, base_exento, line)
-                            sheet.write(row, 22, base_imponible, line)
-                            sheet.write(row, 23, alic_16, line)
-                            sheet.write(row, 24, iva_16, line)
-                            sheet.write(row, 25, base_imponible_8, line)
-                            sheet.write(row, 26, alic_8, line)
-                            sheet.write(row, 27, iva_8, line)
+                            sheet.write(row, 24, base_exento, line_number)
+                            sheet.write(row, 25, base_imponible, line_number)
+                            sheet.write(row, 26, alic_16, line_number)
+                            sheet.write(row, 27, iva_16, line_number)
+                            sheet.write(row, 28, base_imponible_8, line_number)
+                            sheet.write(row, 29, alic_8, line_number)
+                            sheet.write(row, 30, iva_8, line_number)
+                            sheet.write(row, 31, base_imponible_31, line_number)
+                            sheet.write(row, 32, alic_31, line_number)
+                            sheet.write(row, 33, iva_31, line_number)
                             # sheet.write(row, 27, iva, line)
                     
                         
@@ -908,13 +971,14 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                                 for pay in payments_with_igtf:
                                     igtf_amount += pay.igtf_amount_signed
                         total_igtf += igtf_amount
-                        sheet.write(row, 28, '', line)
-                        sheet.write(row, 29, igtf_amount if igtf_amount > 0 else '' , line)
+                        sheet.write(row, 34, '', line_number)
+                        sheet.write(row, 35, igtf_amount if igtf_amount > 0 else '' , line_number)
                 row += 1
             if len(retenciones) > 1 and obj.type == 'purchase':
                 for reten in retenciones:
-                    total_iva_16_retenido += reten.amount
-                    _logger.warning(reten.withholding_number)
+                    amount_reten = reten.amount if reten.currency_id.id == reten.company_id.currency_id.id else reten.amount_company_currency
+                    amount_reten = amount_reten * -1 if reten.total_amount < 0 else amount_reten
+                    total_iva_16_retenido += amount_reten
                     i += 1
                     # codigo 
                     sheet.write(row, 0, i, line)
@@ -973,9 +1037,8 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     #Imp. IVA
                     sheet.write(row, 24, '', line_number)
                     
-
                     #Retenciones
-                    sheet.write(row, 25, reten.amount, line_number)
+                    sheet.write(row, 25, amount_reten, line_number)
                     ###### IGTF
                     sheet.write(row, 26, '', line_number)
                     # retenciones.remove(reten)
@@ -983,7 +1046,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
 
             elif len(retenciones) > 0 and obj.type == 'sale':
                 for reten in sorted(retenciones, key=lambda x: x.date):
-                    total_iva_16_retenido += reten.amount
+                    total_iva_16_retenido += reten.amount if reten.currency_id.id == reten.company_id.currency_id.id else reten.amount_company_currency
                     i += 1
                     # contador de la factura
                     sheet.write(row, 0, i, line)
@@ -1025,9 +1088,14 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     sheet.write(row, 24, '', line)
                     sheet.write(row, 25, '', line)
                     sheet.write(row, 26, '', line)
-                    sheet.write(row, 27, '', line)
-                    sheet.write(row, 28, reten.amount, line)
+                    sheet.write(row, 28, '', line)
                     sheet.write(row, 29, '', line)
+                    sheet.write(row, 30, '', line)
+                    sheet.write(row, 31, '', line)
+                    sheet.write(row, 32, '', line)
+                    sheet.write(row, 33, '', line)
+                    sheet.write(row, 34, reten.amount if reten.currency_id.id == reten.company_id.currency_id.id else reten.amount_company_currency, line_number)
+                    sheet.write(row, 35, '', line)
                     retenciones.remove(reten)
                     row +=1
 
@@ -1037,13 +1105,17 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                 sheet.write((row), 17, total_iva_contribuyente_16, line_total)
                 sheet.write((row), 18, total_base_imponible_contribuyente_8, line_total)
                 sheet.write((row), 20, total_iva_contribuyente_8, line_total)
+                sheet.write((row), 21, total_base_imponible_contribuyente_31, line_total)
+                sheet.write((row), 23, total_iva_contribuyente_31, line_total)
 
-                sheet.write((row), 21, total_base_exento_no_contribuyente, line_total)
-                sheet.write((row), 22, total_base_imponible_no_contribuyente_16, line_total)
-                sheet.write((row), 24, total_iva_no_contribuyente_16, line_total)
-                sheet.write((row), 25, total_base_imponible_no_contribuyente_8, line_total)
-                sheet.write((row), 27, total_iva_no_contribuyente_8, line_total)
-                sheet.write((row), 29, total_igtf, line_total)
+                sheet.write((row), 24, total_base_exento_no_contribuyente, line_total)
+                sheet.write((row), 26, total_base_imponible_no_contribuyente_16, line_total)
+                sheet.write((row), 27, total_iva_no_contribuyente_16, line_total)
+                sheet.write((row), 29, total_base_imponible_no_contribuyente_8, line_total)
+                sheet.write((row), 30, total_iva_no_contribuyente_8, line_total)
+                sheet.write((row), 31, total_base_imponible_no_contribuyente_31, line_total)
+                sheet.write((row), 33, total_iva_no_contribuyente_31, line_total)
+                sheet.write((row), 35, total_igtf, line_total)
                 
                 # RESUMEN DE LOS TOTALES VENTAS
                 row +=5
@@ -1084,39 +1156,51 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                 sheet.write((row+6), 15, 0, line_number)
                 sheet.write((row+6), 16, '', line_number)
                 sheet.merge_range('J%s:M%s' % (str(row+8), str(row+8)), 'Total Ventas Internas afectadas  más adicional 31.00', title_style)
-                sheet.write((row+7), 13, 0, line_number)
-                sheet.write((row+7), 14, 0, line_number)
+                sheet.write((row+7), 13, round(total_base_imponible_contribuyente_31 + total_base_imponible_no_contribuyente_31 - total_nota_credito_31 - total_nota_debito_31,2), line_number)
+                sheet.write((row+7), 14, total_iva_31, line_number)
                 sheet.write((row+7), 15, 0, line_number)
                 sheet.write((row+7), 16, '', line_number)
                 sheet.merge_range('J%s:M%s' % (str(row+9), str(row+9)), 'Total Notas de Crédito o Devoluciones aplicadas en Ventas 16%', title_style)
-                sheet.write((row+8), 13, total_nota_credito_16, line_number)
-                sheet.write((row+8), 14, total_nota_credito_iva_16, line_number)
-                sheet.write((row+8), 15, '', line_number)
-                sheet.write((row+8), 16, '', line_number)
+                sheet.write((row+8), 13, total_nota_credito_16,line_number)
+                sheet.write((row+8), 14, total_nota_credito_iva_16,line_number)
+                sheet.write((row+8), 15, '',line_number)
+                sheet.write((row+8), 16, '',line_number)
                 sheet.merge_range('J%s:M%s' % (str(row+10), str(row+10)), 'Total Notas de Crédito o Devoluciones aplicadas en Ventas 8%', title_style)
-                sheet.write((row+9), 13, total_nota_credito_8, line_number)
-                sheet.write((row+9), 14, total_nota_credito_iva_8, line_number)
-                sheet.write((row+9), 15, '', line_number)
-                sheet.write((row+9), 16, '', line_number)
-                sheet.merge_range('J%s:M%s' % (str(row+11), str(row+11)), 'Total Notas de Débito o recargos aplicadas en Ventas 16%:', title_style)
-                sheet.write((row+10), 13, total_nota_debito_16, line_number)
-                sheet.write((row+10), 14, total_nota_debito_iva_16, line_number)
-                sheet.write((row+10), 15, '', line_number)
-                sheet.write((row+10), 16, '', line_number)
-                sheet.merge_range('J%s:M%s' % (str(row+12), str(row+12)), 'Total Notas de Débito o recargos aplicadas en Ventas 8%:', title_style)
-                sheet.write((row+11), 13, total_nota_debito_8, line_number)
-                sheet.write((row+11), 14, total_nota_debito_iva_8, line_number)
-                sheet.write((row+11), 15, '', line_number)
-                sheet.write((row+11), 16, '', line_number)
-                sheet.merge_range('J%s:M%s' % (str(row+13), str(row+13)), 'Total:', title_style)
-                sheet.write((row+12), 13, round(total_base_exento_contribuyente + total_base_exento_no_contribuyente + total_base_imponible_contribuyente_16 + total_base_imponible_no_contribuyente_16\
-                        + total_base_imponible_contribuyente_8 + total_base_imponible_no_contribuyente_8 + total_base_exento_credito \
-                                    + total_base_exento_debito,2), line_number)
-                sheet.write((row+12), 14, (total_iva_16 + total_iva_8 + \
-                    total_nota_credito_iva_16 + total_nota_credito_iva_8 + \
-                        total_nota_debito_iva_16 + total_nota_debito_iva_8), line_number)
-                sheet.write((row+12), 15, total_iva_16_retenido, line_number)
-                sheet.write((row+12), 16, total_igtf, line_number)
+                sheet.write((row+9), 13, total_nota_credito_8,line_number)
+                sheet.write((row+9), 14, total_nota_credito_iva_8,line_number)
+                sheet.write((row+9), 15, '',line_number)
+                sheet.write((row+9), 16, '',line_number)
+                sheet.merge_range('J%s:M%s' % (str(row+11), str(row+11)), 'Total Notas de Crédito o Devoluciones aplicadas en Ventas 31%', title_style)
+                sheet.write((row+10), 13, total_nota_credito_31,line_number)
+                sheet.write((row+10), 14, total_nota_credito_iva_31,line_number)
+                sheet.write((row+10), 15, '',line_number)
+                sheet.write((row+10), 16, '',line_number)
+                sheet.merge_range('J%s:M%s' % (str(row+12), str(row+12)), 'Total Notas de Débito o recargos aplicadas en Ventas 16%:', title_style)
+                sheet.write((row+11), 13, total_nota_debito_16,line_number)
+                sheet.write((row+11), 14, total_nota_debito_iva_16,line_number)
+                sheet.write((row+11), 15, '',line_number)
+                sheet.write((row+11), 16, '',line_number)
+                sheet.merge_range('J%s:M%s' % (str(row+13), str(row+13)), 'Total Notas de Débito o recargos aplicadas en Ventas 8%:', title_style)
+                sheet.write((row+12), 13, total_nota_debito_8,line_number)
+                sheet.write((row+12), 14, total_nota_debito_iva_8,line_number)
+                sheet.write((row+12), 15, '',line_number)
+                sheet.write((row+12), 16, '',line_number)
+                sheet.merge_range('J%s:M%s' % (str(row+14), str(row+14)), 'Total Notas de Débito o recargos aplicadas en Ventas 31%:', title_style)
+                sheet.write((row+13), 13, total_nota_debito_31,line_number)
+                sheet.write((row+13), 14, total_nota_debito_iva_31,line_number)
+                sheet.write((row+13), 15, '',line_number)
+                sheet.write((row+13), 16, '',line_number)
+                sheet.merge_range('J%s:M%s' % (str(row+15), str(row+15)), 'Total:', title_style)
+                sheet.write((row+14), 13, total_base_exento_contribuyente + total_base_exento_no_contribuyente + total_base_imponible_contribuyente_16 + total_base_imponible_no_contribuyente_16\
+                        + total_base_imponible_contribuyente_8 + total_base_imponible_no_contribuyente_8 \
+                        + total_base_imponible_contribuyente_31 + total_base_imponible_no_contribuyente_31
+                              + total_base_exento_credito \
+                                    + total_base_exento_debito,line_number)
+                sheet.write((row+14), 14, (total_iva_16 + total_iva_8 + total_iva_31 + \
+                    total_nota_credito_iva_16 + total_nota_credito_iva_8 + total_nota_credito_iva_31 + \
+                        total_nota_debito_iva_16 + total_nota_debito_iva_8 + total_nota_debito_iva_31),line_number)
+                sheet.write((row+14), 15, total_iva_16_retenido,line_number)
+                sheet.write((row+14), 16, total_igtf,line_number)
 
             # Totales de compras
             else:
@@ -1141,7 +1225,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
 
                 sheet.merge_range('J%s:M%s' % (str(row + 2), str(row + 2)), 'Total Compras Internas NO Gravadas',
                                   title_style)
-                sheet.write((row + 1), 13, c_total_base_exento, line_number)
+                sheet.write((row + 1), 13, total_base_exento, line_number)
                 sheet.write((row + 1), 14, 0, line_number)
                 sheet.write((row + 1), 15, 0, line_number)
                 sheet.write((row + 1), 16, 0, line_number)
@@ -1160,7 +1244,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                 sheet.write((row + 3), 15, 0, line_number)
                 sheet.write((row + 3), 16, 0, line_number)
                 sheet.write((row + 3), 17, 0, line_number)
-                sheet.merge_range('J%s:M%s' % (str(row + 5), str(row + 5)), 'Total Compras de Importación', title_style)
+                sheet.merge_range('J%s:M%s' % (str(row + 5), str(row + 5)), 'Total Compras de Importaciòn', title_style)
                 sheet.write((row + 4), 13, 0, line_number)
                 sheet.write((row + 4), 14, 0, line_number)
                 sheet.write((row + 4), 15, 0, line_number)
@@ -1168,22 +1252,22 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                 sheet.write((row + 4), 17, 0, line_number)
                 sheet.merge_range('J%s:M%s' % (str(row + 6), str(row + 6)),
                                   'Total Compras Internas afectadas sólo alícuota general 16.00', title_style)
-                sheet.write((row + 5), 13, round(c_total_base_imponible_16,2), line_number)
-                sheet.write((row + 5), 14, round(c_total_iva_16,2), line_number)
+                sheet.write((row + 5), 13, round(total_base_imponible_16,2), line_number)
+                sheet.write((row + 5), 14, total_iva_16, line_number)
                 sheet.write((row + 5), 15, total_iva_16_retenido, line_number)
                 sheet.write((row + 5), 16, total_iva_16_igtf, line_number)
                 sheet.write((row + 5), 17, 0, line_number)
                 sheet.merge_range('J%s:M%s' % (str(row + 7), str(row + 7)),
                                   'Total Compras Internas afectadas sólo alícuota reducida 8.00', title_style)
-                sheet.write((row + 6), 13, c_total_base_imponible_8, line_number)
-                sheet.write((row + 6), 14, c_total_iva_8, line_number)
+                sheet.write((row + 6), 13, total_base_imponible_8, line_number)
+                sheet.write((row + 6), 14, total_iva_8, line_number)
                 sheet.write((row + 6), 15, 0, line_number)
                 sheet.write((row + 6), 16, 0, line_number)
                 sheet.write((row + 6), 17, 0, line_number)
                 sheet.merge_range('J%s:M%s' % (str(row + 8), str(row + 8)),
                                   'Total Compras Internas afectadas por alícuota general más adicional 31.00', title_style)
-                sheet.write((row + 7), 13, c_total_base_imponible_31, line_number)
-                sheet.write((row + 7), 14, c_total_iva_31, line_number)
+                sheet.write((row + 7), 13, total_base_imponible_31, line_number)
+                sheet.write((row + 7), 14, total_iva_31, line_number)
                 sheet.write((row + 7), 15, 0, line_number)
                 sheet.write((row + 7), 16, 0, line_number)
                 sheet.write((row + 7), 17, 0, line_number)
@@ -1224,12 +1308,12 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                 sheet.write((row+13), 16, 0, line_number)
                 sheet.write((row +13), 17, 0, line_number)
                 sheet.merge_range('J%s:M%s' % (str(row+15), str(row+15)), 'Total:', title_style)
-                sheet.write((row+14), 13, round(c_total_base_exento + c_total_base_imponible_16 \
-                    + c_total_base_imponible_8+c_total_base_imponible_31+total_nota_credito_16+\
+                sheet.write((row+14), 13, round(total_base_exento + total_base_imponible_16 \
+                    + total_base_imponible_8+total_base_imponible_31+total_nota_credito_16+\
                         + total_nota_credito_8 + total_nota_credito_31 +total_nota_debito_16 + \
                             + total_nota_debito_8 + total_nota_debito_31 + total_base_exento_credito +\
                                 total_base_exento_debito ,2), line_number)
-                sheet.write((row+14), 14, (c_total_iva_16 + c_total_iva_8 + c_total_iva_31 + \
+                sheet.write((row+14), 14, (total_iva_16 + total_iva_8 + total_iva_31 + \
                     total_nota_credito_iva_16 + total_nota_credito_iva_8 + total_nota_credito_iva_31 + \
                         total_nota_debito_iva_16 + total_nota_debito_iva_8 + total_nota_debito_iva_31), line_number)
                 sheet.write((row+14), 15, total_iva_16_retenido, line_number)
