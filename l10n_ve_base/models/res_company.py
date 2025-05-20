@@ -12,6 +12,7 @@ from odoo.exceptions import UserError
 
 class ResCompany(models.Model):
     _inherit = 'res.company'
+
     country_id = fields.Many2one(
         'res.country',
         string=u'País',
@@ -47,7 +48,7 @@ class ResCompany(models.Model):
         # default=lambda self: self.env.ref('l10n_ve_base.it_rifj'),
         help="The type of identification")
     l10n_ve_responsibility_type_id = fields.Many2one(
-        'l10n_ve.responsibility.type', string='SENIAT Responsibility Type', 
+        'l10n_ve.responsibility.type', string='SENIAT Responsibility Type',
         index=True, help='Defined by SENIAT to identify the type of '
         'responsibilities that a person or a legal entity could have and that '
         'impacts in the type of operations and requirements they need.')

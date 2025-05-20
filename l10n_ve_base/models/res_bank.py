@@ -6,19 +6,17 @@
 #
 #
 ###############################################################################
-
-from odoo import api, fields, models, _, exceptions
+from odoo import api, fields, models, _
 from odoo.exceptions import UserError
 
-class res_bank(models.Model):
-    """inherit for res_bank"""
 
+class res_bank(models.Model):
     _inherit = 'res.bank'
 
     @api.model
     def create(self, vals):
         if not vals['name']:
-            raise exceptions.UserError(
+            raise UserError(
                 _(u'Debe indicar el Nombre de la Entidad Bancaria.')
             )
         res = super(res_bank, self).create(vals)
@@ -27,7 +25,7 @@ class res_bank(models.Model):
     def write(self, vals):
         if 'name' in vals:
             if not vals.get('name', False):
-                raise exceptions.UserError(
+                raise UserError(
                     _(u'Debe indicar el Nombre de la Entidad Bancaria.')
                 )
         res = super(res_bank, self).write(vals)

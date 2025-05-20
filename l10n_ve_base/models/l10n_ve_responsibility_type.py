@@ -6,8 +6,8 @@
 #
 #
 ###############################################################################
-
 from odoo import models, fields
+
 
 #Reference to
 #www.tipsparaempresas.com/tipos-de-contribuyentes-de-impuestos-al-seniat/

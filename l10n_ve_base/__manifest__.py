@@ -24,10 +24,18 @@
 
     'author': "SINAPSYS GLOBAL SA || MASTERCORE SAS",
     'website': "http://sinapsys.global",
-    'version': '18.0.0.0.1',
+    'version': '0.1',
     'category': 'Localization',
+    'countries': ['ve'],
     'license': 'AGPL-3',
-    'depends': ['base','contacts','l10n_ve','l10n_latam_base'],
+    'depends': [
+        'base',
+        'contacts',
+        'account',
+        'l10n_ve',
+        'l10n_latam_base'
+    ],
+    # 'auto_install': ['account'],
     'data': [
         'security/ir.model.access.csv',
         'data/l10n_latam_identification_type_data.xml',
@@ -47,5 +55,10 @@
         'views/res_country_state_municipality_parish.xml',
         'wizard/currency_rate_wizard_view.xml'
     ],
-
+    'assets': {
+        'web.assets_backend': [
+            'l10n_ve_base/static/src/scss/style.scss'
+        ]
+    },
+    'installable': True,
 }
