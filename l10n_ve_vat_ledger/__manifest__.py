@@ -25,7 +25,6 @@
         'l10n_ve_base',
         'l10n_ve_withholding', 
         'report_xlsx', 
-        'l10n_ve_account', 
         'l10n_ve_igtf_purchase'],
     'data': [
         # 'security/security.xml',
