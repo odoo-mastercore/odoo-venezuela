@@ -7,6 +7,7 @@
 #
 ################################################################################
 from odoo import models, fields, api, _
+from odoo.exceptions import ValidationError
 
 
 class ResPartner(models.Model):
@@ -58,3 +59,35 @@ class ResPartner(models.Model):
         extend this method in order to process it. """
         l10n_ve_partners = self.filtered(lambda x: x.l10n_latam_identification_type_id)
         return super(ResPartner, self - l10n_ve_partners).check_vat()
+
+    def _check_unique_vat(self):
+        if self.vat:
+            same_vat = self.env['res.partner'].search([
+                ('vat', '=', self.vat),
+                ('id', '!=', self.id),
+                ('l10n_latam_identification_type_id', '=',
+                    self.l10n_latam_identification_type_id.id),
+            ])
+            if same_vat:
+                child = []
+                if self.child_ids:
+                    child = [p.id for p in self.child_ids]
+                if self.parent_id:
+                    child.append(self.parent_id.id)
+                if same_vat[0].id not in child:
+                    raise ValidationError(_(
+                        'Ya se encuentra registrado el Número de Identificación %s para el Contacto (%s)'
+                    ) % (self.vat, same_vat[0].name))
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        records = super(ResPartner, self).create(vals_list)
+        for record in records:
+            record._check_unique_vat()
+        return records
+
+    def write(self, vals):
+        rec = super(ResPartner, self).write(vals)
+        if 'vat' in vals:
+            self._check_unique_vat()
+        return rec
