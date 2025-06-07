@@ -1,30 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
-  <odoo>
-    <data>
-      <!-- view form to res_partner_bank -->
-      <record id="view_res_partner_bank_form_inherit" model="ir.ui.view">
+ <odoo>
+    <!-- view form to res_partner_bank -->
+    <record id="view_res_partner_bank_form_inherit" model="ir.ui.view">
         <field name="name">res_partner_bank_form_inherit</field>
         <field name="model">res.partner.bank</field>
         <field name="inherit_id" ref="base.view_partner_bank_form" />
         <field name="type">form</field>
         <field name="arch" type="xml">
-          <xpath expr="//field[@name='acc_number']" position="after">
-            <field name="l10n_ve_acc_type" string="Tipo de cuenta" placeholder="Seleccione"/>
-          </xpath>
+            <xpath expr="//field[@name='acc_number']" position="after">
+                <field name="l10n_ve_acc_type" string="Tipo de cuenta" placeholder="Seleccione"/>
+            </xpath>
         </field>
-      </record>
-      <!-- view tree to res_bank -->
-      <record id="view_res_partner_bank_tree_inherit" model="ir.ui.view">
+    </record>
+
+    <!-- view tree to res_bank -->
+    <record id="view_res_partner_bank_tree_inherit" model="ir.ui.view">
         <field name="name">res_partner_tree_inherit</field>
         <field name="model">res.partner.bank</field>
         <field name="type">list</field>
         <field name="arch" type="xml">
-          <list string="Cuentas bancarias">
-            <field name="bank_id" />
-            <field name="acc_number"/>
-            <field name="l10n_ve_acc_type" string="Tipo de cuenta" />
-          </list>
+            <list string="Cuentas bancarias">
+                <field name="bank_id" />
+                <field name="acc_number"/>
+                <field name="l10n_ve_acc_type" string="Tipo de cuenta" />
+            </list>
         </field>
-      </record>
-    </data>
-  </odoo>
+    </record>
+</odoo>
