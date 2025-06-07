@@ -12,7 +12,6 @@ from odoo import models, fields
 #Reference to
 #www.tipsparaempresas.com/tipos-de-contribuyentes-de-impuestos-al-seniat/
 class L10nVeResponsibilityType(models.Model):
-
     _name = 'l10n_ve.responsibility.type'
     _description = 'SENIAT Responsibility Type'
     _order = 'sequence'

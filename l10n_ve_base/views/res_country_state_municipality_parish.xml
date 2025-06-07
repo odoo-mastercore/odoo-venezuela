@@ -6,11 +6,13 @@
         <field name="model">res.country.state.municipality.parish</field>
         <field name="arch" type="xml">
             <form string="parishes">
-                <group>
-                    <field name="name"/>
-                    <field name="code"/>
-                    <field name="municipality_id" options="{'no_create': True}"/>
-                </group>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="code"/>
+                        <field name="municipality_id" options="{'no_create': True}"/>
+                    </group>
+                </sheet>
             </form>
         </field>
     </record>
@@ -19,7 +21,7 @@
         <field name="name">res.country.state.municipality.parish.tree</field>
         <field name="model">res.country.state.municipality.parish</field>
         <field name="arch" type="xml">
-            <list string="parishes">
+            <list string="parishes" editable="bottom">
                 <field name="name"/>
                 <field name="code"/>
                 <field name="municipality_id" options="{'no_create': True}"/>
@@ -32,10 +34,12 @@
         <field name="res_model">res.country.state.municipality.parish</field>
     </record>
 
-    <menuitem 
-        name="parishes" 
-        action="action_parish" 
-        id="menu_parish" 
-        sequence="5" parent="contacts.menu_localisation"/>
+    <menuitem
+        name="parishes"
+        action="action_parish"
+        id="menu_parish"
+        sequence="5"
+        parent="contacts.menu_localisation"
+        />
 
 </odoo>

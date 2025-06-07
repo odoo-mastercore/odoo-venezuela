@@ -8,10 +8,10 @@
 ################################################################################
 from odoo import models, fields
 
-class resCountry(models.Model):
-    """Modelo extendido res.country."""
 
+class ResCountry(models.Model):
     _inherit = 'res.country'
+
     nationality = fields.Char(
         string='Nacionalidad',
         required=False,

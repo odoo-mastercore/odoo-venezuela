@@ -8,10 +8,10 @@
 ################################################################################
 from odoo import models, fields
 
-class State(models.Model):
-    """Modelo extendido res.country.state."""
 
+class ResCountryState(models.Model):
     _inherit = 'res.country.state'
+
     municipality_ids = fields.One2many(
         string="Municipios",
         comodel_name="res.country.state.municipality",

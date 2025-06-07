@@ -40,7 +40,7 @@
                 </div>
             </xpath>
             <xpath expr="//field[@name='bank_ids']" position="replace">
-                <field name="bank_ids">
+                <field name="bank_ids" nolabel="1">
                     <list editable="bottom">
                         <field name="bank_id"/>
                         <field name="acc_number"/>
@@ -49,14 +49,9 @@
                     </list>
                 </field>
             </xpath>
-            <field name="vat" position="after">
-                <field
-                    name="l10n_ve_responsibility_type_id"
-                    string="SENIAT Responsibility"
-                    options="{'no_open': True, 'no_create': True}"
-                    readonly="parent_id != False"
-                    />
-            </field>
+            <xpath expr="//group//group[1]" position="inside">
+                <field name="l10n_ve_responsibility_type_id" string="SENIAT Responsibility" options="{'no_open': True, 'no_create': True}" readonly="parent_id != False"/>
+            </xpath>
         </field>
     </record>
 </odoo>

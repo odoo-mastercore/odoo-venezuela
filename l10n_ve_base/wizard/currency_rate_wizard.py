@@ -5,13 +5,8 @@
 #
 #
 ###############################################################################
-
-from odoo import models, fields, api, _
-from odoo.exceptions import UserError
+from odoo import models, fields, _
 import datetime
-import logging
-
-_logger = logging.getLogger(__name__)
 
 
 class CurrencyRateWizard(models.TransientModel):
@@ -46,11 +41,10 @@ class CurrencyRateWizard(models.TransientModel):
             ('currency_id', '=', self.currency_id.id),
             ('name', '=', datetime.date.today())
         ])
-
         if rec:
             rec.write(values)
         else:
-            record = self.env['res.currency.rate'].create(values)
+            self.env['res.currency.rate'].create(values)
 
         return {
             'type': 'ir.actions.act_window',

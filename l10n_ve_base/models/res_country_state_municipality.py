@@ -8,12 +8,12 @@
 ################################################################################
 from odoo import models, fields
 
-class resCountryStateMunicipality(models.Model):
-    """Modelo Municipality."""
 
+class resCountryStateMunicipality(models.Model):
     _name = 'res.country.state.municipality'
     _description = 'Municipality'
     _order = 'name'
+
     name = fields.Char(
         string='Municipio',
         size=100,
@@ -21,7 +21,7 @@ class resCountryStateMunicipality(models.Model):
         help='Nombre del Municipio'
     )
     code = fields.Char(
-        string=u'Código',
+        string='Código',
         size=5,
         required=True,
         help='Código de Municipio'

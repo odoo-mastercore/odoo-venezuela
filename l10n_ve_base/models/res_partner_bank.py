@@ -5,23 +5,21 @@
 #
 #
 ###############################################################################
-
-from odoo import api, fields, models, _, exceptions
+from odoo import api, fields, models, _
 from odoo.exceptions import UserError
 
-class res_partner_bank(models.Model):
-    """inherit for res_partner_bank"""
 
+class ResPartnerBank(models.Model):
     _inherit = 'res.partner.bank'
+
     l10n_ve_acc_type = fields.Selection(
         [
             ('ahorro', 'Cuenta Corriente'),
             ('corriente', 'Cuenta de Ahorro'),
             ('fideicomiso', 'Cuenta Fideicomiso'),
-
         ],
         string='Tipo de cuenta',
-        help=u"Tipo de cuenta."
+        help="Tipo de cuenta."
     )
 
     @api.onchange('bank_id')
@@ -36,25 +34,18 @@ class res_partner_bank(models.Model):
                 'value': {'acc_number': ''},
             }
 
-    @api.model
-    def create(self, vals):
-        if not vals['bank_id']:
-            raise exceptions.UserError(
-                _(u'Debe Seleccionar la Entidad Bancaria.')
-            )
-        res = super(res_partner_bank, self).create(vals)
-        return res
+    @api.model_create_multi
+    def create(self, vals_list):
+        records = super(ResPartnerBank, self).create(vals_list)
+        for rec in records:
+            if not rec.bank_id:
+                raise UserError(_('Debe Seleccionar la Entidad Bancaria.'))
+        return records
 
     def write(self, vals):
-        if 'bank_id' in vals:
-            if not vals.get('bank_id', False):
-                raise exceptions.UserError(
-                    _(u'Debe Seleccionar la Entidad Bancaria.')
-                )
-        if 'acc_number' in vals:
-            if not vals.get('acc_number', False):
-                raise exceptions.UserError(
-                    _(u'Debe indicar el numero de cuenta.')
-                )
-        res = super(res_partner_bank, self).write(vals)
-        return res
+        rec = super(ResPartnerBank, self).write(vals)
+        if not self.bank_id:
+            raise UserError(_('Debe Seleccionar la Entidad Bancaria.'))
+        if not self.acc_number:
+            raise UserError(_('Debe indicar el numero de cuenta.'))
+        return rec

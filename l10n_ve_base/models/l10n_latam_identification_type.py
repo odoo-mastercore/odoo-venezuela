@@ -6,7 +6,7 @@
 #
 #
 ###############################################################################
-from odoo import api, fields, models, _
+from odoo import fields, models, _
 
 
 class L10nLatamIdentificationType(models.Model):

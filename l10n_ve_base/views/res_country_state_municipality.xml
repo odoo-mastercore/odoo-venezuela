@@ -7,9 +7,11 @@
         <field name="arch" type="xml">
             <form string="municipalities">
                 <group>
-                    <field name="name"/>
-                    <field name="code"/>
-                    <field name="state_id" options="{'no_create': True}"/>
+                    <sheet>
+                        <field name="name"/>
+                        <field name="code"/>
+                        <field name="state_id" options="{'no_create': True}"/>
+                    </sheet>
                 </group>
             </form>
         </field>
@@ -19,7 +21,7 @@
         <field name="name">res.country.state.municipality.tree</field>
         <field name="model">res.country.state.municipality</field>
         <field name="arch" type="xml">
-            <list string="municipalities">
+            <list string="municipalities" editable="bottom">
                 <field name="name"/>
                 <field name="code"/>
                 <field name="state_id" options="{'no_create': True}"/>
@@ -32,10 +34,12 @@
         <field name="res_model">res.country.state.municipality</field>
     </record>
 
-    <menuitem 
-        name="municipalities" 
-        action="action_municipality" 
-        id="menu_municipality" 
-        sequence="4" parent="contacts.menu_localisation"/>
+    <menuitem
+        name="municipalities"
+        action="action_municipality"
+        id="menu_municipality"
+        sequence="4"
+        parent="contacts.menu_localisation"
+        />
 
 </odoo>

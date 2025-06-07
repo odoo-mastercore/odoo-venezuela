@@ -5,16 +5,17 @@
         <field name="model">res.currency</field>
         <field name="inherit_id" ref="base.view_currency_form"/>
         <field name="arch" type="xml">
-        <xpath expr="//page[@name='rates']" position="inside">
-            <button 
-                name="action_get_currency_rate" 
-                string="Update Rate" 
-                icon="fa-repeat"
-                class="oe_stat_button"
-                type="object" 
-                invisible="name == 'VEF'"
-                widget="statinfo" />
-        </xpath>
+            <xpath expr="//page[@name='rates']" position="inside">
+                <button
+                    name="action_get_currency_rate"
+                    string="Update Rate"
+                    icon="fa-repeat"
+                    class="oe_stat_button"
+                    type="object"
+                    invisible="name == 'VEF'"
+                    widget="statinfo"
+                    />
+            </xpath>
         </field>
     </record>
 </odoo>

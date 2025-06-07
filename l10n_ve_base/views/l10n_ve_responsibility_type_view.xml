@@ -6,11 +6,13 @@
         <field name="model">l10n_ve.responsibility.type</field>
         <field name="arch" type="xml">
             <form string="Seniat Responsibility Type">
-                <group>
-                    <field name="name"/>
-                    <field name='code'/>
-                    <field name='active'/>
-                </group>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="code"/>
+                        <field name="active"/>
+                    </group>
+                </sheet>
             </form>
         </field>
     </record>
@@ -19,10 +21,10 @@
         <field name="name">seniat.responsibility.type.tree</field>
         <field name="model">l10n_ve.responsibility.type</field>
         <field name="arch" type="xml">
-            <list string="Seniat Responsibility Type" decoration-muted="(not active)">
+            <list string="Seniat Responsibility Type" decoration-muted="(not active)" editable="bottom">
                 <field name="name"/>
                 <field name="code"/>
-                <field name='active'/>
+                <field name="active"/>
             </list>
         </field>
     </record>
@@ -32,10 +34,12 @@
         <field name="res_model">l10n_ve.responsibility.type</field>
     </record>
 
-    <menuitem 
-        name="Responsibility Types" 
-        action="action_seniat_responsibility_type" 
-        id="menu_seniat_responsibility_type" 
-        sequence="10" parent="menu_seniat_config"/>
+    <menuitem
+        name="Responsibility Types"
+        action="action_seniat_responsibility_type"
+        id="menu_seniat_responsibility_type"
+        sequence="10"
+        parent="menu_seniat_config"
+        />
 
 </odoo>

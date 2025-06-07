@@ -8,12 +8,12 @@
 ################################################################################
 from odoo import models, fields
 
-class resCountryStateMunicipalityParish(models.Model):
-    """Modelo Parish."""
 
+class ResCountryStateMunicipalityParish(models.Model):
     _name = 'res.country.state.municipality.parish'
     _description = 'Venezuelan Parish'
     _order = 'name'
+
     name = fields.Char(
         string='Parroquia',
         size=100,
