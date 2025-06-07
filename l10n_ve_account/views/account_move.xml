@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="inherit_account_move_form" model="ir.ui.view">
+        <field name="name">inherit.account.move.form</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='accounting_info_group']//field[@name='company_id']" position="after">
+                <field name="l10n_ve_invoice_date" />
+            </xpath>
+            <xpath expr="//header/button[@name='button_draft']" position="attributes">
+                <attribute name="attrs">{'invisible':[('move_type','in',['out_invoice','out_refund','in_invoice','in_refund'])]}</attribute>
+            </xpath>
+            <xpath expr="//header//button[@name='action_reverse']" position="attributes">
+                <attribute name="string">Añadir nota de crédito</attribute>
+            </xpath>
+        </field>
+    </record>
+
+
+
+    <!-- <record id="inherit_menu_action_move_out_refund_type" model="ir.ui.menu">
+        <field name="name">Nota de crédito</field>
+        <field name="inherit_id" ref="account.menu_action_move_out_refund_type"/>
+    </record>
+
+    <record id="inherit_menu_action_move_in_refund_type" model="ir.ui.menu">
+        <field name="name">Nota de crédito</field>
+        <field name="inherit_id" ref="account.menu_action_move_in_refund_type"/>
+    </record> -->
+</odoo>
