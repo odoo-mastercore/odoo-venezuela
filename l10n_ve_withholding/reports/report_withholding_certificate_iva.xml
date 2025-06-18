@@ -6,7 +6,7 @@
                 <t t-set="report_date" t-value="o.date"/>
                 <t t-set="report_number" t-value="o.withholding_number or o.name"/>
                 <t t-set="report_name" t-value="'COMPROBANTE DE RETENCIÓN DEL IMPUESTO AL VALOR AGREGADO IVA'"/>
-                <!-- <t t-set="report_subname" 
+                <!-- <t t-set="report_subname"
                     t-value=""/> -->
             <div class="page">
                 <div>
@@ -15,7 +15,7 @@
                     <br/><br/>
                     <h4><b><t t-esc="report_name"/></b></h4>
                     <p style="font-size: 12px;">
-                    Decreto con Rango, Valor y Fuerza de Ley de Reforma de la 
+                    Decreto con Rango, Valor y Fuerza de Ley de Reforma de la
                     ley de impuestos al valor agragado No. 1.436 del 17 de noviembre del 2014<br/>
                     LEY DEL IVA ART. 11 . LA ADMINISTRACIÓN  TRIBUTARIA PODRÁ DESIGNAR COMO RESPONSABLE DEL PAGO DEL IMPUESTO EN CALIDAD DE AGENTES DE RETENCIÓN  A QUIENES POR SUS FUNCIONES PÚBLICAS O POR RAZÓN DE SUS ACTIVIDADES PRIVADAS INTERVENGAN EN OPERACIONES GRAVADAS CON EL IMPUESTO ESTABLECIDO EN ESTE DECRETO CON RANGO, VALOR Y FUERZA DE LEY
                     </p><br/>
@@ -24,7 +24,6 @@
                             <b>N° de Comprobante: </b><span t-esc="report_number"/><br/>
                             <b>Fecha de emisión: </b><span t-esc="report_date.strftime('%d-%m-%Y')"/><br/>
                             <b>Periodo Fiscal: </b><span t-esc="o._get_fiscal_period(report_date)"/>
-                            
                         </p>
                     </div>
                 </div><br/>
@@ -89,7 +88,7 @@
                         <t t-foreach="o.withholding_distribution_ids" t-as="distribution">
                             <tr>
                                 <th class="text-center">1</th>
-                                <th class="text-center"><span t-field="o.payment_group_id.to_pay_move_line_ids[0].move_id.invoice_date"/></th>
+                                <th class="text-center"><span t-esc="o.payment_group_id.to_pay_move_line_ids[0].move_id.invoice_date.strftime('%d-%m-%Y')"/></th>
                                 <t t-if="o.payment_group_id.state == 'draft'">
                                     <th class="text-center" t-if="not o.payment_group_id.to_pay_move_line_ids[0].move_id.reversed_entry_id"><span t-field="o.payment_group_id.to_pay_move_line_ids[0].move_id.ref"/></th>
                                     <th t-else=""/>
