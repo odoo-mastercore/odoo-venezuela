@@ -10,7 +10,7 @@ Odoo Venezuela
 - account_witthholding
 - account_witthholding_automatic
 - account_ux
-
+- 
 
 ### Instalar los módulos en este orden:
 - territorial_pd
