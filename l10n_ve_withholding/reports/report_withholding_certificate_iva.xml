@@ -114,8 +114,8 @@
                                 </t>
                                 <t t-set="amount_total" t-value="round(o.total_amount - o.payment_group_id.matched_move_line_ids[0].move_id.igtf_amount_purchase,2)"/>
                                 <th class="text-center"><span t-esc="o.format_miles_number(amount_total) if not amount_total &lt; 0 else o.format_miles_number(amount_total * -1)"/></th>
-                                <th class="text-center"><span t-field="distribution.untaxed_amount"/></th>
-                                <th class="text-center"><span t-field="distribution.invoice_amount"/></th>
+                                <th class="text-center"><span t-esc="o.format_miles_number(distribution.untaxed_amount)"/></th>
+                                <th class="text-center"><span t-esc="o.format_miles_number(distribution.invoice_amount)"/></th>
                                 <th class="text-center"><span t-field="distribution.alic"/></th>
                                 <th class="text-center"><span t-field="o.partner_id.vat_retention"/></th>
                                 <th class="text-center"><span t-field="distribution.tax_amount"/></th>
