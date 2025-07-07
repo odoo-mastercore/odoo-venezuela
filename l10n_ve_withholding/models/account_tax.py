@@ -62,7 +62,12 @@ class AccountTax(models.Model):
                             invoice_amount = 0.00
                             for abg_base in to_pay.move_id.line_ids.filtered(lambda x: x.tax_ids.name in [abg.name] and x.display_type != 'cogs'):
                                 withholdable_invoiced_amount += abg_base.debit if to_pay.move_id.move_type == 'in_refund' else abg_base.credit
-                                invoice_amount += abg_base.debit if to_pay.move_id.move_type != 'in_refund' else abg_base.credit
+                                if abg_base.debit > 0.00 and to_pay.move_id.move_type != 'in_refund':
+                                    invoice_amount += abg_base.debit
+                                elif abg_base.credit > 0.00 and to_pay.move_id.move_type != 'in_refund':
+                                    invoice_amount -= abg_base.credit if to_pay.move_id.move_type != 'in_refund' else abg_base.debit
+                                elif to_pay.move_id.move_type == 'in_refund':
+                                    invoice_amount += abg_base.debit
 
                             if foreign_currency:
                                 selected_debt_taxed += abg.amount_currency if abg.amount_currency  >= 0 else -abg.amount_currency
