@@ -755,11 +755,11 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                             if invoice.reversed_entry_id:
                                 sheet.write(row, 6, invoice.reversed_entry_id.name, line)
                             else:
-                                sheet.write(row, 6, '', line)
+                                sheet.write(row, 6, invoice.invoice_origin or '', line)
                         elif invoice.debit_origin_id:
                             sheet.write(row, 6, invoice.debit_origin_id.name, line)
                         else:
-                            sheet.write(row, 6, '', line)
+                            sheet.write(row, 6, invoice.invoice_origin or '', line)
                         # nombre del partner
                         sheet.write(row, 7, invoice.partner_id.name or 'FALSE', line)
                         # Rif del cliente
