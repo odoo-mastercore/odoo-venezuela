@@ -20,7 +20,7 @@ class AccountMove(models.Model):
         'Control Number', size=80,
         help="Number used to manage pre-printed invoices, by law you will"
              " need to put here this number to be able to declarate on"
-             " Fiscal reports correctly.",store=True)
+             " Fiscal reports correctly.",store=True, copy=False)
     applied_withholding_tax = fields.Boolean(
         'Retencion de IVA aplicada', compute='_compute_applied_withholding',
         store=True, copy=False, default=False)
