@@ -44,7 +44,7 @@ class ResCompany(models.Model):
     l10n_latam_identification_type_id = fields.Many2one(
         'l10n_latam.identification.type', string="Identification Type",
         index=True, auto_join=True,
-        default=lambda self: self.env.ref('l10n_ve_base.it_rifj'),
+        default=lambda self: self.env.ref('l10n_ve_base.it_rifj', raise_if_not_found=False),
         help="The type of identification")
     l10n_ve_responsibility_type_id = fields.Many2one(
         'l10n_ve.responsibility.type', string='SENIAT Responsibility Type',
