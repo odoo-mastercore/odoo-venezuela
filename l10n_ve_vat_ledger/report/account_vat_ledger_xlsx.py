@@ -352,12 +352,14 @@ class AccountVatLedgerXlsx(models.AbstractModel):
             if obj.type == 'purchase':
                 tax_withholding_id = self.env['account.tax'].search([
                     ('type_tax_use', '=', 'supplier'),
-                    ('withholding_type', '=', 'partner_tax')
+                    ('withholding_type', '=', 'partner_tax'),
+                    ('company_id', '=', obj.company_id.id)
                 ], limit=1)
             else:
                 tax_withholding_id = self.env['account.tax'].search([
                     ('type_tax_use', '=', 'customer'),
-                    ('name', 'like', 'IVA')
+                    ('name', 'like', 'IVA'),
+                    ('company_id', '=', obj.company_id.id)
                 ], limit=1)
             if tax_withholding_id:
                 retens = self.env['account.payment'].search([
@@ -365,6 +367,13 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     ('state', '=', 'posted'),
                     ('date', '>=', obj.date_from),
                     ('date', '<=', obj.date_to),
+                ], order="withholding_number asc")
+
+                retens = self.env['account.payment'].search([
+                    ('tax_withholding_id', '=', tax_withholding_id.id),
+                    ('state', '=', 'posted'),
+                    ('date', '>=', '2025-8-1'),
+                    ('date', '<=', '2025-8-31'),
                 ], order="withholding_number asc")
             retenciones = []
             if retens:
@@ -755,11 +764,11 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                             if invoice.reversed_entry_id:
                                 sheet.write(row, 6, invoice.reversed_entry_id.name, line)
                             else:
-                                sheet.write(row, 6, invoice.invoice_origin or '', line)
+                                sheet.write(row, 6, '', line)
                         elif invoice.debit_origin_id:
                             sheet.write(row, 6, invoice.debit_origin_id.name, line)
                         else:
-                            sheet.write(row, 6, invoice.invoice_origin or '', line)
+                            sheet.write(row, 6, '', line)
                         # nombre del partner
                         sheet.write(row, 7, invoice.partner_id.name or 'FALSE', line)
                         # Rif del cliente
