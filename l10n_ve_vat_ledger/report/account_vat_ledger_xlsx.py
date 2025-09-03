@@ -353,7 +353,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                 tax_withholding_id = self.env['account.tax'].search([
                     ('type_tax_use', '=', 'supplier'),
                     ('withholding_type', '=', 'partner_tax'),
-                    ('company_id', '=', 1)
+                    ('company_id', '=', obj.company_id.id)
                 ], limit=1)
             else:
                 tax_withholding_id = self.env['account.tax'].search([
