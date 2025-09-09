@@ -24,7 +24,7 @@ class UniVat(models.Model):
                     ('id', '!=', rec.id),
                     ('l10n_latam_identification_type_id', '=',
                         rec.l10n_latam_identification_type_id.id),
-                ])
+                ], limit=1)
 
                 if same_vat:
                     child = []
