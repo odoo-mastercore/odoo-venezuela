@@ -536,7 +536,6 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                                     if amounts.get('base_imponible') > 0:
                                         base_imponible += amounts.get('base_imponible')
                                         iva_16 += amounts.get('tax_amount')
-                                        _logger.warning('Base Imponible: %s, IVA: %s', base_imponible, iva_16)
                                         if  invoice.move_type == 'in_refund' or (invoice.move_type == 'in_invoice' \
                                                 and invoice.debit_origin_id):
                                             base_imponible += amounts.get('base_imponible') * -1
@@ -547,6 +546,8 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                                                 total_nota_credito_16 += amounts.get('base_imponible') * -1
                                                 total_nota_credito_iva_16 += amounts.get('tax_amount') * -1
                                             else:
+                                                base_imponible += amounts.get('base_imponible')
+                                                iva_16 += amounts.get('tax_amount')
                                                 total_nota_debito_16 += amounts.get('base_imponible')
                                                 total_nota_debito_iva_16 += amounts.get('tax_amount')
                                         else:
@@ -583,6 +584,8 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                                                 total_nota_credito_8 += amounts.get('base_imponible') * -1
                                                 total_nota_credito_iva_8 += amounts.get('tax_amount') * -1
                                             else:
+                                                base_imponible += amounts.get('base_imponible')
+                                                iva_16 += amounts.get('tax_amount')
                                                 total_nota_debito_8 += amounts.get('base_imponible')
                                                 total_nota_debito_iva_8 += amounts.get('tax_amount')
                                         else:
@@ -604,6 +607,8 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                                                 total_nota_credito_31 += amounts.get('base_imponible') * -1
                                                 total_nota_credito_iva_31 += amounts.get('tax_amount') * -1
                                             else:
+                                                base_imponible += amounts.get('base_imponible')
+                                                iva_16 += amounts.get('tax_amount')
                                                 total_nota_debito_31 += amounts.get('base_imponible')
                                                 total_nota_debito_iva_31 += amounts.get('tax_amount')
                                         else:
