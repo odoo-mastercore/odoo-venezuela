@@ -306,6 +306,16 @@ msgstr "País"
 
 #. module: l10n_ve_base
 #: model:l10n_latam.identification.type,name:l10n_ve_base.it_rifc
+msgid "Cédula Extranjera"
+msgstr "Cédula Extranjera"
+
+#. module: l10n_ve_base
+#: model:l10n_latam.identification.type,name:l10n_ve_base.it_rifc
+msgid "RIF V"
+msgstr "RIF V"
+
+#. module: l10n_ve_base
+#: model:l10n_latam.identification.type,name:l10n_ve_base.it_rifc
 msgid "RIF C"
 msgstr "RIF C"
 

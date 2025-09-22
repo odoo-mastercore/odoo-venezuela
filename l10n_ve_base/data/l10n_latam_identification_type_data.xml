@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
 <data>
-    <record model="l10n_latam.identification.type" id="l10n_latam_base.it_fid" forcecreate="False">
+    <record model="l10n_latam.identification.type" id="l10n_latam_base.it_fid">
         <field name="name">Cédula Extranjera</field>
         <field name="description">Cedula de Identidad Extranjero(a)</field>
         <field name="country_id" ref="base.ve"/>
@@ -17,7 +17,7 @@
         <field name="l10n_ve_code">V</field>
         <field name="sequence">70</field>
     </record>
-    <record model="l10n_latam.identification.type" id="l10n_latam_base.it_vat" forcecreate="False">
+    <record model="l10n_latam.identification.type" id="l10n_latam_base.it_vat">
         <field name="name">RIF V</field>
         <field name="description">Registro Informacion Fiscal Persona Natural Venezolana</field>
         <field name="country_id" ref="base.ve"/>
