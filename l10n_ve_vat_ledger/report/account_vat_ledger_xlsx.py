@@ -372,8 +372,8 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                 retens = self.env['account.payment'].search([
                     ('tax_withholding_id', '=', tax_withholding_id.id),
                     ('state', '=', 'posted'),
-                    ('date', '>=', '2025-8-1'),
-                    ('date', '<=', '2025-8-31'),
+                    ('date', '>=', obj.date_from),
+                    ('date', '<=', obj.date_to),
                 ], order="withholding_number asc")
             retenciones = []
             if retens:
@@ -993,7 +993,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                         sheet.write(row, 34, '', line_number)
                         sheet.write(row, 35, igtf_amount if igtf_amount > 0 else '' , line_number)
                 row += 1
-            if len(retenciones) > 1 and obj.type == 'purchase':
+            if len(retenciones) >= 1 and obj.type == 'purchase':
                 for reten in retenciones:
                     amount_reten = reten.amount if reten.currency_id.id == reten.company_id.currency_id.id else reten.amount_company_currency
                     amount_reten = amount_reten * -1 if reten.total_amount < 0 else amount_reten
@@ -1063,7 +1063,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     # retenciones.remove(reten)
                     row +=1
 
-            elif len(retenciones) > 0 and obj.type == 'sale':
+            elif len(retenciones) >= 1 and obj.type == 'sale':
                 for reten in sorted(retenciones, key=lambda x: x.date):
                     total_iva_16_retenido += reten.amount if reten.currency_id.id == reten.company_id.currency_id.id else reten.amount_company_currency
                     i += 1
