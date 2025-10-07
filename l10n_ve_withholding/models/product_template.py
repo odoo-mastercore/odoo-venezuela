@@ -12,5 +12,7 @@ from odoo import models, fields, api
 class ProductTemplate(models.Model):
     _inherit = "product.template"
 
-
-    disable_islr = fields.Boolean('No sujeto a ISLR')
+    disable_islr = fields.Boolean(
+        string='No sujeto a ISLR',
+        default=False
+    )

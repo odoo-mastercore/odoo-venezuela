@@ -25,12 +25,8 @@ class AccountPaymentGroup(models.Model):
     iva = fields.Boolean('¿Aplicar Retención IVA?')
     islr = fields.Boolean('¿Aplicar Retención ISLR?')
     regimen_islr_id = fields.Many2one(
-        'seniat.tabla.islr', 
-        'Aplicativo ISLR'
-    )
-    partner_regimen_islr_ids = fields.Many2many(
         'seniat.tabla.islr',
-        compute='_partner_regimenes_islr',
+        'Aplicativo ISLR'
     )
     #This field is to be used by invoice in multicurrency
     selected_finacial_debt = fields.Monetary(
@@ -47,51 +43,6 @@ class AccountPaymentGroup(models.Model):
     selected_debt_currency_id = fields.Many2one("res.currency",
         string='Selected Debt in foreign currency',
     )
-    withholding_distributin_islr = fields.Boolean(
-        '¿Aplicar varios conceptos de ISLR?',
-        default=False,)
-    withholding_distributin_islr_ids = fields.One2many(
-        'withholding.distribution.islr', 'payment_group_id',
-        string='Distribucion de conceptos')
-
-    third_partner_withholding = fields.Boolean(string='Retención a terceros',
-                                               default=False)
-
-    third_partner_id = fields.Many2one(
-        string=_('Tercero'),
-        comodel_name='res.partner',
-    )
-
-    @api.onchange('withholding_distributin_islr')
-    def _onchange_withholding_distributin_islr(self):
-        for rec in self:
-            if rec.withholding_distributin_islr:
-                withholding_distributin_islr_ids = []
-                to_pay = rec.to_pay_move_line_ids[0]
-                if to_pay.move_id.invoice_line_ids:
-                    for li in to_pay.move_id.invoice_line_ids:
-                        if not li.product_id.product_tmpl_id.disable_islr:
-                            withholding_distributin_islr_ids.append((0, 0, {
-                                'payment_group_id': rec.id,
-                                'move_line_id': li.id,
-                            }))
-                rec.withholding_distributin_islr_ids = withholding_distributin_islr_ids
-            else:
-                rec.withholding_distributin_islr_ids = False
-
-    @api.depends('partner_id.seniat_regimen_islr_ids', 'third_partner_withholding', 'third_partner_id.seniat_regimen_islr_ids')
-    def _partner_regimenes_islr(self):
-        """
-        Lo hacemos con campo computado y no related para que solo se setee
-        y se exija si es pago a proveedor
-        """
-        for rec in self:
-            if rec.partner_type == 'supplier':
-                rec.partner_regimen_islr_ids = rec.partner_id.seniat_regimen_islr_ids
-                if rec.third_partner_withholding and rec.third_partner_id and rec.partner_type == 'supplier':
-                    rec.partner_regimen_islr_ids = rec.third_partner_id.seniat_regimen_islr_ids
-            else:
-                rec.partner_regimen_islr_ids = rec.env['seniat.tabla.islr']
 
     @api.depends(
         'to_pay_move_line_ids.amount_residual',

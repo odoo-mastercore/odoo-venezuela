@@ -7,17 +7,18 @@
 #
 ###############################################################################
 from odoo import models, fields, api, _
-
 import logging
-
 _logger = logging.getLogger(__name__)
+
 
 class withholdingDistribution(models.Model):
     _name = 'withholding.distribution'
     _description = 'withholding distribution'
 
     payment_id = fields.Many2one(
-        'account.payment', string='Pago')
+        'account.payment',
+        string='Pago'
+    )
     invoice_amount = fields.Float('Base')
     tax_amount = fields.Float('Monto Impuesto')
     alic = fields.Float('alicuota')

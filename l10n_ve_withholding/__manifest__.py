@@ -24,10 +24,12 @@
     'depends': [
         'account',
         'l10n_ve_base',
-        'account_withholding_automatic',
+        # 'account_withholding_automatic',
+        'account_payment_pro'
     ],
     'data': [
-        'data/account_tax_withholding_template.xml',
+        'data/ir_sequence.xml',
+        'data/account_tax_withholding.xml',
         'data/seniat_factor.xml',
         'data/seniat_partner_type.xml',
         'data/seniat_ut.xml',

@@ -9,6 +9,7 @@ from odoo import models, fields, api, _
 import logging
 _logger = logging.getLogger(__name__)
 
+
 class SeniatUnidadTributaria(models.Model):
     _name = 'seniat.ut'
     _description = 'Modelo para registrar el valor de la Unidad Tributaria'
@@ -26,7 +27,8 @@ class SeniatUnidadTributaria(models.Model):
         'Referencia de la gaceta',
         required=True,
     )
-    
+
+
 class SeniatTipoPersonaISLR(models.Model):
     _name = 'seniat.partner.type'
     _description = 'Tipo de persona a aplicar la retención ISLR'
@@ -39,6 +41,7 @@ class SeniatTipoPersonaISLR(models.Model):
         'Abreviado',
         required=True,
     )
+
 
 class SeniatFactor(models.Model):
     _name = 'seniat.factor'
@@ -53,6 +56,7 @@ class SeniatFactor(models.Model):
         'Valor del factor',
         required=True,
     )
+
 
 class BandaCaculo(models.Model):
     _name = 'banda.calculo'
@@ -83,7 +87,7 @@ class BandaCaculo(models.Model):
     )
     complete_percentage = fields.Char(
         'Porcentaje de retención',
-        compute='_compute_complete_percentage', 
+        compute='_compute_complete_percentage',
     )
     type_subtracting_rel = fields.Selection([
         ('no_amount', 'Sin Sustraendo'),
@@ -114,21 +118,23 @@ class SeniatTablaIslr(models.Model):
         help='Actividad para Archivo XML - Según Manual Seniat'
     )
     seniat_partner_type_id = fields.Many2one(
-        'seniat.partner.type', 
+        'seniat.partner.type',
         'Tipo de persona'
     )
     factor_id = fields.Many2one(
-        'seniat.factor', 
+        'seniat.factor',
         'Factor Calculo',
     )
     withholding_base_percentage = fields.Float(
         'Porcentaje Base de retención',
         help='% Base Retención'
     )
-    type_subtracting = fields.Selection([
-        ('no_amount', 'Sin Sustraendo'),
-        ('amount', 'Con Sustraendo'),
-        ], 'Tipo Calculo'
+    type_subtracting = fields.Selection(
+        [
+            ('no_amount', 'Sin Sustraendo'),
+            ('amount', 'Con Sustraendo'),
+        ],
+        string='Tipo Calculo'
     )
     banda_calculo_ids = fields.Many2many(
         'banda.calculo',
@@ -142,7 +148,7 @@ class SeniatTablaIslr(models.Model):
         compute='_compute_complete_name',
     )
     seniat_ut_id = fields.Many2one(
-        'seniat.ut', 
+        'seniat.ut',
         'Valor Unidad Tributaria'
     )
     code_identification_seniat = fields.Char(

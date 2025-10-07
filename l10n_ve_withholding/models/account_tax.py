@@ -1,9 +1,7 @@
-from odoo import models, fields, api, _, Command
+from odoo import models, fields, _, Command
 from odoo.exceptions import UserError, ValidationError
 from ast import literal_eval
-from odoo.tools.safe_eval import safe_eval
 from dateutil.relativedelta import relativedelta
-import datetime
 
 import logging
 

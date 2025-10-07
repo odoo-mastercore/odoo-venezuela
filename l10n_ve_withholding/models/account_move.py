@@ -40,23 +40,6 @@ class AccountMove(models.Model):
             move.l10n_ve_applied_withholding_tax = l10n_ve_applied_withholding_tax
             move.l10n_ve_applied_withholding_islr = l10n_ve_applied_withholding_islr
 
-    # def get_taxes_values(self):
-    #     """
-    #     Hacemos esto para disponer de fecha de factura y cia para calcular
-    #     impuesto con código python.
-    #     Aparentemente no se puede cambiar el contexto a cosas que se llaman
-    #     desde un onchange (ver https://github.com/odoo/odoo/issues/7472)
-    #     entonces usamos este artilugio
-    #     """
-    #     invoice_date = self.invoice_date or fields.Date.context_today(self)
-    #     # hacemos try porque al llamarse desde acciones de servidor da error
-    #     try:
-    #         self.env.context.invoice_date = invoice_date
-    #         self.env.context.invoice_company = self.company_id
-    #     except Exception:
-    #         pass
-    #     return super().get_taxes_values()
-
     def _post(self, soft=True):
         super(AccountMove, self)._post(soft)
         for move in self:
@@ -74,18 +57,3 @@ class AccountMove(models.Model):
                             "El diario por el cual está emitiendo la factura no " +
                             "tiene secuencia para número de control"
                         ))
-
-# class AccountMoveLine(models.Model):
-#     _inherit = "account.move.line"
-
-#     def _compute_price(self):
-#         # ver nota en get_taxes_values
-#         invoice = self.move_id
-#         invoice_date = invoice.invoice_date or fields.Date.context_today(self)
-#         # hacemos try porque al llamarse desde acciones de servidor da error
-#         try:
-#             self.env.context.invoice_date = invoice_date
-#             self.env.context.invoice_company = self.company_id
-#         except Exception:
-#             pass
-#         return super()._compute_price()
