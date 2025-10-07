@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_seniat_partner_type_tree" model="ir.ui.view">
+        <field name="name">seniat.partner.type.tree</field>
+        <field name="model">seniat.partner.type</field>
+        <field name="arch" type="xml">
+            <tree string="SENIAT Tipo de persona ISLR" editable="top">
+                <field name="name"/>
+                <field name="code"/>
+            </tree>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="act_seniat_partner_type">
+        <field name="name">SENIAT Tipo de persona ISLR</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">seniat.partner.type</field>
+        <field name="view_mode">tree</field>
+    </record>
+
+    <menuitem 
+        name="Tipo de persona ISLR" 
+        action="act_seniat_partner_type" id="menu_action_seniat_partner_type" 
+        sequence="85" parent="l10n_ve_base.menu_seniat_config"/>
+
+</odoo>
