@@ -7,6 +7,7 @@
 #
 ###############################################################################
 from odoo import models, fields, api, _
+from odoo.tools import format_date
 import logging
 
 _logger = logging.getLogger(__name__)
@@ -20,12 +21,15 @@ class AccountVatLedger(models.Model):
     _inherit = ['mail.thread']
     _order = 'date_from desc'
 
+    _sql_constraints = [
+        ('date_range_check', 'CHECK (date_from <= date_to)', _('La fecha de inicio debe ser anterior a la fecha de fin.')),
+    ]
+
     company_id = fields.Many2one(
         'res.company',
         string='Company',
         required=True,
         readonly=True,
-        states={'draft': [('readonly', False)]},
         default=lambda self: self.env[
             'res.company']._company_default_get('account.vat.ledger')
     )
@@ -37,22 +41,16 @@ class AccountVatLedger(models.Model):
     date_from = fields.Date(
         string='Start Date',
         required=True,
-        readonly=True,
-        states={'draft': [('readonly', False)]},
     )
     date_to = fields.Date(
         string='End Date',
         required=True,
-        readonly=True,
-        states={'draft': [('readonly', False)]},
     )
     journal_ids = fields.Many2many(
         'account.journal', 'account_vat_ledger_journal_rel',
         'vat_ledger_id', 'journal_id',
         string='Journals',
         required=True,
-        readonly=True,
-        states={'draft': [('readonly', False)]},
     )
     state = fields.Selection(
         [('draft', 'Draft'), ('presented', 'Presented'), ('cancel', 'Cancel')],
@@ -79,59 +77,59 @@ class AccountVatLedger(models.Model):
         store=True
     )
 
-    @api.depends('journal_ids', 'date_from', 'date_to')
+    @api.depends('journal_ids', 'date_from', 'date_to', 'company_id', 'type')
     def _compute_invoices(self):
         for rec in self:
-            invoices_domain = []
-
-            invoices_domain += [
+            invoices_domain = [
                 ('state', 'not in', ['draft']),
                 ('journal_id', 'in', rec.journal_ids.ids),
                 ('company_id', '=', rec.company_id.id),
             ]
+            # Usar invoice_date consistentemente (evita mezclar 'date' vs 'invoice_date')
             if rec.type == 'sale':
                 invoices_domain += [
-                    ('move_type', 'in',['out_invoice', 'out_refund']),
+                    ('move_type', 'in', ['out_invoice', 'out_refund']),
                     ('l10n_ve_control_number', '!=', False),
                     ('name', '!=', False),
                     ('invoice_date', '>=', rec.date_from),
-                    ('invoice_date', '<=', rec.date_to),]
+                    ('invoice_date', '<=', rec.date_to),
+                ]
             elif rec.type == 'purchase':
                 invoices_domain += [
-                    ('move_type', 'in',['in_invoice', 'in_refund']),
-                    ('date', '>=', rec.date_from),
+                    ('move_type', 'in', ['in_invoice', 'in_refund']),
+                    ('invoice_date', '>=', rec.date_from),
+                    ('invoice_date', '<=', rec.date_to),
                     ('state', '!=', 'cancel'),
-                    ('date', '<=', rec.date_to),]
-            rec.invoice_ids = rec.env['account.move'].search(invoices_domain,
-                order='invoice_date desc, l10n_ve_control_number desc')
+                ]
+            rec.invoice_ids = rec.env['account.move'].search(
+                invoices_domain,
+                order='invoice_date desc, l10n_ve_control_number desc'
+            )
 
 
     @api.depends('type', 'reference',)
     def _compute_name(self):
-        date_format = self.env['res.lang']._lang_get(
-            self._context.get('lang', 'en_US')).date_format
         for rec in self:
             if rec.type == 'sale':
                 ledger_type = _('Ventas')
             elif rec.type == 'purchase':
                 ledger_type = _('Compras')
+            # Usar format_date para aplicar localización
             if rec.date_from and rec.date_to:
-                name = _("Libro IVA ({0})  {1} - {2}").format(ledger_type,
-                                                                rec.date_from and fields.Date.from_string(rec.date_from).strftime(date_format) or '',
-                    rec.date_to and fields.Date.from_string(
-                        rec.date_to).strftime(date_format) or ''
+                name = _("Libro IVA ({0})  {1} - {2}").format(
+                    ledger_type,
+                    format_date(self.env, rec.date_from),
+                    format_date(self.env, rec.date_to),
                 )
             else:
-                name = _("Libro IVA (%s)") % (
-                    ledger_type,
-                )
+                name = _("Libro IVA (%s)") % (ledger_type,)
             if rec.reference:
                 name = "%s - %s" % (name, rec.reference)
             rec.name = name
 
  
 
-    @api.onchange('company_id')
+    @api.onchange('company_id', 'type')
     def change_company(self):
         if self.type == 'sale':
             domain = [('type', '=', 'sale')]
@@ -154,6 +152,6 @@ class AccountVatLedger(models.Model):
         self.ensure_one()
         model_name = \
             "l10n_ve_vat_ledger.action_account_vat_ledger_report_xlsx"
-        self.env.ref(model_name).report_file = self.display_name
-
-        return self.env.ref(model_name).report_action(self)
+        # Evitar mutar el record del template del reporte (concurrencia)
+        report = self.env.ref(model_name)
+        return report.report_action(self, data={'report_file': self.display_name})

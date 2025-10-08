@@ -51,7 +51,7 @@
                                     <field name="amount_untaxed_signed" string="Base Imponible" sum="Total"/>
                                     <field name="amount_tax_signed" string="Impuesto" sum="Total"/>
                                     <field name="amount_total_signed" string="Total Con Impuesto" sum="Total"/>
-                                    <field name="currency_id" invisible="1"/>
+                                    <field name="currency_id" invisible="True"/>
                                 </list>
                             </field>
                         </page>

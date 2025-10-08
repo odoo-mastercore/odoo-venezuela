@@ -983,12 +983,12 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                          #IGTF
             
                         igtf_amount = 0
-                        if invoice.payment_group_ids:
-                            payments = invoice.payment_group_ids.mapped('payment_ids')
-                            if payments and 'is_igtf' in self.env['account.payment']._fields:
-                                payments_with_igtf = payments.filtered(lambda x: x.is_igtf)
-                                for pay in payments_with_igtf:
-                                    igtf_amount += pay.igtf_amount_signed
+                        # if invoice.payment_group_ids:
+                        #     payments = invoice.payment_group_ids.mapped('payment_ids')
+                        #     if payments and 'is_igtf' in self.env['account.payment']._fields:
+                        #         payments_with_igtf = payments.filtered(lambda x: x.is_igtf)
+                        #         for pay in payments_with_igtf:
+                        #             igtf_amount += pay.igtf_amount_signed
                         total_igtf += igtf_amount
                         sheet.write(row, 34, '', line_number)
                         sheet.write(row, 35, igtf_amount if igtf_amount > 0 else '' , line_number)
