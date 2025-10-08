@@ -6,7 +6,7 @@
             <field name="inherit_id" ref="product.product_template_only_form_view"/>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='taxes_id']" position="after">
-                    <field name="disable_islr"/>
+                    <field name="l10n_ve_disable_islr"/>
                 </xpath>
             </field>
         </record>

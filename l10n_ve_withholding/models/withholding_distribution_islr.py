@@ -45,5 +45,5 @@ class withholdingDistributionIslr(models.Model):
     )
     partner_regimen_islr_ids = fields.Many2many(
         'seniat.tabla.islr',
-        related='payment_id.partner_regimen_islr_ids',
+        related='payment_id.l10n_ve_partner_regimen_islr_ids',
     )

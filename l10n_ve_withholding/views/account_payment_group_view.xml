@@ -8,25 +8,25 @@
             <field name="inherit_id" ref="account_payment_group.view_account_payment_group_form"/>
             <field name="arch" type="xml">
                 <form>
-                    <field name="partner_regimen_islr_ids" invisible="1"/>
+                    <field name="l10n_ve_partner_regimen_islr_ids" invisible="1"/>
                 </form>
                 <field name="communication" position="after">
-                    <field name="iva"/>
-                    <field name="islr" attrs="{'invisible': [('partner_regimen_islr_ids', '=', [])]}"/>
-                    <field name="withholding_distributin_islr"
+                    <field name="l10n_ve_iva"/>
+                    <field name="l10n_ve_islr" attrs="{'invisible': [('l10n_ve_partner_regimen_islr_ids', '=', [])]}"/>
+                    <field name="l10n_ve_withholding_distributin_islr"
                         attrs="{'invisible': [('islr', '!=', True)], 'required': [('islr', '!=', False), ('state', 'in', ['draft', 'confirmed'])]}" />
                     <field
-                        name="regimen_islr_id"
-                        attrs="{'invisible': ['|',('islr', '!=', True),('withholding_distributin_islr', '!=', False)], 'required': [('islr', '!=', False),('withholding_distributin_islr', '!=', True), ('state', 'in', ['draft', 'confirmed'])]}"
-                        domain="[('id', 'in', partner_regimen_islr_ids)]"
+                        name="l10n_ve_regimen_islr_id"
+                        attrs="{'invisible': ['|',('islr', '!=', True),('l10n_ve_withholding_distributin_islr', '!=', False)], 'required': [('islr', '!=', False),('l10n_ve_withholding_distributin_islr', '!=', True), ('state', 'in', ['draft', 'confirmed'])]}"
+                        domain="[('id', 'in', l10n_ve_partner_regimen_islr_ids)]"
                         options='{"no_open": True, "no_create": True}'/>
-                    <field name="third_partner_withholding"
+                    <field name="l10n_ve_third_partner_withholding"
                         widget="boolean_toggle"
-                        attrs="{'invisible':[('iva','=',False),('islr','=',False)],
+                        attrs="{'invisible':[('l10n_ve_iva','=',False),('islr','=',False)],
                         'readonly':[('state','=','posted')]}"/>
-                    <field name="third_partner_id"
-                        attrs="{'invisible':[('third_partner_withholding','=',False)],
-                            'required':[('third_partner_withholding','=',True)],
+                    <field name="l10n_ve_third_partner_id"
+                        attrs="{'invisible':[('l10n_ve_third_partner_withholding','=',False)],
+                            'required':[('l10n_ve_third_partner_withholding','=',True)],
                             'readonly':[('state','=','posted')]}"/>
                 </field>
                 <field name="selected_debt" position="replace">
@@ -54,21 +54,21 @@
                         confirm="El computar la retención realizara un solo registro por la factura correspondiente, para ello solo puede pagar una factura a la vez."
                         attrs="{'invisible': [
                             '|','|', ('partner_type', '!=', 'supplier'), ('state', 'not in', ['draft', 'confirmed']),
-                            ('iva', '!=', True),('islr', '!=', True)
+                            ('l10n_ve_iva', '!=', True),('islr', '!=', True)
                         ]}"/>
                 </xpath>
                 <xpath expr="//notebook" position="inside">
-                    <page name="withholding_distributin_islr" string="Distribucion ISLR" attrs="{'invisible': [('withholding_distributin_islr', '!=', True)]}">
+                    <page name="l10n_ve_withholding_distributin_islr" string="Distribucion ISLR" attrs="{'invisible': [('l10n_ve_withholding_distributin_islr', '!=', True)]}">
                         <group colspan="2">
-                            <field name="withholding_distributin_islr_ids">
+                            <field name="l10n_ve_withholding_distributin_islr_ids">
                                 <tree string="Lineas de factura" create="false" delete="0" editable="bottom">
                                     <field name="payment_group_id" invisible="1" />
                                     <field name="move_line_id" invisible="1" />
                                     <field name="product_id" />
                                     <field name="price_subtotal" />
                                     <field name="currency_id" />
-                                    <field name="regimen_islr_id" domain="[('id', 'in', partner_regimen_islr_ids)]"/>
-                                    <field name="partner_regimen_islr_ids" invisible="1" />
+                                    <field name="l10n_ve_regimen_islr_id" domain="[('id', 'in', l10n_ve_partner_regimen_islr_ids)]"/>
+                                    <field name="l10n_ve_partner_regimen_islr_ids" invisible="1" />
                                 </tree>
                             </field>
                         </group>

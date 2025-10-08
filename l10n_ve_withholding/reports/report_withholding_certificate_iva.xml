@@ -85,7 +85,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <t t-foreach="o.withholding_distribution_ids" t-as="distribution">
+                        <t t-foreach="o.l10n_ve_withholding_distribution_ids" t-as="distribution">
                             <tr>
                                 <th class="text-center">1</th>
                                 <th class="text-center"><span t-esc="o.payment_group_id.to_pay_move_line_ids[0].move_id.invoice_date.strftime('%d-%m-%Y')"/></th>
@@ -117,7 +117,7 @@
                                 <th class="text-center"><span t-esc="o.format_miles_number(distribution.untaxed_amount)"/></th>
                                 <th class="text-center"><span t-esc="o.format_miles_number(distribution.invoice_amount)"/></th>
                                 <th class="text-center"><span t-field="distribution.alic"/></th>
-                                <th class="text-center"><span t-field="o.partner_id.vat_retention"/></th>
+                                <th class="text-center"><span t-field="o.partner_id.l10n_ve_vat_retention"/></th>
                                 <th class="text-center"><span t-field="distribution.tax_amount"/></th>
                                 <th class="text-center"><span t-esc="o.format_miles_number(distribution.withholding_amount)"/></th>
                             </tr>

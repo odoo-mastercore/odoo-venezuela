@@ -32,7 +32,7 @@
         'base',
         'contacts',
         'account',
-        'l10n_ve',
+        # 'l10n_ve',
         'l10n_latam_base'
     ],
     'auto_install': ['account'],

@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <odoo>
     <record id="view_account_journal_form_inherit" model="ir.ui.view">
         <field name="name">account.journal.form.inherit</field>
@@ -5,10 +6,10 @@
         <field name="inherit_id" ref="account.view_account_journal_form"/>
         <field name="arch" type="xml">
         <xpath expr="//field[@name='refund_sequence']" position="before">
-            <label for="l10n_ve_sequence_control_id" attrs="{'invisible': [('type', 'not in', ['sale',])]}" />
-            <div attrs="{'invisible': [('type', 'not in', ['sale',])]}">
+            <label for="l10n_ve_sequence_control_id" invisible="type != 'sale'" />
+            <div invisible="type != 'sale'">
                 <field name="l10n_ve_sequence_control_id" style="padding-right: 1.0em"/>
-                <div attrs="{'invisible': ['|',('type', 'not in', ['sale',]), ('l10n_ve_sequence_control_id', '==', False)]}">
+                <div invisible="type != 'sale' or not l10n_ve_sequence_control_id">
                 <label for="l10n_ve_current_control_number" />:
                     <field name="l10n_ve_current_control_number"/>
                     - <label for="l10n_ve_next_control_number"/>:

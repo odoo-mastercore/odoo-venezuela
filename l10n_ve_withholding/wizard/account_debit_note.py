@@ -13,6 +13,6 @@ class AccountDebitNoteInherit(models.TransientModel):
     _inherit = 'account.debit.note'
 
     def _prepare_default_values(self, move):
-        res = super(AccountDebitNoteInherit,self)._prepare_default_values(move)
-        res.update({'l10n_ve_control_number': False})
-        return res
+        values = super(AccountDebitNoteInherit,self)._prepare_default_values(move)
+        values.update({'l10n_ve_control_number': False})
+        return values

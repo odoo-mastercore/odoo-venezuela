@@ -55,7 +55,7 @@
                                 Por Concepto:
                             </td>
                             <td class="text-left">
-                                <span t-field="o.concept_withholding"/>
+                                <span t-field="o.l10n_ve_concept_withholding"/>
                             </td>
                         </tr>
                         <t t-foreach="o.payment_group_id.to_pay_move_line_ids" t-as="i">
@@ -123,7 +123,7 @@
                                 Porcentaje Aplicado:
                             </td>
                             <td class="text-left">
-                                <span t-field="o.comment_withholding"/>
+                                <span t-field="o.l10n_ve_comment_withholding"/>
                             </td>
                         </tr>
                         <tr>

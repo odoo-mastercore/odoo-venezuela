@@ -7,13 +7,14 @@
 #
 ###############################################################################
 from . import res_company
+from . import l10n_ar_partner_tax
 from . import account_tax
 from . import account_journal
 from . import account_move
 from . import seniat_islr
-from . import account_payment_group
 from . import res_partner
 from . import account_payment
 from . import product_template
 from . import withholding_distribution
 from . import withholding_distribution_islr
+from . import account_chart_template

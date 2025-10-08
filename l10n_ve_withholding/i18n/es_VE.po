@@ -42,7 +42,7 @@ msgstr ""
 "p.ej. 200 * (1 - 10%) = 180 (Incluye precio)"
 
 #. module: l10n_ve_withholding
-#: model:ir.model.fields.selection,name:l10n_ve_withholding.selection__res_partner__vat_retention__75
+#: model:ir.model.fields.selection,name:l10n_ve_withholding.selection__res_partner__l10n_ve_vat_retention__75
 msgid " 75%"
 msgstr " 75%"
 
@@ -69,7 +69,7 @@ msgid "01"
 msgstr "01"
 
 #. module: l10n_ve_withholding
-#: model:ir.model.fields.selection,name:l10n_ve_withholding.selection__res_partner__vat_retention__100
+#: model:ir.model.fields.selection,name:l10n_ve_withholding.selection__res_partner__l10n_ve_vat_retention__100
 msgid "100%"
 msgstr "100%"
 
@@ -325,7 +325,7 @@ msgid "Alícuota en el Partner"
 msgstr "Alícuota en el Partner"
 
 #. module: l10n_ve_withholding
-#: model:ir.model.fields,field_description:l10n_ve_withholding.field_account_payment_group__regimen_islr_id
+#: model:ir.model.fields,field_description:l10n_ve_withholding.field_account_payment__l10n_ve_regimen_islr_id
 msgid "Aplicativo ISLR"
 msgstr "Aplicativo ISLR"
 
@@ -350,7 +350,7 @@ msgid "Bolivares"
 msgstr "Bolívares"
 
 #. module: l10n_ve_withholding
-#: model_terms:ir.ui.view,arch_db:l10n_ve_withholding.view_account_payment_group_form
+#: model_terms:ir.ui.view,arch_db:l10n_ve_withholding.view_account_payment_form
 msgid "Calcular Retenciones"
 msgstr "Calcular Retenciones"
 
@@ -466,7 +466,7 @@ msgid "Display Name"
 msgstr "Nombre"
 
 #. module: l10n_ve_withholding
-#: model_terms:ir.ui.view,arch_db:l10n_ve_withholding.view_account_payment_group_form
+#: model_terms:ir.ui.view,arch_db:l10n_ve_withholding.view_account_payment_form
 msgid ""
 "El computar la retención realizara un solo registro por la factura correspondiente, para ello solo puede pagar una factura a "
 "la vez."
@@ -644,12 +644,12 @@ msgid "Page: <span class=\"page\"/> / <span class=\"topage\"/>"
 msgstr "Página: <span class=\"page\"/> / <span class=\"topage\"/>"
 
 #. module: l10n_ve_withholding
-#: model:ir.model.fields,field_description:l10n_ve_withholding.field_account_payment_group__partner_regimen_islr_ids
+#: model:ir.model.fields,field_description:l10n_ve_withholding.field_account_payment__l10n_ve_partner_regimen_islr_ids
 msgid "Partner Regimen Islr"
 msgstr "Régimen Islr"
 
 #. module: l10n_ve_withholding
-#: model:ir.model,name:l10n_ve_withholding.model_account_payment_group
+#: model:ir.model,name:l10n_ve_withholding.model_account_payment
 msgid "Payment Group"
 msgstr "Grupo de Pago"
 
@@ -691,8 +691,8 @@ msgid "Referencia de la gaceta"
 msgstr "Referencia de la gaceta"
 
 #. module: l10n_ve_withholding
-#: model:ir.model.fields,field_description:l10n_ve_withholding.field_res_partner__vat_retention
-#: model:ir.model.fields,field_description:l10n_ve_withholding.field_res_users__vat_retention
+#: model:ir.model.fields,field_description:l10n_ve_withholding.field_res_partner__l10n_ve_vat_retention
+#: model:ir.model.fields,field_description:l10n_ve_withholding.field_res_users__l10n_ve_vat_retention
 #: model_terms:ir.ui.view,arch_db:l10n_ve_withholding.view_partner_form
 msgid "Retención I.V.A"
 msgstr "Retención I.V.A"
@@ -729,17 +729,17 @@ msgid "SENIAT Unidad Tributaria"
 msgstr "SENIAT Unidad Tributaria"
 
 #. module: l10n_ve_withholding
-#: model:ir.model.fields,field_description:l10n_ve_withholding.field_account_payment_group__selected_debt_currency_id
+#: model:ir.model.fields,field_description:l10n_ve_withholding.field_account_payment__selected_debt_currency_id
 msgid "Selected Debt in foreign currency"
 msgstr "Moneda de la deuda seleccionada"
 
 #. module: l10n_ve_withholding
-#: model:ir.model.fields,field_description:l10n_ve_withholding.field_account_payment_group__selected_debt_taxed
+#: model:ir.model.fields,field_description:l10n_ve_withholding.field_account_payment__l10n_ve_selected_debt_taxed
 msgid "Selected Debt taxed"
 msgstr "Deuda seleccionada gravada"
 
 #. module: l10n_ve_withholding
-#: model:ir.model.fields,field_description:l10n_ve_withholding.field_account_payment_group__selected_finacial_debt_currency
+#: model:ir.model.fields,field_description:l10n_ve_withholding.field_account_payment__selected_finacial_debt_currency
 msgid "Selected Financial Debt in foreign currency"
 msgstr "Deuda Seleccionada en Divisas"
 
@@ -817,8 +817,8 @@ msgid "Tipo de persona a aplicar la retención ISLR"
 msgstr "Tipo de persona a aplicar la retención ISLR"
 
 #. module: l10n_ve_withholding
-#: model:ir.model.fields,field_description:l10n_ve_withholding.field_res_partner__seniat_partner_type_id
-#: model:ir.model.fields,field_description:l10n_ve_withholding.field_res_users__seniat_partner_type_id
+#: model:ir.model.fields,field_description:l10n_ve_withholding.field_res_partner__l10n_ve_seniat_partner_type_id
+#: model:ir.model.fields,field_description:l10n_ve_withholding.field_res_users__l10n_ve_seniat_partner_type_id
 msgid "Tipo de persona para la retención ISLR"
 msgstr "Tipo de persona para la retención ISLR"
 
@@ -874,16 +874,16 @@ msgstr ""
 "                    Agente de Retención"
 
 #. module: l10n_ve_withholding
-#: model:ir.model.fields,field_description:l10n_ve_withholding.field_account_payment_group__debt_multicurrency
+#: model:ir.model.fields,field_description:l10n_ve_withholding.field_account_payment__debt_multicurrency
 msgid "debt is in foreign currency?"
 msgstr "la deuda es en una moneda extranjera?"
 
 #. module: l10n_ve_withholding
-#: model:ir.model.fields,field_description:l10n_ve_withholding.field_account_payment_group__islr
+#: model:ir.model.fields,field_description:l10n_ve_withholding.field_account_payment__l10n_ve_islr
 msgid "¿Aplicar Retención ISLR?"
 msgstr "¿Aplicar Retención ISLR?"
 
 #. module: l10n_ve_withholding
-#: model:ir.model.fields,field_description:l10n_ve_withholding.field_account_payment_group__iva
+#: model:ir.model.fields,field_description:l10n_ve_withholding.field_account_payment__l10n_ve_iva
 msgid "¿Aplicar Retención IVA?"
 msgstr "¿Aplicar Retención IVA?"

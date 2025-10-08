@@ -6,19 +6,19 @@ from odoo.addons.account.models.chart_template import template
 class AccountChartTemplate(models.AbstractModel):
     _inherit = 'account.chart.template'
 
-    @template('ve_master')
-    def _get_ve_master_template_data(self):
+    @template('ve_base')
+    def _get_ve_base_template_data(self):
         return {
-            'name': 'Accounting Mastercore',
+            'name': 'Plan de cuentas base de Venezuela',
             'code_digits': '7',
             'property_account_receivable_id': 'account_activa_account_1122001',
             'property_account_payable_id': 'account_activa_account_2122001',
             'property_account_expense_categ_id': 'account_activa_account_7151001',
-            # 'property_account_income_categ_id': 'account_activa_account_5111001',
+            'property_account_income_categ_id': 'account_activa_account_5111001',
         }
 
-    @template('ve_master', 'res.company')
-    def _get_ve_master_res_company(self):
+    @template('ve_base', 'res.company')
+    def _get_ve_base_res_company(self):
         return {
             self.env.company.id: {
                 'account_fiscal_country_id': 'base.ve',

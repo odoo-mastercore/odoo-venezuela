@@ -5,12 +5,12 @@
         <field name="name">seniat.tabla.islr.tree</field>
         <field name="model">seniat.tabla.islr</field>
         <field name="arch" type="xml">
-            <tree string="SENIAT Tabla de calculo ISLR">
+            <list string="SENIAT Tabla de calculo ISLR">
                 <field name="code_seniat"/>
                 <field name="activity_name"/>
                 <field name="code_identification_seniat" />
                 <field name="seniat_partner_type_id"/>
-            </tree>
+            </list>
         </field>
     </record>
 
@@ -21,10 +21,10 @@
             <form string="SENIAT Tabla de calculo ISLR">
                 <sheet>
                     <div class="oe_title">
-                      <label for="activity_name" class="oe_edit_only"/>
-                      <h2>
-                        <field name="activity_name" />
-                      </h2>
+                        <label for="activity_name" class="oe_edit_only"/>
+                        <h2>
+                            <field name="activity_name" />
+                        </h2>
                     </div>
                     <group>
                         <group>
@@ -43,8 +43,11 @@
                             <group>
                                 <group>
                                     <field name="type_subtracting" />
-                                    <field name="banda_calculo_ids" widget="one2many"
-                                        context="{'default_type_subtracting_rel': type_subtracting}"/>
+                                    <field
+                                        name="banda_calculo_ids"
+                                        widget="one2many"
+                                        context="{'default_type_subtracting_rel': type_subtracting}"
+                                        />
                                 </group>
                             </group>
                         </page>
@@ -53,7 +56,6 @@
             </form>
         </field>
     </record>
-u
 
     <record id="view_banda_calculo_form" model="ir.ui.view">
         <field name="name">banda.calculo.form</field>
@@ -70,7 +72,7 @@ u
                         </group>
                         <group>
                             <field name="withholding_percentage" />
-                            <field name="withholding_amount" attrs="{'invisible': [('type_subtracting_rel', '!=', 'amount')]}"/>
+                            <field name="withholding_amount" invisible="type_subtracting_rel != 'amount'"/>
                         </group>
                     </group>
                 </sheet>
@@ -78,15 +80,18 @@ u
         </field>
     </record>
 
-
     <record id="act_seniat_tabla_islr" model="ir.actions.act_window">
         <field name="name">SENIAT Tabla de calculo ISLR</field>
         <field name="res_model">seniat.tabla.islr</field>
         <field name="view_mode">tree,form</field>
     </record>
-    <menuitem 
-        name="Tabla de calculo ISLR" 
-        action="act_seniat_tabla_islr" id="menu_action_seniat_tabla_islr" 
-        sequence="85" parent="l10n_ve_base.menu_seniat_config"/>
+
+    <menuitem
+        name="Tabla de calculo ISLR"
+        action="act_seniat_tabla_islr"
+        id="menu_action_seniat_tabla_islr"
+        sequence="85"
+        parent="l10n_ve_base.menu_seniat_config"
+        />
 
 </odoo>
