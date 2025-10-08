@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<odoo noupdate="1">
+    <data>
+        <record id="action_account_vat_ledger_report_xlsx" context="{'no_key_lines':True}" model="ir.actions.report">
+            <field name="name">Account Vat Ledger Xlsx</field>
+            <field name="type">ir.actions.report</field>
+            <field name="model">account.vat.ledger</field>
+            <field name="report_name">l10n_ve_vat_ledger.account_vat_ledger_xlsx</field>
+            <field name="report_type">xlsx</field>
+            <field name="report_file">LIBRO IVA</field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,325 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* l10n_ve_vat_ledger
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 13.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-07-04 01:39+0000\n"
+"PO-Revision-Date: 2021-07-04 01:39+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: l10n_ve_vat_ledger
+#: model:ir.model,name:l10n_ve_vat_ledger.model_account_vat_ledger
+msgid "Account VAT Ledger"
+msgstr "Libo de IVA"
+
+#. module: l10n_ve_vat_ledger
+#: model:ir.actions.report,name:l10n_ve_vat_ledger.action_account_vat_ledger_report_xlsx
+msgid "Account Vat Ledger Xlsx"
+msgstr "Libro IVA Xlsx"
+
+#. module: l10n_ve_vat_ledger
+#: model:ir.model.fields,field_description:l10n_ve_vat_ledger.field_account_vat_ledger__message_needaction
+msgid "Action Needed"
+msgstr "Accion necesaria"
+
+#. module: l10n_ve_vat_ledger
+#: model:ir.model.fields,field_description:l10n_ve_vat_ledger.field_account_vat_ledger__message_attachment_count
+msgid "Attachment Count"
+msgstr "Recuento de archivos adjuntos"
+
+#. module: l10n_ve_vat_ledger
+#: model_terms:ir.ui.view,arch_db:l10n_ve_vat_ledger.account_vat_ledger_form
+msgid "Base Imponible"
+msgstr "Base Imponible"
+
+#. module: l10n_ve_vat_ledger
+#: model:ir.model.fields.selection,name:l10n_ve_vat_ledger.selection__account_vat_ledger__state__cancel
+#: model_terms:ir.ui.view,arch_db:l10n_ve_vat_ledger.account_vat_ledger_form
+msgid "Cancel"
+msgstr "Cancelar"
+
+#. module: l10n_ve_vat_ledger
+#: model:ir.model.fields,field_description:l10n_ve_vat_ledger.field_account_vat_ledger__company_id
+msgid "Company"
+msgstr "Compañia"
+
+#. module: l10n_ve_vat_ledger
+#: model:ir.model.fields,field_description:l10n_ve_vat_ledger.field_account_vat_ledger__create_uid
+msgid "Created by"
+msgstr "Creado Por"
+
+#. module: l10n_ve_vat_ledger
+#: model:ir.model.fields,field_description:l10n_ve_vat_ledger.field_account_vat_ledger__create_date
+msgid "Created on"
+msgstr "Creado El"
+
+#. module: l10n_ve_vat_ledger
+#: model:ir.model.fields,field_description:l10n_ve_vat_ledger.field_account_vat_ledger__display_name
+#: model:ir.model.fields,field_description:l10n_ve_vat_ledger.field_report_l10n_ve_vat_ledger_account_vat_ledger_xlsx__display_name
+msgid "Display Name"
+msgstr "Nombre a mostrar"
+
+#. module: l10n_ve_vat_ledger
+#: model:ir.model.fields.selection,name:l10n_ve_vat_ledger.selection__account_vat_ledger__state__draft
+msgid "Draft"
+msgstr "Borrador"
+
+#. module: l10n_ve_vat_ledger
+#: model:ir.model.fields,field_description:l10n_ve_vat_ledger.field_account_vat_ledger__date_to
+msgid "End Date"
+msgstr "Fecha Final"
+
+#. module: l10n_ve_vat_ledger
+#: model:ir.model.fields,field_description:l10n_ve_vat_ledger.field_account_vat_ledger__message_follower_ids
+msgid "Followers"
+msgstr "Seguidores"
+
+#. module: l10n_ve_vat_ledger
+#: model:ir.model.fields,field_description:l10n_ve_vat_ledger.field_account_vat_ledger__message_channel_ids
+msgid "Followers (Channels)"
+msgstr "Seguidores (Canales)"
+
+#. module: l10n_ve_vat_ledger
+#: model:ir.model.fields,field_description:l10n_ve_vat_ledger.field_account_vat_ledger__message_partner_ids
+msgid "Followers (Partners)"
+msgstr "Seguidores (Partners)"
+
+#. module: l10n_ve_vat_ledger
+#: model:ir.model.fields,field_description:l10n_ve_vat_ledger.field_account_vat_ledger__id
+#: model:ir.model.fields,field_description:l10n_ve_vat_ledger.field_report_l10n_ve_vat_ledger_account_vat_ledger_xlsx__id
+msgid "ID"
+msgstr "ID"
+
+#. module: l10n_ve_vat_ledger
+#: model:ir.model.fields,help:l10n_ve_vat_ledger.field_account_vat_ledger__message_needaction
+#: model:ir.model.fields,help:l10n_ve_vat_ledger.field_account_vat_ledger__message_unread
+msgid "If checked, new messages require your attention."
+msgstr "Si está marcada, los mensajes nuevos requieren su atención."
+
+#. module: l10n_ve_vat_ledger
+#: model:ir.model.fields,help:l10n_ve_vat_ledger.field_account_vat_ledger__message_has_error
+#: model:ir.model.fields,help:l10n_ve_vat_ledger.field_account_vat_ledger__message_has_sms_error
+msgid "If checked, some messages have a delivery error."
+msgstr "Si está marcado, algunos mensajes tienen un error de entrega."
+
+#. module: l10n_ve_vat_ledger
+#: model_terms:ir.ui.view,arch_db:l10n_ve_vat_ledger.account_vat_ledger_form
+msgid "Impuesto"
+msgstr "Impuesto"
+
+#. module: l10n_ve_vat_ledger
+#: model:ir.model.fields,field_description:l10n_ve_vat_ledger.field_account_vat_ledger__invoice_ids
+#: model_terms:ir.ui.view,arch_db:l10n_ve_vat_ledger.account_vat_ledger_form
+msgid "Invoices"
+msgstr "Facturas"
+
+#. module: l10n_ve_vat_ledger
+#: model:ir.model.fields,field_description:l10n_ve_vat_ledger.field_account_vat_ledger__message_is_follower
+msgid "Is Follower"
+msgstr "Es Seguidor"
+
+#. module: l10n_ve_vat_ledger
+#: model:ir.model.fields,field_description:l10n_ve_vat_ledger.field_account_vat_ledger__journal_ids
+#: model_terms:ir.ui.view,arch_db:l10n_ve_vat_ledger.account_vat_ledger_form
+msgid "Journals"
+msgstr "Diarios"
+
+#. module: l10n_ve_vat_ledger
+#: model:ir.model.fields,field_description:l10n_ve_vat_ledger.field_account_vat_ledger____last_update
+#: model:ir.model.fields,field_description:l10n_ve_vat_ledger.field_report_l10n_ve_vat_ledger_account_vat_ledger_xlsx____last_update
+msgid "Last Modified on"
+msgstr "Última modificación el"
+
+#. module: l10n_ve_vat_ledger
+#: model:ir.model.fields,field_description:l10n_ve_vat_ledger.field_account_vat_ledger__write_uid
+msgid "Last Updated by"
+msgstr "Última modificación por"
+
+#. module: l10n_ve_vat_ledger
+#: model:ir.model.fields,field_description:l10n_ve_vat_ledger.field_account_vat_ledger__write_date
+msgid "Last Updated on"
+msgstr "Ultima actualización en"
+
+#. module: l10n_ve_vat_ledger
+#: model:ir.model.fields,field_description:l10n_ve_vat_ledger.field_account_vat_ledger__message_main_attachment_id
+msgid "Main Attachment"
+msgstr "Accesorio principal"
+
+#. module: l10n_ve_vat_ledger
+#: model:ir.model.fields,field_description:l10n_ve_vat_ledger.field_account_vat_ledger__message_has_error
+msgid "Message Delivery error"
+msgstr "Mensaje de error de entrega"
+
+#. module: l10n_ve_vat_ledger
+#: model:ir.model.fields,field_description:l10n_ve_vat_ledger.field_account_vat_ledger__message_ids
+msgid "Messages"
+msgstr "Mensajes"
+
+#. module: l10n_ve_vat_ledger
+#: model:ir.model.fields,field_description:l10n_ve_vat_ledger.field_account_vat_ledger__note
+#: model_terms:ir.ui.view,arch_db:l10n_ve_vat_ledger.account_vat_ledger_form
+msgid "Notes"
+msgstr "Notas"
+
+#. module: l10n_ve_vat_ledger
+#: model:ir.model.fields,field_description:l10n_ve_vat_ledger.field_account_vat_ledger__message_needaction_counter
+msgid "Number of Actions"
+msgstr "Numero de acciones"
+
+#. module: l10n_ve_vat_ledger
+#: model:ir.model.fields,field_description:l10n_ve_vat_ledger.field_account_vat_ledger__message_has_error_counter
+msgid "Number of errors"
+msgstr "Numero de errores"
+
+#. module: l10n_ve_vat_ledger
+#: model:ir.model.fields,help:l10n_ve_vat_ledger.field_account_vat_ledger__message_needaction_counter
+msgid "Number of messages which requires an action"
+msgstr ""
+
+#. module: l10n_ve_vat_ledger
+#: model:ir.model.fields,help:l10n_ve_vat_ledger.field_account_vat_ledger__message_has_error_counter
+msgid "Number of messages with delivery error"
+msgstr ""
+
+#. module: l10n_ve_vat_ledger
+#: model:ir.model.fields,help:l10n_ve_vat_ledger.field_account_vat_ledger__message_unread_counter
+msgid "Number of unread messages"
+msgstr ""
+
+#. module: l10n_ve_vat_ledger
+#: model_terms:ir.ui.view,arch_db:l10n_ve_vat_ledger.account_vat_ledger_form
+msgid "Present"
+msgstr "Presentar"
+
+#. module: l10n_ve_vat_ledger
+#: model:ir.model.fields.selection,name:l10n_ve_vat_ledger.selection__account_vat_ledger__state__presented
+msgid "Presented"
+msgstr "Presentado"
+
+#. module: l10n_ve_vat_ledger
+#: model_terms:ir.ui.view,arch_db:l10n_ve_vat_ledger.account_vat_ledger_form
+msgid "Print"
+msgstr "Imprimir"
+
+#. module: l10n_ve_vat_ledger
+#: model:ir.model.fields.selection,name:l10n_ve_vat_ledger.selection__account_vat_ledger__type__purchase
+msgid "Purchase"
+msgstr "Compra"
+
+#. module: l10n_ve_vat_ledger
+#: code:addons/l10n_ve_vat_ledger/models/account_vat_ledger.py:0
+#, python-format
+msgid "Purchases"
+msgstr "Compras"
+
+#. module: l10n_ve_vat_ledger
+#: model:ir.actions.act_window,name:l10n_ve_vat_ledger.action_account_purchase_vat_ledger
+#: model:ir.ui.menu,name:l10n_ve_vat_ledger.menu_account_purchase_vat_ledger
+msgid "Purchases VAT Ledger"
+msgstr "Libro IVA Compras"
+
+#. module: l10n_ve_vat_ledger
+#: model:ir.model.fields,field_description:l10n_ve_vat_ledger.field_account_vat_ledger__reference
+msgid "Reference"
+msgstr "Referencia"
+
+#. module: l10n_ve_vat_ledger
+#: model:ir.ui.menu,name:l10n_ve_vat_ledger.menu_seniat_reports
+msgid "SENIAT"
+msgstr "SENIAT"
+
+#. module: l10n_ve_vat_ledger
+#: model:ir.model.fields,field_description:l10n_ve_vat_ledger.field_account_vat_ledger__message_has_sms_error
+msgid "SMS Delivery error"
+msgstr ""
+
+#. module: l10n_ve_vat_ledger
+#: model:ir.model.fields.selection,name:l10n_ve_vat_ledger.selection__account_vat_ledger__type__sale
+msgid "Sale"
+msgstr "Venta"
+
+#. module: l10n_ve_vat_ledger
+#: code:addons/l10n_ve_vat_ledger/models/account_vat_ledger.py:0
+#, python-format
+msgid "Sales"
+msgstr "Ventas"
+
+#. module: l10n_ve_vat_ledger
+#: model:ir.actions.act_window,name:l10n_ve_vat_ledger.action_account_sale_vat_ledger
+#: model:ir.ui.menu,name:l10n_ve_vat_ledger.menu_account_sale_vat_ledger
+msgid "Sales VAT Ledger"
+msgstr "Libro IVA Ventas"
+
+#. module: l10n_ve_vat_ledger
+#: model:ir.model.fields,field_description:l10n_ve_vat_ledger.field_account_vat_ledger__date_from
+msgid "Start Date"
+msgstr "Fecha de Inicio"
+
+#. module: l10n_ve_vat_ledger
+#: model:ir.model.fields,field_description:l10n_ve_vat_ledger.field_account_vat_ledger__state
+msgid "State"
+msgstr "Estado"
+
+#. module: l10n_ve_vat_ledger
+#: model:ir.model.fields,field_description:l10n_ve_vat_ledger.field_account_vat_ledger__name
+msgid "Title"
+msgstr "Titulo"
+
+#. module: l10n_ve_vat_ledger
+#: model_terms:ir.ui.view,arch_db:l10n_ve_vat_ledger.account_vat_ledger_form
+msgid "To Draft"
+msgstr "A Borrador"
+
+#. module: l10n_ve_vat_ledger
+#: model_terms:ir.ui.view,arch_db:l10n_ve_vat_ledger.account_vat_ledger_form
+msgid "Total"
+msgstr ""
+
+#. module: l10n_ve_vat_ledger
+#: model_terms:ir.ui.view,arch_db:l10n_ve_vat_ledger.account_vat_ledger_form
+msgid "Total Con Impuesto"
+msgstr ""
+
+#. module: l10n_ve_vat_ledger
+#: model:ir.model.fields,field_description:l10n_ve_vat_ledger.field_account_vat_ledger__type
+msgid "Type"
+msgstr "Tipo"
+
+#. module: l10n_ve_vat_ledger
+#: model:ir.model.fields,field_description:l10n_ve_vat_ledger.field_account_vat_ledger__message_unread
+msgid "Unread Messages"
+msgstr "Mensajes sin leer"
+
+#. module: l10n_ve_vat_ledger
+#: model:ir.model.fields,field_description:l10n_ve_vat_ledger.field_account_vat_ledger__message_unread_counter
+msgid "Unread Messages Counter"
+msgstr "Contador de Mensajes sin leer"
+
+#. module: l10n_ve_vat_ledger
+#: model_terms:ir.ui.view,arch_db:l10n_ve_vat_ledger.account_vat_ledger_form
+#: model_terms:ir.ui.view,arch_db:l10n_ve_vat_ledger.account_vat_ledger_tree
+msgid "VAT Ledger"
+msgstr "Libro IVA"
+
+#. module: l10n_ve_vat_ledger
+#: model:ir.model.fields,field_description:l10n_ve_vat_ledger.field_account_vat_ledger__website_message_ids
+msgid "Website Messages"
+msgstr "Mensajes Website"
+
+#. module: l10n_ve_vat_ledger
+#: model:ir.model.fields,help:l10n_ve_vat_ledger.field_account_vat_ledger__website_message_ids
+msgid "Website communication history"
+msgstr "Historial de comunicación website"
+
+#. module: l10n_ve_vat_ledger
+#: model:ir.model,name:l10n_ve_vat_ledger.model_report_l10n_ve_vat_ledger_account_vat_ledger_xlsx
+msgid "Xlsx Account VAT Ledger"
+msgstr "Libro IVA Xlsx"
