@@ -25,7 +25,7 @@
     'author': "SINAPSYS GLOBAL SA || MASTERCORE SAS",
     'website': "http://sinapsys.global",
     'version': '0.1',
-    'category': 'Localization',
+    'category': 'Accounting/Localizations/Account Charts',
     'countries': ['ve'],
     'license': 'AGPL-3',
     'depends': [
@@ -35,13 +35,13 @@
         'l10n_ve',
         'l10n_latam_base'
     ],
-    # 'auto_install': ['account'],
+    'auto_install': ['account'],
     'data': [
         'security/ir.model.access.csv',
         'data/l10n_latam_identification_type_data.xml',
         'data/l10n_ve_responsibility_type_data.xml',
         'data/res_bank.xml',
-        'data/account_tax_data.xml',
+        # 'data/account_tax_data.xml',
         'data/res.country.state.csv',
         'data/res.country.state.municipality.csv',
         'data/res.country.state.municipality.parish.csv',

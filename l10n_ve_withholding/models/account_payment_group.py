@@ -17,17 +17,10 @@ class AccountPaymentGroup(models.Model):
 
     _inherit = "account.payment.group"
 
-    # this field is to be used by vat retention
-    selected_debt_taxed = fields.Monetary(
-        string='Selected Debt taxed',
-        compute='_compute_selected_debt_taxed',
-    )
+
     iva = fields.Boolean('¿Aplicar Retención IVA?')
     islr = fields.Boolean('¿Aplicar Retención ISLR?')
-    regimen_islr_id = fields.Many2one(
-        'seniat.tabla.islr',
-        'Aplicativo ISLR'
-    )
+
     #This field is to be used by invoice in multicurrency
     selected_finacial_debt = fields.Monetary(
         string='Selected Financial Debt',
@@ -44,27 +37,6 @@ class AccountPaymentGroup(models.Model):
         string='Selected Debt in foreign currency',
     )
 
-    @api.depends(
-        'to_pay_move_line_ids.amount_residual',
-        'to_pay_move_line_ids.amount_residual_currency',
-        'to_pay_move_line_ids.currency_id',
-        'to_pay_move_line_ids.move_id',
-        'payment_date',
-        'currency_id',
-    )
-    def _compute_selected_debt_taxed(self):
-        for rec in self:
-            selected_debt_taxed = 0.0
-            for line in rec.to_pay_move_line_ids._origin:
-                #this is conditional used to vat retention
-                for li in line.move_id.line_ids:
-                    if li.name in ['IVA (16.0%) compras','IVA (8.0%) compras','IVA (31.0%) compras']:
-                        if line.move_id.move_type == 'in_refund':
-                            selected_debt_taxed += li.credit
-                        else:
-                            selected_debt_taxed += li.debit
-
-            rec.selected_debt_taxed = selected_debt_taxed
 
     @api.depends(
         'to_pay_move_line_ids.amount_residual',
