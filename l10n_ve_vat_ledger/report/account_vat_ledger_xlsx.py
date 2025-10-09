@@ -8,11 +8,6 @@ from odoo import models, fields, api, _
 import json
 # import time
 import logging
-import xlsxwriter
-import shutil
-import base64
-import csv
-import xlwt
 
 _logger = logging.getLogger(__name__)
 
@@ -37,31 +32,31 @@ class AccountVatLedgerXlsx(models.AbstractModel):
         return results
 
     def get_amount_base_amount(self, line, tax=False):
+        # Convertir usando la API de currency para evitar búsquedas N+1 en res.currency.rate
         base_imponible = 0
         tax_amount = 0
         total = 0
-        if line.currency_id != line.move_id.company_currency_id:
-            last_rate = self.env['res.currency.rate'].search([
-                ('currency_id', '=', line.currency_id.id),
-                ('name', '=', line.move_id.invoice_date)
-            ],limit=1).rate
-            if last_rate == 0:
-                last_rate = self.env['res.currency.rate'].search([
-                        ('currency_id', '=', line.currency_id.id),
-                    ],limit=1).rate
-            if last_rate == 0:
-                last_rate = 1
-            base_imponible = line.price_subtotal / last_rate
+        company_currency = line.move_id.company_currency_id
+        if line.currency_id != company_currency:
+            try:
+                base_imponible = line.currency_id._convert(
+                    line.price_subtotal,
+                    company_currency,
+                    line.move_id.company_id,
+                    line.move_id.invoice_date,
+                )
+            except Exception:
+                # Fallback: usar el subtotal sin conversión
+                base_imponible = line.price_subtotal
         else:
             base_imponible = line.price_subtotal
-        tax_amount =  round((base_imponible * (tax/100)),2) if tax else 0
+        tax_amount = round((base_imponible * (tax / 100)), 2) if tax else 0
         total = tax_amount + base_imponible
-        data = {
-            'base_imponible': round(base_imponible,2),
-            'tax_amount':tax_amount,
-            'total': total
+        return {
+            'base_imponible': round(base_imponible, 2),
+            'tax_amount': tax_amount,
+            'total': total,
         }
-        return data
 
     def generate_xlsx_report(self, workbook, data, account_vat):
         for obj in account_vat:
@@ -368,20 +363,17 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     ('date', '>=', obj.date_from),
                     ('date', '<=', obj.date_to),
                 ], order="withholding_number asc")
-
-                retens = self.env['account.payment'].search([
-                    ('tax_withholding_id', '=', tax_withholding_id.id),
-                    ('state', '=', 'posted'),
-                    ('date', '>=', obj.date_from),
-                    ('date', '<=', obj.date_to),
-                ], order="withholding_number asc")
             retenciones = []
             if retens:
+                # Indexar retenciones por fecha para acceso O(1)
+                retenciones_by_date = {}
+                for r in retens:
+                    retenciones_by_date.setdefault(r.date, []).append(r)
                 retenciones = list(retens)
             if obj.type == 'sale':
-                invoices = reversed(obj.invoice_ids)
+                invoices = list(obj.invoice_ids.sorted('invoice_date'))[::-1] if obj.invoice_ids else []
             elif obj.type == 'purchase':
-                invoices = sorted(obj.invoice_ids, key=lambda x: x.invoice_date)
+                invoices = list(obj.invoice_ids.sorted('invoice_date')) if obj.invoice_ids else []
             
             date_reference = obj.date_from
             
@@ -389,9 +381,9 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                 if obj.type == 'purchase':
                     if date_reference <= invoice.invoice_date:
                         while date_reference < invoice.invoice_date:
-                            coincident_date = [tup for tup in retenciones if date_reference == tup.date ]
+                            coincident_date = retenciones_by_date.get(date_reference, [])
                             if coincident_date:
-                                for reten in coincident_date:
+                                for reten in list(coincident_date):
                                     amount_reten = reten.amount if reten.currency_id.id == reten.company_id.currency_id.id else reten.amount_company_currency
                                     amount_reten = amount_reten * -1 if reten.total_amount < 0 else amount_reten
                                     total_iva_16_retenido += amount_reten
@@ -458,7 +450,17 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                                     sheet.write(row, 25, amount_reten, line_number)
                                     ###### IGTF
                                     sheet.write(row, 26, '', line_number)
-                                    retenciones.remove(reten)
+                                    # eliminar de la lista y del índice
+                                    try:
+                                        retenciones.remove(reten)
+                                    except ValueError:
+                                        pass
+                                    try:
+                                        retenciones_by_date[reten.date].remove(reten)
+                                        if not retenciones_by_date[reten.date]:
+                                            del retenciones_by_date[reten.date]
+                                    except Exception:
+                                        pass
                                     row +=1
                             else:
                                 date_reference += timedelta(days=1)
@@ -531,86 +533,78 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     if invoice.invoice_line_ids:
                         for linel in invoice.invoice_line_ids:
                             if linel.tax_ids:
-                                if linel.tax_ids[0].amount == 16.00:
-                                    amounts = self.get_amount_base_amount(linel, 16)
-                                    if amounts.get('base_imponible') > 0:
-                                        base_imponible += amounts.get('base_imponible')
-                                        iva_16 += amounts.get('tax_amount')
-                                        if  invoice.move_type == 'in_refund' or (invoice.move_type == 'in_invoice' \
-                                                and invoice.debit_origin_id):
-                                            base_imponible += amounts.get('base_imponible') * -1
-                                            iva_16 += amounts.get('tax_amount') * -1.00
+                                tax_amount_value = linel.tax_ids[0].amount
+                                if tax_amount_value in (16.00, 8.00, 31.00, 0.00):
+                                    amounts = self.get_amount_base_amount(linel, tax_amount_value if tax_amount_value != 0.00 else False)
+                                    base_val = amounts.get('base_imponible')
+                                    tax_val = amounts.get('tax_amount')
+                                    if base_val and tax_amount_value == 16.00:
+                                        base_imponible += base_val
+                                        iva_16 += tax_val
+                                        if invoice.move_type in ('in_refund',) or (invoice.move_type == 'in_invoice' and invoice.debit_origin_id):
+                                            base_imponible += base_val * -1
+                                            iva_16 += tax_val * -1.00
                                             if not invoice.debit_origin_id:
-                                                base_imponible += amounts.get('base_imponible') * -1
-                                                iva_16 += amounts.get('tax_amount') * -1.00
-                                                total_nota_credito_16 += amounts.get('base_imponible') * -1
-                                                total_nota_credito_iva_16 += amounts.get('tax_amount') * -1
+                                                base_imponible += base_val * -1
+                                                iva_16 += tax_val * -1.00
+                                                total_nota_credito_16 += base_val * -1
+                                                total_nota_credito_iva_16 += tax_val * -1
                                             else:
-                                                base_imponible += amounts.get('base_imponible')
-                                                iva_16 += amounts.get('tax_amount')
-                                                total_nota_debito_16 += amounts.get('base_imponible')
-                                                total_nota_debito_iva_16 += amounts.get('tax_amount')
+                                                base_imponible += base_val
+                                                iva_16 += tax_val
+                                                total_nota_debito_16 += base_val
+                                                total_nota_debito_iva_16 += tax_val
                                         else:
                                             total_base_imponible_16 += base_imponible
                                             total_iva_16 += iva_16
-                                    alic_16 = '16%'
-                                elif linel.tax_ids[0].amount == 0.00:
-                                    amounts = self.get_amount_base_amount(linel, 0)
-                                    if amounts.get('base_imponible') > 0:
-                                        base_exento += amounts.get('base_imponible')
-                                        if invoice.move_type == 'in_refund' or (invoice.move_type == 'in_invoice' \
-                                                and invoice.debit_origin_id):
-                                            base_exento += amounts.get('base_imponible') * -1
+                                        alic_16 = '16%'
+                                    elif base_val and tax_amount_value == 0.00:
+                                        base_exento += base_val
+                                        if invoice.move_type in ('in_refund',) or (invoice.move_type == 'in_invoice' and invoice.debit_origin_id):
+                                            base_exento += base_val * -1
                                             if not invoice.debit_origin_id:
-                                                total_base_exento_credito += amounts.get('base_imponible') * -1
+                                                total_base_exento_credito += base_val * -1
                                             else:
-                                                base_exento += amounts.get('base_imponible')
-                                                total_base_exento_debito += amounts.get('base_imponible')
+                                                base_exento += base_val
+                                                total_base_exento_debito += base_val
                                         else:
                                             total_base_exento += base_exento
-
-                                elif linel.tax_ids[0].amount == 8.00:
-                                    amounts = self.get_amount_base_amount(linel, 8)
-                                    if amounts.get('base_imponible') > 0:
-                                        base_imponible_8 += amounts.get('base_imponible')
-                                        iva_8 += amounts.get('tax_amount')
-                                        if  invoice.move_type == 'in_refund' or (invoice.move_type == 'in_invoice' \
-                                                and invoice.debit_origin_id):
-                                            base_imponible_8 += amounts.get('base_imponible') * -1
-                                            iva_8 += amounts.get('tax_amount') * -1.00
+                                    elif base_val and tax_amount_value == 8.00:
+                                        base_imponible_8 += base_val
+                                        iva_8 += tax_val
+                                        if invoice.move_type in ('in_refund',) or (invoice.move_type == 'in_invoice' and invoice.debit_origin_id):
+                                            base_imponible_8 += base_val * -1
+                                            iva_8 += tax_val * -1.00
                                             if not invoice.debit_origin_id:
-                                                base_imponible_8 += amounts.get('base_imponible') * -1
-                                                iva_8 += amounts.get('tax_amount') * -1.00
-                                                total_nota_credito_8 += amounts.get('base_imponible') * -1
-                                                total_nota_credito_iva_8 += amounts.get('tax_amount') * -1
+                                                base_imponible_8 += base_val * -1
+                                                iva_8 += tax_val * -1.00
+                                                total_nota_credito_8 += base_val * -1
+                                                total_nota_credito_iva_8 += tax_val * -1
                                             else:
-                                                base_imponible += amounts.get('base_imponible')
-                                                iva_16 += amounts.get('tax_amount')
-                                                total_nota_debito_8 += amounts.get('base_imponible')
-                                                total_nota_debito_iva_8 += amounts.get('tax_amount')
+                                                base_imponible += base_val
+                                                iva_16 += tax_val
+                                                total_nota_debito_8 += base_val
+                                                total_nota_debito_iva_8 += tax_val
                                         else:
                                             total_base_imponible_8 += base_imponible_8
                                             total_iva_8 += iva_8
                                         alic_8 = '8%'
-                                elif linel.tax_ids[0].amount == 31.00:
-                                    amounts = self.get_amount_base_amount(linel, 31)
-                                    if amounts.get('base_imponible') > 0:
-                                        base_imponible_31 += amounts.get('base_imponible')
-                                        iva_31 += amounts.get('tax_amount')
-                                        if  invoice.move_type == 'in_refund' or (invoice.move_type == 'in_invoice' \
-                                                and invoice.debit_origin_id):
-                                            base_imponible_31 += amounts.get('base_imponible') * -1
-                                            iva_31 += amounts.get('tax_amount') * -1.00
+                                    elif base_val and tax_amount_value == 31.00:
+                                        base_imponible_31 += base_val
+                                        iva_31 += tax_val
+                                        if invoice.move_type in ('in_refund',) or (invoice.move_type == 'in_invoice' and invoice.debit_origin_id):
+                                            base_imponible_31 += base_val * -1
+                                            iva_31 += tax_val * -1.00
                                             if not invoice.debit_origin_id:
-                                                base_imponible_31 += amounts.get('base_imponible') * -1
-                                                iva_31 += amounts.get('tax_amount') * -1.00
-                                                total_nota_credito_31 += amounts.get('base_imponible') * -1
-                                                total_nota_credito_iva_31 += amounts.get('tax_amount') * -1
+                                                base_imponible_31 += base_val * -1
+                                                iva_31 += tax_val * -1.00
+                                                total_nota_credito_31 += base_val * -1
+                                                total_nota_credito_iva_31 += tax_val * -1
                                             else:
-                                                base_imponible += amounts.get('base_imponible')
-                                                iva_16 += amounts.get('tax_amount')
-                                                total_nota_debito_31 += amounts.get('base_imponible')
-                                                total_nota_debito_iva_31 += amounts.get('tax_amount')
+                                                base_imponible += base_val
+                                                iva_16 += tax_val
+                                                total_nota_debito_31 += base_val
+                                                total_nota_debito_iva_31 += tax_val
                                         else:
                                             total_base_imponible_31 += base_imponible_31
                                             total_iva_31 += iva_31
