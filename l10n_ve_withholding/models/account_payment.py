@@ -87,6 +87,185 @@ class AccountPayment(models.Model):
         currency_field="company_currency_id",
     )
 
+    @api.constrains("currency_id", "company_id", "l10n_ve_withholding_line_ids")
+    def _check_withholdings_and_currency(self):
+        for rec in self:
+            if rec.l10n_ve_withholding_line_ids and rec.currency_id != rec.company_id.currency_id:
+                raise UserError(_('Withholdings must be done in "%s" currency') % rec.company_id.currency_id.name)
+
+    @api.depends("l10n_ve_withholding_line_ids.amount")
+    def _compute_payment_total(self):
+        super()._compute_payment_total()
+        for rec in self:
+            rec.payment_total += sum(rec.l10n_ve_withholding_line_ids.mapped("amount"))
+
+    @api.depends("partner_id", "company_id", "date")
+    def _compute_l10n_ar_withholding_line_ids(self):
+        # metodo completamente analogo a payment.register._compute_l10n_ar_withholding_ids
+        for rec in self.filtered(lambda x: x.partner_type == "supplier"):
+            withholdings = [Command.clear()]
+            if rec.partner_id.l10n_ve_partner_tax_ids:
+                partner_taxes = self.env['l10n_ve.partner.tax'].search([
+                    *self.env['l10n_ve.partner.tax']._check_company_domain(rec.company_id),
+                    ('partner_id', '=', rec.partner_id.commercial_partner_id.id),
+                    ('tax_id.l10n_ve_withholding_payment_type', '=', rec.partner_type)
+                ])
+                withholdings.append([Command.create({'tax_id': x.tax_id.id}) for x in partner_taxes])
+            rec.l10n_ar_withholding_line_ids = withholdings
+
+    @api.depends("l10n_ve_withholding_line_ids.amount")
+    def _compute_l10n_ve_withholdings_amount(self):
+        for payment in self:
+            payment.l10n_ve_withholdings_amount = sum(payment.l10n_ve_withholding_line_ids.mapped("amount"))
+
+    @api.depends("unreconciled_amount")
+    def _compute_withholdable_advanced_amount(self):
+        for rec in self:
+            rec.l10n_ve_withholdable_advanced_amount = rec.unreconciled_amount
+
+    @api.depends(
+        'partner_id.l10n_ve_seniat_regimen_islr_ids',
+        'l10n_ve_third_partner_withholding',
+        'l10n_ve_third_partner_id.l10n_ve_seniat_regimen_islr_ids')
+    def _compute_partner_regimenes_islr(self):
+        """
+            Lo hacemos con campo computado y no related para que solo se setee
+            y se exija si es pago a proveedor
+        """
+        for payment in self:
+            if payment.partner_type == 'supplier':
+                payment.l10n_ve_partner_regimen_islr_ids = payment.partner_id.l10n_ve_seniat_regimen_islr_ids
+                if payment.l10n_ve_third_partner_withholding and payment.l10n_ve_third_partner_id and payment.partner_type == 'supplier':
+                    payment.l10n_ve_partner_regimen_islr_ids = payment.l10n_ve_third_partner_id.l10n_ve_seniat_regimen_islr_ids
+            else:
+                payment.l10n_ve_partner_regimen_islr_ids = payment.env['seniat.tabla.islr']
+
+    @api.depends(
+        'to_pay_move_line_ids.amount_residual',
+        'to_pay_move_line_ids.amount_residual_currency',
+        'to_pay_move_line_ids.currency_id',
+        'to_pay_move_line_ids.move_id',
+        'date',
+        'currency_id')
+    def _compute_l10n_ve_withholding_taxed(self):
+        for payment in self:
+            withholding_taxed = 0.0
+            move_line_tax_ids = []
+            tax_list = [
+                self.env.ref(f'account.{payment.company_id.id}_tax8purchase').id,
+                self.env.ref(f'account.{payment.company_id.id}_tax16purchase').id,
+                self.env.ref(f'account.{payment.company_id.id}_tax31purchase').id,
+            ]
+            for line_to_pay in payment.to_pay_move_line_ids._origin:
+                for move_line in line_to_pay.move_id.line_ids.filtered(lambda l: l.tax_line_id):
+                    if move_line.tax_line_id.id in tax_list:
+                        if line_to_pay.move_id.move_type == 'in_refund':
+                            withholding_taxed += move_line.credit
+                        else:
+                            withholding_taxed += move_line.debit
+                        move_line_tax_ids.append(move_line.id)
+            payment.l10n_ve_withholding_taxed = withholding_taxed
+            payment.l10n_ve_move_line_taxes_ids = [Command.set(move_line_tax_ids)]
+
+    @api.depends(
+        'to_pay_move_line_ids.move_id.amount_untaxed',
+        'to_pay_move_line_ids.currency_id',
+        'to_pay_move_line_ids.move_id',
+        'date',
+        'currency_id')
+    def _compute_l10n_ve_withholding_untaxed(self):
+        for payment in self:
+            withholding_untaxed = 0.0
+            for line_to_pay in payment.to_pay_move_line_ids._origin:
+                withholding_untaxed += line_to_pay.move_id.amount_untaxed
+            payment.l10n_ve_withholding_untaxed = withholding_untaxed
+
+    @api.onchange("l10n_ve_withholdings_amount")
+    def _onchange_withholdings(self):
+        # con esto evitamos el importe negativo en pagos a proveedores
+        for rec in self.filtered(lambda x: x.partner_type == "supplier" and not x._is_latam_check_payment()):
+            amount = rec.amount + rec.payment_difference
+            rec.amount = amount if amount > 0 else 0
+
+    @api.onchange('l10n_ve_withholding_distributin_islr')
+    def _onchange_l10n_ve_withholding_distributin_islr(self):
+        for payment in self:
+            withholding_distributin_islr_ids = []
+            if payment.l10n_ve_withholding_distributin_islr:
+                to_pay = payment.to_pay_move_line_ids[0]
+                if to_pay.move_id.invoice_line_ids:
+                    for line in to_pay.move_id.invoice_line_ids:
+                        if not line.product_id.product_tmpl_id.l10n_ve_disable_islr:
+                            withholding_distributin_islr_ids.append(Command.create({
+                                'payment_id': payment.id,
+                                'move_line_id': line.id,
+                            }))
+            payment.l10n_ve_withholding_distributin_islr_ids = withholding_distributin_islr_ids
+
+    @api.model
+    def _get_trigger_fields_to_synchronize(self):
+        res = super()._get_trigger_fields_to_synchronize()
+        return res + ("l10n_ve_withholding_line_ids",)
+
+    def _get_withholding_move_line_default_values(self):
+        return {
+            "currency_id": self.currency_id.id,
+        }
+
+    def _get_fiscal_period(self, date):
+        str_date = str(date).split('-')
+        vals = 'AÑO '+str_date[0]+' MES '+str_date[1]
+        return vals
+
+    def _get_sustraendo(self):
+        if self.l10n_ve_concept_withholding:
+            code_seniat = self.l10n_ve_concept_withholding.split(' - ')[0]
+            activity_name = self.l10n_ve_concept_withholding.split(' - ')[1]
+            regimen_id = self.env['seniat.tabla.islr'].search([
+                ('code_seniat', '=', code_seniat),
+                ('activity_name', '=', activity_name)
+            ],limit=1)
+            if regimen_id and regimen_id.type_subtracting == 'amount':
+                return self._format_miles_number(
+                    regimen_id.banda_calculo_ids[0].withholding_amount
+                )
+        return False
+
+    def _format_miles_number(self, number):
+        return '{:,.2f}'.format(number).replace(",", "@").replace(".", ",").replace("@", ".")
+
+    def action_post(self):
+        for payment in self:
+            if payment.to_pay_move_line_ids:
+                # TODO: REVISAR
+                to_pay = payment.to_pay_move_line_ids[0]
+                if to_pay.move_id.move_type == 'in_refund' and payment.l10n_ve_withholding_amount:
+                    payment.write({
+                        'payment_type': 'inbound',
+                    })
+            commands = []
+            for line in payment.l10n_ve_withholding_line_ids:
+                if not line.name or line.name == "/":
+                    if line.tax_id.l10n_ve_withholding_sequence_id:
+                        commands.append(
+                            Command.update(
+                                line.id,
+                                {
+                                    "name": line.tax_id.l10n_ve_withholding_sequence_id.next_by_id()
+                                    if line.amount
+                                    else "/"
+                                },
+                            )
+                        )
+                    else:
+                        raise UserError(
+                            _("Please enter withholding number for tax %s or configure a sequence on that tax")
+                            % line.tax_id.name
+                        )
+                if commands:
+                    payment.l10n_ar_withholding_line_ids = commands
+        return super(AccountPayment, self).action_post()
+
     # TODO: Aplicar en ext para multimonedas
     #This field is to be used by invoice in multicurrency
     # selected_finacial_debt = fields.Monetary(
@@ -174,201 +353,3 @@ class AccountPayment(models.Model):
     #     latam_checks = self.filtered(lambda x: x._is_latam_check_payment())
     #     super(AccountPayment, latam_checks)._compute_amount()
     #     for rec in (self - latam_checks):
-
-    @api.model
-    def _get_trigger_fields_to_synchronize(self):
-        res = super()._get_trigger_fields_to_synchronize()
-        return res + ("l10n_ve_withholding_line_ids",)
-
-    @api.constrains("currency_id", "company_id", "l10n_ve_withholding_line_ids")
-    def _check_withholdings_and_currency(self):
-        for rec in self:
-            if rec.l10n_ve_withholding_line_ids and rec.currency_id != rec.company_id.currency_id:
-                raise UserError(_('Withholdings must be done in "%s" currency') % rec.company_id.currency_id.name)
-
-    @api.onchange("l10n_ve_withholdings_amount")
-    def _onchange_withholdings(self):
-        # solo queremos re-computar en pagos de proveedor
-        for rec in self.filtered(lambda x: x.partner_type == "supplier" and not x._is_latam_check_payment()):
-            # el compute_withholdings o el _compute_withholdings?
-            amount = rec.amount + rec.payment_difference
-            # no pasamos a importes negativos (por ej. si se ponene retenciones grandes) porque es molesto
-            # empieza a salir un raise que no deja editar cosas
-            rec.amount = amount if amount > 0 else 0
-            # rec.unreconciled_amount = rec.to_pay_amount - rec.selected_debt
-
-    @api.depends("l10n_ve_withholding_line_ids.amount")
-    def _compute_payment_total(self):
-        super()._compute_payment_total()
-        for rec in self:
-            rec.payment_total += sum(rec.l10n_ve_withholding_line_ids.mapped("amount"))
-
-    @api.depends("partner_id", "company_id", "date")
-    def _compute_l10n_ar_withholding_line_ids(self):
-        # metodo completamente analogo a payment.register._compute_l10n_ar_withholding_ids
-        for rec in self.filtered(lambda x: x.partner_type == "supplier"):
-            # date = rec.date or fields.Date.context_today(self)
-            withholdings = [Command.clear()]
-            if rec.partner_id.l10n_ve_partner_tax_ids:
-            # if rec.l10n_ar_fiscal_position_id.l10n_ar_tax_ids:
-            #     taxes = rec.l10n_ar_fiscal_position_id._l10n_ar_add_taxes(
-            #         rec.partner_id, rec.company_id, date, "withholding"
-            #     )
-            #     withholdings += [Command.create({"tax_id": x.id}) for x in taxes]
-                partner_taxes = self.env['l10n_ve.partner.tax'].search([
-                    *self.env['l10n_ve.partner.tax']._check_company_domain(rec.company_id),
-                    ('partner_id', '=', rec.partner_id.commercial_partner_id.id),
-                    ('tax_id.l10n_ve_withholding_payment_type', '=', rec.partner_type)
-                ])
-                withholdings.append([Command.create({'tax_id': x.tax_id.id}) for x in partner_taxes])
-            rec.l10n_ar_withholding_line_ids = withholdings
-
-    @api.depends("l10n_ve_withholding_line_ids.amount")
-    def _compute_l10n_ve_withholdings_amount(self):
-        for payment in self:
-            payment.l10n_ve_withholdings_amount = sum(payment.l10n_ve_withholding_line_ids.mapped("amount"))
-
-    @api.depends("unreconciled_amount")
-    def _compute_withholdable_advanced_amount(self):
-        for rec in self:
-            rec.l10n_ve_withholdable_advanced_amount = rec.unreconciled_amount
-
-    @api.depends(
-        'partner_id.l10n_ve_seniat_regimen_islr_ids',
-        'l10n_ve_third_partner_withholding',
-        'l10n_ve_third_partner_id.l10n_ve_seniat_regimen_islr_ids')
-    def _compute_partner_regimenes_islr(self):
-        """
-            Lo hacemos con campo computado y no related para que solo se setee
-            y se exija si es pago a proveedor
-        """
-        for payment in self:
-            if payment.partner_type == 'supplier':
-                payment.l10n_ve_partner_regimen_islr_ids = payment.partner_id.l10n_ve_seniat_regimen_islr_ids
-                if payment.l10n_ve_third_partner_withholding and payment.l10n_ve_third_partner_id and payment.partner_type == 'supplier':
-                    payment.l10n_ve_partner_regimen_islr_ids = payment.l10n_ve_third_partner_id.l10n_ve_seniat_regimen_islr_ids
-            else:
-                payment.l10n_ve_partner_regimen_islr_ids = payment.env['seniat.tabla.islr']
-
-    @api.depends(
-        'to_pay_move_line_ids.amount_residual',
-        'to_pay_move_line_ids.amount_residual_currency',
-        'to_pay_move_line_ids.currency_id',
-        'to_pay_move_line_ids.move_id',
-        'date',
-        'currency_id')
-    def _compute_l10n_ve_withholding_taxed(self):
-        for payment in self:
-            withholding_taxed = 0.0
-            move_line_tax_ids = []
-            tax_list = [
-                self.env.ref(f'account.{payment.company_id.id}_tax8purchase').id,
-                self.env.ref(f'account.{payment.company_id.id}_tax16purchase').id,
-                self.env.ref(f'account.{payment.company_id.id}_tax31purchase').id,
-            ]
-            for line_to_pay in payment.to_pay_move_line_ids._origin:
-                for move_line in line_to_pay.move_id.line_ids.filtered(lambda l: l.tax_line_id):
-                    if move_line.tax_line_id.id in tax_list:
-                        if line_to_pay.move_id.move_type == 'in_refund':
-                            withholding_taxed += move_line.credit
-                        else:
-                            withholding_taxed += move_line.debit
-                        move_line_tax_ids.append(move_line.id)
-            payment.l10n_ve_withholding_taxed = withholding_taxed
-            payment.l10n_ve_move_line_taxes_ids = [Command.set(move_line_tax_ids)]
-
-    @api.depends(
-        'to_pay_move_line_ids.move_id.amount_untaxed',
-        'to_pay_move_line_ids.currency_id',
-        'to_pay_move_line_ids.move_id',
-        'date',
-        'currency_id')
-    def _compute_l10n_ve_withholding_untaxed(self):
-        for payment in self:
-            withholding_untaxed = 0.0
-            for line_to_pay in payment.to_pay_move_line_ids._origin:
-                withholding_untaxed += line_to_pay.move_id.amount_untaxed
-            payment.l10n_ve_withholding_untaxed = withholding_untaxed
-
-    @api.onchange('l10n_ve_withholding_distributin_islr')
-    def _onchange_l10n_ve_withholding_distributin_islr(self):
-        for payment in self:
-            withholding_distributin_islr_ids = []
-            if payment.l10n_ve_withholding_distributin_islr:
-                to_pay = payment.to_pay_move_line_ids[0]
-                if to_pay.move_id.invoice_line_ids:
-                    for line in to_pay.move_id.invoice_line_ids:
-                        if not line.product_id.product_tmpl_id.l10n_ve_disable_islr:
-                            withholding_distributin_islr_ids.append(Command.create({
-                                'payment_id': payment.id,
-                                'move_line_id': line.id,
-                            }))
-            payment.l10n_ve_withholding_distributin_islr_ids = withholding_distributin_islr_ids
-
-    def _get_withholding_move_line_default_values(self):
-        return {
-            "currency_id": self.currency_id.id,
-        }
-
-    def _get_fiscal_period(self, date):
-        str_date = str(date).split('-')
-        vals = 'AÑO '+str_date[0]+' MES '+str_date[1]
-        return vals
-
-    # @api.onchange('journal_id')
-    # def _onchange_compute_amount_currency(self):
-    #     for rec in self:
-    #         pass
-    #         if rec.other_currency and rec.payment_group_id:
-    #             if rec.payment_group_id.payments_amount <= 0:
-    #                 rec.amount = rec.payment_group_id.selected_finacial_debt
-    #             if rec.payment_group_id and rec.payment_group_id.payments_amount > 0:
-    #                 rec.amount = 0
-    #                 payments_amount = rec.payment_group_id.selected_finacial_debt - \
-    #                     rec.payment_group_id.payments_amount
-    #                 rec.amount = rec.company_id.currency_id._convert(
-    #                     payments_amount, rec.currency_id, rec.company_id, rec.date)
-    #         if not rec.other_currency and rec.payment_group_id:
-    #             rec.amount = rec.payment_group_id.selected_finacial_debt
-    #             if rec.payment_group_id and rec.payment_group_id.payments_amount > 0:
-    #                 payments_amount = rec.payment_group_id.payments_amount - rec.amount
-    #                 rec.amount = rec.payment_group_id.selected_finacial_debt - \
-    #                     payments_amount
-
-    # @api.onchange('date')
-    # def _onchange_compute_amount_currency_date(self):
-    #     for payment in self:
-    #         if payment.other_currency and payment.payment_group_id:
-    #             payment.amount_company_currency = payment.currency_id._convert(
-    #                 payment.amount,
-    #                 payment.company_id.currency_id,
-    #                 payment.company_id,
-    #                 payment.date
-    #             )
-
-    def action_post(self):
-        for pay in self:
-            if pay.to_pay_move_line_ids:
-                to_pay = pay.to_pay_move_line_ids[0]
-                if to_pay.move_id.move_type == 'in_refund' and pay.withholding_amount:
-                    pay.write({
-                        'payment_type': 'inbound',
-                    })
-        return super(AccountPayment, self).action_post()
-
-    def get_sustraendo(self):
-        if self.l10n_ve_concept_withholding:
-            code_seniat = self.l10n_ve_concept_withholding.split(' - ')[0]
-            activity_name = self.l10n_ve_concept_withholding.split(' - ')[1]
-            regimen_id = self.env['seniat.tabla.islr'].search([
-                ('code_seniat', '=', code_seniat),
-                ('activity_name', '=', activity_name)
-            ],limit=1)
-            if regimen_id and regimen_id.type_subtracting == 'amount':
-                return self.format_miles_number(
-                    regimen_id.banda_calculo_ids[0].withholding_amount
-                )
-        return False
-
-    def format_miles_number(self, number):
-        return '{:,.2f}'.format(number).replace(",", "@").replace(".", ",").replace("@", ".")

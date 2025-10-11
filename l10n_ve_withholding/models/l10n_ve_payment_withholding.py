@@ -125,10 +125,6 @@ class l10nVePaymentWithholding(models.Model):
                 line.amount = tax_amount
                 line.ref = ref
 
-    ########################
-    # EARNING COMPUTE HELPERS
-    ########################
-
     def _get_same_period_dates(self):
         self.ensure_one()
         to_date = self.payment_id.date or datetime.date.today()

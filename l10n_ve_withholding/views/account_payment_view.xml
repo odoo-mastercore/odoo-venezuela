@@ -42,8 +42,8 @@
                             <field name="name" readonly="withholding_sequence_id"/>
                             <field name="base_amount" column_invisible="parent.partner_type == 'supplier'" optional="hide"/>
                             <field name="base_amount" column_invisible="parent.partner_type != 'supplier'"/>
-                            <field name="amount"/>
-                            <field name="ref"/>
+                            <field name="amount" readonly="1" force_save="1"/>
+                            <field name="ref" optional="hide"/>
                         </list>
                     </field>
                 </page>
