@@ -245,7 +245,6 @@ class AccountPayment(models.Model):
                         'payment_type': 'inbound',
                     })
                 if to_pay.move_id:
-                    print("******************************")
                     # Relacionamos las retenciones con la factura para uso de reportes
                     wth_to_add = [
                         wth.id for wth in payment.l10n_ve_withholding_line_ids \
