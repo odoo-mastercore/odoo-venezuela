@@ -7,9 +7,11 @@
 #
 ###############################################################################
 from . import res_company
-from . import l10n_ar_partner_tax
+from . import l10n_ve_partner_tax
+from . import l10n_ve_payment_withholding
 from . import account_tax
 from . import account_journal
+from . import account_move_line
 from . import account_move
 from . import seniat_islr
 from . import res_partner

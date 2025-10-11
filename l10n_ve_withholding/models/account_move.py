@@ -21,6 +21,12 @@ class AccountMove(models.Model):
              " need to put here this number to be able to declarate on"
              " Fiscal reports correctly."
     )
+    l10n_ve_withholding_ids = fields.One2many(
+        'account.move.line',
+        'move_id',
+        string='Withholdings',
+    )
+
     # l10n_ve_applied_withholding_tax = fields.Boolean(
     #     'Retencion de IVA aplicada',
     #     compute='l10n_ve_compute_applied_withholding',
@@ -50,6 +56,7 @@ class AccountMove(models.Model):
     #                 l10n_ve_applied_withholding_islr = True
     #         move.l10n_ve_applied_withholding_tax = l10n_ve_applied_withholding_tax
     #         move.l10n_ve_applied_withholding_islr = l10n_ve_applied_withholding_islr
+
 
     def _post(self, soft=True):
         super(AccountMove, self)._post(soft)

@@ -2,20 +2,57 @@
 <odoo>
     <!-- tree of payments -->
     <record id="view_account_payment_tree" model="ir.ui.view">
-        <field name="name">account.payment.tree</field>
+        <field name="name">account.payment.list</field>
         <field name="model">account.payment</field>
         <field name="inherit_id" ref="account.view_account_payment_tree"/>
         <field name="arch" type="xml">
-            <tree>
-                <field name="payment_method_code" invisible="1"/>
-                <field name="partner_type" invisible="1"/>
-                <!--<button name="%(action_report_withholding_certificate)d" icon="fa-print " string="Print withholding voucher" type="action" attrs="{'invisible': ['|', ('payment_method_code', '!=', 'withholding'), ('partner_type', '!=', 'supplier')]}"/>-->
-            </tree>
+            <list>
+                <field name="payment_method_code" column_invisible="1"/>
+                <field name="partner_type" column_invisible="1"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_account_payment_form" model="ir.ui.view">
+        <field name="name">account.payment.form.inherited</field>
+        <field name="model">account.payment</field>
+        <field name="priority" eval="30"/>
+        <field name="inherit_id" ref="account.view_account_payment_form" />
+        <field name="arch" type="xml">
+            <label for="payment_total" position="before">
+                <field name="l10n_ve_withholdings_amount" string="Withholdings" invisible="is_internal_transfer or not use_payment_pro or country_code != 'VE'"/>
+            </label>
+            <page name="latam_checks_page" position="after">
+                <page name="withholdings_page" string="Withholdings" invisible="is_internal_transfer or not use_payment_pro or country_code != 'VE'">
+                    <group>
+                        <group>
+                            <label for="l10n_ve_withholdable_advanced_amount" invisible="state not in ['draft'] or partner_type != 'supplier' or unreconciled_amount &lt;= 0.0"/>
+                            <div name="l10n_ve_withholdable_advanced_amount" invisible="state not in ['draft'] or partner_type != 'supplier' or unreconciled_amount &lt;= 0.0">
+                                <field name="l10n_ve_withholdable_advanced_amount" readonly="state not in ['draft']" string="Base imponible del pago excedente" class="oe_inline"/>
+                                <span invisible="state != 'draft'" class="text-muted"> (del excedente <field name="unreconciled_amount" force_save="True" readonly="True" class="oe_inline"/>)</span>
+                            </div>
+                        </group>
+                    </group>
+                    <field name="l10n_ve_withholding_line_ids" nolabel="1" colspan="2" invisible="is_internal_transfer" readonly="state != 'draft'">
+                        <list editable="bottom">
+                            <field name="withholding_sequence_id" column_invisible="True"/>
+                            <field name="company_id" column_invisible="True"/>
+                            <field name="currency_id" column_invisible="True"/>
+                            <field name="tax_id" domain="[('l10n_ve_withholding_payment_type', '=', parent.partner_type), ('company_id', 'parent_of', parent.company_id)]" options="{'no_create': True}"/>
+                            <field name="name" readonly="withholding_sequence_id"/>
+                            <field name="base_amount" column_invisible="parent.partner_type == 'supplier'" optional="hide"/>
+                            <field name="base_amount" column_invisible="parent.partner_type != 'supplier'"/>
+                            <field name="amount"/>
+                            <field name="ref"/>
+                        </list>
+                    </field>
+                </page>
+            </page>
         </field>
     </record>
 
     <!-- tree of payments on payment groups -->
-    <record id="view_account_payment_from_group_tree" model="ir.ui.view">
+    <!-- <record id="view_account_payment_from_group_tree" model="ir.ui.view">
         <field name="name">account.payment.tree</field>
         <field name="model">account.payment</field>
         <field name="inherit_id" ref="account_payment_group.view_account_payment_from_group_tree"/>
@@ -42,9 +79,9 @@
                     ]}"/>
             </tree>
         </field>
-    </record>
+    </record> -->
 
-    <record id="view_account_payment_withholding_list" model="ir.ui.view">
+    <!-- <record id="view_account_payment_withholding_list" model="ir.ui.view">
       <field name="name">inherit.payment.wittholding.list</field>
       <field name="model">account.payment</field>
       <field name="arch" type="xml">
@@ -63,8 +100,8 @@
             <field name="state" widget="badge" decoration-info="state == 'draft'" decoration-success="state == 'posted'"/>
         </tree>
       </field>
-    </record>
-    <record id="action_view_account_payment_tree_withholding_iva" model="ir.actions.act_window">
+    </record> -->
+    <!-- <record id="action_view_account_payment_tree_withholding_iva" model="ir.actions.act_window">
         <field name="name">Retenciones IVA</field>
         <field name="res_model">account.payment</field>
         <field name="type">ir.actions.act_window</field>
@@ -81,9 +118,9 @@
         <field name="domain">[('tax_withholding_id.withholding_type', '=', 'tabla_islr')]</field>
         <field name="view_ids"
                    eval="[(5, 0, 0),(0, 0, {'view_mode': 'tree', 'view_id': ref('l10n_ve_withholding.view_account_payment_withholding_list')})]"/>
-    </record>
+    </record> -->
 
-    <menuitem id="menu_view_account_payment_withholding_iva"
+    <!-- <menuitem id="menu_view_account_payment_withholding_iva"
         name="Retenciones IVA"
         parent="account.menu_finance_payables"
         action="action_view_account_payment_tree_withholding_iva"
@@ -94,7 +131,7 @@
         parent="account.menu_finance_payables"
         action="action_view_account_payment_tree_withholding_islr"
         sequence="21"
-    />
+    /> -->
 
 </odoo>
 

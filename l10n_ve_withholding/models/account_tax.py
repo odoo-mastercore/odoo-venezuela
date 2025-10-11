@@ -95,7 +95,7 @@ class AccountTax(models.Model):
 
     #         vals = super(AccountTax, self).get_withholding_vals(
     #             payment_group, force_withholding_amount_type)
-    #         base_amount = payment_group.l10n_ve_selected_debt_taxed
+    #         base_amount = payment_group.l10n_ve_withholding_taxed
     #         base_invoice = [
     #             x.balance * -1.0 for x in payment_group.to_pay_move_line_ids][0]
     #         amount = base_amount * (alicuota)

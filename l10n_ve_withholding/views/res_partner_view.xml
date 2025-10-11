@@ -5,31 +5,20 @@
         <field name="inherit_id" ref="base.view_partner_form"/>
         <field name="model">res.partner</field>
         <field name="arch" type="xml">
-            <field name="property_supplier_payment_term_id" position="after">
-                <field name="l10n_ve_vat_retention" string="Retención I.V.A" />
-                <field name="l10n_ve_seniat_partner_type_id" />
-            </field>
-            <xpath expr="//group[@name='purchase']" position="after">
-                <group name="regimen_islr" string="Régimen ISLR Aplicar" invisible="not l10n_ve_seniat_partner_type_id">
-                    <group>
-                        <field
-                            name="l10n_ve_seniat_regimen_islr_ids"
-                            string="RÉGIMEN ISLR APLICAR"
-                            nolabel="1"
-                            colspan="4"
-                            invisible="not l10n_ve_seniat_partner_type_id"
-                            />
-                    </group>
+            <group name="banks" position="before">
+                <group string="Withholding" invisible="'VE' not in fiscal_country_codes or not is_company">
+                    <field name="l10n_ve_vat_retention" string="Retención I.V.A"/>
+                    <field name="l10n_ve_seniat_partner_type_id"/>
+                    <div class="o_row">
+                        <group name="regimen_islr" string="Régimen ISLR Aplicar" invisible="not l10n_ve_seniat_partner_type_id">
+                            <field name="l10n_ve_seniat_regimen_islr_ids" string="RÉGIMEN ISLR APLICAR" nolabel="1" colspan="2"/>
+                        </group>
+                    </div>
                 </group>
-            </xpath>
-            <group id="invoice_send_settings" position="after">
-                <group string="Purchase Withholding" invisible="'VE' not in fiscal_country_codes or not is_company">
+                <group string="Purchase Tax Withholdings">
                     <field name="l10n_ve_partner_tax_ids" nolabel="1" colspan="2" widget="auto_save_res_partner">
                         <list editable="top">
-                            <field name="tax_id"
-                                options="{'no_create': True, 'no_open': True}"
-                                domain="[('l10n_ve_withholding_payment_type', '=', 'supplier')]"
-                                />
+                            <field name="tax_id" options="{'no_create': True, 'no_open': True}" domain="[('l10n_ve_withholding_payment_type', '=', 'supplier')]"/>
                         </list>
                     </field>
                 </group>

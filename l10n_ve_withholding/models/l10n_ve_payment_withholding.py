@@ -1,0 +1,214 @@
+from datetime import datetime
+
+from dateutil.relativedelta import relativedelta
+from odoo import _, api, fields, models, Command
+from odoo.exceptions import RedirectWarning, UserError
+
+
+class l10nVePaymentWithholding(models.Model):
+    _name = "l10n_ve.payment.withholding"
+    _description = "Payment withholding lines"
+
+    payment_id = fields.Many2one("account.payment", required=True, ondelete="cascade")
+    partner_id = fields.Many2one(related="payment_id.partner_id")
+    company_id = fields.Many2one(related="payment_id.company_id")
+    currency_id = fields.Many2one(related="payment_id.company_currency_id")
+    l10n_ve_tax_type = fields.Selection(related="tax_id.l10n_ve_tax_type")
+    name = fields.Char(string="Number")
+    ref = fields.Text(compute="_compute_amount", store=True, readonly=False)
+    tax_id = fields.Many2one("account.tax", check_company=True, required=True)
+    withholding_sequence_id = fields.Many2one(related="tax_id.l10n_ve_withholding_sequence_id")
+    base_amount = fields.Monetary(compute="_compute_base_amount", store=True, readonly=False)
+    amount = fields.Monetary(compute="_compute_amount", store=True, readonly=False)
+    l10n_ve_move_line_taxes_ids = fields.Many2many(related="payment_id.l10n_ve_move_line_taxes_ids")
+
+    _sql_constraints = [("uniq_line", "unique(tax_id, payment_id)", "El impuesto de retención debe ser único por pago")]
+
+    @api.depends(
+        "tax_id",
+        "payment_id.l10n_ve_withholding_taxed",
+        "payment_id.l10n_ve_withholding_untaxed",
+        "payment_id.l10n_ve_withholdable_advanced_amount",
+        "payment_id.unreconciled_amount",  # esta dependencia ya está a través de withholdable_advanced_amount
+    )
+    def _compute_base_amount(self):
+        """practicamente mismo codigo que en l10n_ar.payment.register.withholding pero usamos campos "selected_debt_"""
+        self.payment_id._compute_to_pay_amount()
+        for wth in self.filtered(lambda x: x.payment_id.partner_type == "supplier"):
+            # calculamos advance_amount
+            # si el adelanto es negativo estamos pagando parcialmente una
+            # factura y ocultamos el campo sin impuesto y el metodo _get_withholdable_advanced_amount nos devuelve
+            # el proporcional descontando de el iva a lo que se esta pagando
+            advance_amount = wth.payment_id.l10n_ve_withholdable_advanced_amount
+            tax = wth._get_withholding_tax()
+            if advance_amount < 0.0 and wth.payment_id.to_pay_move_line_ids:
+                sorted_to_pay_lines = sorted(
+                    wth.payment_id.to_pay_move_line_ids, key=lambda a: a.date_maturity or a.date
+                )
+                # last line to be reconciled
+                partial_line = sorted_to_pay_lines[-1]
+                if -partial_line.amount_residual < -wth.payment_id.l10n_ve_withholdable_advanced_amount:
+                    raise UserError(
+                        _(
+                            "Seleccionó deuda por %s pero aparentente desea pagar %s. En la deuda seleccionada hay algunos comprobantes de mas que no van a poder ser pagados (%s). Deberá quitar dichos comprobantes de la deuda seleccionada para poder hacer el correcto cálculo de las retenciones."
+                        )
+                        % (
+                            wth.payment_id.selected_debt,
+                            wth.payment_id.to_pay_amount,
+                            partial_line.move_id.display_name,
+                        )
+                    )
+                advance_amount = wth.payment_id.unreconciled_amount
+
+            # Verificar calculo por retencion de iva o islr
+            if tax.l10n_ve_tax_type == "partner_tax":
+                wth.base_amount = wth.payment_id.l10n_ve_withholding_taxed + advance_amount
+            else:
+                wth.base_amount = wth.payment_id.l10n_ve_withholding_untaxed + advance_amount
+
+    def _tax_compute_all_helper(self):
+        """practicamente mismo codigo que en l10n_ar.payment.register.withholding"""
+        self.ensure_one()
+        tax = self._get_withholding_tax()
+        if not tax.amount_type:
+            raise UserError(
+                _(
+                    "El impuesto de retención %s no tiene un tipo de cálculo definido. Por favor, defina el tipo de cálculo en la configuración del impuesto."
+                )
+                % tax.name
+            )
+        amount = 0.0
+        if self.tax_id.l10n_ve_tax_type == 'partner_tax':
+            alicuota_retencion = self._get_partner_alicuot(self.payment_id.partner_id)
+            alicuota = int(alicuota_retencion) / 100.0
+            base_amount = self.base_amount
+            amount = base_amount * (alicuota)
+
+        taxes_res = tax.compute_all(
+            amount,
+            currency=self.payment_id.currency_id,
+            quantity=1.0,
+            product=False,
+            partner=False,
+            is_refund=False,
+        )
+        tax_amount = amount
+        tax_account_id = taxes_res["taxes"][0]["account_id"]
+        tax_repartition_line_id = taxes_res["taxes"][0]["tax_repartition_line_id"]
+
+        ref = False
+        if tax.l10n_ve_tax_type == "partner_tax":
+            ref = f"({self.base_amount} * {alicuota_retencion}%)"
+
+        return tax_amount, tax_account_id, tax_repartition_line_id, ref
+
+    def _get_partner_alicuot(self, partner):
+        self.ensure_one()
+        if partner.l10n_ve_vat_retention:
+            alicuot = partner.l10n_ve_vat_retention
+        else:
+            raise UserError(_(
+                'Si utiliza Cálculo de impuestos igual a "Alícuota en el '
+                'Partner", debe setear el campo de retención de IVA'
+                ' en la ficha del partner, seccion Contabilidad'))
+        return alicuot
+
+    @api.depends("base_amount", "tax_id")
+    def _compute_amount(self):
+        for line in self.filtered(lambda r: r.payment_id.partner_type == "supplier"):
+            tax_id = line._get_withholding_tax()
+            if not tax_id:
+                line.amount = 0.0
+                line.ref = False
+            else:
+                tax_amount, __, __, ref = line._tax_compute_all_helper()
+                line.amount = tax_amount
+                line.ref = ref
+
+    ########################
+    # EARNING COMPUTE HELPERS
+    ########################
+
+    def _get_same_period_dates(self):
+        self.ensure_one()
+        to_date = self.payment_id.date or datetime.date.today()
+        from_date = to_date + relativedelta(day=1)
+        return to_date, from_date
+
+    def _get_same_period_withholdings_domain(self):
+        """Returns a heritable domain of earnings withholdings that
+        belong to the same regime, same commercial partner,
+        and from the month of payment between the 1st and the day of payment.
+        """
+        self.ensure_one()
+        to_date, from_date = self._get_same_period_dates()
+        tax_id = self._get_withholding_tax()
+        return [
+            *self.env["account.move.line"]._check_company_domain(tax_id.company_id),
+            ("parent_state", "=", "posted"),
+            ("tax_line_id.l10n_ve_tax_type", "in", ["tabla_islr", "partner_tax"]),
+            ("partner_id", "=", self.payment_id.partner_id.commercial_partner_id.id),
+            ("date", "<=", to_date),
+            ("date", ">=", from_date),
+        ]
+
+    def _get_same_period_withholdings_amount(self):
+        """Return Cummulated withholding amount"""
+        self.ensure_one()
+        # We search for the payments in the same month of the same regimen and the same code.
+        domain_same_period_withholdings = self._get_same_period_withholdings_domain()
+        if same_period_partner_withholdings := self.env["account.move.line"]._read_group(
+            domain_same_period_withholdings, ["partner_id"], ["balance:sum"]
+        ):
+            return abs(same_period_partner_withholdings[0][1])
+        return 0.0
+
+    def _get_same_period_base_domain(self):
+        """Returns a heritable domain of earnings bases that
+        belong to the same regime, same commercial partner,
+        and from the month of payment between the 1st and the day of payment.
+        """
+        self.ensure_one()
+        to_date, from_date = self._get_same_period_dates()
+        tax_id = self._get_withholding_tax()
+        return [
+            *self.env["account.move.line"]._check_company_domain(tax_id.company_id),
+            ("parent_state", "=", "posted"),
+            ("tax_line_id.l10n_ve_tax_type", "in", ["tabla_islr", "partner_tax"]),
+            ("partner_id", "=", self.payment_id.partner_id.commercial_partner_id.id),
+            ("date", "<=", to_date),
+            ("date", ">=", from_date),
+        ]
+
+    def _get_same_period_base_amount(self):
+        """Return Cummulated withholding base"""
+        self.ensure_one()
+        domain_same_period_base = self._get_same_period_base_domain()
+        if same_period_partner_base := self.env["account.move.line"]._read_group(
+            domain_same_period_base, ["partner_id"], ["balance:sum"]
+        ):
+            return abs(same_period_partner_base[0][1])
+        return 0.0
+
+    def _get_withholding_tax(self):
+        """Return the applicable withheld tax"""
+        self.ensure_one()
+        return self.tax_id
+
+    ##########
+    # ACTIONS
+    ##########
+
+    # def action_l10n_ar_payment_withholding_tree(self):
+    #     """Open a tree view showing previous withholdings."""
+    #     same_period_withholdings = (
+    #         self.env["account.move.line"].search(self._get_same_period_withholdings_domain()).withholding_id
+    #     )
+    #     return {
+    #         "name": "Previous Withholdings",
+    #         "type": "ir.actions.act_window",
+    #         "res_model": "l10n_ar.payment.withholding",
+    #         "view_mode": "list",
+    #         "view_id": self.env.ref("l10n_ar_tax.view_l10n_ar_payment_withholding_tree").id,
+    #         "domain": [("id", "in", same_period_withholdings.ids)],
+    #     }

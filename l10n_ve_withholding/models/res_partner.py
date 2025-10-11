@@ -35,4 +35,5 @@ class ResPartner(models.Model):
         'l10n_ve.partner.tax',
         'partner_id',
         'Venezuela Withholding Taxes',
+        domain=[('tax_id.l10n_ve_withholding_payment_type', '=', 'supplier')]
     )

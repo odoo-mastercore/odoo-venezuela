@@ -6,6 +6,7 @@
 #
 ###############################################################################
 from odoo import models, fields, api, _, Command
+from odoo.exceptions import UserError, ValidationError
 import logging
 _logger = logging.getLogger(__name__)
 
@@ -13,11 +14,8 @@ _logger = logging.getLogger(__name__)
 class AccountPayment(models.Model):
     _inherit = "account.payment"
 
-    #created to record retention percentages
     l10n_ve_comment_withholding = fields.Char(string='Comment withholding')
     l10n_ve_concept_withholding = fields.Char(string='Concept withholding')
-    l10n_ve_iva = fields.Boolean('¿Aplicar Retención IVA?')
-    l10n_ve_islr = fields.Boolean('¿Aplicar Retención ISLR?')
     l10n_ve_withholding_distribution = fields.Boolean(
         string='tiene una distribucion de retencion?'
     )
@@ -52,9 +50,41 @@ class AccountPayment(models.Model):
         'Aplicativo ISLR'
     )
     # this field is to be used by vat retention
-    l10n_ve_selected_debt_taxed = fields.Monetary(
-        string='Selected Debt taxed',
-        compute='_compute_l10n_ve_selected_debt_taxed',
+    l10n_ve_withholding_taxed = fields.Monetary(
+        string='Withholding taxed',
+        compute='_compute_l10n_ve_withholding_taxed',
+    )
+    l10n_ve_withholding_untaxed = fields.Monetary(
+        string='Selected Debt untaxed',
+        compute='_compute_l10n_ve_withholding_untaxed',
+    )
+    l10n_ve_move_line_taxes_ids = fields.Many2many(
+        string='Withholding move line taxes',
+        comodel_name='account.move.line',
+        relation='move_account_payment_wth_line_rel',
+        column1='move_line_id',
+        column2='payment_id',
+    )
+    l10n_ve_withholdable_advanced_amount = fields.Monetary(
+        "Adjustment / Advance (untaxed)",
+        help="Used for withholdings calculation",
+        currency_field="company_currency_id",
+        compute="_compute_withholdable_advanced_amount",
+        copy=False,
+        store=True,
+        readonly=False,
+    )
+    l10n_ve_withholding_line_ids = fields.One2many(
+        "l10n_ve.payment.withholding",
+        "payment_id",
+        string="Withholdings Lines",
+        compute="_compute_l10n_ve_withholding_line_ids",
+        readonly=False,
+        store=True,
+    )
+    l10n_ve_withholdings_amount = fields.Monetary(
+        compute="_compute_l10n_ve_withholdings_amount",
+        currency_field="company_currency_id",
     )
 
     # TODO: Aplicar en ext para multimonedas
@@ -137,6 +167,72 @@ class AccountPayment(models.Model):
     #         else:
     #             rec.unreconciled_amount = rec.to_pay_amount - rec.selected_debt
 
+    # por ahora no nos funciona computarlas, se duplica el importe. Igual conceptualemnte el onchange acá por ahí
+    # está bien porque en realidad es una "sugerencia" actualizar el amount al usuario
+    # @api.depends('withholdings_amount')
+    # def _compute_amount(self):
+    #     latam_checks = self.filtered(lambda x: x._is_latam_check_payment())
+    #     super(AccountPayment, latam_checks)._compute_amount()
+    #     for rec in (self - latam_checks):
+
+    @api.model
+    def _get_trigger_fields_to_synchronize(self):
+        res = super()._get_trigger_fields_to_synchronize()
+        return res + ("l10n_ve_withholding_line_ids",)
+
+    @api.constrains("currency_id", "company_id", "l10n_ve_withholding_line_ids")
+    def _check_withholdings_and_currency(self):
+        for rec in self:
+            if rec.l10n_ve_withholding_line_ids and rec.currency_id != rec.company_id.currency_id:
+                raise UserError(_('Withholdings must be done in "%s" currency') % rec.company_id.currency_id.name)
+
+    @api.onchange("l10n_ve_withholdings_amount")
+    def _onchange_withholdings(self):
+        # solo queremos re-computar en pagos de proveedor
+        for rec in self.filtered(lambda x: x.partner_type == "supplier" and not x._is_latam_check_payment()):
+            # el compute_withholdings o el _compute_withholdings?
+            amount = rec.amount + rec.payment_difference
+            # no pasamos a importes negativos (por ej. si se ponene retenciones grandes) porque es molesto
+            # empieza a salir un raise que no deja editar cosas
+            rec.amount = amount if amount > 0 else 0
+            # rec.unreconciled_amount = rec.to_pay_amount - rec.selected_debt
+
+    @api.depends("l10n_ve_withholding_line_ids.amount")
+    def _compute_payment_total(self):
+        super()._compute_payment_total()
+        for rec in self:
+            rec.payment_total += sum(rec.l10n_ve_withholding_line_ids.mapped("amount"))
+
+    @api.depends("partner_id", "company_id", "date")
+    def _compute_l10n_ar_withholding_line_ids(self):
+        # metodo completamente analogo a payment.register._compute_l10n_ar_withholding_ids
+        for rec in self.filtered(lambda x: x.partner_type == "supplier"):
+            # date = rec.date or fields.Date.context_today(self)
+            withholdings = [Command.clear()]
+            if rec.partner_id.l10n_ve_partner_tax_ids:
+            # if rec.l10n_ar_fiscal_position_id.l10n_ar_tax_ids:
+            #     taxes = rec.l10n_ar_fiscal_position_id._l10n_ar_add_taxes(
+            #         rec.partner_id, rec.company_id, date, "withholding"
+            #     )
+            #     withholdings += [Command.create({"tax_id": x.id}) for x in taxes]
+                partner_taxes = self.env['l10n_ve.partner.tax'].search([
+                    *self.env['l10n_ve.partner.tax']._check_company_domain(rec.company_id),
+                    ('partner_id', '=', rec.partner_id.commercial_partner_id.id),
+                    ('tax_id.l10n_ve_withholding_payment_type', '=', rec.partner_type)
+                ])
+                withholdings.append([Command.create({'tax_id': x.tax_id.id}) for x in partner_taxes])
+            rec.l10n_ar_withholding_line_ids = withholdings
+
+    @api.depends("l10n_ve_withholding_line_ids.amount")
+    def _compute_l10n_ve_withholdings_amount(self):
+        for payment in self:
+            payment.l10n_ve_withholdings_amount = sum(payment.l10n_ve_withholding_line_ids.mapped("amount"))
+
+    @api.depends("unreconciled_amount")
+    def _compute_withholdable_advanced_amount(self):
+        for rec in self:
+            rec.l10n_ve_withholdable_advanced_amount = rec.unreconciled_amount
+
     @api.depends(
         'partner_id.l10n_ve_seniat_regimen_islr_ids',
         'l10n_ve_third_partner_withholding',
@@ -161,23 +257,38 @@ class AccountPayment(models.Model):
         'to_pay_move_line_ids.move_id',
         'date',
         'currency_id')
-    def _compute_l10n_ve_selected_debt_taxed(self):
+    def _compute_l10n_ve_withholding_taxed(self):
         for payment in self:
-            selected_debt_taxed = 0.0
+            withholding_taxed = 0.0
+            move_line_tax_ids = []
+            tax_list = [
+                self.env.ref(f'account.{payment.company_id.id}_tax8purchase').id,
+                self.env.ref(f'account.{payment.company_id.id}_tax16purchase').id,
+                self.env.ref(f'account.{payment.company_id.id}_tax31purchase').id,
+            ]
             for line_to_pay in payment.to_pay_move_line_ids._origin:
-                #this is conditional used to vat retention
                 for move_line in line_to_pay.move_id.line_ids.filtered(lambda l: l.tax_line_id):
-                    tax_list = [
-                        self.env.ref(f'account.{payment.company_id.id}_tax8purchase').id,
-                        self.env.ref(f'account.{payment.company_id.id}_tax16purchase').id,
-                        self.env.ref(f'account.{payment.company_id.id}_tax31purchase').id,
-                    ]
                     if move_line.tax_line_id.id in tax_list:
                         if line_to_pay.move_id.move_type == 'in_refund':
-                            selected_debt_taxed += move_line.credit
+                            withholding_taxed += move_line.credit
                         else:
-                            selected_debt_taxed += move_line.debit
-            payment.l10n_ve_selected_debt_taxed = selected_debt_taxed
+                            withholding_taxed += move_line.debit
+                        move_line_tax_ids.append(move_line.id)
+            payment.l10n_ve_withholding_taxed = withholding_taxed
+            payment.l10n_ve_move_line_taxes_ids = [Command.set(move_line_tax_ids)]
+
+    @api.depends(
+        'to_pay_move_line_ids.move_id.amount_untaxed',
+        'to_pay_move_line_ids.currency_id',
+        'to_pay_move_line_ids.move_id',
+        'date',
+        'currency_id')
+    def _compute_l10n_ve_withholding_untaxed(self):
+        for payment in self:
+            withholding_untaxed = 0.0
+            for line_to_pay in payment.to_pay_move_line_ids._origin:
+                withholding_untaxed += line_to_pay.move_id.amount_untaxed
+            payment.l10n_ve_withholding_untaxed = withholding_untaxed
 
     @api.onchange('l10n_ve_withholding_distributin_islr')
     def _onchange_l10n_ve_withholding_distributin_islr(self):
@@ -193,6 +304,11 @@ class AccountPayment(models.Model):
                                 'move_line_id': line.id,
                             }))
             payment.l10n_ve_withholding_distributin_islr_ids = withholding_distributin_islr_ids
+
+    def _get_withholding_move_line_default_values(self):
+        return {
+            "currency_id": self.currency_id.id,
+        }
 
     def _get_fiscal_period(self, date):
         str_date = str(date).split('-')
