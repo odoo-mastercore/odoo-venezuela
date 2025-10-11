@@ -19,11 +19,14 @@ def _l10n_ve_wth_post_init(env):
         data = {
             model: ChartTemplate._parse_csv(template_code, model, module='l10n_ve_withholding')
             for model in [
+                'account.account',
                 'account.tax.group',
                 'account.tax',
             ]
         }
+        ChartTemplate._deref_account_tags(template_code, data['account.account'])
         ChartTemplate._deref_account_tags(template_code, data['account.tax.group'])
         ChartTemplate._deref_account_tags(template_code, data['account.tax'])
         ChartTemplate._pre_reload_data(company, {}, data)
         ChartTemplate._load_data(data)
+        company.l10n_ve_tax_base_account_id = ChartTemplate.ref('base_tax_account')

@@ -7,6 +7,7 @@
 #
 ###############################################################################
 from . import res_company
+from . import res_config_settings
 from . import l10n_ve_partner_tax
 from . import l10n_ve_payment_withholding
 from . import account_tax

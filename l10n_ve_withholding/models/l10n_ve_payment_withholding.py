@@ -29,23 +29,24 @@ class l10nVePaymentWithholding(models.Model):
         "payment_id.l10n_ve_withholding_taxed",
         "payment_id.l10n_ve_withholding_untaxed",
         "payment_id.l10n_ve_withholdable_advanced_amount",
-        "payment_id.unreconciled_amount",  # esta dependencia ya está a través de withholdable_advanced_amount
+        "payment_id.unreconciled_amount",
     )
     def _compute_base_amount(self):
-        """practicamente mismo codigo que en l10n_ar.payment.register.withholding pero usamos campos "selected_debt_"""
         self.payment_id._compute_to_pay_amount()
         for wth in self.filtered(lambda x: x.payment_id.partner_type == "supplier"):
-            # calculamos advance_amount
-            # si el adelanto es negativo estamos pagando parcialmente una
-            # factura y ocultamos el campo sin impuesto y el metodo _get_withholdable_advanced_amount nos devuelve
-            # el proporcional descontando de el iva a lo que se esta pagando
             advance_amount = wth.payment_id.l10n_ve_withholdable_advanced_amount
             tax = wth._get_withholding_tax()
+            if tax and not tax.l10n_ve_tax_type in ["tabla_islr", "partner_tax"]:
+                raise UserError(_(
+                        "El impuesto %s no pertenece a ningún tipo de retención. Por favor, verifique el impuesto seleccionado."
+                    ) % (
+                        tax.name,
+                    )
+                )
             if advance_amount < 0.0 and wth.payment_id.to_pay_move_line_ids:
                 sorted_to_pay_lines = sorted(
                     wth.payment_id.to_pay_move_line_ids, key=lambda a: a.date_maturity or a.date
                 )
-                # last line to be reconciled
                 partial_line = sorted_to_pay_lines[-1]
                 if -partial_line.amount_residual < -wth.payment_id.l10n_ve_withholdable_advanced_amount:
                     raise UserError(
@@ -65,6 +66,18 @@ class l10nVePaymentWithholding(models.Model):
                 wth.base_amount = wth.payment_id.l10n_ve_withholding_taxed + advance_amount
             else:
                 wth.base_amount = wth.payment_id.l10n_ve_withholding_untaxed + advance_amount
+
+    @api.depends("base_amount", "tax_id")
+    def _compute_amount(self):
+        for line in self.filtered(lambda r: r.payment_id.partner_type == "supplier"):
+            tax_id = line._get_withholding_tax()
+            if not tax_id:
+                line.amount = 0.0
+                line.ref = False
+            else:
+                tax_amount, __, __, ref = line._tax_compute_all_helper()
+                line.amount = tax_amount
+                line.ref = ref
 
     def _tax_compute_all_helper(self):
         """practicamente mismo codigo que en l10n_ar.payment.register.withholding"""
@@ -112,18 +125,6 @@ class l10nVePaymentWithholding(models.Model):
                 'Partner", debe setear el campo de retención de IVA'
                 ' en la ficha del partner, seccion Contabilidad'))
         return alicuot
-
-    @api.depends("base_amount", "tax_id")
-    def _compute_amount(self):
-        for line in self.filtered(lambda r: r.payment_id.partner_type == "supplier"):
-            tax_id = line._get_withholding_tax()
-            if not tax_id:
-                line.amount = 0.0
-                line.ref = False
-            else:
-                tax_amount, __, __, ref = line._tax_compute_all_helper()
-                line.amount = tax_amount
-                line.ref = ref
 
     def _get_same_period_dates(self):
         self.ensure_one()

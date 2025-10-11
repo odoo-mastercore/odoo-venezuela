@@ -53,6 +53,7 @@
         'views/res_currency_view.xml',
         'views/res_country_state_municipality.xml',
         'views/res_country_state_municipality_parish.xml',
+        'views/res_config_settings_view.xml',
         'wizard/currency_rate_wizard_view.xml'
     ],
     'assets': {

@@ -21,10 +21,12 @@ class AccountMove(models.Model):
              " need to put here this number to be able to declarate on"
              " Fiscal reports correctly."
     )
-    l10n_ve_withholding_ids = fields.One2many(
-        'account.move.line',
-        'move_id',
+    l10n_ve_withholding_ids = fields.Many2many(
         string='Withholdings',
+        comodel_name='l10n_ve.payment.withholding',
+        relation='payment_withholding_move_rel',
+        column1='withholding_id',
+        column2='move_id',
     )
 
     def _post(self, soft=True):

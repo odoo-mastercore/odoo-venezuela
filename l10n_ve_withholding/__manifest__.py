@@ -49,6 +49,7 @@
         # 'views/account_payment_group_view.xml',
         'views/product_template.xml',
         'views/withholding_distribution_view.xml',
+        'views/res_config_settings.xml'
     ],
     'installable': True,
     'post_init_hook': '_l10n_ve_wth_post_init',
