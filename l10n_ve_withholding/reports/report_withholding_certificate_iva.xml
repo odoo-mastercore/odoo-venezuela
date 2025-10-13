@@ -87,35 +87,49 @@
                     <tbody>
                         <t t-foreach="o._get_withholding_lines()" t-as="distribution">
                             <tr>
-                                <th class="text-center">1</th>
-                                <th class="text-center"><span t-esc="distribution.move_id.invoice_date.strftime('%d-%m-%Y')"/></th>
-                                <th class="text-center" t-if="not distribution.move_id.reversed_entry_id">
-                                    <span t-field="distribution.move_id.ref"/></th>
+                                <!-- No (Índice de la iteración) -->
+                                <th class="text-center"><span t-esc="distribution['index']"/></th>
+                                <!-- Fecha Dto -->
+                                <th class="text-center"><span t-esc="distribution['date']"/></th>
+                                <!-- Número de factura -->
+                                <th class="text-center" t-if="not distribution['reserved_entry']">
+                                    <span t-esc="distribution['move_ref']"/></th>
                                 <th t-else=""/>
+                                <!-- Número de Control -->
                                 <th class="text-center">
-                                    <span t-field="distribution.move_id.l10n_ve_control_number"/></th>
+                                    <span t-esc="distribution['l10n_ve_control_number']"/></th>
+                                <!-- Número N/D (no implementado) -->
                                 <th class="text-center"/>
-                                <th class="text-center" t-if="distribution.move_id.move_type == 'in_refund'">
-                                    <span t-field="distribution.move_id.ref"/>
+                                <!-- Número N/C -->
+                                <th class="text-center" t-if="distribution['move_type'] == 'in_refund'">
+                                    <span t-esc="distribution['reserved_entry_ref']"/>
                                 </th>
                                 <th class="text-center" t-else="'"></th>
-                                <th class="text-center" t-if="distribution.move_id and distribution.move_id.move_type == 'in_refund'">03</th>
+                                <!-- Tipo (03/01) -->
+                                <th class="text-center" t-if="distribution['move_type'] == 'in_refund'">03</th>
                                 <th class="text-center" t-else="">01</th>
 
-                                <t t-if="distribution.move_id and distribution.move_id.reversed_entry_id">
-                                    <th class="text-center"><span t-esc="distribution.move_id.reversed_entry_id.ref"/></th>
+                                <!-- Dto Afectado (referencia de reverso) -->
+                                <t t-if="distribution['reserved_entry_ref']">
+                                    <th class="text-center"><span t-esc="distribution['reserved_entry_ref']"/></th>
                                 </t>
                                 <t t-else="">
                                     <th class="text-center"/>
                                 </t>
-                                <t t-set="amount_total" t-value="round(abs(distribution.move_id.amount_total_signed),2)"/>
-                                <th class="text-center"><span t-esc="o.payment_id._format_miles_number(amount_total) if not amount_total &lt; 0 else o.payment_id._format_miles_number(amount_total * -1)"/></th>
-                                <th class="text-center"><span t-esc="o.payment_id._format_miles_number(distribution.move_id.get_exempt_amount())"/></th>
-                                <th class="text-center"><span t-esc="o.payment_id._format_miles_number(abs(distribution.move_id.amount_untaxed_signed) - abs(distribution.move_id.get_exempt_amount()))"/></th>
-                                <th class="text-center"><span t-field="distribution.tax_line_id.name"/></th>
-                                <th class="text-center"><span t-field="o.partner_id.l10n_ve_vat_retention"/></th>
-                                <th class="text-center"><span t-field="o.base_amount"/></th>
-                                <th class="text-center"><span t-esc="o.payment_id._format_miles_number(o.amount)"/></th>
+                                <!-- Total Compra con IVA -->
+                                <th class="text-center"><span t-esc="distribution['amount_total']"/></th>
+                                <!-- Compras sin crédito -->
+                                <th class="text-center"><span t-esc="distribution['amount_untaxed']"/></th>
+                                <!-- Base Imponible -->
+                                <th class="text-center"><span t-esc="distribution['tax_base_amount']"/></th>
+                                <!-- % Alic -->
+                                <th class="text-center"><span t-esc="distribution['tax_name']"/></th>
+                                <!-- % Ret -->
+                                <th class="text-center"><span t-esc="distribution['partner_vat_retention']"/></th>
+                                <!-- Monto IVA -->
+                                <th class="text-center"><span t-esc="distribution['tax_debit']"/></th>
+                                <!-- IVA Retenido -->
+                                <th class="text-center"><span t-esc="distribution['tax_amount']"/></th>
                             </tr>
                         </t>
                     </tbody>
