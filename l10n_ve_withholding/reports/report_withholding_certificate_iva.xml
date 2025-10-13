@@ -102,7 +102,7 @@
                                 <th class="text-center"/>
                                 <!-- Número N/C -->
                                 <th class="text-center" t-if="distribution['move_type'] == 'in_refund'">
-                                    <span t-esc="distribution['reserved_entry_ref']"/>
+                                    <span t-esc="distribution['move_ref']"/>
                                 </th>
                                 <th class="text-center" t-else="'"></th>
                                 <!-- Tipo (03/01) -->

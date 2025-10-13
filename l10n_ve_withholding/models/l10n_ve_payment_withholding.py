@@ -218,8 +218,8 @@ class l10nVePaymentWithholding(models.Model):
                     'tax_base_amount': self.payment_id._format_miles_number(tax.tax_base_amount),
                     'tax_name': tax.tax_line_id.name,
                     'partner_vat_retention': str(self._get_partner_alicuot(self.payment_id.partner_id)),
-                    'tax_debit': self.payment_id._format_miles_number(tax.debit),
-                    'tax_amount': self.payment_id._format_miles_number(tax.debit * int(self._get_partner_alicuot(self.payment_id.partner_id)) / 100) if tax.debit else 0.0,
+                    'tax_debit': self.payment_id._format_miles_number(tax.debit) if tax.move_id.move_type == 'in_invoice' else self.payment_id._format_miles_number(tax.credit),
+                    'tax_amount': self.payment_id._format_miles_number(tax.debit * int(self._get_partner_alicuot(self.payment_id.partner_id)) / 100) if tax.debit else self.payment_id._format_miles_number(tax.credit * int(self._get_partner_alicuot(self.payment_id.partner_id)) / 100),
                 })
         return lines
     ##########

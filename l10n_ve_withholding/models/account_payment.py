@@ -240,7 +240,7 @@ class AccountPayment(models.Model):
             if payment.to_pay_move_line_ids:
                 # TODO: REVISAR
                 to_pay = payment.to_pay_move_line_ids[0]
-                if to_pay.move_id.move_type == 'in_refund' and payment.l10n_ve_withholding_amount:
+                if to_pay.move_id.move_type == 'in_refund' and payment.l10n_ve_withholdings_amount:
                     payment.write({
                         'payment_type': 'inbound',
                     })
