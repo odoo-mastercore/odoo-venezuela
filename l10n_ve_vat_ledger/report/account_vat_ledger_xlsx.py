@@ -43,7 +43,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     line.price_subtotal,
                     company_currency,
                     line.move_id.company_id,
-                    line.move_id.invoice_date,
+                    line.move_id.l10n_ve_invoice_date,
                 )
             except Exception:
                 # Fallback: usar el subtotal sin conversión
@@ -344,10 +344,12 @@ class AccountVatLedgerXlsx(models.AbstractModel):
              """
             tax_withholding_id = []
             retens = []
+            # Índice por fecha de retenciones (si no hay retenciones quedará vacío)
+            retenciones_by_date = {}
             if obj.type == 'purchase':
                 tax_withholding_id = self.env['account.tax'].search([
                     ('type_tax_use', '=', 'supplier'),
-                    ('withholding_type', '=', 'partner_tax'),
+                    # ('withholding_type', '=', 'partner_tax'),
                     ('company_id', '=', obj.company_id.id)
                 ], limit=1)
             else:
@@ -366,7 +368,6 @@ class AccountVatLedgerXlsx(models.AbstractModel):
             retenciones = []
             if retens:
                 # Indexar retenciones por fecha para acceso O(1)
-                retenciones_by_date = {}
                 for r in retens:
                     retenciones_by_date.setdefault(r.date, []).append(r)
                 retenciones = list(retens)
@@ -469,7 +470,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     # contador de la factura
                     sheet.write(row, 0, i, line)
                     # codigo fecha
-                    sheet.write(row, 1, invoice.invoice_date or 'FALSE', date_time_line)
+                    sheet.write(row, 1, invoice.invoice_date or 'FALSE', date_time_line if obj.type == 'pruchase' else date_line)
                     # tipo de documento
                     if invoice.move_type == 'out_invoice':
                         sheet.write(row, 2, 'Factura', line)
@@ -609,9 +610,9 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                                             total_base_imponible_31 += base_imponible_31
                                             total_iva_31 += iva_31
                                         alic_31 = '31%'
-                    print(base_imponible)
-                    if invoice.igtf_purchase_apply_purchase:
-                        igtf_amount = invoice.igtf_amount_purchase
+                    # print(base_imponible)
+                    # if invoice.igtf_purchase_apply_purchase:
+                    #     igtf_amount = invoice.igtf_amount_purchase
 
                     #########
                     """ Totales """
@@ -668,9 +669,14 @@ class AccountVatLedgerXlsx(models.AbstractModel):
 
                     
                 elif obj.type == 'sale':
-                    if date_reference <= invoice.invoice_date:
-                        while date_reference < invoice.invoice_date:
-                            coincident_date = [tup for tup in retenciones if date_reference == tup.date]
+                    # Asegurar que comparamos fechas con fechas (invoice puede tener datetime)
+                    inv_date = invoice.l10n_ve_invoice_date
+                    if isinstance(inv_date, datetime):
+                        inv_date = inv_date.date()
+                    if date_reference <= inv_date:
+                        while date_reference < inv_date:
+                            # usar índice por fecha cuando esté disponible
+                            coincident_date = retenciones_by_date.get(date_reference, []) if 'retenciones_by_date' in locals() else [tup for tup in retenciones if date_reference == tup.date]
                             if coincident_date:
                                 for reten in coincident_date:
                                     total_iva_16_retenido += reten.amount if reten.currency_id.id == reten.company_id.currency_id.id else reten.amount_company_currency
@@ -728,7 +734,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     # contador de la factura
                     sheet.write(row, 0, i, line)
                     # codigo fecha
-                    sheet.write(row, 1, invoice.invoice_date or 'FALSE', date_time_line)
+                    sheet.write(row, 1, invoice.l10n_ve_invoice_date or 'FALSE', date_time_line)
                     # tipo de documento
                     
                     if invoice.move_type == 'out_invoice' and not invoice.debit_origin_id:
