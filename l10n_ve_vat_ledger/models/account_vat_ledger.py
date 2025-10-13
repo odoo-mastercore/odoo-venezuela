@@ -76,6 +76,12 @@ class AccountVatLedger(models.Model):
         compute="_compute_invoices",
         store=True
     )
+    withholding_ids = fields.Many2many(
+        'l10n_ve.payment.withholding',
+        string="Withholdings",
+        compute="_compute_invoices",
+        store=True
+    )
 
     @api.depends('journal_ids', 'date_from', 'date_to', 'company_id', 'type')
     def _compute_invoices(self):
@@ -84,6 +90,13 @@ class AccountVatLedger(models.Model):
                 ('state', 'not in', ['draft']),
                 ('journal_id', 'in', rec.journal_ids.ids),
                 ('company_id', '=', rec.company_id.id),
+            ]
+
+            withholding_tax = self.env.ref('account.%s_tax_retencion_iva' % rec.company_id.id)
+            
+            withholdings_domain = [
+                ('payment_id.state', 'in', ['in_process', 'paid']),
+                ('tax_id', '=', withholding_tax.id),
             ]
             # Usar invoice_date consistentemente (evita mezclar 'date' vs 'invoice_date')
             if rec.type == 'sale':
@@ -101,11 +114,17 @@ class AccountVatLedger(models.Model):
                     ('invoice_date', '<=', rec.date_to),
                     ('state', '!=', 'cancel'),
                 ]
+                withholdings_domain += [
+                    ('payment_id.payment_type', '=', 'outbound'),
+                ]
             rec.invoice_ids = rec.env['account.move'].search(
                 invoices_domain,
                 order='invoice_date desc, l10n_ve_control_number desc'
             )
-
+            rec.withholding_ids = rec.env['l10n_ve.payment.withholding'].search(
+                withholdings_domain,
+                order='name desc'
+            )
 
     @api.depends('type', 'reference',)
     def _compute_name(self):

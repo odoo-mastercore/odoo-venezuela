@@ -55,6 +55,16 @@
                                 </list>
                             </field>
                         </page>
+                        <page string="Retenciones" name="withholdings">
+                            <field name="withholding_ids">
+                                <list default_order="name desc">
+                                    <field name="name"/> 
+                                    <field name="base_amount" string="Base Amount" sum="Total"/>
+                                    <field name="amount" string="Withheld Amount" sum="Total"/>
+                                    <field name="partner_id"/>
+                                </list>
+                            </field>
+                        </page>
                         <page string="Notes" name="notes">
                             <field name="note"/>
                         </page>
