@@ -108,10 +108,10 @@
                                 <t t-else="">
                                     <th class="text-center"/>
                                 </t>
-                                <t t-set="amount_total" t-value="round(distribution.move_id.amount_total,2)"/>
+                                <t t-set="amount_total" t-value="round(abs(distribution.move_id.amount_total_signed),2)"/>
                                 <th class="text-center"><span t-esc="o.payment_id._format_miles_number(amount_total) if not amount_total &lt; 0 else o.payment_id._format_miles_number(amount_total * -1)"/></th>
                                 <th class="text-center"><span t-esc="o.payment_id._format_miles_number(distribution.move_id.get_exempt_amount())"/></th>
-                                <th class="text-center"><span t-esc="o.payment_id._format_miles_number(distribution.move_id.amount_untaxed)"/></th>
+                                <th class="text-center"><span t-esc="o.payment_id._format_miles_number(abs(distribution.move_id.amount_untaxed_signed) - abs(distribution.move_id.get_exempt_amount()))"/></th>
                                 <th class="text-center"><span t-field="distribution.tax_line_id.name"/></th>
                                 <th class="text-center"><span t-field="o.partner_id.l10n_ve_vat_retention"/></th>
                                 <th class="text-center"><span t-field="o.base_amount"/></th>

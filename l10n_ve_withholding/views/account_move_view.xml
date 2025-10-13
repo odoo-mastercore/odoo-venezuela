@@ -20,7 +20,7 @@
                     />
             </xpath>
             <xpath expr="//notebook" position="inside">
-                <page name="withholdings_page" string="Withholdings">
+                <page name="withholdings_page" string="Retenciones" invisible="move_type not in ('in_invoice','in_refund','out_invoice','out_refund')">
                     <field name="l10n_ve_withholding_ids" nolabel="1" colspan="2" readonly="1">
                         <list>
                             <field name="withholding_sequence_id" column_invisible="True"/>
