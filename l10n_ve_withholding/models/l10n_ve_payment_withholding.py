@@ -122,12 +122,12 @@ class l10nVePaymentWithholding(models.Model):
                 % tax.name
             )
         amount = 0.0
-        if self.tax_id.l10n_ve_tax_type == 'partner_tax':
+        if self.tax_id.l10n_ve_tax_type == 'partner_tax' and self.payment_id.partner_type == 'supplier':
             alicuota_retencion = self._get_partner_alicuot(self.payment_id.partner_id)
             alicuota = int(alicuota_retencion) / 100.0
             base_amount = self.base_amount
             amount = base_amount * (alicuota)
-        elif self.tax_id.l10n_ve_tax_type == 'tabla_islr':
+        elif self.tax_id.l10n_ve_tax_type == 'tabla_islr' and self.payment_id.partner_type == 'supplier':
             regimen_id = self.l10n_ve_regimen_islr_id or False
             if regimen_id:
                 base = self.base_amount
@@ -184,8 +184,10 @@ class l10nVePaymentWithholding(models.Model):
         tax_repartition_line_id = taxes_res["taxes"][0]["tax_repartition_line_id"]
 
         ref = False
-        if tax.l10n_ve_tax_type == "partner_tax":
-            ref = f"({self.base_amount} * {alicuota_retencion}%)"
+        if self.payment_id.partner_type == 'supplier':
+            if tax.l10n_ve_tax_type == 'partner_tax':
+                ref = f"({self.base_amount} * {alicuota_retencion}%)"
+            #TODO: Aplicar ref para islr
 
         return tax_amount, tax_account_id, tax_repartition_line_id, ref
 

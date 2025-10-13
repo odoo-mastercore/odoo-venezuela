@@ -20,9 +20,9 @@
         <field name="inherit_id" ref="account.view_account_payment_form" />
         <field name="arch" type="xml">
             <field name="memo" position="after">
-                <field name="l10n_ve_withholding_islr" />
+                <field name="l10n_ve_withholding_islr" invisible="partner_type == 'customer'"/>
                 <field name="l10n_ve_withholding_distribution_islr" invisible="not l10n_ve_withholding_islr" />
-                <field name="l10n_ve_third_partner_withholding" />
+                <field name="l10n_ve_third_partner_withholding" invisible="partner_type == 'customer'" />
                 <field name="l10n_ve_third_partner_id" invisible="not l10n_ve_third_partner_withholding"/>
                 <field name="l10n_ve_partner_regimen_islr_ids" invisible="True"/>
             </field>
@@ -60,10 +60,9 @@
                                 domain="[('id', 'in', parent.l10n_ve_partner_regimen_islr_ids)]"
                                 options="{'no_create': True}"
                                 />
-                            <field name="name" readonly="withholding_sequence_id"/>
-                            <field name="base_amount" column_invisible="parent.partner_type == 'supplier'" optional="hide"/>
+                            <field name="name" readonly="withholding_sequence_id" required="parent.partner_type == 'customer'" />
                             <field name="base_amount" column_invisible="parent.partner_type != 'supplier'"/>
-                            <field name="amount" readonly="1" force_save="1"/>
+                            <field name="amount" readonly="parent.partner_type == 'supplier'" force_save="1"/>
                             <field name="ref" optional="hide"/>
                             <button name="%(action_report_withholding_certificate_iva)d" icon="fa-print " title="Imprimir comprobante IVA" type="action" />
                         </list>

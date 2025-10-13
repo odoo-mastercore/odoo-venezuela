@@ -318,11 +318,6 @@ msgstr "Actividad"
 msgid "Actividad para Archivo XML - Según Manual Seniat"
 msgstr "Actividad para Archivo XML - Según Manual Seniat"
 
-#. module: l10n_ve_withholding
-#: model:ir.model.fields.selection,name:l10n_ve_withholding.selection__account_tax__amount_type__partner_tax
-#: model:ir.model.fields.selection,name:l10n_ve_withholding.selection__account_tax__withholding_type__partner_tax
-msgid "Alícuota en el Partner"
-msgstr "Alícuota en el Partner"
 
 #. module: l10n_ve_withholding
 #: model:ir.model.fields,field_description:l10n_ve_withholding.field_account_payment__l10n_ve_regimen_islr_id

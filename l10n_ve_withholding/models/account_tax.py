@@ -15,11 +15,11 @@ _logger = logging.getLogger(__name__)
 class AccountTax(models.Model):
     _inherit = "account.tax"
 
-    amount_type = fields.Selection(
-        selection_add=([
-            ('partner_tax', 'Alícuota en el Partner'),
-        ]), ondelete={'partner_tax': 'set default'}
-    )
+    # amount_type = fields.Selection(
+    #     selection_add=([
+    #         ('partner_tax', 'Alícuota en el Partner'),
+    #     ]), ondelete={'partner_tax': 'set default'}
+    # )
     l10n_ve_type_tax_use = fields.Selection(
         selection=[
             ('sale', 'Sales'),
