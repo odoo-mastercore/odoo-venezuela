@@ -200,6 +200,27 @@ class l10nVePaymentWithholding(models.Model):
         self.ensure_one()
         return self.tax_id
 
+    def _get_withholding_lines(self):
+        lines = []
+        if self.l10n_ve_move_line_taxes_ids:
+            for tax in self.l10n_ve_move_line_taxes_ids:
+                lines.append(Command.create({
+                    'date': tax.move_id.invoice_date.strftime('%d-%m-%Y'),
+                    'move_ref': tax.move_id.ref or '',
+                    'l10n_ve_control_number': tax.move_id.l10n_ve_control_number,
+                    'move_type': tax.move_id.move_type or '',
+                    'move_id': True if tax.move_id else False,
+                    'reserved_entry': True if tax.move_id.reversed_entry_id else False,
+                    'reserved_entry_ref': tax.move_id.reversed_entry_id.ref or '',
+                    'amount_total': round(abs(tax.move_id.amount_total_signed), 2),
+                    'amount_untaxed': self.payment_id._format_miles_number(tax.move_id.get_exempt_amount()),
+                    'tax_base_amount': tax.tax_base_amount,
+                    'tax_name': tax.tax_line_id.name,
+                    'partner_vat_retention': str(self._get_partner_alicuot(self.payment_id.partner_id)),
+                    'tax_debit': tax.debit,
+                    'tax_amount': (tax.debit * self._get_partner_alicuot(self.payment_id.partner_id) / 100) if tax.debit else 0.0,
+                }))
+        return lines
     ##########
     # ACTIONS
     ##########

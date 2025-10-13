@@ -85,7 +85,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <t t-foreach="o.l10n_ve_move_line_taxes_ids" t-as="distribution">
+                        <t t-foreach="o._get_withholding_lines()" t-as="distribution">
                             <tr>
                                 <th class="text-center">1</th>
                                 <th class="text-center"><span t-esc="distribution.move_id.invoice_date.strftime('%d-%m-%Y')"/></th>
