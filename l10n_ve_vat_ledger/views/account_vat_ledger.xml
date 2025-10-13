@@ -58,9 +58,10 @@
                         <page string="Retenciones" name="withholdings">
                             <field name="withholding_ids">
                                 <list default_order="name desc">
-                                    <field name="name"/> 
-                                    <field name="base_amount" string="Base Amount" sum="Total"/>
-                                    <field name="amount" string="Withheld Amount" sum="Total"/>
+                                    <field name="name" string="Número"/> 
+                                    <!-- <field name="date" string="Fecha"/>  -->
+                                    <field name="base_amount" string="Base retención" sum="Total"/>
+                                    <field name="amount" string="IVA Retenido" sum="Total"/>
                                     <field name="partner_id"/>
                                 </list>
                             </field>

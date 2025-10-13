@@ -366,7 +366,8 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                             coincident_date = retenciones_by_date.get(date_reference, [])
                             if coincident_date:
                                 for reten in list(coincident_date):
-                                    amount_reten = reten.amount
+                                    move_type_reten = reten.l10n_ve_move_line_taxes_ids[0].move_id.move_type
+                                    amount_reten = reten.amount if move_type_reten == 'in_invoice' else reten.amount * -1.00
                                     total_iva_16_retenido += amount_reten
                                     i += 1
                                     # codigo 
@@ -975,9 +976,9 @@ class AccountVatLedgerXlsx(models.AbstractModel):
 
             print(retenciones)
             if obj.type == 'purchase':
-                for reten in retenciones[:]:
-                    print('entro ###')
-                    amount_reten = reten.amount
+                for reten in retenciones:
+                    move_type_reten = reten.l10n_ve_move_line_taxes_ids[0].move_id.move_type
+                    amount_reten = reten.amount if move_type_reten == 'in_invoice' else reten.amount * -1.00
                     total_iva_16_retenido += amount_reten
                     i += 1
                     # codigo 

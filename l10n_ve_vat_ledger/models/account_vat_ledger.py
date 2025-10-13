@@ -115,7 +115,7 @@ class AccountVatLedger(models.Model):
                     ('state', '!=', 'cancel'),
                 ]
                 withholdings_domain += [
-                    ('payment_id.payment_type', '=', 'outbound'),
+                    ('tax_id.l10n_ve_type_tax_use', '=', 'supplier'),
                 ]
             rec.invoice_ids = rec.env['account.move'].search(
                 invoices_domain,
