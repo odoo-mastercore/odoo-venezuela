@@ -241,20 +241,6 @@ class AccountPayment(models.Model):
         vals = 'AÑO '+str_date[0]+' MES '+str_date[1]
         return vals
 
-    def _get_sustraendo(self):
-        if self.l10n_ve_concept_withholding:
-            code_seniat = self.l10n_ve_concept_withholding.split(' - ')[0]
-            activity_name = self.l10n_ve_concept_withholding.split(' - ')[1]
-            regimen_id = self.env['seniat.tabla.islr'].search([
-                ('code_seniat', '=', code_seniat),
-                ('activity_name', '=', activity_name)
-            ],limit=1)
-            if regimen_id and regimen_id.type_subtracting == 'amount':
-                return self._format_miles_number(
-                    regimen_id.banda_calculo_ids[0].withholding_amount
-                )
-        return False
-
     def _format_miles_number(self, number):
         return '{:,.2f}'.format(number).replace(",", "@").replace(".", ",").replace("@", ".")
 

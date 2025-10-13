@@ -64,7 +64,8 @@
                             <field name="base_amount" column_invisible="parent.partner_type != 'supplier'"/>
                             <field name="amount" readonly="parent.partner_type == 'supplier'" force_save="1"/>
                             <field name="ref" optional="hide"/>
-                            <button name="%(action_report_withholding_certificate_iva)d" icon="fa-print " title="Imprimir comprobante IVA" type="action" />
+                            <button name="%(action_report_withholding_certificate_iva)d" invisible="l10n_ve_tax_type != 'partner_tax'" icon="fa-print " title="Imprimir comprobante IVA" type="action" />
+                            <button name="%(action_report_withholding_certificate)d" invisible="l10n_ve_tax_type != 'tabla_islr'" icon="fa-print " title="Imprimir comprobante ISLR" type="action" />
                         </list>
                     </field>
                 </page>

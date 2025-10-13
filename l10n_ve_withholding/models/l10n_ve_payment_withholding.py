@@ -291,6 +291,15 @@ class l10nVePaymentWithholding(models.Model):
                 })
         return lines
 
+    def _get_sustraendo(self):
+        if self.l10n_ve_regimen_islr_id:
+            regimen_id = self.l10n_ve_regimen_islr_id
+            if regimen_id and regimen_id.type_subtracting == 'amount':
+                return self._format_miles_number(
+                    regimen_id.banda_calculo_ids[0].withholding_amount
+                )
+        return False
+    
     ##########
     # ACTIONS
     ##########

@@ -17,7 +17,7 @@
                         <p style="font-size: 14px;">
                             <b>N° de Comprobante: </b><span t-esc="report_number"/><br/>
                             <b>Fecha de emisión: </b><span t-esc="report_date.strftime('%d-%m-%Y')"/><br/>
-                            <b>Periodo Fiscal: </b><span t-esc="o._get_fiscal_period(report_date)"/>
+                            <b>Periodo Fiscal: </b><span t-esc="o.payment_id._get_fiscal_period(report_date)"/>
                         </p>
                     </div>
                 </div><br/>
@@ -55,25 +55,25 @@
                                 Por Concepto:
                             </td>
                             <td class="text-left">
-                                <span t-field="o.l10n_ve_concept_withholding"/>
+                                <span t-field="o.l10n_ve_regimen_islr_id"/>
                             </td>
                         </tr>
-                        <t t-foreach="o.payment_group_id.to_pay_move_line_ids" t-as="i">
+                        <t t-foreach="o.payment_id.invoice_ids" t-as="i">
                             <tr>
-                                <t t-if="i.move_id.move_type == 'in_refund'">
+                                <t t-if="i.move_type == 'in_refund'">
                                     <td class="text-right">
                                         Factura afectada:
                                     </td>
                                     <td class="text-left" >
-                                        <span t-field="i.move_id.reversed_entry_id.ref"/>
+                                        <span t-field="i.reversed_entry_id.ref"/>
                                     </td>
                                 </t>
-                                <t t-elif="i.move_id.move_type == out_invoice">
+                                <t t-elif="i.move_type == out_invoice">
                                     <td class="text-right">
                                         Factura:
                                     </td>
                                     <td class="text-left" >
-                                        <span t-field="i.move_id.name"/>
+                                        <span t-field="i.name"/>
                                     </td>
                                 </t>
                                 <t t-else="">
@@ -81,7 +81,7 @@
                                         Factura:
                                     </td>
                                     <td class="text-left" >
-                                        <span t-field="i.move_id.ref"/>
+                                        <span t-field="i.ref"/>
                                     </td>
                                 </t>
                             </tr>
@@ -90,7 +90,7 @@
                                     Fecha de factura afectada:
                                 </td>
                                 <td class="text-left">
-                                    <span t-field="i.move_id.invoice_date"/>
+                                    <span t-field="i.invoice_date"/>
                                 </td>
                             </tr>
                             <tr>
@@ -98,16 +98,16 @@
                                     Número de control:
                                 </td>
                                 <td class="text-left">
-                                    <span t-field="i.move_id.l10n_ve_control_number"/>
+                                    <span t-field="i.l10n_ve_control_number"/>
                                 </td>
                             </tr>
                         </t>
-                        <tr t-if="o.get_sustraendo()">
+                        <tr t-if="o._get_sustraendo()">
                             <td class="text-right">
                                 Sustraendo:
                             </td>
                             <td class="text-left">
-                                <span t-if="o.get_sustraendo()" t-esc="o.get_sustraendo()"/>
+                                <span t-esc="o._get_sustraendo()"/>
                             </td>
                         </tr>
                         <tr>
@@ -115,7 +115,7 @@
                                 Importe del comprobante que origina la retención:
                             </td>
                             <td class="text-left">
-                                 <span t-esc="o.format_miles_number(o.withholding_base_amount)"/>
+                                 <span t-esc="o.payment_id._format_miles_number(o.base_amount)"/>
                             </td>
                         </tr>
                         <tr>
@@ -123,7 +123,7 @@
                                 Porcentaje Aplicado:
                             </td>
                             <td class="text-left">
-                                <span t-field="o.l10n_ve_comment_withholding"/>
+                                <span t-field="o.l10n_ve_regimen_islr_id.banda_calculo_ids.withholding_percentage"/>
                             </td>
                         </tr>
                         <tr>
@@ -131,7 +131,7 @@
                                 Importe de la retención:
                             </td>
                             <td class="text-left">
-                                <span t-esc="o.format_miles_number(o.amount) if o.currency_id.name != 'USD' else o.format_miles_number(o.amount_company_currency)"/>
+                                <span t-esc="o.payment_id._format_miles_number(o.amount)"/>
                             </td>
                         </tr>
                     </tbody>
@@ -167,7 +167,7 @@
         <field name="name">Comprobante de Retención ISLR</field>
         <field name="model">l10n_ve.payment.withholding</field>
         <field name="report_type">qweb-pdf</field>
-        <field name="paperformat_id" ref="report_qweb_paperformat_l"/>
+        <field name="paperformat_id" ref="base.paperformat_us"/>
         <field name="print_report_name">'Comprobante de Retención - %s' % (object.name or '')</field>
         <field name="report_name">l10n_ve_withholding.report_withholding_certificate</field>
         <field name="report_file">l10n_ve_withholding.report_withholding_certificate</field>
