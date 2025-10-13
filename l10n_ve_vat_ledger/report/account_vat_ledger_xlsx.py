@@ -353,9 +353,11 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     retenciones_by_date.setdefault(r.payment_id.date, []).append(r)
                 retenciones = list(retens)
             if obj.type == 'sale':
-                invoices = list(obj.invoice_ids.sorted('invoice_date'))[::-1] if obj.invoice_ids else []
+                invoices = [inv for inv in obj.invoice_ids if inv.l10n_ve_invoice_date]
+                invoices = sorted(invoices, key=lambda x: x.l10n_ve_invoice_date)
             elif obj.type == 'purchase':
-                invoices = list(obj.invoice_ids.sorted('invoice_date')) if obj.invoice_ids else []
+                invoices = [inv for inv in obj.invoice_ids if inv.invoice_date]
+                invoices = sorted(invoices, key=lambda x: x.invoice_date)
             
             date_reference = obj.date_from
             
@@ -653,6 +655,8 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     inv_date = invoice.l10n_ve_invoice_date
                     if isinstance(inv_date, datetime):
                         inv_date = inv_date.date()
+                    if not inv_date:
+                        continue  # Salta facturas sin fecha válida
                     if date_reference <= inv_date:
                         while date_reference < inv_date:
                             # usar índice por fecha cuando esté disponible

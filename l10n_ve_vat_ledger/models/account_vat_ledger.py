@@ -91,14 +91,9 @@ class AccountVatLedger(models.Model):
                 ('journal_id', 'in', rec.journal_ids.ids),
                 ('company_id', '=', rec.company_id.id),
             ]
-
-            withholding_tax = self.env.ref('account.%s_tax_retencion_iva' % rec.company_id.id)
-            
             withholdings_domain = [
                 ('payment_id.state', 'in', ['in_process', 'paid']),
-                ('tax_id', '=', withholding_tax.id),
             ]
-            # Usar invoice_date consistentemente (evita mezclar 'date' vs 'invoice_date')
             if rec.type == 'sale':
                 invoices_domain += [
                     ('move_type', 'in', ['out_invoice', 'out_refund']),
@@ -107,6 +102,9 @@ class AccountVatLedger(models.Model):
                     ('invoice_date', '>=', rec.date_from),
                     ('invoice_date', '<=', rec.date_to),
                 ]
+                withholdings_domain += [
+                    ('tax_id.l10n_ve_withholding_payment_type', '=', 'customer'),
+                ]
             elif rec.type == 'purchase':
                 invoices_domain += [
                     ('move_type', 'in', ['in_invoice', 'in_refund']),
@@ -114,19 +112,33 @@ class AccountVatLedger(models.Model):
                     ('invoice_date', '<=', rec.date_to),
                     ('state', '!=', 'cancel'),
                 ]
-                withholdings_domain += [
-                    ('tax_id.l10n_ve_type_tax_use', '=', 'supplier'),
-                ]
+                # Manejo seguro de env.ref
+                try:
+                    withholding_tax = self.env.ref('account.%s_tax_retencion_iva' % rec.company_id.id)
+                    withholdings_domain += [
+                        ('tax_id.l10n_ve_withholding_payment_type', '=', 'supplier'),
+                        ('tax_id', '=', withholding_tax.id),
+                    ]
+                except Exception:
+                    withholdings_domain += [
+                        ('tax_id.l10n_ve_withholding_payment_type', '=', 'supplier'),
+                    ]
             rec.invoice_ids = rec.env['account.move'].search(
                 invoices_domain,
                 order='invoice_date desc, l10n_ve_control_number desc'
             )
+            print('#### RETENCIONES ###')
+            print(withholdings_domain)
             rec.withholding_ids = rec.env['l10n_ve.payment.withholding'].search(
                 withholdings_domain,
                 order='name desc'
             )
+            print(rec.env['l10n_ve.payment.withholding'].search(
+                withholdings_domain,
+                order='name desc'
+            ))
 
-    @api.depends('type', 'reference',)
+    @api.depends('type', 'reference')
     def _compute_name(self):
         for rec in self:
             if rec.type == 'sale':
@@ -150,27 +162,28 @@ class AccountVatLedger(models.Model):
 
     @api.onchange('company_id', 'type')
     def change_company(self):
+        self.ensure_one()
+        domain = []
         if self.type == 'sale':
-            domain = [('type', '=', 'sale')]
+            domain.append(('type', '=', 'sale'))
         elif self.type == 'purchase':
-            domain = [('type', '=', 'purchase')]
-        domain += [('company_id', '=', self.company_id.id),]
+            domain.append(('type', '=', 'purchase'))
+        domain.append(('company_id', '=', self.company_id.id))
         journals = self.env['account.journal'].search(domain)
-        self.journal_ids = journals
+        self.journal_ids = [(6, 0, journals.ids)]
 
     def action_present(self):
-        self.state = 'presented'
+        self.write({'state': 'presented'})
 
     def action_cancel(self):
-        self.state = 'cancel'
+        self.write({'state': 'cancel'})
 
     def action_to_draft(self):
-        self.state = 'draft'
+        self.write({'state': 'draft'})
 
     def action_print(self):
         self.ensure_one()
         model_name = \
             "l10n_ve_vat_ledger.action_account_vat_ledger_report_xlsx"
-        # Evitar mutar el record del template del reporte (concurrencia)
         report = self.env.ref(model_name)
         return report.report_action(self, data={'report_file': self.display_name})
