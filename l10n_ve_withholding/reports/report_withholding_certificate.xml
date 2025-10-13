@@ -163,14 +163,13 @@
         </t>
     </template>
 
-     <report
-        string="Comprobante de Retención"
-        id="action_report_withholding_certificate"
-        model="account.payment"
-        report_type="qweb-pdf"
-        name="l10n_ve_withholding.report_withholding_certificate"
-        file="l10n_ve_withholding.report_withholding_certificate"
-        print_report_name="'Comprobante de Retención - %s' % (object.withholding_number or '')"
-    />
+    <record id="action_report_withholding_certificate" model="ir.actions.report">
+        <field name="name">Comprobante de Retención ISLR</field>
+        <field name="model">l10n_ve.payment.withholding</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="print_report_name">'Comprobante de Retención - %s' % (object.withholding_number or '')</field>
+        <field name="report_name">l10n_ve_withholding.report_withholding_certificate</field>
+        <field name="report_file">l10n_ve_withholding.report_withholding_certificate</field>
+    </record>
 
 </odoo>

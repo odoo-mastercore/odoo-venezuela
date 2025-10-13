@@ -46,3 +46,11 @@ class AccountMove(models.Model):
                             "El diario por el cual está emitiendo la factura no " +
                             "tiene secuencia para número de control"
                         ))
+                    
+    def get_exempt_amount(self):
+        self.ensure_one()
+        exempt_amount = 0.0
+        for line in self.invoice_line_ids:
+            if line.tax_ids and line.tax_ids.filtered(lambda r: r.amount == 0):
+                exempt_amount += line.price_subtotal
+        return exempt_amount

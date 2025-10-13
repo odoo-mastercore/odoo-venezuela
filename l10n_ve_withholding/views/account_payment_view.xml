@@ -44,6 +44,7 @@
                             <field name="base_amount" column_invisible="parent.partner_type != 'supplier'"/>
                             <field name="amount" readonly="1" force_save="1"/>
                             <field name="ref" optional="hide"/>
+                            <button name="%(action_report_withholding_certificate_iva)d" icon="fa-print " title="Imprimir comprobante IVA" type="action" />
                         </list>
                     </field>
                 </page>

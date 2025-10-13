@@ -3,8 +3,8 @@
     <template id="report_withholding_certificate_document_iva">
         <t t-call="web.external_layout">
             <t t-set="o" t-value="o.with_context(lang=lang)"/>
-                <t t-set="report_date" t-value="o.date"/>
-                <t t-set="report_number" t-value="o.withholding_number or o.name"/>
+                <t t-set="report_date" t-value="o.payment_id.date"/>
+                <t t-set="report_number" t-value="o.name"/>
                 <t t-set="report_name" t-value="'COMPROBANTE DE RETENCIÓN DEL IMPUESTO AL VALOR AGREGADO IVA'"/>
                 <!-- <t t-set="report_subname"
                     t-value=""/> -->
@@ -23,7 +23,7 @@
                         <p style="font-size: 14px;">
                             <b>N° de Comprobante: </b><span t-esc="report_number"/><br/>
                             <b>Fecha de emisión: </b><span t-esc="report_date.strftime('%d-%m-%Y')"/><br/>
-                            <b>Periodo Fiscal: </b><span t-esc="o._get_fiscal_period(report_date)"/>
+                            <b>Periodo Fiscal: </b><span t-esc="o.payment_id._get_fiscal_period(report_date)"/>
                         </p>
                     </div>
                 </div><br/>
@@ -85,41 +85,37 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <t t-foreach="o.l10n_ve_withholding_distribution_ids" t-as="distribution">
+                        <t t-foreach="o.l10n_ve_move_line_taxes_ids" t-as="distribution">
                             <tr>
                                 <th class="text-center">1</th>
-                                <th class="text-center"><span t-esc="o.payment_group_id.to_pay_move_line_ids[0].move_id.invoice_date.strftime('%d-%m-%Y')"/></th>
-                                <t t-if="o.payment_group_id.state == 'draft'">
-                                    <th class="text-center" t-if="not o.payment_group_id.to_pay_move_line_ids[0].move_id.reversed_entry_id"><span t-field="o.payment_group_id.to_pay_move_line_ids[0].move_id.ref"/></th>
-                                    <th t-else=""/>
-                                    <th class="text-center"><span t-field="o.payment_group_id.to_pay_move_line_ids[0].move_id.l10n_ve_control_number"/></th>
-                                </t>
-                                <t t-else="">
-                                    <th class="text-center" t-if="not o.payment_group_id.to_pay_move_line_ids[0].move_id.reversed_entry_id"><span t-field="o.payment_group_id.matched_move_line_ids[0].move_id.ref"/></th>
-                                    <th t-else=""/>
-                                    <th class="text-center"><span t-field="o.payment_group_id.matched_move_line_ids[0].move_id.l10n_ve_control_number"/></th>
-                                </t>
+                                <th class="text-center"><span t-esc="distribution.move_id.invoice_date.strftime('%d-%m-%Y')"/></th>
+                                <th class="text-center" t-if="not distribution.move_id.reversed_entry_id">
+                                    <span t-field="distribution.move_id.ref"/></th>
+                                <th t-else=""/>
+                                <th class="text-center">
+                                    <span t-field="distribution.move_id.l10n_ve_control_number"/></th>
                                 <th class="text-center"/>
-                                <th class="text-center" t-if="o.payment_group_id.to_pay_move_line_ids[0].move_id.move_type == 'in_refund'"><span t-field="o.payment_group_id.matched_move_line_ids[0].move_id.ref"/></th>
+                                <th class="text-center" t-if="distribution.move_id.move_type == 'in_refund'">
+                                    <span t-field="distribution.move_id.ref"/>
+                                </th>
                                 <th class="text-center" t-else="'"></th>
-
-                                <th class="text-center" t-if="o.payment_group_id.to_pay_move_line_ids and o.payment_group_id.to_pay_move_line_ids[0].move_id.move_type == 'in_refund'">03</th>
+                                <th class="text-center" t-if="distribution.move_id and distribution.move_id.move_type == 'in_refund'">03</th>
                                 <th class="text-center" t-else="">01</th>
 
-                                <t t-if="o.payment_group_id.state != 'draft' and o.payment_group_id.matched_move_line_ids and o.payment_group_id.matched_move_line_ids[0].move_id.reversed_entry_id">
-                                    <th class="text-center"><span t-esc="o.payment_group_id.matched_move_line_ids[0].move_id.reversed_entry_id.ref"/></th>
+                                <t t-if="distribution.move_id and distribution.move_id.reversed_entry_id">
+                                    <th class="text-center"><span t-esc="distribution.move_id.reversed_entry_id.ref"/></th>
                                 </t>
                                 <t t-else="">
                                     <th class="text-center"/>
                                 </t>
-                                <t t-set="amount_total" t-value="round(o.total_amount - o.payment_group_id.matched_move_line_ids[0].move_id.igtf_amount_purchase,2)"/>
-                                <th class="text-center"><span t-esc="o.format_miles_number(amount_total) if not amount_total &lt; 0 else o.format_miles_number(amount_total * -1)"/></th>
-                                <th class="text-center"><span t-esc="o.format_miles_number(distribution.untaxed_amount)"/></th>
-                                <th class="text-center"><span t-esc="o.format_miles_number(distribution.invoice_amount)"/></th>
-                                <th class="text-center"><span t-field="distribution.alic"/></th>
+                                <t t-set="amount_total" t-value="round(distribution.move_id.amount_total,2)"/>
+                                <th class="text-center"><span t-esc="o.payment_id._format_miles_number(amount_total) if not amount_total &lt; 0 else o.payment_id._format_miles_number(amount_total * -1)"/></th>
+                                <th class="text-center"><span t-esc="o.payment_id._format_miles_number(distribution.move_id.get_exempt_amount())"/></th>
+                                <th class="text-center"><span t-esc="o.payment_id._format_miles_number(distribution.move_id.amount_untaxed)"/></th>
+                                <th class="text-center"><span t-field="distribution.tax_line_id.name"/></th>
                                 <th class="text-center"><span t-field="o.partner_id.l10n_ve_vat_retention"/></th>
-                                <th class="text-center"><span t-field="distribution.tax_amount"/></th>
-                                <th class="text-center"><span t-esc="o.format_miles_number(distribution.withholding_amount)"/></th>
+                                <th class="text-center"><span t-field="o.base_amount"/></th>
+                                <th class="text-center"><span t-esc="o.payment_id._format_miles_number(o.amount)"/></th>
                             </tr>
                         </t>
                     </tbody>
@@ -171,15 +167,14 @@
         <field name="orientation">Landscape</field>
     </record>
 
-    <report
-        string="Certificado de Retención"
-        id="action_report_withholding_certificate_iva"
-        model="account.payment"
-        report_type="qweb-pdf"
-        name="l10n_ve_withholding.report_withholding_certificate_iva"
-        file="l10n_ve_withholding.report_withholding_certificate_iva"
-        print_report_name="'Certificado de Retención - %s' % (object.withholding_number or '')"
-        paperformat="report_qweb_paperformat_l"
-    />
+    <record id="action_report_withholding_certificate_iva" model="ir.actions.report">
+        <field name="name">Comprobante de Retención de IVA</field>
+        <field name="model">l10n_ve.payment.withholding</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="paperformat_id" ref="report_qweb_paperformat_l"/>
+        <field name="print_report_name">'Comprobante de Retención - %s' % (object.name or '')</field>
+        <field name="report_name">l10n_ve_withholding.report_withholding_certificate_iva</field>
+        <field name="report_file">l10n_ve_withholding.report_withholding_certificate_iva</field>
+    </record>
 
 </odoo>

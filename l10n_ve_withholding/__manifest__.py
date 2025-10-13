@@ -35,7 +35,7 @@
         'data/seniat_tabla_islr.xml',
         # 'reports/report_templates.xml',
         # 'reports/report_withholding_certificate.xml',
-        # 'reports/report_withholding_certificate_iva.xml',
+        'reports/report_withholding_certificate_iva.xml',
         # 'reports/report_payment_group.xml',
         'views/account_payment_view.xml',
         'views/res_partner_view.xml',
