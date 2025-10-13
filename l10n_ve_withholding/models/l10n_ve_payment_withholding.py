@@ -10,7 +10,7 @@ from datetime import datetime
 
 from dateutil.relativedelta import relativedelta
 from odoo import _, api, fields, models, Command
-from odoo.exceptions import RedirectWarning, UserError
+from odoo.exceptions import UserError
 
 
 class l10nVePaymentWithholding(models.Model):
@@ -29,8 +29,28 @@ class l10nVePaymentWithholding(models.Model):
     base_amount = fields.Monetary(compute="_compute_base_amount", store=True, readonly=False)
     amount = fields.Monetary(compute="_compute_amount", store=True, readonly=False)
     l10n_ve_move_line_taxes_ids = fields.Many2many(related="payment_id.l10n_ve_move_line_taxes_ids")
-
-    _sql_constraints = [("uniq_line", "unique(tax_id, payment_id)", "El impuesto de retención debe ser único por pago")]
+    # ISLR
+    l10n_ve_concept_withholding = fields.Char(string='Concept withholding')
+    move_line_id = fields.Many2one(
+        'account.move.line',
+        string='Linea de factura'
+    )
+    calc_islr = fields.Selection(
+        string='Cálculo de ISLR',
+        selection=[
+            ('all', 'Global'),
+            ('line', 'line')
+        ]
+    )
+    product_id = fields.Many2one(
+        'product.product',
+        string='Producto',
+        related='move_line_id.product_id',
+    )
+    l10n_ve_regimen_islr_id = fields.Many2one(
+        'seniat.tabla.islr',
+        'Aplicativo ISLR'
+    )
 
     @api.depends(
         "tax_id",
@@ -73,9 +93,12 @@ class l10nVePaymentWithholding(models.Model):
             if tax.l10n_ve_tax_type == "partner_tax":
                 wth.base_amount = wth.payment_id.l10n_ve_withholding_taxed + advance_amount
             else:
-                wth.base_amount = wth.payment_id.l10n_ve_withholding_untaxed + advance_amount
+                if wth.calc_islr == 'all':
+                    wth.base_amount = wth.payment_id.l10n_ve_withholding_untaxed + advance_amount
+                elif wth.calc_islr == 'line' and wth.move_line_id:
+                    wth.base_amount = abs(wth.move_line_id.price_subtotal) + advance_amount
 
-    @api.depends("base_amount", "tax_id")
+    @api.depends("base_amount", "tax_id", "l10n_ve_regimen_islr_id")
     def _compute_amount(self):
         for line in self.filtered(lambda r: r.payment_id.partner_type == "supplier"):
             tax_id = line._get_withholding_tax()
@@ -104,6 +127,49 @@ class l10nVePaymentWithholding(models.Model):
             alicuota = int(alicuota_retencion) / 100.0
             base_amount = self.base_amount
             amount = base_amount * (alicuota)
+        elif self.tax_id.l10n_ve_tax_type == 'tabla_islr':
+            regimen_id = self.l10n_ve_regimen_islr_id or False
+            if regimen_id:
+                base = self.base_amount
+                base_withholding = base * (
+                    regimen_id.withholding_base_percentage / 100)
+                withholding_percentage = 0.0
+                base_ut = 0.0
+                subtracting = 0.0
+                withholding = 0.0
+                for band in regimen_id.banda_calculo_ids:
+                    if band.type_amount == 'ut':
+                        base_ut = base / regimen_id.seniat_ut_id.amount
+                    else:
+                        base_ut = base
+                    if base_ut >= band.amount_minimum and base_ut <= band.amount_maximum:
+                        withholding_percentage = band.withholding_percentage / 100
+
+                    elif base_ut > band.amount_minimum and band.amount_maximum == 0.0:
+                        withholding_percentage = band.withholding_percentage / 100
+                    if regimen_id.type_subtracting == 'amount' and \
+                        band.type_amount == 'ut':
+                        subtracting = band.withholding_amount * \
+                        regimen_id.seniat_ut_id.amount
+
+                    elif regimen_id.type_subtracting == 'amount' and \
+                        band.type_amount == 'bs':
+                        subtracting = band.withholding_amount
+
+                if subtracting > 0.0:
+                    withholding = (base_withholding *
+                                withholding_percentage) - subtracting
+                else:
+                    withholding = base_withholding * withholding_percentage
+                # TODO: Pasar a ext
+                # if currency.id != self.company_id.currency_id.id:
+                #     date = self.payment_id.payment_date
+                #     currency_rate = self.env['res.currency.rate'].search([
+                #                     ('currency_id.id','=',currency.id),
+                #                     ('name', '<=', date)],limit=1).inverse_company_rate
+                #     amount = withholding / (currency_rate or 1)
+                # else:
+                amount = withholding
 
         taxes_res = tax.compute_all(
             amount,
@@ -222,11 +288,12 @@ class l10nVePaymentWithholding(models.Model):
                     'tax_amount': self.payment_id._format_miles_number(tax.debit * int(self._get_partner_alicuot(self.payment_id.partner_id)) / 100) if tax.debit else self.payment_id._format_miles_number(tax.credit * int(self._get_partner_alicuot(self.payment_id.partner_id)) / 100),
                 })
         return lines
+
     ##########
     # ACTIONS
     ##########
 
-    # def action_l10n_ar_payment_withholding_tree(self):
+    # def action_l10n_ve_payment_withholding_tree(self):
     #     """Open a tree view showing previous withholdings."""
     #     same_period_withholdings = (
     #         self.env["account.move.line"].search(self._get_same_period_withholdings_domain()).withholding_id
@@ -234,8 +301,8 @@ class l10nVePaymentWithholding(models.Model):
     #     return {
     #         "name": "Previous Withholdings",
     #         "type": "ir.actions.act_window",
-    #         "res_model": "l10n_ar.payment.withholding",
+    #         "res_model": "l10n_ve.payment.withholding",
     #         "view_mode": "list",
-    #         "view_id": self.env.ref("l10n_ar_tax.view_l10n_ar_payment_withholding_tree").id,
+    #         "view_id": self.env.ref("l10n_ve_tax.view_l10n_ve_payment_withholding_tree").id,
     #         "domain": [("id", "in", same_period_withholdings.ids)],
     #     }

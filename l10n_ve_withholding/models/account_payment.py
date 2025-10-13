@@ -6,7 +6,7 @@
 #
 ###############################################################################
 from odoo import models, fields, api, _, Command
-from odoo.exceptions import UserError, ValidationError
+from odoo.exceptions import UserError
 import logging
 _logger = logging.getLogger(__name__)
 
@@ -14,24 +14,13 @@ _logger = logging.getLogger(__name__)
 class AccountPayment(models.Model):
     _inherit = "account.payment"
 
-    l10n_ve_comment_withholding = fields.Char(string='Comment withholding')
-    l10n_ve_concept_withholding = fields.Char(string='Concept withholding')
-    l10n_ve_withholding_distribution = fields.Boolean(
-        string='tiene una distribucion de retencion?'
-    )
-    l10n_ve_withholding_distribution_ids = fields.One2many(
-        'withholding.distribution',
-        'payment_id',
-        string='distribucion de retencion'
-    )
-    l10n_ve_withholding_distributin_islr = fields.Boolean(
-        '¿Aplicar varios conceptos de ISLR?',
+    l10n_ve_withholding_islr = fields.Boolean(
+        '¿Aplicar Retención ISLR?',
         default=False
     )
-    l10n_ve_withholding_distributin_islr_ids = fields.One2many(
-        'withholding.distribution.islr',
-        'payment_id',
-        string='Distribucion de conceptos'
+    l10n_ve_withholding_distribution_islr = fields.Boolean(
+        '¿Aplicar varios conceptos de ISLR?',
+        default=False
     )
     l10n_ve_third_partner_withholding = fields.Boolean(
         string='Retención a terceros',
@@ -44,10 +33,6 @@ class AccountPayment(models.Model):
     l10n_ve_partner_regimen_islr_ids = fields.Many2many(
         'seniat.tabla.islr',
         compute='_compute_partner_regimenes_islr',
-    )
-    l10n_ve_regimen_islr_id = fields.Many2one(
-        'seniat.tabla.islr',
-        'Aplicativo ISLR'
     )
     # this field is to be used by vat retention
     l10n_ve_withholding_taxed = fields.Monetary(
@@ -102,7 +87,6 @@ class AccountPayment(models.Model):
 
     @api.depends("partner_id", "company_id", "date")
     def _compute_l10n_ar_withholding_line_ids(self):
-        # metodo completamente analogo a payment.register._compute_l10n_ar_withholding_ids
         for rec in self.filtered(lambda x: x.partner_type == "supplier"):
             withholdings = [Command.clear()]
             if rec.partner_id.l10n_ve_partner_tax_ids:
@@ -188,20 +172,59 @@ class AccountPayment(models.Model):
             amount = rec.amount + rec.payment_difference
             rec.amount = amount if amount > 0 else 0
 
-    @api.onchange('l10n_ve_withholding_distributin_islr')
-    def _onchange_l10n_ve_withholding_distributin_islr(self):
+    @api.onchange('l10n_ve_withholding_islr')
+    def _onchange_l10n_ve_withholding_islr(self):
         for payment in self:
-            withholding_distributin_islr_ids = []
-            if payment.l10n_ve_withholding_distributin_islr:
+            withholding_islr_ids = []
+            if payment.l10n_ve_withholding_islr:
                 to_pay = payment.to_pay_move_line_ids[0]
+                tax_id = self.env['account.tax'].search([
+                    ('l10n_ve_withholding_payment_type', '=', 'supplier'),
+                    ('l10n_ve_tax_type', '=', 'tabla_islr')
+                ], limit=1)
+                if to_pay.move_id:
+                    withholding_islr_ids.append(Command.create({
+                        'tax_id': tax_id.id,
+                        'payment_id': payment.id,
+                        'calc_islr': 'all'
+                    }))
+            else:
+                withholding_islr_ids = self._delete_islr_lines()
+                payment.l10n_ve_withholding_distribution_islr = False
+            payment.l10n_ve_withholding_line_ids = withholding_islr_ids
+
+    def _delete_islr_lines(self):
+        return [
+            Command.delete(line.id)
+            for line in self.l10n_ve_withholding_line_ids
+            if line.l10n_ve_tax_type == 'tabla_islr'
+        ]
+
+    @api.onchange('l10n_ve_withholding_distribution_islr')
+    def _onchange_l10n_ve_withholding_distribution_islr(self):
+        for payment in self:
+            withholding_islr_ids = []
+            if payment.l10n_ve_withholding_distribution_islr:
+                withholding_islr_ids = self._delete_islr_lines()
+                to_pay = payment.to_pay_move_line_ids[0]
+                tax_id = self.env['account.tax'].search([
+                    ('l10n_ve_withholding_payment_type', '=', 'supplier'),
+                    ('l10n_ve_tax_type', '=', 'tabla_islr')
+                ], limit=1)
                 if to_pay.move_id.invoice_line_ids:
                     for line in to_pay.move_id.invoice_line_ids:
                         if not line.product_id.product_tmpl_id.l10n_ve_disable_islr:
-                            withholding_distributin_islr_ids.append(Command.create({
+                            withholding_islr_ids.append(Command.create({
+                                'tax_id': tax_id.id,
                                 'payment_id': payment.id,
                                 'move_line_id': line.id,
+                                'calc_islr': 'line'
                             }))
-            payment.l10n_ve_withholding_distributin_islr_ids = withholding_distributin_islr_ids
+            else:
+                withholding_islr_ids = self._delete_islr_lines()
+            payment.l10n_ve_withholding_line_ids = withholding_islr_ids
+            if payment.l10n_ve_withholding_islr and not payment.l10n_ve_withholding_distribution_islr:
+                payment._onchange_l10n_ve_withholding_islr()
 
     @api.model
     def _get_trigger_fields_to_synchronize(self):
