@@ -383,7 +383,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                                     # Numero de comprobante
                                     sheet.write(row, 5, reten.name, line)
                                     # Documento afectado
-                                    sheet.write(row, 6, reten.payment_id.move_id.ref, line)
+                                    sheet.write(row, 6, reten.payment_id.invoice_ids.ref or '', line)
                                     sheet.write(row, 7, '', line)
                                     sheet.write(row, 8, '', line)
                                     # Nombre
@@ -978,7 +978,6 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                         sheet.write(row, 35, igtf_amount if igtf_amount > 0 else '' , line_number)
                 row += 1
 
-            print(retenciones)
             if obj.type == 'purchase':
                 for reten in retenciones:
                     move_type_reten = reten.l10n_ve_move_line_taxes_ids[0].move_id.move_type
@@ -996,7 +995,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     # Numero de comrpobante
                     sheet.write(row, 5, reten.name, line)
                     # Documento afectado
-                    sheet.write(row, 6, reten.payment_id.move_id.ref, line)
+                    sheet.write(row, 6, reten.payment_id.invoice_ids.ref or '', line)
                     sheet.write(row, 7, '', line)
                     sheet.write(row, 8, '', line)
                     # Nombre
