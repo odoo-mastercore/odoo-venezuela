@@ -23,5 +23,4 @@ Este repositorio y sus módulos están protegidos bajo la licencia Odoo Propriet
 
 El uso, distribución y modificación está restringido según los términos de Odoo:
 - No se permite la redistribución comercial sin autorización expresa.
-- El código puede ser utilizado únicamente en proyectos internos o clientes autorizados.
 - Para más detalles, consulte: https://www.odoo.com/documentation/master/legal/licenses.html
