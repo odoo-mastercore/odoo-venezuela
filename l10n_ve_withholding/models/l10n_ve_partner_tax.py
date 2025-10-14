@@ -24,10 +24,12 @@ class L10nVePartnerTax(models.Model):
         required=True,
         ondelete='cascade',
         check_company=True,
+        string="Partner"
     )
     tax_id = fields.Many2one(
         'account.tax',
         required=True,
+        string="Tax",
     )
     company_id = fields.Many2one(
         related='tax_id.company_id', store=True,

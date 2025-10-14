@@ -346,6 +346,11 @@ msgstr "Bolívares"
 
 #. module: l10n_ve_withholding
 #: model_terms:ir.ui.view,arch_db:l10n_ve_withholding.view_account_payment_form
+msgid "Withholdings"
+msgstr "Retenciones"
+
+#. module: l10n_ve_withholding
+#: model_terms:ir.ui.view,arch_db:l10n_ve_withholding.view_account_payment_form
 msgid "Calcular Retenciones"
 msgstr "Calcular Retenciones"
 
@@ -644,6 +649,11 @@ msgid "Partner Regimen Islr"
 msgstr "Régimen Islr"
 
 #. module: l10n_ve_withholding
+#: model:ir.model.fields,field_description:l10n_ve_withholding.field_account_payment__l10n_ve_withholdings_amount
+msgid "Withholdings"
+msgstr "Retenciones"
+
+#. module: l10n_ve_withholding
 #: model:ir.model,name:l10n_ve_withholding.model_account_payment
 msgid "Payment Group"
 msgstr "Grupo de Pago"
@@ -684,6 +694,21 @@ msgstr "Imprimir comprobante de retención"
 #: model:ir.model.fields,field_description:l10n_ve_withholding.field_seniat_ut__ref
 msgid "Referencia de la gaceta"
 msgstr "Referencia de la gaceta"
+
+#. module: l10n_ve_withholding
+#: model:ir.model.fields,field_description:l10n_ve_withholding.field_l10n_ve_partner_tax__tax_id
+msgid "Tax"
+msgstr "Impuesto"
+
+#. module: l10n_ve_withholding
+#: model_terms:ir.ui.view,arch_db:l10n_ve_withholding.view_partner_form
+msgid "Withholding"
+msgstr "Retenciones"
+
+#. module: l10n_ve_withholding
+#: model_terms:ir.ui.view,arch_db:l10n_ve_withholding.view_partner_form
+msgid "Purchase Tax Withholdings"
+msgstr "Retenciones automaticas"
 
 #. module: l10n_ve_withholding
 #: model:ir.model.fields,field_description:l10n_ve_withholding.field_res_partner__l10n_ve_vat_retention
@@ -759,6 +784,61 @@ msgstr ""
 #: model:ir.model.fields.selection,name:l10n_ve_withholding.selection__seniat_tabla_islr__type_subtracting__no_amount
 msgid "Sin Sustraendo"
 msgstr "Sin Sustraendo"
+
+#. module: l10n_ve_withholding
+#: model:ir.model.fields,field_description:l10n_ve_withholding.field_l10n_ve_payment_withholding__name
+msgid "Number"
+msgstr "Número"
+
+#. module: l10n_ve_withholding
+#: model:ir.model.fields,field_description:l10n_ve_withholding.field_l10n_ve_payment_withholding__tax_id
+msgid "Tax"
+msgstr "Impuesto"
+
+#. module: l10n_ve_withholding
+#: model:ir.model.fields,field_description:l10n_ve_withholding.field_l10n_ve_payment_withholding__base_amount
+msgid "Base Amount"
+msgstr "Monto base"
+
+#. module: l10n_ve_withholding
+#: model:ir.model.fields,field_description:l10n_ve_withholding.field_l10n_ve_payment_withholding__amount
+msgid "Amount"
+msgstr "Monto"
+
+#. module: l10n_ve_withholding
+#: model:ir.model.fields,field_description:l10n_ve_withholding.field_l10n_ve_payment_withholding__ref
+msgid "Ref"
+msgstr "Referencia"
+
+#. module: l10n_ve_withholding
+#: model:ir.model.fields,field_description:l10n_ve_withholding.field_l10n_ve_payment_withholding__l10n_ve_concept_withholding
+msgid "Concept withholding"
+msgstr "Concepto de Retención"
+
+#. module: l10n_ve_withholding
+#: model:ir.model.fields,field_description:l10n_ve_withholding.field_account_tax__l10n_ve_type_tax_use
+msgid "Venezuela Tax Type"
+msgstr "Tipo de impuesto"
+
+#. module: l10n_ve_withholding
+#: model:ir.model.fields.selection,name:l10n_ve_withholding.selection__account_tax__l10n_ve_type_tax_use__supplier
+msgid "Vendor Payment Withholding"
+msgstr "Retención Pago de Proveedor"
+
+#. module: l10n_ve_withholding
+#: model:ir.model.fields.selection,name:l10n_ve_withholding.selection__account_tax__l10n_ve_type_tax_use__customer
+msgid "Customer Payment Withholding"
+msgstr "Retención Pago de Cliente"
+
+#. module: l10n_ve_withholding
+#: model:ir.model.fields,field_description:l10n_ve_withholding.field_account_tax__l10n_ve_withholding_payment_type
+msgid "Venezuela Withholding Payment Type"
+msgstr "Tipo de impuesto de Retención"
+
+#. module: l10n_ve_withholding
+#: model:ir.model.fields,field_description:l10n_ve_withholding.field_account_tax__l10n_ve_withholding_sequence_id
+msgid "WTH Sequence"
+msgstr "Secuencia de Retención"
 
 #. module: l10n_ve_withholding
 #: model:ir.model.fields.selection,name:l10n_ve_withholding.selection__account_tax__withholding_type__tabla_islr

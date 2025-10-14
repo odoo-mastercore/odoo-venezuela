@@ -27,7 +27,7 @@
                 <field name="l10n_ve_partner_regimen_islr_ids" invisible="True"/>
             </field>
             <label for="payment_total" position="before">
-                <field name="l10n_ve_withholdings_amount" string="Withholdings" invisible="is_internal_transfer or not use_payment_pro or country_code != 'VE'"/>
+                <field name="l10n_ve_withholdings_amount" invisible="is_internal_transfer or not use_payment_pro or country_code != 'VE'"/>
             </label>
             <page name="latam_checks_page" position="after">
                 <page name="withholdings_page" string="Withholdings" invisible="is_internal_transfer or not use_payment_pro or country_code != 'VE'">
@@ -43,7 +43,7 @@
                     <field name="l10n_ve_withholding_line_ids" nolabel="1" colspan="2" invisible="is_internal_transfer" readonly="state != 'draft'">
                         <list editable="bottom">
                             <field name="calc_islr" column_invisible="True" />
-                            <field name="l10n_ve_tax_type" optional="hide"/>
+                            <field name="l10n_ve_tax_type" column_invisible="True" />
                             <field name="withholding_sequence_id" column_invisible="True"/>
                             <field name="company_id" column_invisible="True"/>
                             <field name="currency_id" column_invisible="True"/>

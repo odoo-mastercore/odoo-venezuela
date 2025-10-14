@@ -12,7 +12,7 @@
                 <field name="l10n_ve_tax_type" invisible="l10n_ve_type_tax_use not in ('customer', 'supplier')"/>
             </field>
             <field name="type_tax_use" position="after">
-                <field name="l10n_ve_type_tax_use" invisible="country_code != 'VE'" string="Tax Type" required="country_code == 'VE'"/>
+                <field name="l10n_ve_type_tax_use" invisible="country_code != 'VE'" required="country_code == 'VE'"/>
             </field>
             <xpath expr="//field[@name='amount']/.." position="after">
                 <field name="l10n_ve_withholding_payment_type" invisible="1"/>
