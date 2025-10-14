@@ -668,14 +668,14 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                                     # contador de la factura
                                     sheet.write(row, 0, i, line)
                                     # codigo fecha
-                                    sheet.write(row, 1, reten.date or 'FALSE', date_line)
+                                    sheet.write(row, 1, reten.payment_id.date or 'FALSE', date_line)
                                     # tipo de documento
                                     sheet.write(row, 2, 'Retención', line)
 
                                     sheet.write(row, 3, '', line)
                                     sheet.write(row, 4, '', line)
                                     # Numero de comrpobante
-                                    sheet.write(row, 5, reten.withholding_number, line)
+                                    sheet.write(row, 5, reten.name, line)
                                     # Documento afectado
                                     if len(reten.reconciled_invoice_ids) > 1:
                                         sheet.write(row, 6, reten.reconciled_invoice_ids[0].name, line)
@@ -1049,31 +1049,28 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     row +=1
 
             elif len(retenciones) >= 1 and obj.type == 'sale':
-                for reten in sorted(retenciones, key=lambda x: x.date):
+                for reten in sorted(retenciones, key=lambda x: x.payment_id.date):
                     total_iva_16_retenido += reten.amount if reten.currency_id.id == reten.company_id.currency_id.id else reten.amount_company_currency
                     i += 1
                     # contador de la factura
                     sheet.write(row, 0, i, line)
                     # codigo fecha
-                    sheet.write(row, 1, reten.date or 'FALSE', date_line)
+                    sheet.write(row, 1, reten.payment_id.date or 'FALSE', date_line)
                     # tipo de documento
                     sheet.write(row, 2, 'Retención', line)
 
                     sheet.write(row, 3, '', line)
                     sheet.write(row, 4, '', line)
                     # Numero de comrpobante
-                    sheet.write(row, 5, reten.withholding_number, line)
+                    sheet.write(row, 5, reten.name, line)
                     # Documento afectado
-                    if len(reten.reconciled_invoice_ids) > 1:
-                        sheet.write(row, 6, reten.reconciled_invoice_ids[0].name, line)
-                    else:
-                        sheet.write(row, 6, reten.reconciled_invoice_ids.name, line)
+                    sheet.write(row, 6, reten.payment_id.invoice_ids.name, line)
                     # nombre del partner
-                    sheet.write(row, 7, reten.move_id.partner_id.name or 'FALSE', line)
+                    sheet.write(row, 7, reten.payment_id.partner_id.name or 'FALSE', line)
                     # Rif del cliente
-                    sheet.write(row, 8, '%s-%s' % (reten.move_id.partner_id. \
+                    sheet.write(row, 8, '%s-%s' % (reten.payment_id.partner_id. \
                         l10n_latam_identification_type_id.l10n_ve_code or 'FALSE',
-                        reten.move_id.partner_id.vat or 'FALSE'), line)
+                        reten.payment_id.partner_id.vat or 'FALSE'), line)
                     sheet.write(row, 9, '', line)
                     sheet.write(row, 10, '', line)
                     sheet.write(row, 11, '', line)
@@ -1098,7 +1095,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     sheet.write(row, 31, '', line)
                     sheet.write(row, 32, '', line)
                     sheet.write(row, 33, '', line)
-                    sheet.write(row, 34, reten.amount if reten.currency_id.id == reten.company_id.currency_id.id else reten.amount_company_currency, line_number)
+                    sheet.write(row, 34, reten.amount, line_number)
                     sheet.write(row, 35, '', line)
                     retenciones.remove(reten)
                     row +=1
