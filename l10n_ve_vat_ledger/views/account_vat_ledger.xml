@@ -1,0 +1,109 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>
+    <record id='account_vat_ledger_list' model='ir.ui.view'>
+        <field name='name'>Account VAT Ledger</field>
+        <field name="model">account.vat.ledger</field>
+        <field name='arch' type='xml'>
+            <list  string="VAT Ledger">
+                <field name="name"/>
+                <field name="company_id" />
+                <field name="state"/>
+            </list>
+        </field>
+    </record>
+
+    <record id='account_vat_ledger_form' model='ir.ui.view'>
+        <field name='name'>Account VAT Ledger</field>
+        <field name="model">account.vat.ledger</field>
+        <field name='arch' type='xml'>
+            <form string="VAT Ledger">
+                <field name="type" invisible="1"/>
+                <header>
+                    <button name="action_print" string="Print" type="object" invisible="state not in ('cancel','presented')"/>
+                    <button name="action_present" string="Present" type="object" class="oe_highlight" invisible="state not in ('draft')"/>
+                    <button name="action_cancel" string="Cancel" type="object" invisible="state not in ('draft','presented')"/>
+                    <button name="action_to_draft" string="To Draft" type="object" invisible="state not in ('cancel')"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,presented"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="company_id" widget="selection" />
+                            <field name="date_from"/>
+                            <field name="date_to"/>
+                        </group>
+                        <group>
+                            <field name="reference"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Journals" name="journal_ids">
+                            <field name="journal_ids" domain="[('type', '=', type), ('company_id', '=', company_id)]"/>
+                        </page>
+                        <page string="Invoices" name="invoices">
+                            <field name="invoice_ids">
+                                <list default_order="invoice_date">
+                                    <field name="state" invisible="1"/>
+                                    <field name="invoice_date"/>
+                                    <field name="display_name"/>
+                                    <field name="partner_id"/>
+                                    <field name="l10n_ve_control_number"/>
+                                    <field name="amount_untaxed_signed" string="Base Imponible" sum="Total"/>
+                                    <field name="amount_tax_signed" string="Impuesto" sum="Total"/>
+                                    <field name="amount_total_signed" string="Total Con Impuesto" sum="Total"/>
+                                    <field name="currency_id" invisible="True"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Retenciones" name="withholdings">
+                            <field name="withholding_ids">
+                                <list default_order="name desc">
+                                    <field name="name" string="Número"/> 
+                                    <!-- <field name="date" string="Fecha"/>  -->
+                                    <field name="base_amount" string="Base retención" sum="Total"/>
+                                    <field name="amount" string="IVA Retenido" sum="Total"/>
+                                    <field name="partner_id"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Notes" name="notes">
+                            <field name="note"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_account_purchase_vat_ledger" model="ir.actions.act_window">
+        <field name="name">Purchases VAT Ledger</field>
+        <field name="res_model">account.vat.ledger</field>
+        <field name="context">{'default_type':'purchase'}</field>
+        <field name="domain">[('type','=','purchase'),('company_id', 'in', context.get('allowed_company_ids'))]</field>
+    </record>
+
+    <record id="action_account_sale_vat_ledger" model="ir.actions.act_window">
+        <field name="name">Sales VAT Ledger</field>
+        <field name="res_model">account.vat.ledger</field>
+        <field name="context">{'default_type':'sale'}</field>
+        <field name="domain">[('type','=','sale'),('company_id', 'in', context.get('allowed_company_ids'))]</field>
+    </record>
+
+    <menuitem
+        id="menu_seniat_reports"
+        parent="account.menu_finance_reports"
+        name="SENIAT"
+        groups="account.group_account_manager,account.group_account_user"
+    />
+
+    <menuitem id="menu_account_purchase_vat_ledger"
+        action="action_account_purchase_vat_ledger"
+        parent="menu_seniat_reports"
+        sequence="6"/>
+
+    <menuitem id="menu_account_sale_vat_ledger"
+        action="action_account_sale_vat_ledger"
+        parent="menu_seniat_reports"
+        sequence="4"/>
+</odoo>

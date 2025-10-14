@@ -65,3 +65,57 @@ class AccountMove(models.Model):
         if any(field in vals for field in ('line_ids', 'invoice_line_ids')):
             self._check_lines_price()
         return rec
+
+    def _compute_tax_totals(self):
+        """
+        Hereda y ajusta la estructura de tax_totals:
+        - Solo items con impuestos > 0 en base imponible normal.
+        - Agrega sección 'Exento' para base imponible de impuestos con monto 0.
+        """
+        for move in self:
+            if move.is_invoice(include_receipts=True):
+                base_lines, _tax_lines = move._get_rounded_base_and_tax_lines()
+                base_lines_impuesto = []
+                base_lines_exento = []
+                for bl in base_lines:
+                    tiene_impuesto = any(td['tax'].amount > 0 for td in bl.get('tax_details', {}).get('taxes_data', []))
+                    tiene_exento = any(td['tax'].amount == 0 for td in bl.get('tax_details', {}).get('taxes_data', []))
+                    if tiene_impuesto:
+                        base_lines_impuesto.append(bl)
+                    elif tiene_exento or not bl.get('tax_details', {}).get('taxes_data', []):
+                        base_lines_exento.append(bl)
+                tax_totals = self.env['account.tax']._get_tax_totals_summary(
+                    base_lines=base_lines_impuesto,
+                    currency=move.currency_id,
+                    company=move.company_id,
+                    cash_rounding=move.invoice_cash_rounding_id,
+                )
+                if base_lines_exento:
+                    exento_totals = self.env['account.tax']._get_tax_totals_summary(
+                        base_lines=base_lines_exento,
+                        currency=move.currency_id,
+                        company=move.company_id,
+                        cash_rounding=None,
+                    )
+                    exento_subtotal = {
+                        'name': _('Exento'),
+                        'base_amount_currency': exento_totals['base_amount_currency'],
+                        'base_amount': exento_totals['base_amount'],
+                        'tax_amount_currency': 0.0,
+                        'tax_amount': 0.0,
+                        'tax_groups': [],
+                    }
+                    tax_totals['base_amount_currency'] += exento_totals['base_amount_currency']
+                    tax_totals['base_amount'] += exento_totals['base_amount']
+                    tax_totals['total_amount_currency'] += exento_totals['base_amount_currency']
+                    tax_totals['total_amount'] += exento_totals['base_amount']
+                    tax_totals['subtotals'] = [exento_subtotal] + tax_totals['subtotals']
+                tax_totals['display_in_company_currency'] = (
+                    move.company_id.display_invoice_tax_company_currency
+                    and move.company_currency_id != move.currency_id
+                    and tax_totals['has_tax_groups']
+                    and move.is_sale_document(include_receipts=True)
+                )
+                move.tax_totals = tax_totals
+            else:
+                move.tax_totals = None

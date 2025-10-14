@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <data>
+        <record id="seniat_factor_83" model="seniat.factor">
+            <field name="date">2020-03-13</field>
+            <field name="amount">0.83333</field>
+        </record>
+
+  </data>
+</odoo>

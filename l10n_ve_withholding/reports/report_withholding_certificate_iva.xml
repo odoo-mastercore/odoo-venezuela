@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_withholding_certificate_document_iva">
+        <t t-call="web.external_layout">
+            <t t-set="o" t-value="o.with_context(lang=lang)"/>
+                <t t-set="report_date" t-value="o.payment_id.date"/>
+                <t t-set="report_number" t-value="o.name"/>
+                <t t-set="report_name" t-value="'COMPROBANTE DE RETENCIÓN DEL IMPUESTO AL VALOR AGREGADO IVA'"/>
+                <!-- <t t-set="report_subname"
+                    t-value=""/> -->
+            <div class="page">
+                <div>
+                </div><br/><br/><br/>
+                <div class="text-center">
+                    <br/><br/>
+                    <h4><b><t t-esc="report_name"/></b></h4>
+                    <p style="font-size: 12px;">
+                    Decreto con Rango, Valor y Fuerza de Ley de Reforma de la
+                    ley de impuestos al valor agragado No. 1.436 del 17 de noviembre del 2014<br/>
+                    LEY DEL IVA ART. 11 . LA ADMINISTRACIÓN  TRIBUTARIA PODRÁ DESIGNAR COMO RESPONSABLE DEL PAGO DEL IMPUESTO EN CALIDAD DE AGENTES DE RETENCIÓN  A QUIENES POR SUS FUNCIONES PÚBLICAS O POR RAZÓN DE SUS ACTIVIDADES PRIVADAS INTERVENGAN EN OPERACIONES GRAVADAS CON EL IMPUESTO ESTABLECIDO EN ESTE DECRETO CON RANGO, VALOR Y FUERZA DE LEY
+                    </p><br/>
+                    <div class="text-right">
+                        <p style="font-size: 14px;">
+                            <b>N° de Comprobante: </b><span t-esc="report_number"/><br/>
+                            <b>Fecha de emisión: </b><span t-esc="report_date.strftime('%d-%m-%Y')"/><br/>
+                            <b>Periodo Fiscal: </b><span t-esc="o.payment_id._get_fiscal_period(report_date)"/>
+                        </p>
+                    </div>
+                </div><br/>
+                <div id="informations" class="row mt8 mb8">
+                    <div class="col-6">
+
+                        <!-- IDENTIFICACION (SUJETO A RETENCIÓN) -->
+                        <!-- (1) Apellido uy Nombre: Denominicacion o Razon Social -->
+                        <strong>Sujeto a Retención: </strong><span t-field="o.partner_id.name"/>
+                        <!-- (2) RIF -->
+                        <t t-if="o.partner_id.vat and o.partner_id.l10n_latam_identification_type_id.name">
+                            <br/>
+                            <strong>R.I.F:</strong> <span t-field="o.partner_id.l10n_latam_identification_type_id.l10n_ve_code"/>-<span t-field="o.partner_id.vat"/>
+                        </t>
+                        <!-- (3) Responsabilidad -->
+                        <br/>
+                        <strong>Tipo de Contribuyente: </strong><span t-field="o.partner_id.l10n_ve_responsibility_type_id"/>
+                        <!-- (4) Domicilio Comercial -->
+                        <br/>
+                        <span t-esc="o.partner_id" t-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;address&quot;], &quot;no_marker&quot;: True, &quot;no_tag_br&quot;: True}"/>
+
+                    </div>
+                    <div class="col-6">
+
+                        <!-- IDENTIFICACION (AGENTE DE RETENCIÓN) -->
+                        <!-- (1) Apellido uy Nombre: Denominicacion o Razon Social -->
+                        <strong>Razon Social del Agente de Retención: </strong><span t-field="o.company_id.name"/>
+                        <!-- (2) RIF -->
+                        <br/>
+                        <strong>R.I.F:</strong> <span t-field="o.company_id.partner_id.l10n_latam_identification_type_id.l10n_ve_code"/>-<span t-field="o.company_id.vat"/>
+                        <!-- (3) Responsabilidad -->
+                        <br/>
+                        <strong>Tipo de Contribuyente: </strong><span t-field="o.company_id.l10n_ve_responsibility_type_id"/>
+                        <!-- (4) Domicilio Comercial -->
+                        <br/>
+                        <span t-esc="o.company_id.partner_id" t-options='{"widget": "contact", "fields": ["address"], "no_marker": True, "no_tag_br": True}'/>
+
+                    </div>
+                </div>
+                <br/>
+                <table class="table table-sm o_main_table">
+                    <thead>
+                        <tr>
+                            <th class="text-center"><strong>No</strong></th>
+                            <th class="text-center"><strong>Fecha Dto</strong></th>
+                            <th class="text-center"><strong>Número de factura</strong></th>
+                            <th class="text-center"><strong>Número de Control</strong></th>
+                            <th class="text-center"><strong>Número N/D</strong></th>
+                            <th class="text-center"><strong>Número N/C</strong></th>
+                            <th class="text-center"><strong>Tipo</strong></th>
+                            <th class="text-center"><strong>Dto Afectado</strong></th>
+                            <th class="text-center"><strong>Total Compra con IVA</strong></th>
+                            <th class="text-center"><strong>Compras sin crédito</strong></th>
+                            <th class="text-center"><strong>Base Imponible</strong></th>
+                            <th class="text-center"><strong>% Alic</strong></th>
+                            <th class="text-center"><strong>% Ret</strong></th>
+                            <th class="text-center"><strong>Monto IVA</strong></th>
+                            <th class="text-center"><strong>IVA Retenido</strong></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-foreach="o._get_withholding_lines()" t-as="distribution">
+                            <tr>
+                                <!-- No (Índice de la iteración) -->
+                                <th class="text-center"><span t-esc="distribution['index']"/></th>
+                                <!-- Fecha Dto -->
+                                <th class="text-center"><span t-esc="distribution['date']"/></th>
+                                <!-- Número de factura -->
+                                <th class="text-center" t-if="not distribution['reserved_entry']">
+                                    <span t-esc="distribution['move_ref']"/></th>
+                                <th t-else=""/>
+                                <!-- Número de Control -->
+                                <th class="text-center">
+                                    <span t-esc="distribution['l10n_ve_control_number']"/></th>
+                                <!-- Número N/D (no implementado) -->
+                                <th class="text-center"/>
+                                <!-- Número N/C -->
+                                <th class="text-center" t-if="distribution['move_type'] == 'in_refund'">
+                                    <span t-esc="distribution['move_ref']"/>
+                                </th>
+                                <th class="text-center" t-else="'"></th>
+                                <!-- Tipo (03/01) -->
+                                <th class="text-center" t-if="distribution['move_type'] == 'in_refund'">03</th>
+                                <th class="text-center" t-else="">01</th>
+
+                                <!-- Dto Afectado (referencia de reverso) -->
+                                <t t-if="distribution['reserved_entry_ref']">
+                                    <th class="text-center"><span t-esc="distribution['reserved_entry_ref']"/></th>
+                                </t>
+                                <t t-else="">
+                                    <th class="text-center"/>
+                                </t>
+                                <!-- Total Compra con IVA -->
+                                <th class="text-center"><span t-esc="distribution['amount_total']"/></th>
+                                <!-- Compras sin crédito -->
+                                <th class="text-center"><span t-esc="distribution['amount_untaxed']"/></th>
+                                <!-- Base Imponible -->
+                                <th class="text-center"><span t-esc="distribution['tax_base_amount']"/></th>
+                                <!-- % Alic -->
+                                <th class="text-center"><span t-esc="distribution['tax_name']"/></th>
+                                <!-- % Ret -->
+                                <th class="text-center"><span t-esc="distribution['partner_vat_retention']"/></th>
+                                <!-- Monto IVA -->
+                                <th class="text-center"><span t-esc="distribution['tax_debit']"/></th>
+                                <!-- IVA Retenido -->
+                                <th class="text-center"><span t-esc="distribution['tax_amount']"/></th>
+                            </tr>
+                        </t>
+                    </tbody>
+                </table>
+
+                <br/><br/>
+                <small> Este comprobante se emite según lo establecido en el Artículo N° 16 de la Providencia Administrativa SNAT/2015/0049 de fecha 14/07/2015 Publicada Gaceta Oficial N° 40.720 de fecha 10 de agosto de 2015.</small>
+                <br/>
+            </div>
+            <div class="row">
+                <br/><br/><br/>
+                <div class="col-2"/>
+                <div name="footer_left_column" class="col-4">
+                    ________________________ <br/>
+                    Agente de Retención
+                </div>
+                <div class="col-2"/>
+                <div name="footer_right_column" class="col-4">
+                    _______________________<br/>
+                    Beneficiario
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="report_withholding_certificate_iva">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-set="lang" t-value="o.partner_id.lang"/>
+                <t t-call="l10n_ve_withholding.report_withholding_certificate_document_iva" t-lang="lang"/>
+            </t>
+        </t>
+    </template>
+
+    <record id="report_qweb_paperformat_l" model="report.paperformat">
+        <field name="name">Account financial report qweb landscape</field>
+        <field name="default" eval="True"/>
+        <field name="format">custom</field>
+        <field name="page_height">297</field>
+        <field name="page_width">210</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">12</field>
+        <field name="margin_bottom">8</field>
+        <field name="margin_left">5</field>
+        <field name="margin_right">5</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">10</field>
+        <field name="dpi">110</field>
+        <field name="orientation">Landscape</field>
+    </record>
+
+    <record id="action_report_withholding_certificate_iva" model="ir.actions.report">
+        <field name="name">Comprobante de Retención de IVA</field>
+        <field name="model">l10n_ve.payment.withholding</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="paperformat_id" ref="report_qweb_paperformat_l"/>
+        <field name="print_report_name">'Comprobante de Retención - %s' % (object.name or '')</field>
+        <field name="report_name">l10n_ve_withholding.report_withholding_certificate_iva</field>
+        <field name="report_file">l10n_ve_withholding.report_withholding_certificate_iva</field>
+    </record>
+
+</odoo>
