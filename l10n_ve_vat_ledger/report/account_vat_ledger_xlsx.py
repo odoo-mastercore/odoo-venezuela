@@ -475,11 +475,11 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                         sheet.write(row, 2, 'Nota de Credito', line)
                     elif invoice.move_type == 'out_refund' and invoice.debit_origin_id:
                         sheet.write(row, 2, 'Nota de Debito', line)
-                    elif invoice.move_type == 'in_invoice':
+                    elif invoice.move_type == 'in_invoice' and not invoice.debit_origin_id:
                         sheet.write(row, 2, 'Factura', line)
                     elif invoice.move_type == 'in_refund' and not invoice.debit_origin_id:
                         sheet.write(row, 2, 'Nota de Credito', line)
-                    elif invoice.move_type == 'in_refund' and invoice.debit_origin_id:
+                    elif invoice.move_type == 'in_invoice' and invoice.debit_origin_id:
                         sheet.write(row, 2, 'Nota de Debito', line)
                     # Número de Documento
                     sheet.write(row, 3, invoice.ref or '', line)
