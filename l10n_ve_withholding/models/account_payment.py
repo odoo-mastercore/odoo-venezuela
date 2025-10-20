@@ -139,10 +139,12 @@ class AccountPayment(models.Model):
         for payment in self:
             withholding_taxed = 0.0
             move_line_tax_ids = []
+            company_id = payment.company_id.id if not payment.company_id.parent_id \
+                else payment.company_id.parent_id.id
             tax_list = [
-                self.env.ref(f'account.{payment.company_id.id}_tax8purchase').id,
-                self.env.ref(f'account.{payment.company_id.id}_tax16purchase').id,
-                self.env.ref(f'account.{payment.company_id.id}_tax31purchase').id,
+                self.env.ref(f'account.{company_id}_tax8purchase').id,
+                self.env.ref(f'account.{company_id}_tax16purchase').id,
+                self.env.ref(f'account.{company_id}_tax31purchase').id,
             ]
             for line_to_pay in payment.to_pay_move_line_ids._origin:
                 for move_line in line_to_pay.move_id.line_ids.filtered(lambda l: l.tax_line_id):
