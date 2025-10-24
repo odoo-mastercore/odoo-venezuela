@@ -27,7 +27,7 @@ class AccountPayment(models.Model):
         default=False
     )
     l10n_ve_third_partner_id = fields.Many2one(
-        string=_('Tercero'),
+        string='Tercero',
         comodel_name='res.partner',
     )
     l10n_ve_partner_regimen_islr_ids = fields.Many2many(
