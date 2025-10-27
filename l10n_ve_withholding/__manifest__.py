@@ -37,6 +37,7 @@
         'reports/report_withholding_certificate.xml',
         'reports/report_withholding_certificate_iva.xml',
         # 'reports/report_payment_group.xml',
+        'views/res_company.xml',
         'views/account_payment_view.xml',
         'views/res_partner_view.xml',
         'views/account_journal_view.xml',

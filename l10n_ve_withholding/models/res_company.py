@@ -18,6 +18,11 @@ class ResCompany(models.Model):
         string="Tax Base Account",
         help="Account that will be set on lines created to represent the tax base amounts."
     )
+    l10n_ve_withholding_signature = fields.Image(
+        string='Withholding Signature',
+        max_width=200,
+        max_height=200
+    )
 
     def _localization_use_withholdings(self):
         """ This method is to be inherited by localizations and return True

@@ -86,10 +86,13 @@ class AccountVatLedger(models.Model):
     @api.depends('journal_ids', 'date_from', 'date_to', 'company_id', 'type')
     def _compute_invoices(self):
         for rec in self:
+            company_ids = [rec.company_id.id]
+            if rec.company_id.child_ids:
+                company_ids += rec.company_id.child_ids.ids
             invoices_domain = [
                 ('state', 'not in', ['draft']),
                 ('journal_id', 'in', rec.journal_ids.ids),
-                ('company_id', '=', rec.company_id.id),
+                ('company_id', 'in', company_ids),
             ]
             withholdings_domain = [
                 ('payment_id.state', 'in', ['in_process', 'paid']),

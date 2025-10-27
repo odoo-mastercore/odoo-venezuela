@@ -16,14 +16,19 @@ class AccountMove(models.Model):
 
     l10n_ve_invoice_date = fields.Datetime(
         string='Fecha y hora de la factura',
-        readonly=True
+        readonly=True,
+        copy=False,
     )
 
     def _post(self, soft=True):
-        super()._post(soft=soft)
-        for rec in self:
-            if rec.state == 'posted':
+        posted_moves = super()._post(soft=soft)
+        for rec in posted_moves:
+            # Se valida que no exista fecha de factura y se la asignamos
+            # Con esto prevenimos que al validar facturas desde tome una fecha
+            # Que no corresponda con el correlativo de la factura
+            if rec.state == 'posted' and not rec.l10n_ve_invoice_date:
                 rec.l10n_ve_invoice_date = fields.Datetime.now()
+        return posted_moves
 
     def _get_l10n_ve_invoice_date(self, split=False):
         date, time = False, False
