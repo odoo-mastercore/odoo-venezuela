@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="inherit_view_company_form" model="ir.ui.view">
+        <field name="name">inherit.view.company.form</field>
+        <field name="model">res.company</field>
+        <field name="inherit_id" ref="base.view_company_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='general_info']" position="after">
+                <page string="Firma para retenciones">
+                    <field
+                        name="l10n_ve_withholding_signature"
+                        widget="image"
+                        options='{"size": [100, 100]}'
+                        />
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

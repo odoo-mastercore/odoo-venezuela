@@ -32,8 +32,8 @@ class AccountMove(models.Model):
     )
 
     def _post(self, soft=True):
-        super(AccountMove, self)._post(soft)
-        for move in self:
+        moves_posted = super(AccountMove, self)._post(soft)
+        for move in moves_posted:
             if (move.state == 'posted' and move.l10n_ve_control_number == False) or \
                 (move.move_type == 'out_refund' and move.l10n_ve_control_number == ''):
                 if move.move_type in ['out_invoice', 'out_refund']:
@@ -48,6 +48,7 @@ class AccountMove(models.Model):
                             "El diario por el cual está emitiendo la factura no " +
                             "tiene secuencia para número de control"
                         ))
+        return moves_posted
 
     def get_exempt_amount(self):
         self.ensure_one()

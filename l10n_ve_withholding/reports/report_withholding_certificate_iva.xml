@@ -142,12 +142,16 @@
             <div class="row">
                 <br/><br/><br/>
                 <div class="col-2"/>
-                <div name="footer_left_column" class="col-4">
-                    ________________________ <br/>
-                    Agente de Retención
-                </div>
+                    <div name="footer_left_column" class="col-4">
+                        <img  t-att-src="image_data_uri(o.company_id.l10n_ve_withholding_signature)" width="200px" height="100px"/>
+                        <br/>
+                            Agente de Retención
+                    </div>
                 <div class="col-2"/>
                 <div name="footer_right_column" class="col-4">
+                    <br/>
+                    <br/>
+                    <br/>
                     _______________________<br/>
                     Beneficiario
                 </div>
