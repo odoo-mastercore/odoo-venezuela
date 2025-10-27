@@ -15,7 +15,7 @@
     <record model="ir.actions.act_window" id="act_seniat_factor">
         <field name="name">SENIAT Factor de calculo ISLR</field>
         <field name="res_model">seniat.factor</field>
-        <field name="view_mode">tree</field>
+        <field name="view_mode">list</field>
     </record>
 
     <menuitem
