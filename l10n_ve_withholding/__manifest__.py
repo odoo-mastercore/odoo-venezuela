@@ -47,6 +47,7 @@
         'views/seniat_partner_type_view.xml',
         'views/seniat_tabla_islr_view.xml',
         'views/product_template.xml',
+        'views/l10n_ve_payment_withholding.xml',
         'views/res_config_settings.xml'
     ],
     'installable': True,

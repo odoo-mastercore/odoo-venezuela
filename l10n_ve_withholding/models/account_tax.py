@@ -29,14 +29,14 @@ class AccountTax(models.Model):
             ('customer', 'Customer Payment Withholding')
         ],
         compute='_compute_l10n_ve_type_tax_use', inverse='_inverse_l10n_ve_type_tax_use',
-        string="Venezuela Tax Type"
+        string='Venezuela Tax Type'
     )
     l10n_ve_withholding_payment_type = fields.Selection(
         selection=[
             ('supplier', 'Vendor Payment'),
             ('customer', 'Customer Payment')
         ],
-        string="Venezuela Withholding Payment Type",
+        string='Venezuela Withholding Payment Type',
     )
     l10n_ve_withholding_sequence_id = fields.Many2one(
         'ir.sequence',
@@ -49,7 +49,7 @@ class AccountTax(models.Model):
             ('tabla_islr', 'Tabla ISLR'),
             ('partner_tax', 'Alícuota en el Partner'),
         ],
-        string="Tipo de Retención"
+        string='Tipo de Retención'
     )
 
     @api.depends('type_tax_use', 'l10n_ve_withholding_payment_type')

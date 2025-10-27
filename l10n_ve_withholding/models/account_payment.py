@@ -71,6 +71,7 @@ class AccountPayment(models.Model):
     l10n_ve_withholdings_amount = fields.Monetary(
         compute="_compute_l10n_ve_withholdings_amount",
         currency_field="company_currency_id",
+        string="Withholdings"
     )
 
     @api.constrains("currency_id", "company_id", "l10n_ve_withholding_line_ids")
@@ -86,17 +87,19 @@ class AccountPayment(models.Model):
             rec.payment_total += sum(rec.l10n_ve_withholding_line_ids.mapped("amount"))
 
     @api.depends("partner_id", "company_id", "date")
-    def _compute_l10n_ar_withholding_line_ids(self):
+    def _compute_l10n_ve_withholding_line_ids(self):
         for rec in self.filtered(lambda x: x.partner_type == "supplier"):
-            withholdings = [Command.clear()]
+            withholdings = []
+            wth_islr = False
             if rec.partner_id.l10n_ve_partner_tax_ids:
-                partner_taxes = self.env['l10n_ve.partner.tax'].search([
-                    *self.env['l10n_ve.partner.tax']._check_company_domain(rec.company_id),
-                    ('partner_id', '=', rec.partner_id.commercial_partner_id.id),
-                    ('tax_id.l10n_ve_withholding_payment_type', '=', rec.partner_type)
+                if any(x.tax_id.l10n_ve_tax_type == 'tabla_islr' for x in rec.partner_id.l10n_ve_partner_tax_ids):
+                    wth_islr = True
+                withholdings.extend([
+                    Command.create({'tax_id': x.tax_id.id})
+                    for x in rec.partner_id.l10n_ve_partner_tax_ids
                 ])
-                withholdings.append([Command.create({'tax_id': x.tax_id.id}) for x in partner_taxes])
-            rec.l10n_ar_withholding_line_ids = withholdings
+            rec.l10n_ve_withholding_islr = wth_islr
+            rec.l10n_ve_withholding_line_ids = withholdings
 
     @api.depends("l10n_ve_withholding_line_ids.amount")
     def _compute_l10n_ve_withholdings_amount(self):
@@ -136,10 +139,12 @@ class AccountPayment(models.Model):
         for payment in self:
             withholding_taxed = 0.0
             move_line_tax_ids = []
+            company_id = payment.company_id.id if not payment.company_id.parent_id \
+                else payment.company_id.parent_id.id
             tax_list = [
-                self.env.ref(f'account.{payment.company_id.id}_tax8purchase').id,
-                self.env.ref(f'account.{payment.company_id.id}_tax16purchase').id,
-                self.env.ref(f'account.{payment.company_id.id}_tax31purchase').id,
+                self.env.ref(f'account.{company_id}_tax8purchase').id,
+                self.env.ref(f'account.{company_id}_tax16purchase').id,
+                self.env.ref(f'account.{company_id}_tax31purchase').id,
             ]
             for line_to_pay in payment.to_pay_move_line_ids._origin:
                 for move_line in line_to_pay.move_id.line_ids.filtered(lambda l: l.tax_line_id):

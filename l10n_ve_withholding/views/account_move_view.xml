@@ -33,7 +33,7 @@
                             <field name="base_amount" column_invisible="parent.move_type not in ('in_invoice','in_refund')"/>
                             <field name="amount" readonly="1" force_save="1"/>
                             <field name="ref" optional="hide"/>
-                            <button name="%(action_report_withholding_certificate_iva)d" invisible="l10n_ve_tax_type != 'partner_tax'" type="action" string="Imprimir comprobante IVA" icon="fa-print" attrs="{'invisible': [('tax_id', '=', False)]}"/>
+                            <button name="%(action_report_withholding_certificate_iva)d" invisible="l10n_ve_tax_type != 'partner_tax'" type="action" string="Imprimir comprobante IVA" icon="fa-print" />
                             <button name="%(action_report_withholding_certificate)d" invisible="l10n_ve_tax_type != 'tabla_islr'" icon="fa-print " title="Imprimir comprobante ISLR" type="action" />
                         </list>
                     </field>

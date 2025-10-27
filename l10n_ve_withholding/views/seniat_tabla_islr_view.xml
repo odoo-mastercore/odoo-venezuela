@@ -83,7 +83,7 @@
     <record id="act_seniat_tabla_islr" model="ir.actions.act_window">
         <field name="name">SENIAT Tabla de calculo ISLR</field>
         <field name="res_model">seniat.tabla.islr</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
     </record>
 
     <menuitem
