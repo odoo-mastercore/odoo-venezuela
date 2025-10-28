@@ -387,7 +387,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                                     sheet.write(row, 7, '', line)
                                     sheet.write(row, 8, '', line)
                                     # Nombre
-                                    sheet.write(row, 9, reten.partner_id.name, line)
+                                    sheet.write(row, 9, reten.partner_id.move_id.partner_id.name, line)
                                     # RIF
                                     sheet.write(row, 10, '%s-%s' % (reten.partner_id.l10n_latam_identification_type_id.l10n_ve_code or 'FALSE',
                                         reten.partner_id.vat or 'FALSE'), line)
@@ -735,7 +735,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                         sheet.write(row, 2, 'Nota de Debito', line)
 
                     # Número de Documento
-                    sheet.write(row, 3, invoice.name or 'FALSE', line)
+                    sheet.write(row, 3, invoice._get_name_vat_ledger() or 'FALSE', line)
                     # Número de Control
                     sheet.write(row, 4, invoice.l10n_ve_control_number or 'FALSE', line)
 
@@ -751,11 +751,11 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                         # Número Factura Afectada si es de debito o credito
                         if invoice.move_type == 'out_refund':
                             if invoice.reversed_entry_id:
-                                sheet.write(row, 6, invoice.reversed_entry_id.name, line)
+                                sheet.write(row, 6, invoice._get_reverse_name_vat_ledger(), line)
                             else:
                                 sheet.write(row, 6, '', line)
                         elif invoice.debit_origin_id:
-                            sheet.write(row, 6, invoice.debit_origin_id.name, line)
+                            sheet.write(row, 6, invoice._get_debit_name_vat_ledger(), line)
                         else:
                             sheet.write(row, 6, '', line)
                         # nombre del partner
@@ -801,100 +801,85 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                         alic_31 = ''
                         iva_31 = 0.00
                         base_imponible_31 = 0.00
-                        if invoice.line_ids:
-                            for linel in invoice.line_ids:
+                        if invoice.invoice_line_ids:
+                            for linel in invoice.invoice_line_ids:
                                 if linel.tax_ids:
-                                    if linel.tax_ids[0].amount == 16.00:
-                                        base_imponible += linel.credit if linel.debit == 0 else -linel.debit
-                                        if invoice.move_type == 'out_refund' or \
-                                            invoice.move_type == 'in_refund' or (invoice.move_type == 'out_invoice' \
-                                                and invoice.debit_origin_id):
-                                            base_imponible += (linel.debit * -1.00) if linel.debit == 0 else 0
-                                            if not invoice.debit_origin_id:
-                                                total_nota_credito_16 += linel.debit * -1.00
+                                    tax_amount_value = linel.tax_ids[0].amount
+                                    if tax_amount_value in (16.00, 8.00, 31.00, 0.00):
+                                        amounts = self.get_amount_base_amount(linel, tax_amount_value if tax_amount_value != 0.00 else False)
+                                        base_val = amounts.get('base_imponible')
+                                        tax_val = amounts.get('tax_amount')
+                                        if base_val and tax_amount_value == 16.00:
+                                            base_imponible += base_val
+                                            iva_16 += tax_val
+                                            if invoice.move_type in ('out_refund',) or (invoice.move_type == 'out_invoice' and invoice.debit_origin_id):
+                                                base_imponible += base_val * -1
+                                                iva_16 += tax_val * -1.00
+                                                if not invoice.debit_origin_id:
+                                                    base_imponible += base_val * -1
+                                                    iva_16 += tax_val * -1.00
+                                                    total_nota_credito_16 += base_val * -1
+                                                    total_nota_credito_iva_16 += tax_val * -1
+                                                else:
+                                                    base_imponible += base_val
+                                                    iva_16 += tax_val
+                                                    total_nota_debito_16 += base_val
+                                                    total_nota_debito_iva_16 += tax_val
                                             else:
-                                                # base_imponible += linel.credit
-                                                total_nota_debito_16 += linel.credit
-                                        else:
-                                            total_base_imponible_16 += linel.credit if linel.debit == 0 else -linel.debit
-                                        alic_16 = '16%'
-                                    elif linel.tax_ids[0].amount == 0.00:
-                                        base_exento += linel.credit if linel.debit == 0 else -linel.debit
-                                        if invoice.move_type == 'out_refund' or invoice.move_type == 'in_refund' \
-                                            or (invoice.move_type == 'out_invoice' and invoice.debit_origin_id):
-                                            base_exento += linel.debit * -1.00 if linel.debit == 0 else 0
-                                            if not invoice.debit_origin_id:
-                                                total_base_exento_credito += linel.debit * -1.00
+                                                total_base_imponible_16 += base_imponible
+                                                total_iva_16 += iva_16
+                                            alic_16 = '16%'
+                                        elif base_val and tax_amount_value == 0.00:
+                                            base_exento += base_val
+                                            if invoice.move_type in ('out_refund',) or (invoice.move_type == 'out_invoice' and invoice.debit_origin_id):
+                                                base_exento += base_val * -1
+                                                if not invoice.debit_origin_id:
+                                                    total_base_exento_credito += base_val * -1
+                                                else:
+                                                    base_exento += base_val
+                                                    total_base_exento_debito += base_val
                                             else:
-                                                # base_exento += linel.credit
-                                                total_base_exento_debito += linel.credit
-                                        else:
-                                            total_base_exento += linel.credit if linel.debit == 0 else -linel.debit
-                                    elif linel.tax_ids[0].amount == 8.00:
-                                        base_imponible_8 += linel.credit if linel.debit == 0 else -linel.debit
-                                        if invoice.move_type == 'out_refund' or invoice.move_type == 'in_refund' \
-                                            or (invoice.move_type == 'out_invoice' and invoice.debit_origin_id):
-                                            base_imponible_8 += linel.debit * -1.00 if linel.debit == 0 else 0
-                                            if not invoice.debit_origin_id:
-                                                total_nota_credito_8 += linel.debit * -1.00
+                                                total_base_exento += base_exento
+                                        elif base_val and tax_amount_value == 8.00:
+                                            base_imponible_8 += base_val
+                                            iva_8 += tax_val
+                                            if invoice.move_type in ('out_refund',) or (invoice.move_type == 'out_invoice' and invoice.debit_origin_id):
+                                                base_imponible_8 += base_val * -1
+                                                iva_8 += tax_val * -1.00
+                                                if not invoice.debit_origin_id:
+                                                    base_imponible_8 += base_val * -1
+                                                    iva_8 += tax_val * -1.00
+                                                    total_nota_credito_8 += base_val * -1
+                                                    total_nota_credito_iva_8 += tax_val * -1
+                                                else:
+                                                    base_imponible += base_val
+                                                    iva_16 += tax_val
+                                                    total_nota_debito_8 += base_val
+                                                    total_nota_debito_iva_8 += tax_val
                                             else:
-                                                # base_imponible_8 += linel.credit
-                                                total_nota_debito_8 += linel.credit
-                                        else:
-                                            total_base_imponible_8 += linel.credit if linel.debit == 0 else -linel.debit
-                                        alic_8 = '8%'
-                                    elif linel.tax_ids[0].amount == 31.00:
-                                        base_imponible_31 += linel.credit if linel.debit == 0 else -linel.debit
-                                        if invoice.move_type == 'out_refund' or invoice.move_type == 'in_refund' \
-                                            or (invoice.move_type == 'out_invoice' and invoice.debit_origin_id):
-                                            base_imponible_31 += linel.debit * -1.00 if linel.debit == 0 else 0
-                                            if not invoice.debit_origin_id:
-                                                total_nota_credito_31 += linel.debit * -1.00
+                                                total_base_imponible_8 += base_imponible_8
+                                                total_iva_8 += iva_8
+                                            alic_8 = '8%'
+                                        elif base_val and tax_amount_value == 31.00:
+                                            base_imponible_31 += base_val
+                                            iva_31 += tax_val
+                                            if invoice.move_type in ('out_refund',) or (invoice.move_type == 'out_invoice' and invoice.debit_origin_id):
+                                                base_imponible_31 += base_val * -1
+                                                iva_31 += tax_val * -1.00
+                                                if not invoice.debit_origin_id:
+                                                    base_imponible_31 += base_val * -1
+                                                    iva_31 += tax_val * -1.00
+                                                    total_nota_credito_31 += base_val * -1
+                                                    total_nota_credito_iva_31 += tax_val * -1
+                                                else:
+                                                    base_imponible += base_val
+                                                    iva_16 += tax_val
+                                                    total_nota_debito_31 += base_val
+                                                    total_nota_debito_iva_31 += tax_val
                                             else:
-                                                # base_imponible_31 += linel.credit
-                                                total_nota_debito_31 += linel.credit
-                                        else:
-                                            total_base_imponible_31 += linel.credit if linel.debit == 0 else -linel.debit
-                                        alic_31 = '31%'
-                                elif linel.name == 'IVA (16.0%) ventas':
-                                    iva_16 += linel.credit
-                                    if invoice.move_type == 'out_refund' or \
-                                            invoice.move_type == 'in_refund' or (invoice.move_type == 'out_invoice' \
-                                                and invoice.debit_origin_id):
-                                        iva_16 += linel.debit * -1.00
-                                        if not invoice.debit_origin_id:
-                                            total_nota_credito_iva_16 += iva_16
-                                        else:
-                                            # iva_16 += linel.credit
-                                            total_nota_debito_iva_16 += iva_16
-                                    else:
-                                        total_iva_16 += iva_16
-                                elif linel.name == 'IVA (8.0%) ventas':
-                                    iva_8 += linel.credit
-                                    if invoice.move_type == 'out_refund' or invoice.move_type == 'in_refund' \
-                                            or (invoice.move_type == 'out_invoice' and invoice.debit_origin_id):
-                                        iva_8 += linel.debit * -1.00
-                                        if not invoice.debit_origin_id:
-                                            total_nota_credito_iva_8 += iva_8
-                                        else:
-                                            # iva_8 += linel.credit
-                                            total_nota_debito_iva_8 += iva_8
-                                    else:
-                                        total_iva_8 += iva_8
-                                    alic_8 = '8%'
-                                elif linel.name == 'IVA (31.0%) ventas':
-                                    iva_31 += linel.credit
-                                    if invoice.move_type == 'out_refund' or invoice.move_type == 'in_refund' \
-                                            or (invoice.move_type == 'out_invoice' and invoice.debit_origin_id):
-                                        iva_31 += linel.debit * -1.00
-                                        if not invoice.debit_origin_id:
-                                            total_nota_credito_iva_31 += iva_31
-                                        else:
-                                            # iva_8 += linel.credit
-                                            total_nota_debito_iva_31 += iva_31
-                                    else:
-                                        total_iva_31 += iva_31
-                                    alic_31 = '31%'
+                                                total_base_imponible_31 += base_imponible_31
+                                                total_iva_31 += iva_31
+                                            alic_31 = '31%'
                         
                         #Contribuyentes
                         if invoice.partner_id.l10n_latam_identification_type_id.is_vat:
@@ -973,9 +958,10 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                         #         payments_with_igtf = payments.filtered(lambda x: x.is_igtf)
                         #         for pay in payments_with_igtf:
                         #             igtf_amount += pay.igtf_amount_signed
-                        total_igtf += igtf_amount
+                        #total_igtf += igtf_amount
+                        total_igtf += invoice._get_igtf_amount()
                         sheet.write(row, 34, '', line_number)
-                        sheet.write(row, 35, igtf_amount if igtf_amount > 0 else '' , line_number)
+                        sheet.write(row, 35, invoice._get_igtf_amount() , line_number)
                 row += 1
 
             if obj.type == 'purchase':
