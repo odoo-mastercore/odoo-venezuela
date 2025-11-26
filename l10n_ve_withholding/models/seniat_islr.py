@@ -64,11 +64,11 @@ class BandaCaculo(models.Model):
     _rec_name = 'complete_percentage'
 
     amount_minimum = fields.Float(
-        'Monto mayor a ',
+        'Monto menor a ',
         help="Monto para expresar la cantidad que no entra a retención"
     )
     amount_maximum = fields.Float(
-        'Monto menor a ',
+        'Monto mayor a ',
         help="Monto para expresar la cantidad que no entra a retención"
     )
     type_amount = fields.Selection([
