@@ -167,7 +167,15 @@ class AccountPayment(models.Model):
         for payment in self:
             withholding_untaxed = 0.0
             for line_to_pay in payment.to_pay_move_line_ids._origin:
-                withholding_untaxed += line_to_pay.move_id.amount_untaxed
+                amount_untaxed = line_to_pay.move_id.amount_untaxed
+                if line_to_pay.move_id.currency_id != payment.company_id.currency_id:
+                    amount_untaxed = line_to_pay.move_id.currency_id._convert(
+                        line_to_pay.move_id.amount_untaxed,
+                        payment.company_id.currency_id,
+                        payment.company_id,
+                        payment.date
+                    )
+                withholding_untaxed += amount_untaxed
             payment.l10n_ve_withholding_untaxed = withholding_untaxed
 
     @api.onchange("l10n_ve_withholdings_amount")
