@@ -82,7 +82,7 @@ class BandaCaculo(models.Model):
         help='% Base Retención'
     )
     withholding_amount = fields.Float(
-        'Pagos Mayor a Bs.',
+        string='Pagos Mayor a Bs.',
         help='Monto Retención'
     )
     complete_percentage = fields.Char(
