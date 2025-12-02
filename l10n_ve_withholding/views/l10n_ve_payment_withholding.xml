@@ -24,9 +24,9 @@
                     <group>
                         <field name="ref"/>
                     </group>
-                    <group>
+                    <!-- <group>
                         <field name="l10n_ve_move_line_taxes_ids"/>
-                    </group>
+                    </group> -->
                 </sheet>
             </form>
         </field>
