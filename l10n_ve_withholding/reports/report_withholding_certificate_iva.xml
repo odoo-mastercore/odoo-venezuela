@@ -28,22 +28,26 @@
                     </div>
                 </div><br/>
                 <div id="informations" class="row mt8 mb8">
+                    <t t-set="partner" t-value="o.partner_id"/>
+                    <t t-if="o.payment_group_id.third_partner_withholding and o.payment_group_id.third_partner_id">
+                        <t t-set="partner" t-value="o.payment_group_id.third_partner_id"/>
+                    </t>
                     <div class="col-6">
 
                         <!-- IDENTIFICACION (SUJETO A RETENCIÓN) -->
                         <!-- (1) Apellido uy Nombre: Denominicacion o Razon Social -->
-                        <strong>Sujeto a Retención: </strong><span t-field="o.partner_id.name"/>
+                        <strong>Sujeto a Retención: </strong><span t-field="partner.name"/>
                         <!-- (2) RIF -->
-                        <t t-if="o.partner_id.vat and o.partner_id.l10n_latam_identification_type_id.name">
+                        <t t-if="partner.vat and partner.l10n_latam_identification_type_id.name">
                             <br/>
-                            <strong>R.I.F:</strong> <span t-field="o.partner_id.l10n_latam_identification_type_id.l10n_ve_code"/>-<span t-field="o.partner_id.vat"/>
+                            <strong>R.I.F:</strong> <span t-field="partner.l10n_latam_identification_type_id.l10n_ve_code"/>-<span t-field="partner.vat"/>
                         </t>
                         <!-- (3) Responsabilidad -->
                         <br/>
-                        <strong>Tipo de Contribuyente: </strong><span t-field="o.partner_id.l10n_ve_responsibility_type_id"/>
+                        <strong>Tipo de Contribuyente: </strong><span t-field="partner.l10n_ve_responsibility_type_id"/>
                         <!-- (4) Domicilio Comercial -->
                         <br/>
-                        <span t-esc="o.partner_id" t-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;address&quot;], &quot;no_marker&quot;: True, &quot;no_tag_br&quot;: True}"/>
+                        <span t-esc="partner" t-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;address&quot;], &quot;no_marker&quot;: True, &quot;no_tag_br&quot;: True}"/>
 
                     </div>
                     <div class="col-6">
