@@ -23,11 +23,12 @@ class AccountMove(models.Model):
     )
 
     def _post(self, soft=True):
-        super()._post(soft=soft)
+        res = super()._post(soft=soft)
         for rec in self:
             if rec.state == 'posted':
                 rec.l10n_ve_invoice_date = fields.Datetime.now()
-
+        return res
+    
     def _get_l10n_ve_invoice_date(self, split=False):
         date, time = False, False
         if self.l10n_ve_invoice_date:
