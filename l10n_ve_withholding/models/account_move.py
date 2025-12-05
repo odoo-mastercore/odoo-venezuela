@@ -61,7 +61,7 @@ class AccountMove(models.Model):
         return super().get_taxes_values()
 
     def _post(self, soft=True):
-        super(AccountMove, self)._post(soft)
+        res = super(AccountMove, self)._post(soft)
         for rec in self:
             if (rec.state == 'posted' and rec.\
                 l10n_ve_document_number == False) or rec.\
@@ -77,6 +77,7 @@ class AccountMove(models.Model):
                         raise ValidationError(
                     _("El diario por el cual está emitiendo la factura no"+
                         " tiene secuencia para número de control"))
+        return res
 
 class AccountMoveLine(models.Model):
     _inherit = "account.move.line"
