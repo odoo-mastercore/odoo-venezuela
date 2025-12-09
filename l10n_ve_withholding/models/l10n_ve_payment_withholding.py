@@ -299,7 +299,10 @@ class l10nVePaymentWithholding(models.Model):
                     regimen_id.banda_calculo_ids[0].withholding_amount
                 )
         return False
-    
+
+    def _format_miles_number(self, number):
+        return '{:,.2f}'.format(number).replace(",", "@").replace(".", ",").replace("@", ".")
+
     ##########
     # ACTIONS
     ##########
