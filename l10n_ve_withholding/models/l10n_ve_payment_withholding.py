@@ -28,7 +28,7 @@ class l10nVePaymentWithholding(models.Model):
     withholding_sequence_id = fields.Many2one(related="tax_id.l10n_ve_withholding_sequence_id")
     base_amount = fields.Monetary(compute="_compute_base_amount", store=True, readonly=False, string="Base Amount")
     amount = fields.Monetary(compute="_compute_amount", store=True, readonly=False, string="Amount")
-    # l10n_ve_move_line_taxes_ids = fields.Many2many(related="payment_id.l10n_ve_move_line_taxes_ids")
+    l10n_ve_move_line_taxes_ids = fields.Many2many(related="payment_id.l10n_ve_move_line_taxes_ids")
     # ISLR
     l10n_ve_concept_withholding = fields.Char(string='Concept withholding')
     move_line_id = fields.Many2one(
@@ -299,7 +299,10 @@ class l10nVePaymentWithholding(models.Model):
                     regimen_id.banda_calculo_ids[0].withholding_amount
                 )
         return False
-    
+
+    def _format_miles_number(self, number):
+        return '{:,.2f}'.format(number).replace(",", "@").replace(".", ",").replace("@", ".")
+
     ##########
     # ACTIONS
     ##########
