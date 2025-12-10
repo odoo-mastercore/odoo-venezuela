@@ -368,7 +368,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                             coincident_date = retenciones_by_date.get(date_reference, [])
                             if coincident_date:
                                 for reten in list(coincident_date):
-                                    move_type_reten = reten.l10n_ve_move_line_taxes_ids[0].move_id.move_type
+                                    move_type_reten = reten.payment_id.move_id.move_type
                                     amount_reten = reten.amount if move_type_reten == 'in_invoice' else reten.amount * -1.00
                                     total_iva_16_retenido += amount_reten
                                     i += 1
@@ -430,7 +430,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                                     
 
                                     #Retenciones
-                                    sheet.write(row, 25, amount_reten, line_number)
+                                    sheet.write(row, 25, abs(amount_reten), line_number)
                                     ###### IGTF
                                     sheet.write(row, 26, '', line_number)
                                     # eliminar de la lista y del índice
@@ -966,7 +966,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
 
             if obj.type == 'purchase':
                 for reten in retenciones:
-                    move_type_reten = reten.l10n_ve_move_line_taxes_ids[0].move_id.move_type
+                    move_type_reten = reten.payment_id.move_id.move_type
                     amount_reten = reten.amount if move_type_reten == 'in_invoice' else reten.amount * -1.00
                     total_iva_16_retenido += amount_reten
                     i += 1
@@ -1028,7 +1028,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     sheet.write(row, 24, '', line_number)
                     
                     #Retenciones
-                    sheet.write(row, 25, amount_reten, line_number)
+                    sheet.write(row, 25, abs(amount_reten), line_number)
                     ###### IGTF
                     sheet.write(row, 26, '', line_number)
                     # No eliminar elementos de la lista mientras se itera
