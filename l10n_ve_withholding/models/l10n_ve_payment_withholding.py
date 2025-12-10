@@ -51,6 +51,11 @@ class l10nVePaymentWithholding(models.Model):
         'seniat.tabla.islr',
         'Aplicativo ISLR'
     )
+    date = fields.Date(
+        string=_('Fecha'),
+        related='payment_id.date',
+        store=True,
+    )
 
     @api.depends(
         "tax_id",
