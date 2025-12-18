@@ -300,15 +300,16 @@ class AccountPayment(models.Model):
                     payment.l10n_ve_withholding_line_ids = commands
         res = super(AccountPayment, self).action_post()
         if self.l10n_ve_withholding_line_ids and self.matched_move_line_ids and self.payment_type == 'outbound':
-            if self.date != self.matched_move_line_ids.move_id.invoice_date:
+            invoice_id = self.mapped('matched_move_line_ids.move_id').filtered(lambda m: m.move_type == 'in_invoice')
+            if self.date != invoice_id.invoice_date:
                 raise UserError(
                     _("Error de Retenciones\n\n"
                       "Lo sentimos, no es posible registrar un pago de retención con una fecha distinta a la de la factura asociada (**%s**).\n\n"
                       "**Alternativa de Solución:**\n"
                       "Puede registrar la transacción en dos partes:\n"
                       "1. Un pago por el monto exacto de la retención, utilizando la **fecha de la factura**.\n"
-                      "2. Un segundo pago por el resto del monto (si aplica), utilizando la **fecha deseada**.") 
-                      % self.matched_move_line_ids.move_id.invoice_date.strftime('%Y-%m-%d')
+                      "2. Un segundo pago por el resto del monto (si aplica), utilizando la **fecha deseada**.")
+                      % invoice_id.invoice_date.strftime('%Y-%m-%d')
                 )
         return res
 
