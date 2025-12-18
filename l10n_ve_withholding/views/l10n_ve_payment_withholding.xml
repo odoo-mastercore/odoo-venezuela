@@ -13,6 +13,7 @@
                     <group>
                         <group>
                             <field name="tax_id" options="{'no_create': True}" />
+                            <field name="payment_id" />
                             <field name="withholding_sequence_id" readonly="1"/>
                             <field name="name" readonly="1"/>
                         </group>
@@ -31,4 +32,74 @@
             </form>
         </field>
     </record>
+
+    <record id="view_l10n_ve_payment_withholding_tree" model="ir.ui.view">
+        <field name="name">view.l10n_ve.payment.withholding.tree</field>
+        <field name="model">l10n_ve.payment.withholding</field>
+        <field name="arch" type="xml">
+            <list string="Retenciones" create="false" delete="false" edit="false">
+                <field name="tax_id" />
+                <field name="payment_id" />
+                <field name="withholding_sequence_id" />
+                <field name="name" />
+                <field name="base_amount" />
+                <field name="amount" />
+            </list>
+        </field>
+    </record>
+
+    <!-- Retenciones de IVA Supplier -->
+    <record id="l10n_ve_payment_withholding_iva_action_supplier" model="ir.actions.act_window">
+        <field name="name">Retenciones de IVA</field>
+        <field name="res_model">l10n_ve.payment.withholding</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[
+            ('payment_id.payment_type', '=', 'outbound'),
+            ('tax_id.l10n_ve_tax_type', '=', 'partner_tax')
+        ]</field>
+    </record>
+
+    <menuitem
+        name="Retenciones de IVA"
+        action="l10n_ve_payment_withholding_iva_action_supplier"
+        id="menu_action_l10n_ve_payment_withholding_iva_supplier"
+        sequence="21"
+        parent="account.menu_finance_payables"
+        />
+
+    <!-- Retenciones de ISLR Supplier -->
+    <record id="l10n_ve_payment_withholding_islr_action_supplier" model="ir.actions.act_window">
+        <field name="name">Retenciones ISLR</field>
+        <field name="res_model">l10n_ve.payment.withholding</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[
+            ('payment_id.payment_type', '=', 'outbound'),
+            ('tax_id.l10n_ve_tax_type', '=', 'tabla_islr')
+        ]</field>
+    </record>
+
+    <menuitem
+        name="Retenciones ISLR"
+        action="l10n_ve_payment_withholding_islr_action_supplier"
+        id="menu_action_l10n_ve_payment_withholding_islr_supplier"
+        sequence="22"
+        parent="account.menu_finance_payables"
+        />
+
+    <!-- Retenciones de IVA Customer -->
+    <record id="l10n_ve_payment_withholding_iva_action_customer" model="ir.actions.act_window">
+        <field name="name">Retenciones de IVA</field>
+        <field name="res_model">l10n_ve.payment.withholding</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('payment_id.payment_type', '=', 'inbound')]</field>
+    </record>
+
+    <menuitem
+        name="Retenciones de IVA"
+        action="l10n_ve_payment_withholding_iva_action_customer"
+        id="menu_action_l10n_ve_payment_withholding_iva_customer"
+        sequence="22"
+        parent="account.menu_finance_receivables"
+        />
+
 </odoo>
