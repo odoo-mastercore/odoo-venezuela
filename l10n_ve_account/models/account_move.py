@@ -19,7 +19,8 @@ class AccountMove(models.Model):
 
     l10n_ve_invoice_date = fields.Datetime(
         string='Fecha y hora de la factura',
-        readonly=True
+        readonly=True,
+        copy=False
     )
 
     def _post(self, soft=True):
