@@ -171,7 +171,14 @@ class AccountVatLedger(models.Model):
             domain.append(('type', '=', 'sale'))
         elif self.type == 'purchase':
             domain.append(('type', '=', 'purchase'))
-        domain.append(('company_id', '=', self.company_id.id))
+        if self.company_id.child_ids:
+            domain.extend([
+                '|',
+                ('company_id', 'in', self.company_id.child_ids.ids),
+                ('company_id', '=', self.company_id.id)
+            ])
+        else:
+            domain.append(('company_id', '=', self.company_id.id))
         journals = self.env['account.journal'].search(domain)
         self.journal_ids = [(6, 0, journals.ids)]
 
