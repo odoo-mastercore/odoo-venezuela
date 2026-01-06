@@ -387,7 +387,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                                     sheet.write(row, 7, '', line)
                                     sheet.write(row, 8, '', line)
                                     # Nombre
-                                    sheet.write(row, 9, reten.partner_id.move_id.partner_id.name, line)
+                                    sheet.write(row, 9, reten.move_id.partner_id.name, line)
                                     # RIF
                                     sheet.write(row, 10, '%s-%s' % (reten.partner_id.l10n_latam_identification_type_id.l10n_ve_code or 'FALSE',
                                         reten.partner_id.vat or 'FALSE'), line)
