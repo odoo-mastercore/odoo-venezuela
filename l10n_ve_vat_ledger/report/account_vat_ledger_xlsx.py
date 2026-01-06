@@ -387,7 +387,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                                     sheet.write(row, 7, '', line)
                                     sheet.write(row, 8, '', line)
                                     # Nombre
-                                    sheet.write(row, 9, reten.move_id.partner_id.name, line)
+                                    sheet.write(row, 9, reten.partner_id.name, line)
                                     # RIF
                                     sheet.write(row, 10, '%s-%s' % (reten.partner_id.l10n_latam_identification_type_id.l10n_ve_code or 'FALSE',
                                         reten.partner_id.vat or 'FALSE'), line)
@@ -420,14 +420,13 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                                     #Imp. IVA
                                     sheet.write(row, 21, '', line_number)
 
-                                     #IVA 31%
+                                    #IVA 31%
                                     # Base Imponible
                                     sheet.write(row, 22, '', line_number)
                                     # % Alic
                                     sheet.write(row, 23, '', line_number)
                                     #Imp. IVA
                                     sheet.write(row, 24, '', line_number)
-                                    
 
                                     #Retenciones
                                     sheet.write(row, 25, abs(amount_reten), line_number)
@@ -445,8 +444,8 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                                     except Exception:
                                         pass
                                     row +=1
-                            else:
-                                date_reference += timedelta(days=1)
+                            # Avanzar la fecha siempre, haya o no retenciones
+                            date_reference += timedelta(days=1)
 
                     i += 1
                     # contador de la factura
@@ -682,11 +681,11 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                                     else:
                                         sheet.write(row, 6, reten.reconciled_invoice_ids.name, line)
                                     # nombre del partner
-                                    sheet.write(row, 7, reten.move_id.partner_id.name or 'FALSE', line)
+                                    sheet.write(row, 7, reten.partner_id.name or 'FALSE', line)
                                     # Rif del cliente
-                                    sheet.write(row, 8, '%s-%s' % (reten.move_id.partner_id. \
+                                    sheet.write(row, 8, '%s-%s' % (reten.partner_id. \
                                         l10n_latam_identification_type_id.l10n_ve_code or 'FALSE',
-                                        reten.move_id.partner_id.vat or 'FALSE'), line)
+                                        reten.partner_id.vat or 'FALSE'), line)
                                     sheet.write(row, 9, '', line)
                                     sheet.write(row, 10, '', line)
                                     sheet.write(row, 11, '', line)
