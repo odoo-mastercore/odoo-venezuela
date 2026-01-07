@@ -86,13 +86,18 @@ class AccountVatLedger(models.Model):
     @api.depends('journal_ids', 'date_from', 'date_to', 'company_id', 'type')
     def _compute_invoices(self):
         for rec in self:
+            company_ids = [rec.company_id.id]
+            if rec.company_id.child_ids:
+                company_ids += rec.company_id.child_ids.ids
             invoices_domain = [
                 ('state', 'not in', ['draft']),
                 ('journal_id', 'in', rec.journal_ids.ids),
-                ('company_id', '=', rec.company_id.id),
+                ('company_id', 'in', company_ids),
             ]
             withholdings_domain = [
                 ('payment_id.state', 'in', ['in_process', 'paid']),
+                ('date', '>=', rec.date_from),
+                ('date', '<=', rec.date_to),
             ]
             if rec.type == 'sale':
                 invoices_domain += [
@@ -112,32 +117,20 @@ class AccountVatLedger(models.Model):
                     ('invoice_date', '<=', rec.date_to),
                     ('state', '!=', 'cancel'),
                 ]
-                # Manejo seguro de env.ref
-                try:
-                    withholding_tax = self.env.ref('account.%s_tax_retencion_iva' % rec.company_id.id)
-                    withholdings_domain += [
-                        ('tax_id.l10n_ve_withholding_payment_type', '=', 'supplier'),
-                        ('tax_id', '=', withholding_tax.id),
-                    ]
-                except Exception:
-                    withholdings_domain += [
-                        ('tax_id.l10n_ve_withholding_payment_type', '=', 'supplier'),
-                    ]
+                withholding_tax = self.env.ref('account.%s_tax_retencion_iva' % rec.company_id.id)
+                withholdings_domain += [
+                    ('tax_id.l10n_ve_withholding_payment_type', '=', 'supplier'),
+                    ('tax_id', '=', withholding_tax.id),
+                ]
             rec.invoice_ids = rec.env['account.move'].search(
                 invoices_domain,
                 order='invoice_date desc, l10n_ve_control_number desc'
             )
-            print('#### RETENCIONES ###')
-            print(withholdings_domain)
             rec.withholding_ids = rec.env['l10n_ve.payment.withholding'].search(
                 withholdings_domain,
                 order='name desc'
             )
-            print(rec.env['l10n_ve.payment.withholding'].search(
-                withholdings_domain,
-                order='name desc'
-            ))
-
+            
     @api.depends('type', 'reference')
     def _compute_name(self):
         for rec in self:
