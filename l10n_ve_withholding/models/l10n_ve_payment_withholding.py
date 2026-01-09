@@ -53,8 +53,7 @@ class l10nVePaymentWithholding(models.Model):
     )
     date = fields.Date(
         string=_('Fecha'),
-        related='payment_id.date',
-        store=True,
+        default=fields.Date.context_today,
     )
 
     @api.depends(
