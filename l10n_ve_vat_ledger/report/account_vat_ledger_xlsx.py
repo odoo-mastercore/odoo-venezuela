@@ -679,7 +679,9 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                             coincident_date = [tup for tup in retenciones if date_reference == tup.date]
                             if coincident_date:
                                 for reten in coincident_date:
-                                    total_iva_16_retenido += reten.amount if reten.currency_id.id == reten.company_id.currency_id.id else reten.amount_company_currency
+                                    amount_reten = reten.amount if reten.currency_id.id == reten.company_id.currency_id.id else reten.amount_company_currency
+                                    amount_reten = amount_reten * -1 if reten.total_amount < 0 else amount_reten
+                                    total_iva_16_retenido += amount_reten
                                     i += 1
                                     # contador de la factura
                                     sheet.write(row, 0, i, line)
@@ -722,7 +724,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                                     sheet.write(row, 25, '', line)
                                     sheet.write(row, 26, '', line)
                                     sheet.write(row, 27, '', line)
-                                    sheet.write(row, 34, reten.amount if reten.currency_id.id == reten.company_id.currency_id.id else reten.amount_company_currency, line)
+                                    sheet.write(row, 34, amount_reten, line)
                                     sheet.write(row, 35, '', line)
                                     retenciones.remove(reten)
                                     row +=1
@@ -1065,7 +1067,9 @@ class AccountVatLedgerXlsx(models.AbstractModel):
 
             elif len(retenciones) >= 1 and obj.type == 'sale':
                 for reten in sorted(retenciones, key=lambda x: x.date):
-                    total_iva_16_retenido += reten.amount if reten.currency_id.id == reten.company_id.currency_id.id else reten.amount_company_currency
+                    amount_reten = reten.amount if reten.currency_id.id == reten.company_id.currency_id.id else reten.amount_company_currency
+                    amount_reten = amount_reten * -1 if reten.total_amount < 0 else amount_reten
+                    total_iva_16_retenido += amount_reten
                     i += 1
                     # contador de la factura
                     sheet.write(row, 0, i, line)
@@ -1113,7 +1117,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     sheet.write(row, 31, '', line)
                     sheet.write(row, 32, '', line)
                     sheet.write(row, 33, '', line)
-                    sheet.write(row, 34, reten.amount if reten.currency_id.id == reten.company_id.currency_id.id else reten.amount_company_currency, line_number)
+                    sheet.write(row, 34, amount_reten, line_number)
                     sheet.write(row, 35, '', line)
                     retenciones.remove(reten)
                     row +=1
@@ -1164,17 +1168,17 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                 sheet.write((row+4), 14, 0, line_number)
                 sheet.write((row+4), 15, 0, line_number)
                 sheet.write((row+4), 16, '', line_number)
-                sheet.merge_range('J%s:M%s' % (str(row+6), str(row+6)), 'Total Ventas Internas afectadas sólo alícuota general 16.00', title_style)
+                sheet.merge_range('J%s:M%s' % (str(row+6), str(row+6)), 'Total Ventas Internas afectadas sólo alícuota general 16.00%', title_style)
                 sheet.write((row+5), 13, round(total_base_imponible_contribuyente_16 + total_base_imponible_no_contribuyente_16 - total_nota_credito_16 - total_nota_debito_16,2), line_number)
                 sheet.write((row+5), 14, total_iva_16, line_number)
                 sheet.write((row+5), 15, total_iva_16_retenido, line_number)
                 sheet.write((row+5), 16, '', line_number)
-                sheet.merge_range('J%s:M%s' % (str(row+7), str(row+7)), 'Total Ventas Internas afectadas sólo alícuota reducida 8.00', title_style)
+                sheet.merge_range('J%s:M%s' % (str(row+7), str(row+7)), 'Total Ventas Internas afectadas sólo alícuota reducida 8.00%', title_style)
                 sheet.write((row+6), 13, round(total_base_imponible_contribuyente_8 + total_base_imponible_no_contribuyente_8 - total_nota_credito_8 - total_nota_debito_8,2), line_number)
                 sheet.write((row+6), 14, total_iva_8, line_number)
                 sheet.write((row+6), 15, 0, line_number)
                 sheet.write((row+6), 16, '', line_number)
-                sheet.merge_range('J%s:M%s' % (str(row+8), str(row+8)), 'Total Ventas Internas afectadas  más adicional 31.00', title_style)
+                sheet.merge_range('J%s:M%s' % (str(row+8), str(row+8)), 'Total Ventas Internas afectadas  más adicional 31.00%', title_style)
                 sheet.write((row+7), 13, round(total_base_imponible_contribuyente_31 + total_base_imponible_no_contribuyente_31 - total_nota_credito_31 - total_nota_debito_31,2), line_number)
                 sheet.write((row+7), 14, total_iva_31, line_number)
                 sheet.write((row+7), 15, 0, line_number)
@@ -1231,6 +1235,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                 sheet.write((row), 21, c_total_iva_8, line_total)
                 sheet.write((row), 22, c_total_base_imponible_31, line_total)
                 sheet.write((row), 24, c_total_iva_31, line_total)
+                sheet.write((row), 25, total_iva_16_igtf, line_total)
                 sheet.write((row), 26, c_total_igtf, line_total)
 
 
@@ -1270,21 +1275,21 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                 sheet.write((row + 4), 16, 0, line_number)
                 sheet.write((row + 4), 17, 0, line_number)
                 sheet.merge_range('J%s:M%s' % (str(row + 6), str(row + 6)),
-                                  'Total Compras Internas afectadas sólo alícuota general 16.00', title_style)
+                                  'Total Compras Internas afectadas sólo alícuota general 16.00%', title_style)
                 sheet.write((row + 5), 13, round(c_total_base_imponible_16,2), line_number)
                 sheet.write((row + 5), 14, c_total_iva_16, line_number)
                 sheet.write((row + 5), 15, total_iva_16_retenido, line_number)
                 sheet.write((row + 5), 16, total_iva_16_igtf, line_number)
                 sheet.write((row + 5), 17, 0, line_number)
                 sheet.merge_range('J%s:M%s' % (str(row + 7), str(row + 7)),
-                                  'Total Compras Internas afectadas sólo alícuota reducida 8.00', title_style)
+                                  'Total Compras Internas afectadas sólo alícuota reducida 8.00%', title_style)
                 sheet.write((row + 6), 13, c_total_base_imponible_8, line_number)
                 sheet.write((row + 6), 14, c_total_iva_8, line_number)
                 sheet.write((row + 6), 15, 0, line_number)
                 sheet.write((row + 6), 16, 0, line_number)
                 sheet.write((row + 6), 17, 0, line_number)
                 sheet.merge_range('J%s:M%s' % (str(row + 8), str(row + 8)),
-                                  'Total Compras Internas afectadas por alícuota general más adicional 31.00', title_style)
+                                  'Total Compras Internas afectadas por alícuota general más adicional 31.00%', title_style)
                 sheet.write((row + 7), 13, c_total_base_imponible_31, line_number)
                 sheet.write((row + 7), 14, c_total_iva_31, line_number)
                 sheet.write((row + 7), 15, 0, line_number)
