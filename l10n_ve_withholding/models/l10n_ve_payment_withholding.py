@@ -278,7 +278,7 @@ class l10nVePaymentWithholding(models.Model):
             for idx, tax in enumerate(self.l10n_ve_move_line_taxes_ids, start=1):
                 lines.append({
                     'index': idx,
-                    'date': tax.move_id.invoice_date.strftime('%d-%m-%Y'),
+                    'date': self.date.strftime('%d-%m-%Y'),
                     'move_ref': tax.move_id.ref or '',
                     'l10n_ve_control_number': tax.move_id.l10n_ve_control_number,
                     'move_type': tax.move_id.move_type or '',
