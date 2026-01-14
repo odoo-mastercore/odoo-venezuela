@@ -62,11 +62,12 @@ class ResPartner(models.Model):
 
     def _check_unique_vat(self):
         if self.vat:
+            company_partner_ids = self.env['res.company'].sudo().search([]).mapped('partner_id').ids
             same_vat = self.env['res.partner'].search([
                 ('vat', '=', self.vat),
                 ('id', '!=', self.id),
-                ('l10n_latam_identification_type_id', '=',
-                    self.l10n_latam_identification_type_id.id),
+                ('l10n_latam_identification_type_id', '=', self.l10n_latam_identification_type_id.id),
+                ('id', 'not in', company_partner_ids),
             ])
             if same_vat:
                 child = []
@@ -78,7 +79,6 @@ class ResPartner(models.Model):
                     raise ValidationError(_(
                         'Ya se encuentra registrado el Número de Identificación %s para el Contacto (%s)'
                     ) % (self.vat, same_vat[0].name))
-
     @api.model_create_multi
     def create(self, vals_list):
         records = super(ResPartner, self).create(vals_list)
