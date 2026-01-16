@@ -136,10 +136,10 @@
                         </tr>
                     </tbody>
                 </table>
-                <br/><br/><br/>
+                <br/><br/>
             </div>
             <div class="row">
-                <br/><br/><br/>
+                <br/><br/>
                 <div class="col-2"></div>
                 <div name="footer_left_column" class="col-4">
                     <img t-if="o.company_id.l10n_ve_withholding_signature and not o.company_id.parent_id.l10n_ve_withholding_signature" t-att-src="image_data_uri(o.company_id.l10n_ve_withholding_signature)" width="200px" height="100px"/>
