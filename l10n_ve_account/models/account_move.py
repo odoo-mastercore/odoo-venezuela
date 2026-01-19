@@ -67,19 +67,22 @@ class AccountMove(models.Model):
     
     @api.onchange('ref','partner_id')
     def _onchange_ref(self):
-        if self.move_type == 'out_refund' and self.partner_id and self.ref:
-            move_exist = self.env['account.move'].search([
-                ('move_type', '=', 'out_refund'),
+        if self.move_type == 'in_invoice' and self.partner_id and self.ref:
+            domain = [
+                ('move_type', '=', 'in_invoice'),
                 ('ref', '=', self.ref),
                 ('partner_id', '=', self.partner_id.id),
-                ('id', '!=', self.id),
                 ('state', '=', 'posted')
-            ])
+            ]
+            if self.state != 'draft':
+                domain.append(('id','!=',self.id))
+            move_exist = self.env['account.move'].search(domain)
             if move_exist:
                 raise ValidationError(
                     _("Ya existe una nota de crédito con el mismo número de factura para este cliente: %s")
                     % move_exist.name
                 )
+
 
     @api.model
     def create(self, vals):
