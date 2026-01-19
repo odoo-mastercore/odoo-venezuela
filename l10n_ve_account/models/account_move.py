@@ -63,6 +63,23 @@ class AccountMove(models.Model):
                     _("No se permiten precios cero o negativos en las líneas de factura. Línea con producto: %s")
                     % line.product_id.display_name
                 )
+            
+    
+    @api.onchange('ref','partner_id')
+    def _onchange_ref(self):
+        if self.move_type == 'out_refund' and self.partner_id and self.ref:
+            move_exist = self.env['account.move'].search([
+                ('move_type', '=', 'out_refund'),
+                ('ref', '=', self.ref),
+                ('partner_id', '=', self.partner_id.id),
+                ('id', '!=', self.id),
+                ('state', '=', 'posted')
+            ])
+            if move_exist:
+                raise ValidationError(
+                    _("Ya existe una nota de crédito con el mismo número de factura para este cliente: %s")
+                    % move_exist.name
+                )
 
     @api.model
     def create(self, vals):
