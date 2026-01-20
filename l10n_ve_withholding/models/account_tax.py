@@ -20,6 +20,14 @@ class AccountTax(models.Model):
     #         ('partner_tax', 'Alícuota en el Partner'),
     #     ]), ondelete={'partner_tax': 'set default'}
     # )
+    l10n_ve_withholding_ingoing_type = fields.Selection(
+        selection=[
+            ('iva', 'Retención de IVA'),
+            ('islr', 'Retención de Islr'),
+            ('other', 'Otros'),
+        ],
+        string='Tipo de retención de ingresos',
+    )
     l10n_ve_type_tax_use = fields.Selection(
         selection=[
             ('sale', 'Sales'),
