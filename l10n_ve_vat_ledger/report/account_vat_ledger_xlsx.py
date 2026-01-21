@@ -350,7 +350,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
             if retens:
                 # Indexar retenciones por fecha para acceso O(1)
                 for r in retens:
-                    retenciones_by_date.setdefault(r.payment_id.date, []).append(r)
+                    retenciones_by_date.setdefault(r.date, []).append(r)
                 retenciones = list(retens)
             if obj.type == 'sale':
                 invoices = [inv for inv in obj.invoice_ids if inv.l10n_ve_invoice_date]
@@ -375,7 +375,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                                     # codigo 
                                     sheet.write(row, 0, i, line)
                                     # fehca
-                                    sheet.write(row, 1, reten.payment_id.date, date_line)
+                                    sheet.write(row, 1, reten.date, date_line)
                                     # tipo de documento
                                     sheet.write(row, 2, 'Retención', line)
                                     sheet.write(row, 3, '', line)
@@ -667,7 +667,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                                     # contador de la factura
                                     sheet.write(row, 0, i, line)
                                     # codigo fecha
-                                    sheet.write(row, 1, reten.payment_id.date or 'FALSE', date_line)
+                                    sheet.write(row, 1, reten.date or 'FALSE', date_line)
                                     # tipo de documento
                                     sheet.write(row, 2, 'Retención', line)
 
@@ -972,7 +972,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     # codigo 
                     sheet.write(row, 0, i, line)
                     # fecha
-                    sheet.write(row, 1, reten.payment_id.date, date_line)
+                    sheet.write(row, 1, reten.date, date_line)
                     # tipo de documento
                     sheet.write(row, 2, 'Retención', line)
                     sheet.write(row, 3, '', line)
@@ -1040,7 +1040,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     # contador de la factura
                     sheet.write(row, 0, i, line)
                     # codigo fecha
-                    sheet.write(row, 1, reten.payment_id.date or 'FALSE', date_line)
+                    sheet.write(row, 1, reten.date or 'FALSE', date_line)
                     # tipo de documento
                     sheet.write(row, 2, 'Retención', line)
 

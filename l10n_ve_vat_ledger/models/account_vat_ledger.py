@@ -109,6 +109,7 @@ class AccountVatLedger(models.Model):
                 ]
                 withholdings_domain += [
                     ('tax_id.l10n_ve_withholding_payment_type', '=', 'customer'),
+                    ('tax_id.l10n_ve_withholding_ingoing_type', '=', 'iva'),
                 ]
             elif rec.type == 'purchase':
                 invoices_domain += [
