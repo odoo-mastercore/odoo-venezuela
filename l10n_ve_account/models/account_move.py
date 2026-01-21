@@ -80,7 +80,7 @@ class AccountMove(models.Model):
             if move_exist:
                 raise ValidationError(
                     _("Ya existe una nota de crédito con el mismo número de factura para este cliente: %s")
-                    % move_exist.name
+                    % move_exist.ref
                 )
 
 
