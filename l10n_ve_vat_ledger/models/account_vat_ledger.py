@@ -114,8 +114,8 @@ class AccountVatLedger(models.Model):
             elif rec.type == 'purchase':
                 invoices_domain += [
                     ('move_type', 'in', ['in_invoice', 'in_refund']),
-                    ('invoice_date', '>=', rec.date_from),
-                    ('invoice_date', '<=', rec.date_to),
+                    ('date', '>=', rec.date_from),
+                    ('date', '<=', rec.date_to),
                     ('state', '!=', 'cancel'),
                 ]
                 withholding_tax = self.env.ref('account.%s_tax_retencion_iva' % rec.company_id.id)
