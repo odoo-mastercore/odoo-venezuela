@@ -50,16 +50,17 @@ intervengan en operaciones gravadas con el impuesto establecido en este decreto 
 
                         <!-- IDENTIFICACION (AGENTE DE RETENCIÓN) -->
                         <!-- (1) Apellido uy Nombre: Denominicacion o Razon Social -->
-                        <strong>Razon Social del Agente de Retención: </strong><span t-field="o.company_id.name"/>
+                        <t t-set="company" t-value="o.company_id.parent_id if o.company_id.parent_id else o.company_id"/>
+                        <strong>Razon Social del Agente de Retención: </strong><span t-field="company.name"/>
                         <!-- (2) RIF -->
                         <br/>
-                        <strong>R.I.F:</strong> <span t-field="o.company_id.partner_id.l10n_latam_identification_type_id.l10n_ve_code"/>-<span t-field="o.company_id.vat"/>
+                        <strong>R.I.F:</strong> <span t-field="company.partner_id.l10n_latam_identification_type_id.l10n_ve_code"/>-<span t-field="company.vat"/>
                         <!-- (3) Responsabilidad -->
                         <br/>
-                        <strong>Tipo de Contribuyente: </strong><span t-field="o.company_id.l10n_ve_responsibility_type_id"/>
+                        <strong>Tipo de Contribuyente: </strong><span t-field="company.l10n_ve_responsibility_type_id"/>
                         <!-- (4) Domicilio Comercial -->
                         <br/>
-                        <span t-esc="o.company_id.partner_id" t-options='{"widget": "contact", "fields": ["address"], "no_marker": True, "no_tag_br": True}'/>
+                        <span t-esc="company.partner_id" t-options='{"widget": "contact", "fields": ["address"], "no_marker": True, "no_tag_br": True}'/>
 
                     </div>
                 </div>
