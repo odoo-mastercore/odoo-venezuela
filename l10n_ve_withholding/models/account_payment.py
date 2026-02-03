@@ -144,6 +144,7 @@ class AccountPayment(models.Model):
                 self.env.ref(f'account.{company_id}_tax8purchase').id,
                 self.env.ref(f'account.{company_id}_tax16purchase').id,
                 self.env.ref(f'account.{company_id}_tax31purchase').id,
+                self.env.ref(f'account.{company_id}_tax15purchase').id,
             ]
             for line_to_pay in payment.to_pay_move_line_ids._origin:
                 for move_line in line_to_pay.move_id.line_ids.filtered(lambda l: l.tax_line_id):
