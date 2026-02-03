@@ -5,6 +5,7 @@
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 #
 #
+#
 ###############################################################################
 {
     'name': "Venezuelan Accounting",
@@ -17,6 +18,7 @@
     'depends': [
         'base',
         'contacts',
+        'sale',
         'l10n_ve_base'
     ],
     'data': [
