@@ -79,7 +79,7 @@ class AccountMove(models.Model):
             move_exist = self.env['account.move'].search(domain)
             if move_exist:
                 raise ValidationError(
-                    _("Ya existe una nota de crédito con el mismo número de factura para este cliente: %s")
+                    _("Ya existe una nota de crédito con el mismo número: %s")
                     % move_exist.ref
                 )
 
