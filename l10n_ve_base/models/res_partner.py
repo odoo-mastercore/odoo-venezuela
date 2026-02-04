@@ -79,6 +79,7 @@ class ResPartner(models.Model):
                     raise ValidationError(_(
                         'Ya se encuentra registrado el Número de Identificación %s para el Contacto (%s)'
                     ) % (self.vat, same_vat[0].name))
+
     @api.model_create_multi
     def create(self, vals_list):
         records = super(ResPartner, self).create(vals_list)
