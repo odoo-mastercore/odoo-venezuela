@@ -85,54 +85,97 @@ intervengan en operaciones gravadas con el impuesto establecido en este decreto 
                             <th class="text-center"><strong>IVA Retenido</strong></th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <t t-foreach="o._get_withholding_lines()" t-as="distribution">
-                            <tr>
-                                <!-- No (Índice de la iteración) -->
-                                <th class="text-center"><span t-esc="distribution['index']"/></th>
-                                <!-- Fecha Dto -->
-                                <th class="text-center"><span t-esc="distribution['date']"/></th>
-                                <!-- Número de factura -->
-                                <th class="text-center" t-if="not distribution['reserved_entry']">
-                                    <span t-esc="distribution['move_ref']"/></th>
-                                <th t-else=""/>
-                                <!-- Número de Control -->
-                                <th class="text-center">
-                                    <span t-esc="distribution['l10n_ve_control_number']"/></th>
-                                <!-- Número N/D (no implementado) -->
-                                <th class="text-center"/>
-                                <!-- Número N/C -->
-                                <th class="text-center" t-if="distribution['move_type'] == 'in_refund'">
-                                    <span t-esc="distribution['move_ref']"/>
-                                </th>
-                                <th class="text-center" t-else="'"></th>
-                                <!-- Tipo (03/01) -->
-                                <th class="text-center" t-if="distribution['move_type'] == 'in_refund'">03</th>
-                                <th class="text-center" t-else="">01</th>
-
-                                <!-- Dto Afectado (referencia de reverso) -->
-                                <t t-if="distribution['reserved_entry_ref']">
-                                    <th class="text-center"><span t-esc="distribution['reserved_entry_ref']"/></th>
-                                </t>
-                                <t t-else="">
+                        <tbody>
+                            <t t-set="total_base" t-value="0"></t>
+                            <t t-set="total_iva" t-value="0"></t>
+                            <t t-set="total_retenido" t-value="0"></t>
+                            <t t-foreach="o._get_withholding_lines().get('lines')" t-as="distribution">
+                                <tr>
+                                    <!-- No (Índice de la iteración) -->
+                                    <th class="text-center"><span t-esc="distribution['index']"/></th>
+                                    <!-- Fecha Dto -->
+                                    <th class="text-center"><span t-esc="distribution['date']"/></th>
+                                    <!-- Número de factura -->
+                                    <th class="text-center" t-if="not distribution['reserved_entry']">
+                                        <span t-esc="distribution['move_ref']"/></th>
+                                    <th t-else=""/>
+                                    <!-- Número de Control -->
+                                    <th class="text-center">
+                                        <span t-esc="distribution['l10n_ve_control_number']"/></th>
+                                    <!-- Número N/D (no implementado) -->
                                     <th class="text-center"/>
-                                </t>
-                                <!-- Total Compra con IVA -->
-                                <th class="text-center"><span t-esc="distribution['amount_total']"/></th>
-                                <!-- Compras sin crédito -->
-                                <th class="text-center"><span t-esc="distribution['amount_untaxed']"/></th>
-                                <!-- Base Imponible -->
-                                <th class="text-center"><span t-esc="distribution['tax_base_amount']"/></th>
-                                <!-- % Alic -->
-                                <th class="text-center"><span t-esc="distribution['tax_name']"/></th>
-                                <!-- % Ret -->
-                                <th class="text-center"><span t-esc="distribution['partner_vat_retention']"/></th>
-                                <!-- Monto IVA -->
-                                <th class="text-center"><span t-esc="distribution['tax_debit']"/></th>
-                                <!-- IVA Retenido -->
-                                <th class="text-center"><span t-esc="distribution['tax_amount']"/></th>
-                            </tr>
-                        </t>
+                                    <!-- Número N/C -->
+                                    <th class="text-center" t-if="distribution['move_type'] == 'in_refund'">
+                                        <span t-esc="distribution['move_ref']"/>
+                                    </th>
+                                    <th class="text-center" t-else=""/>
+                                    <!-- Tipo (03/01) -->
+                                    <th class="text-center" t-if="distribution['move_type'] == 'in_refund'">03</th>
+                                    <th class="text-center" t-else="">01</th>
+
+                                    <!-- Dto Afectado (referencia de reverso) -->
+                                    <t t-if="distribution['reserved_entry_ref']">
+                                        <th class="text-center"><span t-esc="distribution['reserved_entry_ref']"/></th>
+                                    </t>
+                                    <t t-else="">
+                                        <th class="text-center"/>
+                                    </t>
+                                    <!-- Total Compra con IVA -->
+                                    <th class="text-center"><span t-esc="distribution['amount_total']"/></th>
+                                    <!-- Compras sin crédito -->
+                                    <th class="text-center"><span t-esc="distribution['amount_untaxed']"/></th>
+                                    <!-- Base Imponible -->
+                                    <th class="text-center"><span t-esc="distribution['tax_base_amount_formated']"/></th>
+                                    <t t-set="total_base" t-value="total_base + distribution['tax_base_amount']"></t>
+                                    <!-- % Alic -->
+                                    <th class="text-center"><span t-esc="distribution['tax_name']"/></th>
+                                    <!-- % Ret -->
+                                    <th class="text-center"><span t-esc="distribution['partner_vat_retention']"/></th>
+                                    <!-- Monto IVA -->
+                                    <th class="text-center"><span t-esc="distribution['tax_debit_formated']"/></th>
+                                    <t t-set="total_iva" t-value="total_iva + distribution['tax_debit']"></t>
+                                    <!-- IVA Retenido -->
+                                    <th class="text-center"><span t-esc="distribution['tax_amount_formated']"/></th>
+                                    <t t-set="total_retenido" t-value="total_retenido + distribution['tax_amount']"></t>
+
+                                </tr>
+                            </t>
+                            <t t-if="len(o._get_withholding_lines()) > 1">
+                                <t t-set="totals" t-value="o._get_withholding_lines().get('total')"/>
+                                <tr>
+                                    <!-- No (Índice de la iteración) -->
+                                    <th class="text-center"></th>
+                                    <!-- Fecha Dto -->
+                                    <th class="text-center"></th>
+                                    <!-- Número de factura -->
+                                    <th class="text-center"></th>
+                                    <!-- Número de Control -->
+                                    <th class="text-center"></th>
+                                    <!-- Número N/D (no implementado) -->
+                                    <th class="text-center"/>
+                                    <!-- Número N/C -->
+                                    <th class="text-center"></th>
+                                    <!-- Tipo (03/01) -->
+                                    <th class="text-center"></th>
+
+                                    <!-- Dto Afectado (referencia de reverso) -->
+                                    <th class="text-center"><strong>TOTALES</strong></th>
+                                    <!-- Total Compra con IVA -->
+                                    <th class="text-center"></th>
+                                    <!-- Compras sin crédito -->
+                                    <th class="text-center"></th>
+                                    <!-- Base Imponible -->
+                                    <th class="text-center"><span t-esc="totals.get('total_base')"/></th>
+                                    <!-- % Alic -->
+                                    <th class="text-center"></th>
+                                    <!-- % Ret -->
+                                    <th class="text-center"></th>
+                                    <!-- Monto IVA -->
+                                    <th class="text-center"><span t-esc="totals.get('total_iva')"/></th>
+                                    <!-- IVA Retenido -->
+                                    <th class="text-center"><span t-esc="totals.get('total_retenido')"/></th>
+                                </tr>
+                            </t>
                     </tbody>
                 </table>
 
