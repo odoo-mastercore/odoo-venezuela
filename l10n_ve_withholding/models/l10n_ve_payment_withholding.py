@@ -286,12 +286,16 @@ class l10nVePaymentWithholding(models.Model):
                     'reserved_entry': True if tax.move_id.reversed_entry_id else False,
                     'reserved_entry_ref': tax.move_id.reversed_entry_id.ref or '',
                     'amount_total': self.payment_id._format_miles_number(round(abs(tax.move_id.amount_total_signed), 2)),
-                    'amount_untaxed': self.payment_id._format_miles_number(tax.move_id.get_exempt_amount()),
-                    'tax_base_amount': self.payment_id._format_miles_number(tax.tax_base_amount),
+                    'amount_untaxed_formated': self.payment_id._format_miles_number(tax.move_id.get_exempt_amount()),
+                    'amount_untaxed': tax.move_id.get_exempt_amount(),
+                    'tax_base_amount_formated': self.payment_id._format_miles_number(tax.tax_base_amount),
+                    'tax_base_amount': tax.tax_base_amount,
                     'tax_name': tax.tax_line_id.name,
                     'partner_vat_retention': str(self._get_partner_alicuot(self.payment_id.partner_id)),
-                    'tax_debit': self.payment_id._format_miles_number(tax.debit) if tax.move_id.move_type == 'in_invoice' else self.payment_id._format_miles_number(tax.credit),
-                    'tax_amount': self.payment_id._format_miles_number(tax.debit * int(self._get_partner_alicuot(self.payment_id.partner_id)) / 100) if tax.debit else self.payment_id._format_miles_number(tax.credit * int(self._get_partner_alicuot(self.payment_id.partner_id)) / 100),
+                    'tax_debit_formated': self.payment_id._format_miles_number(tax.debit) if tax.move_id.move_type == 'in_invoice' else self.payment_id._format_miles_number(tax.credit),
+                    'tax_debit': tax.debit if tax.move_id.move_type == 'in_invoice' else tax.credit,
+                    'tax_amount_formated': self.payment_id._format_miles_number(tax.debit * int(self._get_partner_alicuot(self.payment_id.partner_id)) / 100) if tax.debit else self.payment_id._format_miles_number(tax.credit * int(self._get_partner_alicuot(self.payment_id.partner_id)) / 100),
+                    'tax_amount': tax.debit * int(self._get_partner_alicuot(self.payment_id.partner_id)) / 100 if tax.debit else tax.credit * int(self._get_partner_alicuot(self.payment_id.partner_id)) / 100,
                 })
         return lines
 
