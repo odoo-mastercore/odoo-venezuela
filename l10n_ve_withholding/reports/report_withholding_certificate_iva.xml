@@ -89,7 +89,7 @@ intervengan en operaciones gravadas con el impuesto establecido en este decreto 
                             <t t-set="total_base" t-value="0"></t>
                             <t t-set="total_iva" t-value="0"></t>
                             <t t-set="total_retenido" t-value="0"></t>
-                            <t t-foreach="o._get_withholding_lines()" t-as="distribution">
+                            <t t-foreach="o._get_withholding_lines().get('lines')" t-as="distribution">
                                 <tr>
                                     <!-- No (Índice de la iteración) -->
                                     <th class="text-center"><span t-esc="distribution['index']"/></th>
@@ -141,6 +141,7 @@ intervengan en operaciones gravadas con el impuesto establecido en este decreto 
                                 </tr>
                             </t>
                             <t t-if="len(o._get_withholding_lines()) > 1">
+                                <t t-set="totals" t-value="o._get_withholding_lines().get('total')"/>
                                 <tr>
                                     <!-- No (Índice de la iteración) -->
                                     <th class="text-center"></th>
@@ -164,15 +165,15 @@ intervengan en operaciones gravadas con el impuesto establecido en este decreto 
                                     <!-- Compras sin crédito -->
                                     <th class="text-center"></th>
                                     <!-- Base Imponible -->
-                                    <th class="text-center"><span t-esc="total_base"/></th>
+                                    <th class="text-center"><span t-esc="totals.get('total_base')"/></th>
                                     <!-- % Alic -->
                                     <th class="text-center"></th>
                                     <!-- % Ret -->
                                     <th class="text-center"></th>
                                     <!-- Monto IVA -->
-                                    <th class="text-center"><span t-esc="total_iva"/></th>
+                                    <th class="text-center"><span t-esc="totals.get('total_iva')"/></th>
                                     <!-- IVA Retenido -->
-                                    <th class="text-center"><span t-esc="total_retenido"/></th>
+                                    <th class="text-center"><span t-esc="totals.get('total_retenido')"/></th>
                                 </tr>
                             </t>
                     </tbody>
