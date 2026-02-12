@@ -148,8 +148,6 @@ class AccountVatLedger(models.Model):
                 )
             else:
                 name = _("Libro IVA (%s)") % (ledger_type,)
-            if rec.reference:
-                name = "%s - %s" % (name, rec.reference)
             rec.name = name
 
  

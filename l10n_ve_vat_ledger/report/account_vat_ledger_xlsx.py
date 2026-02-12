@@ -171,8 +171,8 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                 sheet.merge_range('A1:D1', obj.company_id.name,title_style)
                 sheet.merge_range('A2:D2', _('%s-%s', obj.company_id.l10n_latam_identification_type_id.l10n_ve_code, obj.company_id.vat), title_style)
                 address = obj.company_id.street + ', ' + obj.company_id.city + ', ' + obj.company_id.state_id.name
-                sheet.merge_range('A3:D3', _('%s',address), title_style)
-                sheet.merge_range('A4:G4', obj.name, title_style)
+                sheet.merge_range('A3:G3', _('%s',address), title_style)
+                sheet.merge_range('A4:D4', obj.name, title_style)
 
                 # alto de las celdas
                 sheet.set_row(4, 30)
@@ -218,8 +218,8 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                 # sheet.merge_range('E2:S2', 'LIBRO DE VENTAS (FECHA DESDE:' + ' ' + str(obj.date_from) + ' ' + 'HASTA:' + ' ' + str(obj.date_from) + ')', title)
                 sheet.merge_range('A2:D2', _('%s-%s', obj.company_id.l10n_latam_identification_type_id.l10n_ve_code, obj.company_id.vat), title_style)
                 address = obj.company_id.street + ', ' + obj.company_id.city + ', ' + obj.company_id.state_id.name
-                sheet.merge_range('A3:D3', _('%s', address), title_style)
-                sheet.merge_range('A4:G4', obj.name,title_style)
+                sheet.merge_range('A3:G3', _('%s', address), title_style)
+                sheet.merge_range('A4:D4', obj.name,title_style)
 
                 # alto de las celdas
                 sheet.set_row(4, 30)
