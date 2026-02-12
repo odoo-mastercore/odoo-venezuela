@@ -141,12 +141,12 @@ class AccountPayment(models.Model):
             move_line_tax_ids = []
             company_id = payment.company_id.id if not payment.company_id.parent_id \
                 else payment.company_id.parent_id.id
-            tax_list = [
-                self.env.ref(f'account.{company_id}_tax8purchase').id,
-                self.env.ref(f'account.{company_id}_tax16purchase').id,
-                self.env.ref(f'account.{company_id}_tax31purchase').id,
-                self.env.ref(f'account.{company_id}_tax15purchase').id,
-            ]
+            tax_keys = ['tax8purchase', 'tax16purchase', 'tax31purchase', 'tax15purchase']
+            tax_list = []
+            for key in tax_keys:
+                ref = self.env.ref(f'account.{company_id}_{key}', raise_if_not_found=False)
+                if ref:
+                    tax_list.append(ref.id)
             for line_to_pay in payment.to_pay_move_line_ids._origin:
                 for move_line in line_to_pay.move_id.line_ids.filtered(lambda l: l.tax_line_id):
                     if move_line.tax_line_id.id in tax_list:
