@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-############################################################################## # Author: SINAPSYS GLOBAL SA || MASTERCORE SAS
+##############################################################################
+# Author: SINAPSYS GLOBAL SA || MASTERCORE SAS
 # Copyleft: 2022-Present.
 #
 #
@@ -140,12 +141,12 @@ class AccountPayment(models.Model):
             move_line_tax_ids = []
             company_id = payment.company_id.id if not payment.company_id.parent_id \
                 else payment.company_id.parent_id.id
-            tax_keys = ['tax8purchase', 'tax16purchase', 'tax31purchase', 'tax15purchase']
-            tax_list = []
-            for key in tax_keys:
-                ref = self.env.ref(f'account.{company_id}_{key}', raise_if_not_found=False)
-                if ref:
-                    tax_list.append(ref.id)
+            tax_list = [
+                self.env.ref(f'account.{company_id}_tax8purchase').id,
+                self.env.ref(f'account.{company_id}_tax16purchase').id,
+                self.env.ref(f'account.{company_id}_tax31purchase').id,
+                self.env.ref(f'account.{company_id}_tax15purchase').id,
+            ]
             for line_to_pay in payment.to_pay_move_line_ids._origin:
                 for move_line in line_to_pay.move_id.line_ids.filtered(lambda l: l.tax_line_id):
                     if move_line.tax_line_id.id in tax_list:
@@ -314,75 +315,84 @@ class AccountPayment(models.Model):
                 )
         return res
 
-    def _prepare_move_line_default_vals(self, write_off_line_vals=None, force_balance=None):
-        res = super()._prepare_move_line_default_vals(write_off_line_vals, force_balance=force_balance)
-        res += self._prepare_witholding_write_off_vals()
-        wth_amount = sum(self.l10n_ve_withholding_line_ids.mapped("amount"))
-        conversion_rate = self.exchange_rate or 1.0
-        valid_account_types = self._get_valid_payment_account_types()
-        for line in res:
-            account_id = self.env["account.account"].browse(line["account_id"])
-            if account_id.account_type in valid_account_types:
-                if self.payment_type == "inbound" and "credit" in line:
-                    line["credit"] += wth_amount
-                    if not self._use_counterpart_currency():
-                        line["amount_currency"] -= wth_amount / conversion_rate
-                elif self.payment_type == "outbound" and "debit" in line:
-                    line["debit"] += wth_amount
-                    if not self._use_counterpart_currency():
-                        line["amount_currency"] += wth_amount / conversion_rate
+    def _prepare_move_lines_per_type(self, write_off_line_vals=None, force_balance=None):
+        res = super()._prepare_move_lines_per_type(write_off_line_vals=write_off_line_vals, force_balance=force_balance)
+        wth_lines = res.get("withholding_lines", [])
+        if wth_lines:
+            wth_balance = sum(line["balance"] for line in wth_lines)
+            wth_amount_currency = sum(line["amount_currency"] for line in wth_lines)
+
+            liquidity_lines = res.get("liquidity_lines", [])
+            if liquidity_lines:
+                liquidity_lines[0]["balance"] += wth_balance
+                liquidity_lines[0]["amount_currency"] += wth_amount_currency
+                if self.company_currency_id.is_zero(liquidity_lines[0]["balance"]):
+                    res["liquidity_lines"] = []
+
+            counterpart_lines = res.get("counterpart_lines", [])
+            if counterpart_lines:
+                # the counterpart line (debt) should be the gross amount (net + withholdings)
+                counterpart_lines[0]["balance"] -= wth_balance
+                counterpart_lines[0]["amount_currency"] -= wth_amount_currency
+
         return res
 
-    def _prepare_witholding_write_off_vals(self):
+    def _prepare_move_withholding_lines(self, default_values):
+        res = super()._prepare_move_withholding_lines(default_values)
         self.ensure_one()
-        write_off_line_vals = []
-        conversion_rate = self.exchange_rate or 1.0
         sign = 1
         if self.payment_type == "outbound":
             sign = -1
+
+        conversion_rate = self.exchange_rate or 1.0
         for line in self.l10n_ve_withholding_line_ids:
             __, account_id, tax_repartition_line_id, __ = line._tax_compute_all_helper()
-            amount_currency = self.currency_id.round(line.amount / conversion_rate)
-            write_off_line_vals.append(
+            balance = self.company_id.currency_id.round(sign * line.amount)
+            amount_currency = self.currency_id.round(balance / conversion_rate)
+            res.append(
                 {
                     **self._get_withholding_move_line_default_values(),
                     "name": line.name,
                     "account_id": account_id,
-                    "amount_currency": sign * amount_currency,
-                    "balance": sign * line.amount,
+                    "balance": balance,
+                    "amount_currency": amount_currency,
+                    "currency_id": self.currency_id.id,
                     "tax_base_amount": sign * line.base_amount,
                     "tax_repartition_line_id": tax_repartition_line_id,
                 }
             )
-
         account_id = self.company_id.l10n_ve_tax_base_account_id.id
         if account_id:
             for base_amount in list(set(self.l10n_ve_withholding_line_ids.mapped("base_amount"))):
                 withholding_lines = self.l10n_ve_withholding_line_ids.filtered(lambda x: x.base_amount == base_amount)
                 nice_base_label = ",".join(withholding_lines.filtered("name").mapped("name"))
-                base_amount = sign * base_amount
-                base_amount_currency = self.currency_id.round(base_amount / conversion_rate)
-                write_off_line_vals.append(
+                account_id = self.company_id.l10n_ve_tax_base_account_id.id
+                balance = self.company_id.currency_id.round(sign * base_amount)
+                # informamos el amount_currency para que Odoo no resetee el balance a 0.0 por inconsistencia de moneda
+                amount_currency = self.currency_id.round(balance / conversion_rate)
+                res.append(
                     {
                         **self._get_withholding_move_line_default_values(),
                         "name": _("Base Ret: ") + nice_base_label,
                         "tax_ids": [Command.set(withholding_lines.mapped("tax_id").ids)],
                         "account_id": account_id,
-                        "balance": base_amount,
-                        "amount_currency": base_amount_currency,
+                        "balance": balance,
+                        "amount_currency": amount_currency,
+                        "currency_id": self.currency_id.id,
                     }
                 )
-                write_off_line_vals.append(
+                res.append(
                     {
                         **self._get_withholding_move_line_default_values(),  # Counterpart 0 operation
                         "name": _("Base Ret Cont: ") + nice_base_label,
                         "account_id": account_id,
-                        "balance": -base_amount,
-                        "amount_currency": -base_amount_currency,
+                        "balance": -balance,
+                        "amount_currency": -amount_currency,
+                        "currency_id": self.currency_id.id,
                     }
                 )
 
-        return write_off_line_vals
+        return res
 
     # TODO: Aplicar en ext para multimonedas
     #This field is to be used by invoice in multicurrency

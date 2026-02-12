@@ -1,6 +1,11 @@
 # -*- coding: utf-8 -*-
-# Part of Odoo. See LICENSE file for full copyright and licensing details.
-
+##############################################################################
+# Author: SINAPSYS GLOBAL SA || MASTERCORE SAS
+# Copyleft: 2020-Present.
+# License LGPL-3.0 or later (http: //www.gnu.org/licenses/lgpl.html).
+#
+#
+###############################################################################
 from odoo import fields, models
 
 
