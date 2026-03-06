@@ -336,6 +336,10 @@ class AccountPayment(models.Model):
                 liquidity_lines[0]["balance"] += wth_balance
                 if _same_currency_for_amount_currency(liquidity_lines[0]):
                     liquidity_lines[0]["amount_currency"] += wth_amount_currency
+                elif wth_currency_id:
+                    # Super already subtracts withholding_amount_currency from liquidity amount_currency.
+                    # If currencies differ, undo that subtraction to avoid cross-currency corruption.
+                    liquidity_lines[0]["amount_currency"] += wth_amount_currency
                 if self.company_currency_id.is_zero(liquidity_lines[0]["balance"]):
                     res["liquidity_lines"] = []
 
@@ -345,6 +349,18 @@ class AccountPayment(models.Model):
                 counterpart_lines[0]["balance"] -= wth_balance
                 if _same_currency_for_amount_currency(counterpart_lines[0]):
                     counterpart_lines[0]["amount_currency"] -= wth_amount_currency
+
+            # If we are generating a withholding-only payment (liquidity line dropped) against
+            # foreign debt currency, force the counterpart line to that foreign currency.
+            if not res.get("liquidity_lines") and counterpart_lines and wth_currency_id and wth_currency_id != self.company_currency_id.id:
+                counterpart_lines[0]["currency_id"] = wth_currency_id
+                counterpart_lines[0]["amount_currency"] = -wth_amount_currency
+
+            # Keep amount_currency coherent on company-currency lines.
+            for line_vals in (res.get("liquidity_lines", []) + counterpart_lines):
+                line_currency_id = line_vals.get("currency_id")
+                if not line_currency_id or line_currency_id == self.company_currency_id.id:
+                    line_vals["amount_currency"] = line_vals["balance"]
 
         return res
 
