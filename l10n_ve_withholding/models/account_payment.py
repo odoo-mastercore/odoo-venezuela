@@ -321,11 +321,21 @@ class AccountPayment(models.Model):
         if wth_lines:
             wth_balance = sum(line["balance"] for line in wth_lines)
             wth_amount_currency = sum(line["amount_currency"] for line in wth_lines)
+            wth_currency_ids = {line.get("currency_id") for line in wth_lines if line.get("currency_id")}
+            wth_currency_id = next(iter(wth_currency_ids), False) if len(wth_currency_ids) == 1 else False
+
+            def _same_currency_for_amount_currency(line_vals):
+                line_currency_id = line_vals.get("currency_id")
+                if line_currency_id:
+                    return bool(wth_currency_id and line_currency_id == wth_currency_id)
+                # lines without currency_id are company-currency lines
+                return bool(wth_currency_id and wth_currency_id == self.company_currency_id.id)
 
             liquidity_lines = res.get("liquidity_lines", [])
             if liquidity_lines:
                 liquidity_lines[0]["balance"] += wth_balance
-                liquidity_lines[0]["amount_currency"] += wth_amount_currency
+                if _same_currency_for_amount_currency(liquidity_lines[0]):
+                    liquidity_lines[0]["amount_currency"] += wth_amount_currency
                 if self.company_currency_id.is_zero(liquidity_lines[0]["balance"]):
                     res["liquidity_lines"] = []
 
@@ -333,7 +343,8 @@ class AccountPayment(models.Model):
             if counterpart_lines:
                 # the counterpart line (debt) should be the gross amount (net + withholdings)
                 counterpart_lines[0]["balance"] -= wth_balance
-                counterpart_lines[0]["amount_currency"] -= wth_amount_currency
+                if _same_currency_for_amount_currency(counterpart_lines[0]):
+                    counterpart_lines[0]["amount_currency"] -= wth_amount_currency
 
         return res
 
