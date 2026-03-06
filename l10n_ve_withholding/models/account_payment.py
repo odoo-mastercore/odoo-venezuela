@@ -337,6 +337,54 @@ class AccountPayment(models.Model):
 
         return res
 
+    def _get_withholding_foreign_currency_data(self):
+        """Detect foreign debt currency and conversion rate from invoice rate.
+
+        This is used to keep debit/credit in company currency while setting
+        amount_currency/currency_id in invoice foreign currency (e.g. USD).
+        """
+        self.ensure_one()
+        company_currency = self.company_id.currency_id
+        debt_lines = self.to_pay_move_line_ids._origin
+        if not debt_lines:
+            return None
+
+        foreign_lines = debt_lines.filtered(
+            lambda l: l.currency_id
+            and l.currency_id != company_currency
+            and not l.currency_id.is_zero(l.amount_residual_currency)
+        )
+        foreign_currencies = foreign_lines.mapped("currency_id")
+        if len(foreign_currencies) != 1:
+            return None
+
+        total_foreign = sum(abs(line.amount_residual_currency) for line in foreign_lines)
+        if foreign_currencies.is_zero(total_foreign):
+            return None
+
+        # Main rule: withholding amount_currency = withholding amount / invoice rate.
+        weighted_rate_sum = 0.0
+        for line in foreign_lines:
+            move = line.move_id
+            invoice_rate = getattr(move, "inverse_invoice_currency_rate", 0.0) or 0.0
+            if invoice_rate:
+                weighted_rate_sum += abs(line.amount_residual_currency) * invoice_rate
+
+        conversion_rate = 0.0
+        if weighted_rate_sum:
+            conversion_rate = weighted_rate_sum / total_foreign
+        else:
+            # Fallback: implied rate from current residual amounts.
+            total_company = sum(abs(line.amount_residual) for line in foreign_lines)
+            if company_currency.is_zero(total_company):
+                return None
+            conversion_rate = total_company / total_foreign
+
+        return {
+            "currency": foreign_currencies,
+            "conversion_rate": conversion_rate,
+        }
+
     def _prepare_move_withholding_lines(self, default_values):
         res = super()._prepare_move_withholding_lines(default_values)
         self.ensure_one()
@@ -344,11 +392,16 @@ class AccountPayment(models.Model):
         if self.payment_type == "outbound":
             sign = -1
 
-        conversion_rate = self.exchange_rate or 1.0
+        currency_data = self._get_withholding_foreign_currency_data()
+        move_currency = currency_data["currency"] if currency_data else self.currency_id
+        conversion_rate = (
+            currency_data["conversion_rate"]
+            if currency_data else (self.exchange_rate or 1.0)
+        )
         for line in self.l10n_ve_withholding_line_ids:
             __, account_id, tax_repartition_line_id, __ = line._tax_compute_all_helper()
             balance = self.company_id.currency_id.round(sign * line.amount)
-            amount_currency = self.currency_id.round(balance / conversion_rate)
+            amount_currency = move_currency.round(balance / conversion_rate)
             res.append(
                 {
                     **self._get_withholding_move_line_default_values(),
@@ -356,7 +409,7 @@ class AccountPayment(models.Model):
                     "account_id": account_id,
                     "balance": balance,
                     "amount_currency": amount_currency,
-                    "currency_id": self.currency_id.id,
+                    "currency_id": move_currency.id,
                     "tax_base_amount": sign * line.base_amount,
                     "tax_repartition_line_id": tax_repartition_line_id,
                 }
@@ -369,7 +422,7 @@ class AccountPayment(models.Model):
                 account_id = self.company_id.l10n_ve_tax_base_account_id.id
                 balance = self.company_id.currency_id.round(sign * base_amount)
                 # informamos el amount_currency para que Odoo no resetee el balance a 0.0 por inconsistencia de moneda
-                amount_currency = self.currency_id.round(balance / conversion_rate)
+                amount_currency = move_currency.round(balance / conversion_rate)
                 res.append(
                     {
                         **self._get_withholding_move_line_default_values(),
@@ -378,7 +431,7 @@ class AccountPayment(models.Model):
                         "account_id": account_id,
                         "balance": balance,
                         "amount_currency": amount_currency,
-                        "currency_id": self.currency_id.id,
+                        "currency_id": move_currency.id,
                     }
                 )
                 res.append(
@@ -388,7 +441,7 @@ class AccountPayment(models.Model):
                         "account_id": account_id,
                         "balance": -balance,
                         "amount_currency": -amount_currency,
-                        "currency_id": self.currency_id.id,
+                        "currency_id": move_currency.id,
                     }
                 )
 
