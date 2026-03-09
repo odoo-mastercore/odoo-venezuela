@@ -321,11 +321,25 @@ class AccountPayment(models.Model):
         if wth_lines:
             wth_balance = sum(line["balance"] for line in wth_lines)
             wth_amount_currency = sum(line["amount_currency"] for line in wth_lines)
+            wth_currency_ids = {line.get("currency_id") for line in wth_lines if line.get("currency_id")}
+            wth_currency_id = next(iter(wth_currency_ids), False) if len(wth_currency_ids) == 1 else False
+
+            def _same_currency_for_amount_currency(line_vals):
+                line_currency_id = line_vals.get("currency_id")
+                if line_currency_id:
+                    return bool(wth_currency_id and line_currency_id == wth_currency_id)
+                # lines without currency_id are company-currency lines
+                return bool(wth_currency_id and wth_currency_id == self.company_currency_id.id)
 
             liquidity_lines = res.get("liquidity_lines", [])
             if liquidity_lines:
                 liquidity_lines[0]["balance"] += wth_balance
-                liquidity_lines[0]["amount_currency"] += wth_amount_currency
+                if _same_currency_for_amount_currency(liquidity_lines[0]):
+                    liquidity_lines[0]["amount_currency"] += wth_amount_currency
+                elif wth_currency_id:
+                    # Super already subtracts withholding_amount_currency from liquidity amount_currency.
+                    # If currencies differ, undo that subtraction to avoid cross-currency corruption.
+                    liquidity_lines[0]["amount_currency"] += wth_amount_currency
                 if self.company_currency_id.is_zero(liquidity_lines[0]["balance"]):
                     res["liquidity_lines"] = []
 
@@ -333,9 +347,70 @@ class AccountPayment(models.Model):
             if counterpart_lines:
                 # the counterpart line (debt) should be the gross amount (net + withholdings)
                 counterpart_lines[0]["balance"] -= wth_balance
-                counterpart_lines[0]["amount_currency"] -= wth_amount_currency
+                if _same_currency_for_amount_currency(counterpart_lines[0]):
+                    counterpart_lines[0]["amount_currency"] -= wth_amount_currency
+
+            # If we are generating a withholding-only payment (liquidity line dropped) against
+            # foreign debt currency, force the counterpart line to that foreign currency.
+            if not res.get("liquidity_lines") and counterpart_lines and wth_currency_id and wth_currency_id != self.company_currency_id.id:
+                counterpart_lines[0]["currency_id"] = wth_currency_id
+                counterpart_lines[0]["amount_currency"] = -wth_amount_currency
+
+            # Keep amount_currency coherent on company-currency lines.
+            for line_vals in (res.get("liquidity_lines", []) + counterpart_lines):
+                line_currency_id = line_vals.get("currency_id")
+                if not line_currency_id or line_currency_id == self.company_currency_id.id:
+                    line_vals["amount_currency"] = line_vals["balance"]
 
         return res
+
+    def _get_withholding_foreign_currency_data(self):
+        """Detect foreign debt currency and conversion rate from invoice rate.
+
+        This is used to keep debit/credit in company currency while setting
+        amount_currency/currency_id in invoice foreign currency (e.g. USD).
+        """
+        self.ensure_one()
+        company_currency = self.company_id.currency_id
+        debt_lines = self.to_pay_move_line_ids._origin
+        if not debt_lines:
+            return None
+
+        foreign_lines = debt_lines.filtered(
+            lambda l: l.currency_id
+            and l.currency_id != company_currency
+            and not l.currency_id.is_zero(l.amount_residual_currency)
+        )
+        foreign_currencies = foreign_lines.mapped("currency_id")
+        if len(foreign_currencies) != 1:
+            return None
+
+        total_foreign = sum(abs(line.amount_residual_currency) for line in foreign_lines)
+        if foreign_currencies.is_zero(total_foreign):
+            return None
+
+        # Main rule: withholding amount_currency = withholding amount / invoice rate.
+        weighted_rate_sum = 0.0
+        for line in foreign_lines:
+            move = line.move_id
+            invoice_rate = getattr(move, "inverse_invoice_currency_rate", 0.0) or 0.0
+            if invoice_rate:
+                weighted_rate_sum += abs(line.amount_residual_currency) * invoice_rate
+
+        conversion_rate = 0.0
+        if weighted_rate_sum:
+            conversion_rate = weighted_rate_sum / total_foreign
+        else:
+            # Fallback: implied rate from current residual amounts.
+            total_company = sum(abs(line.amount_residual) for line in foreign_lines)
+            if company_currency.is_zero(total_company):
+                return None
+            conversion_rate = total_company / total_foreign
+
+        return {
+            "currency": foreign_currencies,
+            "conversion_rate": conversion_rate,
+        }
 
     def _prepare_move_withholding_lines(self, default_values):
         res = super()._prepare_move_withholding_lines(default_values)
@@ -344,11 +419,16 @@ class AccountPayment(models.Model):
         if self.payment_type == "outbound":
             sign = -1
 
-        conversion_rate = self.exchange_rate or 1.0
+        currency_data = self._get_withholding_foreign_currency_data()
+        move_currency = currency_data["currency"] if currency_data else self.currency_id
+        conversion_rate = (
+            currency_data["conversion_rate"]
+            if currency_data else (self.exchange_rate or 1.0)
+        )
         for line in self.l10n_ve_withholding_line_ids:
             __, account_id, tax_repartition_line_id, __ = line._tax_compute_all_helper()
             balance = self.company_id.currency_id.round(sign * line.amount)
-            amount_currency = self.currency_id.round(balance / conversion_rate)
+            amount_currency = move_currency.round(balance / conversion_rate)
             res.append(
                 {
                     **self._get_withholding_move_line_default_values(),
@@ -356,7 +436,7 @@ class AccountPayment(models.Model):
                     "account_id": account_id,
                     "balance": balance,
                     "amount_currency": amount_currency,
-                    "currency_id": self.currency_id.id,
+                    "currency_id": move_currency.id,
                     "tax_base_amount": sign * line.base_amount,
                     "tax_repartition_line_id": tax_repartition_line_id,
                 }
@@ -369,7 +449,7 @@ class AccountPayment(models.Model):
                 account_id = self.company_id.l10n_ve_tax_base_account_id.id
                 balance = self.company_id.currency_id.round(sign * base_amount)
                 # informamos el amount_currency para que Odoo no resetee el balance a 0.0 por inconsistencia de moneda
-                amount_currency = self.currency_id.round(balance / conversion_rate)
+                amount_currency = move_currency.round(balance / conversion_rate)
                 res.append(
                     {
                         **self._get_withholding_move_line_default_values(),
@@ -378,7 +458,7 @@ class AccountPayment(models.Model):
                         "account_id": account_id,
                         "balance": balance,
                         "amount_currency": amount_currency,
-                        "currency_id": self.currency_id.id,
+                        "currency_id": move_currency.id,
                     }
                 )
                 res.append(
@@ -388,7 +468,7 @@ class AccountPayment(models.Model):
                         "account_id": account_id,
                         "balance": -balance,
                         "amount_currency": -amount_currency,
-                        "currency_id": self.currency_id.id,
+                        "currency_id": move_currency.id,
                     }
                 )
 
