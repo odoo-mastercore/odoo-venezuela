@@ -313,6 +313,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
              """
 
             total_base_exento_contribuyente = 0.00
+            total_base_exento_contribuyente_col = 0.00
             total_base_imponible_contribuyente_16 = 0.00
             total_iva_contribuyente_16 = 0.00
             total_base_imponible_contribuyente_8 = 0.00
@@ -321,6 +322,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
             total_iva_contribuyente_31 = 0.00
 
             total_base_exento_no_contribuyente = 0.00
+            total_base_exento_no_contribuyente_col = 0.00
             total_base_imponible_no_contribuyente_16 = 0.00
             total_iva_no_contribuyente_16 = 0.00
             total_base_imponible_no_contribuyente_8 = 0.00
@@ -914,9 +916,17 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                                         total_iva_31 += iva_31
                                     alic_31 = '31%'
                         
+                        is_standard_sale_invoice = (
+                            invoice.move_type not in ('out_refund', 'in_refund')
+                            and not invoice.debit_origin_id
+                        )
+
                         #Contribuyentes
                         if invoice.partner_id.l10n_latam_identification_type_id.is_vat:
-                            total_base_exento_contribuyente += base_exento if base_exento else 0.00
+                            if base_exento:
+                                total_base_exento_contribuyente_col += base_exento
+                            if is_standard_sale_invoice and base_exento:
+                                total_base_exento_contribuyente += base_exento
                             total_base_imponible_contribuyente_16 += base_imponible if base_imponible else 0.00
                             total_iva_contribuyente_16 += iva_16 if iva_16 else 0.00
                             total_base_imponible_contribuyente_8 += base_imponible_8 if base_imponible_8 else 0.00
@@ -949,7 +959,10 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                         #No contribuyentes
                         else:
 
-                            total_base_exento_no_contribuyente += base_exento if base_exento else 0.00
+                            if base_exento:
+                                total_base_exento_no_contribuyente_col += base_exento
+                            if is_standard_sale_invoice and base_exento:
+                                total_base_exento_no_contribuyente += base_exento
                             total_base_imponible_no_contribuyente_16 += base_imponible if base_imponible else 0.00
                             total_iva_no_contribuyente_16 += iva_16 if iva_16 else 0.00
                             total_base_imponible_no_contribuyente_8 += base_imponible_8 if base_imponible_8 else 0.00
@@ -1123,7 +1136,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     row +=1
 
             if obj.type == 'sale':
-                sheet.write((row), 14, total_base_exento_contribuyente, line_total)
+                sheet.write((row), 14, total_base_exento_contribuyente_col, line_total)
                 sheet.write((row), 15, total_base_imponible_contribuyente_16, line_total)
                 sheet.write((row), 17, total_iva_contribuyente_16, line_total)
                 sheet.write((row), 18, total_base_imponible_contribuyente_8, line_total)
@@ -1131,7 +1144,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                 sheet.write((row), 21, total_base_imponible_contribuyente_31, line_total)
                 sheet.write((row), 23, total_iva_contribuyente_31, line_total)
 
-                sheet.write((row), 24, total_base_exento_no_contribuyente, line_total)
+                sheet.write((row), 24, total_base_exento_no_contribuyente_col, line_total)
                 sheet.write((row), 26, total_base_imponible_no_contribuyente_16, line_total)
                 sheet.write((row), 27, total_iva_no_contribuyente_16, line_total)
                 sheet.write((row), 29, total_base_imponible_no_contribuyente_8, line_total)
