@@ -397,6 +397,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                                     amount_reten = reten.amount if reten.currency_id.id == reten.company_id.currency_id.id else reten.amount_company_currency
                                     amount_reten = amount_reten * -1 if reten.total_amount < 0 else amount_reten
                                     total_iva_16_retenido += amount_reten
+                                    partner_reten = reten.move_id.partner_id if not reten.payment_group_id.third_partner_withholding else reten.payment_group_id.third_partner_id
                                     i += 1
                                     # codigo 
                                     sheet.write(row, 0, i, line)
@@ -413,11 +414,11 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                                     sheet.write(row, 7, '', line)
                                     sheet.write(row, 8, '', line)
                                     # Nombre
-                                    sheet.write(row, 9, reten.move_id.partner_id.name, line)
+                                    sheet.write(row, 9, partner_reten.name, line)
                                     # RIF
-                                    sheet.write(row, 10, '%s-%s' % (reten.move_id.partner_id. \
+                                    sheet.write(row, 10, '%s-%s' % (partner_reten. \
                                         l10n_latam_identification_type_id.l10n_ve_code or 'FALSE',
-                                        reten.move_id.partner_id.vat or 'FALSE'), line)
+                                        partner_reten.vat or 'FALSE'), line)
                                     #Total
                                     sheet.write(row, 11, '', line_number)
                                     # Compras Exento
@@ -1013,6 +1014,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     amount_reten = reten.amount if reten.currency_id.id == reten.company_id.currency_id.id else reten.amount_company_currency
                     amount_reten = amount_reten * -1 if reten.total_amount < 0 else amount_reten
                     total_iva_16_retenido += amount_reten
+                    partner_reten = reten.move_id.partner_id if not reten.payment_group_id.third_partner_withholding else reten.payment_group_id.third_partner_id
                     i += 1
                     # codigo 
                     sheet.write(row, 0, i, line)
@@ -1029,11 +1031,11 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     sheet.write(row, 7, '', line)
                     sheet.write(row, 8, '', line)
                     # Nombre
-                    sheet.write(row, 9, reten.move_id.partner_id.name, line)
+                    sheet.write(row, 9, partner_reten.name, line)
                     # RIF
-                    sheet.write(row, 10, '%s-%s' % (reten.move_id.partner_id. \
+                    sheet.write(row, 10, '%s-%s' % (partner_reten. \
                         l10n_latam_identification_type_id.l10n_ve_code or 'FALSE',
-                        reten.move_id.partner_id.vat or 'FALSE'), line)
+                        partner_reten.vat or 'FALSE'), line)
                     #Total
                     sheet.write(row, 11, '', line_number)
                     # Compras Exento
