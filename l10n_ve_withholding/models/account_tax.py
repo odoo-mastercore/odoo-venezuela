@@ -60,20 +60,15 @@ class AccountTax(models.Model):
                             tax_amount = abg.debit if abg.debit else abg.credit
                             alic = alicuota
                             withholding_amount = abg.debit*alicuota if abg.debit else abg.credit*alicuota
-                            invoice_amount = 0.00
-                            for abg_base in to_pay.move_id.line_ids.filtered(lambda x: x.tax_ids.name in [abg.name] and x.display_type != 'cogs'):
-                                withholdable_invoiced_amount += abg_base.debit if to_pay.move_id.move_type == 'in_refund' else abg_base.credit
-                                if abg_base.debit > 0.00 and to_pay.move_id.move_type != 'in_refund':
-                                    invoice_amount += abg_base.debit
-                                elif abg_base.credit > 0.00 and to_pay.move_id.move_type != 'in_refund':
-                                    invoice_amount -= abg_base.credit if to_pay.move_id.move_type != 'in_refund' else abg_base.debit
-                                elif to_pay.move_id.move_type == 'in_refund':
-                                    invoice_amount += abg_base.debit
+                            # Use the tax line base to avoid duplicating the same invoice
+                            # amount when the same VAT is split in multiple tax lines.
+                            invoice_amount = abs(abg.tax_base_amount)
+                            withholdable_invoiced_amount += invoice_amount
 
                             if foreign_currency:
                                 selected_debt_taxed += abg.amount_currency if abg.amount_currency  >= 0 else -abg.amount_currency
                             else:
-                                selected_debt_taxed += abg_base.debit if to_pay.move_id.move_type == 'in_refund' else abg_base.credit
+                                selected_debt_taxed += tax_amount
                             tax = abg.name.split('(')[1].split('%')[0]
                             exent_amount_ids = to_pay.move_id.line_ids\
                                 .filtered(lambda x: x.tax_ids\
