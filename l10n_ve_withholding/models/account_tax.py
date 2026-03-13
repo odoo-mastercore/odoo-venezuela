@@ -43,6 +43,7 @@ class AccountTax(models.Model):
             to_pay = payment_group.to_pay_move_line_ids[0]
             withholdable_invoiced_amount = 0.00
             distribution = [Command.clear()]
+            distribution_by_alic = {}
             foreign_currency = False
             iva_retencion = 0.00
             if to_pay:
@@ -84,13 +85,24 @@ class AccountTax(models.Model):
                                         base_exento += exent.debit
                                         if exent.credit:
                                             base_exento += (exent.credit * -1.00)
-                            distribution.append((0, 0, {
-                                'invoice_amount': invoice_amount,
-                                'tax_amount': tax_amount,
-                                'alic': float(tax),
-                                'withholding_amount': withholding_amount,
-                                'untaxed_amount': base_exento,
-                            }))
+                            tax_key = float(tax)
+                            if tax_key not in distribution_by_alic:
+                                distribution_by_alic[tax_key] = {
+                                    'invoice_amount': 0.0,
+                                    'tax_amount': 0.0,
+                                    'alic': tax_key,
+                                    'withholding_amount': 0.0,
+                                    'untaxed_amount': base_exento,
+                                }
+                            distribution_by_alic[tax_key]['invoice_amount'] += invoice_amount
+                            distribution_by_alic[tax_key]['tax_amount'] += tax_amount
+                            distribution_by_alic[tax_key]['withholding_amount'] += withholding_amount
+                            distribution_by_alic[tax_key]['untaxed_amount'] = max(
+                                distribution_by_alic[tax_key]['untaxed_amount'],
+                                base_exento,
+                            )
+                    for tax_key in sorted(distribution_by_alic.keys()):
+                        distribution.append((0, 0, distribution_by_alic[tax_key]))
                     if distribution:
                         vals['withholding_distribution_ids'] = distribution
             currency_tax = selected_debt_taxed*alicuota
