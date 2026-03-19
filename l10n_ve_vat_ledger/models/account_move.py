@@ -21,6 +21,9 @@ class AccountMove(models.Model):
     def _get_igtf_amount(self):
         return 0
 
+    def _get_igtf_amount_purchase(self):
+        return 0
+
     def _get_reverse_name_vat_ledger(self):
         return self.reversed_entry_id.name
 

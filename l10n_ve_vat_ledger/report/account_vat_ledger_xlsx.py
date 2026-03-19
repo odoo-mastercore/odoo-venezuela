@@ -514,7 +514,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     iva_15 = 0.00
                     base_imponible_8 = 0.00
                     base_imponible_15 = 0.00
-                    igtf_amount = 0.00
+                    igtf_amount = invoice._get_igtf_amount_purchase()
                     if invoice.invoice_line_ids:
                         for linel in invoice.invoice_line_ids:
                             if linel.tax_ids:
@@ -1099,9 +1099,9 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                 sheet.write((row), 23, total_iva_contribuyente_15, line_total)
 
                 sheet.write((row), 24, total_base_exento_no_contribuyente, line_total)
-                sheet.write((row), 26, total_base_imponible_no_contribuyente_16, line_total)
+                sheet.write((row), 25, total_base_imponible_no_contribuyente_16, line_total)
                 sheet.write((row), 27, total_iva_no_contribuyente_16, line_total)
-                sheet.write((row), 29, total_base_imponible_no_contribuyente_8, line_total)
+                sheet.write((row), 28, total_base_imponible_no_contribuyente_8, line_total)
                 sheet.write((row), 30, total_iva_no_contribuyente_8, line_total)
                 sheet.write((row), 31, total_base_imponible_no_contribuyente_15, line_total)
                 sheet.write((row), 33, total_iva_no_contribuyente_15, line_total)
@@ -1202,7 +1202,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                 sheet.write((row), 21, c_total_iva_8, line_total)
                 sheet.write((row), 22, c_total_base_imponible_15, line_total)
                 sheet.write((row), 24, c_total_iva_15, line_total)
-                sheet.write((row), 25, total_iva_16_retenido, line_total)
+                sheet.write((row), 25, abs(total_iva_16_retenido), line_total)
                 sheet.write((row), 26, c_total_igtf, line_total)
 
 
