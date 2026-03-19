@@ -1099,9 +1099,9 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                 sheet.write((row), 23, total_iva_contribuyente_15, line_total)
 
                 sheet.write((row), 24, total_base_exento_no_contribuyente, line_total)
-                sheet.write((row), 26, total_base_imponible_no_contribuyente_16, line_total)
+                sheet.write((row), 25, total_base_imponible_no_contribuyente_16, line_total)
                 sheet.write((row), 27, total_iva_no_contribuyente_16, line_total)
-                sheet.write((row), 29, total_base_imponible_no_contribuyente_8, line_total)
+                sheet.write((row), 28, total_base_imponible_no_contribuyente_8, line_total)
                 sheet.write((row), 30, total_iva_no_contribuyente_8, line_total)
                 sheet.write((row), 31, total_base_imponible_no_contribuyente_15, line_total)
                 sheet.write((row), 33, total_iva_no_contribuyente_15, line_total)
