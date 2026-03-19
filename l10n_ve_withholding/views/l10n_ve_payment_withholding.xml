@@ -12,8 +12,10 @@
                 <sheet>
                     <group>
                         <group>
+                            <field name="partner_id" readonly="1"/>
+                            <field name="date" readonly="1"/>
                             <field name="tax_id" options="{'no_create': True}" />
-                            <field name="payment_id" />
+                            <field name="payment_id" readonly="1" />
                             <field name="withholding_sequence_id" readonly="1"/>
                             <field name="name" readonly="1"/>
                         </group>
@@ -38,6 +40,9 @@
         <field name="model">l10n_ve.payment.withholding</field>
         <field name="arch" type="xml">
             <list string="Retenciones" create="false" delete="false" edit="false">
+                <field name="date"/>
+                <field name="move_ref"/>
+                <field name="partner_id"/>
                 <field name="tax_id" />
                 <field name="payment_id" />
                 <field name="withholding_sequence_id" />

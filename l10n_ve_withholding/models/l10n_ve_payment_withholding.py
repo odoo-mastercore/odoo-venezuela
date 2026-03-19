@@ -35,6 +35,10 @@ class l10nVePaymentWithholding(models.Model):
         'account.move.line',
         string='Linea de factura'
     )
+    move_ref = fields.Char(
+        string='Facturas',
+        compute="_compute_move_id"
+    )
     calc_islr = fields.Selection(
         string='Cálculo de ISLR',
         selection=[
@@ -55,6 +59,12 @@ class l10nVePaymentWithholding(models.Model):
         string=_('Fecha'),
         default=fields.Date.context_today,
     )
+
+    @api.depends('l10n_ve_move_line_taxes_ids.move_id', 'l10n_ve_move_line_taxes_ids.move_id.ref')
+    def _compute_move_id(self):
+        for rec in self:
+            refs = rec.l10n_ve_move_line_taxes_ids.mapped('move_id.ref')
+            rec.move_ref = ", ".join(dict.fromkeys(ref for ref in refs if ref))
 
     @api.depends(
         "tax_id",
