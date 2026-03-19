@@ -514,7 +514,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     iva_15 = 0.00
                     base_imponible_8 = 0.00
                     base_imponible_15 = 0.00
-                    igtf_amount = 0.00
+                    igtf_amount = invoice._get_igtf_amount_purchase()
                     if invoice.invoice_line_ids:
                         for linel in invoice.invoice_line_ids:
                             if linel.tax_ids:
