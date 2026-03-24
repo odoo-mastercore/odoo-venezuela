@@ -282,6 +282,19 @@ class l10nVePaymentWithholding(models.Model):
         self.ensure_one()
         return self.tax_id
 
+    def _get_move_total_without_igtf(self, move):
+        """Return move total excluding IGTF amounts when present."""
+        total_amount = abs(move.amount_total_signed)
+        igtf_amount = 0.0
+        if 'igtf_amount_purchase' in move._fields:
+            igtf_amount = abs(move.igtf_amount_purchase or 0.0)
+        elif 'igtf_purchase' in self.env['account.move.line']._fields:
+            igtf_lines = move.line_ids.filtered(
+                lambda line: line.display_type == 'tax' and line.igtf_purchase
+            )
+            igtf_amount = abs(sum(igtf_lines.mapped('balance')))
+        return max(total_amount - igtf_amount, 0.0)
+
     def _get_withholding_lines(self):
         lines = []
         total_base = 0.0
@@ -301,7 +314,9 @@ class l10nVePaymentWithholding(models.Model):
                     'move_id': True if tax.move_id else False,
                     'reserved_entry': True if tax.move_id.reversed_entry_id else False,
                     'reserved_entry_ref': tax.move_id.reversed_entry_id.ref or '',
-                    'amount_total': self.payment_id._format_miles_number(round(abs(tax.move_id.amount_total_signed), 2)),
+                    'amount_total': self.payment_id._format_miles_number(
+                        round(self._get_move_total_without_igtf(tax.move_id), 2)
+                    ),
                     'amount_untaxed_formated': self.payment_id._format_miles_number(tax.move_id.get_exempt_amount()),
                     'amount_untaxed': tax.move_id.get_exempt_amount(),
                     'tax_base_amount_formated': self.payment_id._format_miles_number(tax.tax_base_amount),
