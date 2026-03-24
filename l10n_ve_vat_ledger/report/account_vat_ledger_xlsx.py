@@ -23,6 +23,22 @@ class AccountVatLedgerXlsx(models.AbstractModel):
 
 
 
+    def _get_retention_amount(self, reten, report_type):
+        amount_reten = reten.amount if reten.currency_id.id == reten.company_id.currency_id.id else reten.amount_company_currency
+        amount_reten = amount_reten * -1 if reten.total_amount < 0 else amount_reten
+        if report_type == 'purchase':
+            is_credit_note = False
+            if 'reten_move_type_id' in self.env['account.payment']._fields and reten.reten_move_type_id:
+                is_credit_note = reten.reten_move_type_id == 'in_refund'
+            elif 'reconciled_bill_ids' in self.env['account.payment']._fields and reten.reconciled_bill_ids:
+                is_credit_note = any(
+                    bill.move_type == 'in_refund' and not bill.debit_origin_id
+                    for bill in reten.reconciled_bill_ids
+                )
+            if is_credit_note:
+                amount_reten = -abs(amount_reten)
+        return amount_reten
+
     def find_values(self, id, json_repr):
         results = []
 
@@ -394,8 +410,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                             coincident_date = [tup for tup in retenciones if date_reference == tup.date ]
                             if coincident_date:
                                 for reten in coincident_date:
-                                    amount_reten = reten.amount if reten.currency_id.id == reten.company_id.currency_id.id else reten.amount_company_currency
-                                    amount_reten = amount_reten * -1 if reten.total_amount < 0 else amount_reten
+                                    amount_reten = self._get_retention_amount(reten, obj.type)
                                     total_iva_16_retenido += amount_reten
                                     partner_reten = reten.move_id.partner_id if not reten.payment_group_id.third_partner_withholding else reten.payment_group_id.third_partner_id
                                     i += 1
@@ -682,8 +697,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                             coincident_date = [tup for tup in retenciones if date_reference == tup.date]
                             if coincident_date:
                                 for reten in coincident_date:
-                                    amount_reten = reten.amount if reten.currency_id.id == reten.company_id.currency_id.id else reten.amount_company_currency
-                                    amount_reten = amount_reten * -1 if reten.total_amount < 0 else amount_reten
+                                    amount_reten = self._get_retention_amount(reten, obj.type)
                                     total_iva_16_retenido += amount_reten
                                     i += 1
                                     # contador de la factura
@@ -1011,8 +1025,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                 row += 1
             if len(retenciones) >= 1 and obj.type == 'purchase':
                 for reten in retenciones:
-                    amount_reten = reten.amount if reten.currency_id.id == reten.company_id.currency_id.id else reten.amount_company_currency
-                    amount_reten = amount_reten * -1 if reten.total_amount < 0 else amount_reten
+                    amount_reten = self._get_retention_amount(reten, obj.type)
                     total_iva_16_retenido += amount_reten
                     partner_reten = reten.move_id.partner_id if not reten.payment_group_id.third_partner_withholding else reten.payment_group_id.third_partner_id
                     i += 1
@@ -1082,8 +1095,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
 
             elif len(retenciones) >= 1 and obj.type == 'sale':
                 for reten in sorted(retenciones, key=lambda x: x.date):
-                    amount_reten = reten.amount if reten.currency_id.id == reten.company_id.currency_id.id else reten.amount_company_currency
-                    amount_reten = amount_reten * -1 if reten.total_amount < 0 else amount_reten
+                    amount_reten = self._get_retention_amount(reten, obj.type)
                     total_iva_16_retenido += amount_reten
                     i += 1
                     # contador de la factura
