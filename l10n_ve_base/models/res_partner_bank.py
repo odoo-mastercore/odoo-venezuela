@@ -34,18 +34,18 @@ class ResPartnerBank(models.Model):
                 'value': {'acc_number': ''},
             }
 
-    @api.model_create_multi
-    def create(self, vals_list):
-        records = super(ResPartnerBank, self).create(vals_list)
-        for rec in records:
-            if not rec.bank_id:
-                raise UserError(_('Debe Seleccionar la Entidad Bancaria.'))
-        return records
+    # @api.model_create_multi
+    # def create(self, vals_list):
+    #     records = super(ResPartnerBank, self).create(vals_list)
+    #     for rec in records:
+    #         if not rec.bank_id:
+    #             raise UserError(_('Debe Seleccionar la Entidad Bancaria.'))
+    #     return records
 
-    def write(self, vals):
-        rec = super(ResPartnerBank, self).write(vals)
-        if not self.bank_id:
-            raise UserError(_('Debe Seleccionar la Entidad Bancaria.'))
-        if not self.acc_number:
-            raise UserError(_('Debe indicar el numero de cuenta.'))
-        return rec
+    # def write(self, vals):
+    #     rec = super(ResPartnerBank, self).write(vals)
+    #     if not self.bank_id:
+    #         raise UserError(_('Debe Seleccionar la Entidad Bancaria.'))
+    #     if not self.acc_number:
+    #         raise UserError(_('Debe indicar el numero de cuenta.'))
+    #     return rec
