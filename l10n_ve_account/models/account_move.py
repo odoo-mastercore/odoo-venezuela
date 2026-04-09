@@ -55,14 +55,15 @@ class AccountMove(models.Model):
         """
         if 'skip_check_price' in self._context:
             return True
-        for line in self.invoice_line_ids:
-            if line.price_unit <= 0 and\
-                self.move_type in ['out_invoice'] and not\
-                re.search(FORBIDDEN_PATTER, line.product_id.name or '', re.IGNORECASE):
-                raise ValidationError(
-                    _("No se permiten precios cero o negativos en las líneas de factura. Línea con producto: %s")
-                    % line.product_id.display_name
-                )
+        for move in self:
+            for line in move.invoice_line_ids:
+                if line.price_unit <= 0 and\
+                    move.move_type in ['out_invoice'] and not\
+                    re.search(FORBIDDEN_PATTER, line.product_id.name or '', re.IGNORECASE):
+                    raise ValidationError(
+                        _("No se permiten precios cero o negativos en las líneas de factura. Línea con producto: %s")
+                        % line.product_id.display_name
+                    )
             
     
     @api.onchange('ref','partner_id')
@@ -95,4 +96,3 @@ class AccountMove(models.Model):
         if any(field in vals for field in ('line_ids', 'invoice_line_ids')):
             self._check_lines_price()
         return res
-
