@@ -58,6 +58,57 @@ class AccountVatLedgerXlsx(models.AbstractModel):
             'total': total,
         }
 
+    def _get_purchase_withholding_signed_amount(self, withholding):
+        """Return withholding amount with sign for purchase VAT ledger.
+
+        Business rule: if withholding is associated to a credit note,
+        amount must be negative.
+        """
+        amount = abs(withholding.amount or 0.0)
+        related_moves = self.env["account.move"]
+
+        if "reconciled_invoice_ids" in withholding._fields:
+            related_moves |= withholding.reconciled_invoice_ids
+        if "invoice_ids" in withholding.payment_id._fields:
+            related_moves |= withholding.payment_id.invoice_ids
+        if "l10n_ve_move_line_taxes_ids" in withholding._fields:
+            related_moves |= withholding.l10n_ve_move_line_taxes_ids.mapped("move_id")
+
+        related_moves = related_moves.filtered(
+            lambda move: move.move_type in ("in_invoice", "in_refund", "out_invoice", "out_refund")
+        )
+        if any(move.move_type in ("in_refund", "out_refund") for move in related_moves):
+            return -amount
+        return amount
+
+    def _get_sale_withholding_signed_amount(self, withholding):
+        """Return withholding amount with sign for sales VAT ledger.
+
+        Business rule: if withholding is associated to a credit note,
+        amount must be negative.
+        """
+        amount = (
+            withholding.amount
+            if withholding.currency_id.id == withholding.company_id.currency_id.id
+            else withholding.amount_company_currency
+        )
+        amount = abs(amount or 0.0)
+        related_moves = self.env["account.move"]
+
+        if "reconciled_invoice_ids" in withholding._fields:
+            related_moves |= withholding.reconciled_invoice_ids
+        if "invoice_ids" in withholding.payment_id._fields:
+            related_moves |= withholding.payment_id.invoice_ids
+        if "l10n_ve_move_line_taxes_ids" in withholding._fields:
+            related_moves |= withholding.l10n_ve_move_line_taxes_ids.mapped("move_id")
+
+        related_moves = related_moves.filtered(
+            lambda move: move.move_type in ("in_invoice", "in_refund", "out_invoice", "out_refund")
+        )
+        if any(move.move_type in ("in_refund", "out_refund") for move in related_moves):
+            return -amount
+        return amount
+
     def generate_xlsx_report(self, workbook, data, account_vat):
         for obj in account_vat:
             report_name = obj.name
@@ -371,8 +422,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                             coincident_date = retenciones_by_date.get(date_reference, [])
                             if coincident_date:
                                 for reten in list(coincident_date):
-                                    move_type_reten = reten.payment_id.move_id.move_type
-                                    amount_reten = reten.amount if move_type_reten == 'in_invoice' else reten.amount * -1.00
+                                    amount_reten = self._get_purchase_withholding_signed_amount(reten)
                                     total_iva_16_retenido += amount_reten
                                     i += 1
                                     # codigo 
@@ -432,7 +482,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                                     sheet.write(row, 24, '', line_number)
 
                                     #Retenciones
-                                    sheet.write(row, 25, abs(amount_reten), line_number)
+                                    sheet.write(row, 25, amount_reten, line_number)
                                     ###### IGTF
                                     sheet.write(row, 26, '', line_number)
                                     # eliminar de la lista y del índice
@@ -666,7 +716,8 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                             coincident_date = retenciones_by_date.get(date_reference, []) if 'retenciones_by_date' in locals() else [tup for tup in retenciones if date_reference == tup.date]
                             if coincident_date:
                                 for reten in coincident_date:
-                                    total_iva_16_retenido += reten.amount if reten.currency_id.id == reten.company_id.currency_id.id else reten.amount_company_currency
+                                    amount_reten = self._get_sale_withholding_signed_amount(reten)
+                                    total_iva_16_retenido += amount_reten
                                     i += 1
                                     # contador de la factura
                                     sheet.write(row, 0, i, line)
@@ -709,7 +760,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                                     sheet.write(row, 25, '', line)
                                     sheet.write(row, 26, '', line)
                                     sheet.write(row, 27, '', line)
-                                    sheet.write(row, 34, reten.amount if reten.currency_id.id == reten.company_id.currency_id.id else reten.amount_company_currency, line)
+                                    sheet.write(row, 34, amount_reten, line)
                                     sheet.write(row, 35, '', line)
                                     retenciones.remove(reten)
                                     row +=1
@@ -969,8 +1020,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
 
             if obj.type == 'purchase':
                 for reten in retenciones:
-                    move_type_reten = reten.payment_id.move_id.move_type
-                    amount_reten = reten.amount if move_type_reten == 'in_invoice' else reten.amount * -1.00
+                    amount_reten = self._get_purchase_withholding_signed_amount(reten)
                     total_iva_16_retenido += amount_reten
                     i += 1
                     # codigo 
@@ -1031,7 +1081,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     sheet.write(row, 24, '', line_number)
                     
                     #Retenciones
-                    sheet.write(row, 25, abs(amount_reten), line_number)
+                    sheet.write(row, 25, amount_reten, line_number)
                     ###### IGTF
                     sheet.write(row, 26, '', line_number)
                     # No eliminar elementos de la lista mientras se itera
@@ -1039,7 +1089,8 @@ class AccountVatLedgerXlsx(models.AbstractModel):
 
             elif len(retenciones) >= 1 and obj.type == 'sale':
                 for reten in sorted(retenciones, key=lambda x: x.payment_id.date):
-                    total_iva_16_retenido += reten.amount if reten.currency_id.id == reten.company_id.currency_id.id else reten.amount_company_currency
+                    amount_reten = self._get_sale_withholding_signed_amount(reten)
+                    total_iva_16_retenido += amount_reten
                     i += 1
                     # contador de la factura
                     sheet.write(row, 0, i, line)
@@ -1084,7 +1135,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     sheet.write(row, 31, '', line)
                     sheet.write(row, 32, '', line)
                     sheet.write(row, 33, '', line)
-                    sheet.write(row, 34, reten.amount, line_number)
+                    sheet.write(row, 34, amount_reten, line_number)
                     sheet.write(row, 35, '', line)
                     retenciones.remove(reten)
                     row +=1
@@ -1202,7 +1253,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                 sheet.write((row), 21, c_total_iva_8, line_total)
                 sheet.write((row), 22, c_total_base_imponible_15, line_total)
                 sheet.write((row), 24, c_total_iva_15, line_total)
-                sheet.write((row), 25, abs(total_iva_16_retenido), line_total)
+                sheet.write((row), 25, total_iva_16_retenido, line_total)
                 sheet.write((row), 26, c_total_igtf, line_total)
 
 
