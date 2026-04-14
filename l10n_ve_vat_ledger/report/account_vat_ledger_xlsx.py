@@ -65,6 +65,21 @@ class AccountVatLedgerXlsx(models.AbstractModel):
         amount must be negative.
         """
         amount = abs(withholding.amount or 0.0)
+
+        # Preferred source: withholding distribution lines (most reliable in runtime).
+        try:
+            withholding_data = withholding._get_withholding_lines()
+        except Exception:
+            withholding_data = {}
+        if isinstance(withholding_data, dict):
+            detail_lines = withholding_data.get("lines", [])
+        elif isinstance(withholding_data, list):
+            detail_lines = withholding_data
+        else:
+            detail_lines = []
+        if any(line.get("move_type") in ("in_refund", "out_refund") for line in detail_lines):
+            return -amount
+
         related_moves = self.env["account.move"]
 
         if "reconciled_invoice_ids" in withholding._fields:
@@ -93,6 +108,21 @@ class AccountVatLedgerXlsx(models.AbstractModel):
             else withholding.amount_company_currency
         )
         amount = abs(amount or 0.0)
+
+        # Preferred source: withholding distribution lines (most reliable in runtime).
+        try:
+            withholding_data = withholding._get_withholding_lines()
+        except Exception:
+            withholding_data = {}
+        if isinstance(withholding_data, dict):
+            detail_lines = withholding_data.get("lines", [])
+        elif isinstance(withholding_data, list):
+            detail_lines = withholding_data
+        else:
+            detail_lines = []
+        if any(line.get("move_type") in ("in_refund", "out_refund") for line in detail_lines):
+            return -amount
+
         related_moves = self.env["account.move"]
 
         if "reconciled_invoice_ids" in withholding._fields:
