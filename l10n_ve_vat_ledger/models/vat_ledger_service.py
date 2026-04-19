@@ -28,6 +28,27 @@ class L10nVeVatLedgerService(models.AbstractModel):
         15.0: ('base_15', 'tax_15'),
     }
 
+    _SALE_NUMERIC_FIELDS = (
+        'amount_total',
+        'third_exempt', 'third_base', 'third_tax',
+        'contrib_exempt', 'contrib_base_16', 'contrib_tax_16', 'contrib_base_8', 'contrib_tax_8', 'contrib_base_15', 'contrib_tax_15',
+        'non_contrib_exempt', 'non_contrib_base_16', 'non_contrib_tax_16', 'non_contrib_base_8', 'non_contrib_tax_8', 'non_contrib_base_15', 'non_contrib_tax_15',
+        'withholding', 'igtf',
+        # Compatibilidad con wizard piloto
+        'base_16', 'tax_16', 'base_8', 'tax_8', 'base_15', 'tax_15', 'exempt',
+    )
+
+    _PURCHASE_NUMERIC_FIELDS = (
+        'amount_total', 'purchase_no_credit',
+        'import_base', 'import_tax',
+        'internal_base_16', 'internal_tax_16',
+        'internal_base_8', 'internal_tax_8',
+        'internal_base_15', 'internal_tax_15',
+        'withholding', 'igtf',
+        # Compatibilidad con wizard piloto
+        'base_16', 'tax_16', 'base_8', 'tax_8', 'base_15', 'tax_15', 'exempt',
+    )
+
     @api.model
     def build_ledger_data(self, ledger_type, options):
         if ledger_type not in self._LEDGER_MOVE_TYPES:
@@ -35,12 +56,10 @@ class L10nVeVatLedgerService(models.AbstractModel):
 
         normalized = self._normalize_options(ledger_type, options or {})
         move_domain = self._get_move_domain(ledger_type, normalized)
-        moves = self.env['account.move'].search(
-            move_domain,
-            order='invoice_date, date, id',
-        )
+        moves = self.env['account.move'].search(move_domain, order='invoice_date, date, id')
 
         withholding_map = self._get_withholding_amount_by_move(ledger_type, normalized)
+        numeric_fields = self._SALE_NUMERIC_FIELDS if ledger_type == 'sale' else self._PURCHASE_NUMERIC_FIELDS
 
         lines = []
         totals = defaultdict(float)
@@ -49,20 +68,28 @@ class L10nVeVatLedgerService(models.AbstractModel):
             sign = self._get_sign(move)
             move_total = abs(move.amount_total_signed or move.amount_total or 0.0)
             withholding_amount = withholding_map.get(move.id, 0.0)
-            partner = move.commercial_partner_id
-            invoice_date = move.invoice_date or move.date
+            invoice_date = self._get_invoice_date(move, ledger_type)
 
             line_vals = {
                 'sequence': sequence,
                 'move_id': move.id,
                 'invoice_date': invoice_date,
+                'doc_type': self._get_doc_type_label(move),
+                'note_type': self._get_note_type(move),  # compatibilidad wizard
+                'document_number': self._get_document_number(move, ledger_type),
                 'move_name': move.name,
                 'move_ref': move.ref,
-                'control_number': move.l10n_ve_control_number,
-                'partner_name': partner.display_name,
-                'partner_vat': partner.vat,
-                'origin_name': move.reversed_entry_id.name if move.move_type in ('out_refund', 'in_refund') else move.debit_origin_id.name,
-                'note_type': self._get_note_type(move),
+                'control_number': move.l10n_ve_control_number or '',
+                'receipt_number': '',
+                'affected_document': self._get_affected_document(move),
+                'import_sheet_number': '',
+                'import_file_number': '',
+                'partner_name': move.commercial_partner_id.display_name,
+                'partner_vat': self._format_partner_vat(move.commercial_partner_id),
+                'amount_total': sign * move_total,
+                'withholding': sign * withholding_amount,
+                'igtf': sign * self._get_igtf_amount(move, ledger_type),
+                # compatibilidad wizard
                 'base_16': sign * tax_buckets['base_16'],
                 'tax_16': sign * tax_buckets['tax_16'],
                 'base_8': sign * tax_buckets['base_8'],
@@ -70,17 +97,16 @@ class L10nVeVatLedgerService(models.AbstractModel):
                 'base_15': sign * tax_buckets['base_15'],
                 'tax_15': sign * tax_buckets['tax_15'],
                 'exempt': sign * tax_buckets['exempt'],
-                'amount_total': sign * move_total,
-                'withholding': sign * withholding_amount,
-                'is_refund': move.move_type in ('out_refund', 'in_refund'),
-                'is_debit_note': bool(move.debit_origin_id),
             }
 
-            lines.append(line_vals)
-            for key in ('base_16', 'tax_16', 'base_8', 'tax_8', 'base_15', 'tax_15', 'exempt', 'amount_total', 'withholding'):
-                totals[key] += line_vals[key]
+            if ledger_type == 'sale':
+                self._fill_sale_columns(line_vals, tax_buckets, sign, move)
+            else:
+                self._fill_purchase_columns(line_vals, tax_buckets, sign)
 
-        totals['lines_count'] = len(lines)
+            lines.append(line_vals)
+            for key in numeric_fields:
+                totals[key] += line_vals.get(key, 0.0)
 
         return {
             'header': {
@@ -92,11 +118,79 @@ class L10nVeVatLedgerService(models.AbstractModel):
                 'date_to': normalized['date_to'],
                 'journal_ids': normalized['journals'].ids,
                 'journal_names': ', '.join(normalized['journals'].mapped('display_name')),
+                'numeric_fields': list(numeric_fields),
             },
             'lines': lines,
             'totals': dict(totals),
             'warnings': [],
         }
+
+    @api.model
+    def _fill_sale_columns(self, line_vals, tax_buckets, sign, move):
+        is_contributor = bool(move.partner_id.l10n_latam_identification_type_id.is_vat)
+        exento = sign * tax_buckets['exempt']
+        base_16 = sign * tax_buckets['base_16']
+        tax_16 = sign * tax_buckets['tax_16']
+        base_8 = sign * tax_buckets['base_8']
+        tax_8 = sign * tax_buckets['tax_8']
+        base_15 = sign * tax_buckets['base_15']
+        tax_15 = sign * tax_buckets['tax_15']
+
+        line_vals.update({
+            # Ventas por cuenta de terceros (se mantiene estructura original)
+            'third_exempt': 0.0,
+            'third_base': 0.0,
+            'third_rate': '',
+            'third_tax': 0.0,
+            # Contribuyente
+            'contrib_exempt': exento if is_contributor else 0.0,
+            'contrib_base_16': base_16 if is_contributor else 0.0,
+            'contrib_rate_16': '16%' if is_contributor and base_16 else '',
+            'contrib_tax_16': tax_16 if is_contributor else 0.0,
+            'contrib_base_8': base_8 if is_contributor else 0.0,
+            'contrib_rate_8': '8%' if is_contributor and base_8 else '',
+            'contrib_tax_8': tax_8 if is_contributor else 0.0,
+            'contrib_base_15': base_15 if is_contributor else 0.0,
+            'contrib_rate_15': '15%' if is_contributor and base_15 else '',
+            'contrib_tax_15': tax_15 if is_contributor else 0.0,
+            # No Contribuyente
+            'non_contrib_exempt': exento if not is_contributor else 0.0,
+            'non_contrib_base_16': base_16 if not is_contributor else 0.0,
+            'non_contrib_rate_16': '16%' if (not is_contributor and base_16) else '',
+            'non_contrib_tax_16': tax_16 if not is_contributor else 0.0,
+            'non_contrib_base_8': base_8 if not is_contributor else 0.0,
+            'non_contrib_rate_8': '8%' if (not is_contributor and base_8) else '',
+            'non_contrib_tax_8': tax_8 if not is_contributor else 0.0,
+            'non_contrib_base_15': base_15 if not is_contributor else 0.0,
+            'non_contrib_rate_15': '15%' if (not is_contributor and base_15) else '',
+            'non_contrib_tax_15': tax_15 if not is_contributor else 0.0,
+        })
+
+    @api.model
+    def _fill_purchase_columns(self, line_vals, tax_buckets, sign):
+        exento = sign * tax_buckets['exempt']
+        base_16 = sign * tax_buckets['base_16']
+        tax_16 = sign * tax_buckets['tax_16']
+        base_8 = sign * tax_buckets['base_8']
+        tax_8 = sign * tax_buckets['tax_8']
+        base_15 = sign * tax_buckets['base_15']
+        tax_15 = sign * tax_buckets['tax_15']
+
+        line_vals.update({
+            'purchase_no_credit': exento,
+            'import_base': 0.0,
+            'import_rate': '',
+            'import_tax': 0.0,
+            'internal_base_16': base_16,
+            'internal_rate_16': '16%' if base_16 else '',
+            'internal_tax_16': tax_16,
+            'internal_base_8': base_8,
+            'internal_rate_8': '8%' if base_8 else '',
+            'internal_tax_8': tax_8,
+            'internal_base_15': base_15,
+            'internal_rate_15': '15%' if base_15 else '',
+            'internal_tax_15': tax_15,
+        })
 
     @api.model
     def _normalize_options(self, ledger_type, options):
@@ -122,7 +216,6 @@ class L10nVeVatLedgerService(models.AbstractModel):
             company_ids = self.env['res.company'].search([('id', 'child_of', company_ids)]).ids
 
         company = self.env['res.company'].browse(company_ids[0]) if company_ids else self.env.company
-
         journals = self._resolve_journals(ledger_type, options, company_ids)
 
         return {
@@ -147,22 +240,21 @@ class L10nVeVatLedgerService(models.AbstractModel):
                 journal_ids = [jid for jid in raw_journal_ids if isinstance(jid, int)]
 
         if not journal_ids and options.get('journals'):
-            journal_options = [
-                journal
-                for journal in options['journals']
-                if journal.get('model') == 'account.journal'
-            ]
+            journal_options = [journal for journal in options['journals'] if journal.get('model') == 'account.journal']
             selected = [journal['id'] for journal in journal_options if journal.get('selected')]
             journal_ids = selected or [journal['id'] for journal in journal_options]
 
-        journals = self.env['account.journal'].search([
-            ('id', 'in', journal_ids),
-            ('company_id', 'in', company_ids),
-            ('type', '=', journal_type),
-        ]) if journal_ids else self.env['account.journal'].search([
-            ('company_id', 'in', company_ids),
-            ('type', '=', journal_type),
-        ])
+        if journal_ids:
+            journals = self.env['account.journal'].search([
+                ('id', 'in', journal_ids),
+                ('company_id', 'in', company_ids),
+                ('type', '=', journal_type),
+            ])
+        else:
+            journals = self.env['account.journal'].search([
+                ('company_id', 'in', company_ids),
+                ('type', '=', journal_type),
+            ])
 
         return journals
 
@@ -202,8 +294,8 @@ class L10nVeVatLedgerService(models.AbstractModel):
             'exempt': 0.0,
         }
 
-        tax_lines = move.line_ids.filtered(lambda line: line.tax_line_id and not line.display_type)
-
+        # Importante: las líneas de impuesto tienen display_type='tax'.
+        tax_lines = move.line_ids.filtered(lambda line: line.tax_line_id)
         for tax_line in tax_lines:
             rate = abs(float_round(tax_line.tax_line_id.amount or 0.0, precision_digits=2))
             base_amount = abs(tax_line.tax_base_amount or 0.0)
@@ -294,6 +386,50 @@ class L10nVeVatLedgerService(models.AbstractModel):
         if move.debit_origin_id:
             return 'debit'
         return 'invoice'
+
+    @api.model
+    def _get_doc_type_label(self, move):
+        if move.move_type in ('out_refund', 'in_refund') and not move.debit_origin_id:
+            return 'Nota de Credito'
+        if move.debit_origin_id:
+            return 'Nota de Debito'
+        return 'Factura'
+
+    @api.model
+    def _get_document_number(self, move, ledger_type):
+        if ledger_type == 'sale' and hasattr(move, '_get_name_vat_ledger'):
+            return move._get_name_vat_ledger() or ''
+        return move.ref or move.name or ''
+
+    @api.model
+    def _get_affected_document(self, move):
+        if move.move_type in ('out_refund', 'in_refund') and move.reversed_entry_id:
+            return move.reversed_entry_id.name or ''
+        if move.debit_origin_id:
+            return move.debit_origin_id.name or ''
+        return ''
+
+    @api.model
+    def _get_invoice_date(self, move, ledger_type):
+        if ledger_type == 'sale':
+            return move.l10n_ve_invoice_date or move.invoice_date or move.date
+        return move.invoice_date or move.date
+
+    @api.model
+    def _get_igtf_amount(self, move, ledger_type):
+        if ledger_type == 'purchase' and hasattr(move, '_get_igtf_amount_purchase'):
+            return abs(move._get_igtf_amount_purchase() or 0.0)
+        if ledger_type == 'sale' and hasattr(move, '_get_igtf_amount'):
+            return abs(move._get_igtf_amount() or 0.0)
+        return 0.0
+
+    @api.model
+    def _format_partner_vat(self, partner):
+        if not partner:
+            return ''
+        prefix = partner.l10n_latam_identification_type_id.l10n_ve_code or ''
+        vat = partner.vat or ''
+        return '%s-%s' % (prefix, vat) if prefix or vat else ''
 
     @api.model
     def _match_supported_rate(self, rate):

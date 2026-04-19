@@ -13,71 +13,169 @@
         <field name="search_bar" eval="True"/>
         <field name="load_more_limit" eval="4000"/>
         <field name="column_ids">
-            <record id="ve_vat_sales_report_col_invoice_date" model="account.report.column">
-                <field name="name">Fecha</field>
+            <record id="ve_vat_sales_col_sequence" model="account.report.column">
+                <field name="name">Nro Oper.</field>
+                <field name="expression_label">sequence</field>
+                <field name="figure_type">integer</field>
+            </record>
+            <record id="ve_vat_sales_col_invoice_date" model="account.report.column">
+                <field name="name">Fecha de la Factura</field>
                 <field name="expression_label">invoice_date</field>
                 <field name="figure_type">date</field>
             </record>
-            <record id="ve_vat_sales_report_col_note_type" model="account.report.column">
-                <field name="name">Tipo</field>
-                <field name="expression_label">note_type</field>
+            <record id="ve_vat_sales_col_doc_type" model="account.report.column">
+                <field name="name">Tipo de Documento</field>
+                <field name="expression_label">doc_type</field>
                 <field name="figure_type">string</field>
             </record>
-            <record id="ve_vat_sales_report_col_move_name" model="account.report.column">
-                <field name="name">Número</field>
-                <field name="expression_label">move_name</field>
+            <record id="ve_vat_sales_col_document_number" model="account.report.column">
+                <field name="name">Factura o Nro Documento</field>
+                <field name="expression_label">document_number</field>
                 <field name="figure_type">string</field>
             </record>
-            <record id="ve_vat_sales_report_col_control_number" model="account.report.column">
-                <field name="name">Control</field>
+            <record id="ve_vat_sales_col_control_number" model="account.report.column">
+                <field name="name">Número de Control</field>
                 <field name="expression_label">control_number</field>
                 <field name="figure_type">string</field>
             </record>
-            <record id="ve_vat_sales_report_col_partner_name" model="account.report.column">
-                <field name="name">Partner</field>
+            <record id="ve_vat_sales_col_receipt_number" model="account.report.column">
+                <field name="name">N° comprobante</field>
+                <field name="expression_label">receipt_number</field>
+                <field name="figure_type">string</field>
+            </record>
+            <record id="ve_vat_sales_col_affected_document" model="account.report.column">
+                <field name="name">Número Factura Afectada</field>
+                <field name="expression_label">affected_document</field>
+                <field name="figure_type">string</field>
+            </record>
+            <record id="ve_vat_sales_col_partner_name" model="account.report.column">
+                <field name="name">Nombre o Razón Social</field>
                 <field name="expression_label">partner_name</field>
                 <field name="figure_type">string</field>
             </record>
-            <record id="ve_vat_sales_report_col_partner_vat" model="account.report.column">
+            <record id="ve_vat_sales_col_partner_vat" model="account.report.column">
                 <field name="name">RIF</field>
                 <field name="expression_label">partner_vat</field>
                 <field name="figure_type">string</field>
             </record>
-            <record id="ve_vat_sales_report_col_base_16" model="account.report.column">
-                <field name="name">Base 16%</field>
-                <field name="expression_label">base_16</field>
-            </record>
-            <record id="ve_vat_sales_report_col_tax_16" model="account.report.column">
-                <field name="name">IVA 16%</field>
-                <field name="expression_label">tax_16</field>
-            </record>
-            <record id="ve_vat_sales_report_col_base_8" model="account.report.column">
-                <field name="name">Base 8%</field>
-                <field name="expression_label">base_8</field>
-            </record>
-            <record id="ve_vat_sales_report_col_tax_8" model="account.report.column">
-                <field name="name">IVA 8%</field>
-                <field name="expression_label">tax_8</field>
-            </record>
-            <record id="ve_vat_sales_report_col_base_15" model="account.report.column">
-                <field name="name">Base 15%</field>
-                <field name="expression_label">base_15</field>
-            </record>
-            <record id="ve_vat_sales_report_col_tax_15" model="account.report.column">
-                <field name="name">IVA 15%</field>
-                <field name="expression_label">tax_15</field>
-            </record>
-            <record id="ve_vat_sales_report_col_exempt" model="account.report.column">
-                <field name="name">Exento</field>
-                <field name="expression_label">exempt</field>
-            </record>
-            <record id="ve_vat_sales_report_col_amount_total" model="account.report.column">
-                <field name="name">Total</field>
+            <record id="ve_vat_sales_col_amount_total" model="account.report.column">
+                <field name="name">Total Ventas Bs. Incluyendo IVA</field>
                 <field name="expression_label">amount_total</field>
             </record>
-            <record id="ve_vat_sales_report_col_withholding" model="account.report.column">
-                <field name="name">Retención</field>
+
+            <record id="ve_vat_sales_col_third_exempt" model="account.report.column">
+                <field name="name">Terceros No Gravadas</field>
+                <field name="expression_label">third_exempt</field>
+            </record>
+            <record id="ve_vat_sales_col_third_base" model="account.report.column">
+                <field name="name">Terceros Base Imponible</field>
+                <field name="expression_label">third_base</field>
+            </record>
+            <record id="ve_vat_sales_col_third_rate" model="account.report.column">
+                <field name="name">Terceros % Alicuota</field>
+                <field name="expression_label">third_rate</field>
+                <field name="figure_type">string</field>
+            </record>
+            <record id="ve_vat_sales_col_third_tax" model="account.report.column">
+                <field name="name">Terceros Impuesto IVA</field>
+                <field name="expression_label">third_tax</field>
+            </record>
+
+            <record id="ve_vat_sales_col_contrib_exempt" model="account.report.column">
+                <field name="name">Contribuyente No Gravadas</field>
+                <field name="expression_label">contrib_exempt</field>
+            </record>
+            <record id="ve_vat_sales_col_contrib_base_16" model="account.report.column">
+                <field name="name">Contribuyente Base 16%</field>
+                <field name="expression_label">contrib_base_16</field>
+            </record>
+            <record id="ve_vat_sales_col_contrib_rate_16" model="account.report.column">
+                <field name="name">Contribuyente % General</field>
+                <field name="expression_label">contrib_rate_16</field>
+                <field name="figure_type">string</field>
+            </record>
+            <record id="ve_vat_sales_col_contrib_tax_16" model="account.report.column">
+                <field name="name">Contribuyente IVA 16%</field>
+                <field name="expression_label">contrib_tax_16</field>
+            </record>
+            <record id="ve_vat_sales_col_contrib_base_8" model="account.report.column">
+                <field name="name">Contribuyente Base 8%</field>
+                <field name="expression_label">contrib_base_8</field>
+            </record>
+            <record id="ve_vat_sales_col_contrib_rate_8" model="account.report.column">
+                <field name="name">Contribuyente % Reducida</field>
+                <field name="expression_label">contrib_rate_8</field>
+                <field name="figure_type">string</field>
+            </record>
+            <record id="ve_vat_sales_col_contrib_tax_8" model="account.report.column">
+                <field name="name">Contribuyente IVA 8%</field>
+                <field name="expression_label">contrib_tax_8</field>
+            </record>
+            <record id="ve_vat_sales_col_contrib_base_15" model="account.report.column">
+                <field name="name">Contribuyente Base 15%</field>
+                <field name="expression_label">contrib_base_15</field>
+            </record>
+            <record id="ve_vat_sales_col_contrib_rate_15" model="account.report.column">
+                <field name="name">Contribuyente % Adicional</field>
+                <field name="expression_label">contrib_rate_15</field>
+                <field name="figure_type">string</field>
+            </record>
+            <record id="ve_vat_sales_col_contrib_tax_15" model="account.report.column">
+                <field name="name">Contribuyente IVA 15%</field>
+                <field name="expression_label">contrib_tax_15</field>
+            </record>
+
+            <record id="ve_vat_sales_col_non_contrib_exempt" model="account.report.column">
+                <field name="name">No Contribuyente No Gravadas</field>
+                <field name="expression_label">non_contrib_exempt</field>
+            </record>
+            <record id="ve_vat_sales_col_non_contrib_base_16" model="account.report.column">
+                <field name="name">No Contribuyente Base 16%</field>
+                <field name="expression_label">non_contrib_base_16</field>
+            </record>
+            <record id="ve_vat_sales_col_non_contrib_rate_16" model="account.report.column">
+                <field name="name">No Contribuyente % General</field>
+                <field name="expression_label">non_contrib_rate_16</field>
+                <field name="figure_type">string</field>
+            </record>
+            <record id="ve_vat_sales_col_non_contrib_tax_16" model="account.report.column">
+                <field name="name">No Contribuyente IVA 16%</field>
+                <field name="expression_label">non_contrib_tax_16</field>
+            </record>
+            <record id="ve_vat_sales_col_non_contrib_base_8" model="account.report.column">
+                <field name="name">No Contribuyente Base 8%</field>
+                <field name="expression_label">non_contrib_base_8</field>
+            </record>
+            <record id="ve_vat_sales_col_non_contrib_rate_8" model="account.report.column">
+                <field name="name">No Contribuyente % Reducida</field>
+                <field name="expression_label">non_contrib_rate_8</field>
+                <field name="figure_type">string</field>
+            </record>
+            <record id="ve_vat_sales_col_non_contrib_tax_8" model="account.report.column">
+                <field name="name">No Contribuyente IVA 8%</field>
+                <field name="expression_label">non_contrib_tax_8</field>
+            </record>
+            <record id="ve_vat_sales_col_non_contrib_base_15" model="account.report.column">
+                <field name="name">No Contribuyente Base 15%</field>
+                <field name="expression_label">non_contrib_base_15</field>
+            </record>
+            <record id="ve_vat_sales_col_non_contrib_rate_15" model="account.report.column">
+                <field name="name">No Contribuyente % Adicional</field>
+                <field name="expression_label">non_contrib_rate_15</field>
+                <field name="figure_type">string</field>
+            </record>
+            <record id="ve_vat_sales_col_non_contrib_tax_15" model="account.report.column">
+                <field name="name">No Contribuyente IVA 15%</field>
+                <field name="expression_label">non_contrib_tax_15</field>
+            </record>
+
+            <record id="ve_vat_sales_col_withholding" model="account.report.column">
+                <field name="name">IVA Retenido</field>
                 <field name="expression_label">withholding</field>
+            </record>
+            <record id="ve_vat_sales_col_igtf" model="account.report.column">
+                <field name="name">IGTF Percibido</field>
+                <field name="expression_label">igtf</field>
             </record>
         </field>
     </record>
@@ -95,71 +193,128 @@
         <field name="search_bar" eval="True"/>
         <field name="load_more_limit" eval="4000"/>
         <field name="column_ids">
-            <record id="ve_vat_purchase_report_col_invoice_date" model="account.report.column">
-                <field name="name">Fecha</field>
+            <record id="ve_vat_purchase_col_sequence" model="account.report.column">
+                <field name="name">Nro Oper.</field>
+                <field name="expression_label">sequence</field>
+                <field name="figure_type">integer</field>
+            </record>
+            <record id="ve_vat_purchase_col_invoice_date" model="account.report.column">
+                <field name="name">Fecha Factura/Documento</field>
                 <field name="expression_label">invoice_date</field>
                 <field name="figure_type">date</field>
             </record>
-            <record id="ve_vat_purchase_report_col_note_type" model="account.report.column">
-                <field name="name">Tipo</field>
-                <field name="expression_label">note_type</field>
+            <record id="ve_vat_purchase_col_doc_type" model="account.report.column">
+                <field name="name">Tipo de Documento</field>
+                <field name="expression_label">doc_type</field>
                 <field name="figure_type">string</field>
             </record>
-            <record id="ve_vat_purchase_report_col_move_name" model="account.report.column">
-                <field name="name">Número</field>
-                <field name="expression_label">move_name</field>
+            <record id="ve_vat_purchase_col_document_number" model="account.report.column">
+                <field name="name">Número de Documento</field>
+                <field name="expression_label">document_number</field>
                 <field name="figure_type">string</field>
             </record>
-            <record id="ve_vat_purchase_report_col_control_number" model="account.report.column">
-                <field name="name">Control</field>
+            <record id="ve_vat_purchase_col_control_number" model="account.report.column">
+                <field name="name">Número de Control</field>
                 <field name="expression_label">control_number</field>
                 <field name="figure_type">string</field>
             </record>
-            <record id="ve_vat_purchase_report_col_partner_name" model="account.report.column">
-                <field name="name">Partner</field>
+            <record id="ve_vat_purchase_col_receipt_number" model="account.report.column">
+                <field name="name">Número de Comprobante</field>
+                <field name="expression_label">receipt_number</field>
+                <field name="figure_type">string</field>
+            </record>
+            <record id="ve_vat_purchase_col_affected_document" model="account.report.column">
+                <field name="name">Número Factura Afectada</field>
+                <field name="expression_label">affected_document</field>
+                <field name="figure_type">string</field>
+            </record>
+            <record id="ve_vat_purchase_col_import_sheet" model="account.report.column">
+                <field name="name">N° planilla de Importación</field>
+                <field name="expression_label">import_sheet_number</field>
+                <field name="figure_type">string</field>
+            </record>
+            <record id="ve_vat_purchase_col_import_file" model="account.report.column">
+                <field name="name">N° expediente Importación</field>
+                <field name="expression_label">import_file_number</field>
+                <field name="figure_type">string</field>
+            </record>
+            <record id="ve_vat_purchase_col_partner_name" model="account.report.column">
+                <field name="name">Nombre o Razón Social</field>
                 <field name="expression_label">partner_name</field>
                 <field name="figure_type">string</field>
             </record>
-            <record id="ve_vat_purchase_report_col_partner_vat" model="account.report.column">
+            <record id="ve_vat_purchase_col_partner_vat" model="account.report.column">
                 <field name="name">RIF</field>
                 <field name="expression_label">partner_vat</field>
                 <field name="figure_type">string</field>
             </record>
-            <record id="ve_vat_purchase_report_col_base_16" model="account.report.column">
-                <field name="name">Base 16%</field>
-                <field name="expression_label">base_16</field>
-            </record>
-            <record id="ve_vat_purchase_report_col_tax_16" model="account.report.column">
-                <field name="name">IVA 16%</field>
-                <field name="expression_label">tax_16</field>
-            </record>
-            <record id="ve_vat_purchase_report_col_base_8" model="account.report.column">
-                <field name="name">Base 8%</field>
-                <field name="expression_label">base_8</field>
-            </record>
-            <record id="ve_vat_purchase_report_col_tax_8" model="account.report.column">
-                <field name="name">IVA 8%</field>
-                <field name="expression_label">tax_8</field>
-            </record>
-            <record id="ve_vat_purchase_report_col_base_15" model="account.report.column">
-                <field name="name">Base 15%</field>
-                <field name="expression_label">base_15</field>
-            </record>
-            <record id="ve_vat_purchase_report_col_tax_15" model="account.report.column">
-                <field name="name">IVA 15%</field>
-                <field name="expression_label">tax_15</field>
-            </record>
-            <record id="ve_vat_purchase_report_col_exempt" model="account.report.column">
-                <field name="name">Exento</field>
-                <field name="expression_label">exempt</field>
-            </record>
-            <record id="ve_vat_purchase_report_col_amount_total" model="account.report.column">
-                <field name="name">Total</field>
+            <record id="ve_vat_purchase_col_amount_total" model="account.report.column">
+                <field name="name">Total Compras Bs. Incluyendo IVA</field>
                 <field name="expression_label">amount_total</field>
             </record>
-            <record id="ve_vat_purchase_report_col_withholding" model="account.report.column">
-                <field name="name">Retención</field>
+            <record id="ve_vat_purchase_col_no_credit" model="account.report.column">
+                <field name="name">Compras sin Derecho a Crédito IVA</field>
+                <field name="expression_label">purchase_no_credit</field>
+            </record>
+            <record id="ve_vat_purchase_col_import_base" model="account.report.column">
+                <field name="name">Importaciones Base</field>
+                <field name="expression_label">import_base</field>
+            </record>
+            <record id="ve_vat_purchase_col_import_rate" model="account.report.column">
+                <field name="name">Importaciones % Alic.</field>
+                <field name="expression_label">import_rate</field>
+                <field name="figure_type">string</field>
+            </record>
+            <record id="ve_vat_purchase_col_import_tax" model="account.report.column">
+                <field name="name">Importaciones Imp. IVA</field>
+                <field name="expression_label">import_tax</field>
+            </record>
+            <record id="ve_vat_purchase_col_internal_base_16" model="account.report.column">
+                <field name="name">Compras Internas Base 16%</field>
+                <field name="expression_label">internal_base_16</field>
+            </record>
+            <record id="ve_vat_purchase_col_internal_rate_16" model="account.report.column">
+                <field name="name">Compras Internas % 16%</field>
+                <field name="expression_label">internal_rate_16</field>
+                <field name="figure_type">string</field>
+            </record>
+            <record id="ve_vat_purchase_col_internal_tax_16" model="account.report.column">
+                <field name="name">Compras Internas IVA 16%</field>
+                <field name="expression_label">internal_tax_16</field>
+            </record>
+            <record id="ve_vat_purchase_col_internal_base_8" model="account.report.column">
+                <field name="name">Compras Internas Base 8%</field>
+                <field name="expression_label">internal_base_8</field>
+            </record>
+            <record id="ve_vat_purchase_col_internal_rate_8" model="account.report.column">
+                <field name="name">Compras Internas % 8%</field>
+                <field name="expression_label">internal_rate_8</field>
+                <field name="figure_type">string</field>
+            </record>
+            <record id="ve_vat_purchase_col_internal_tax_8" model="account.report.column">
+                <field name="name">Compras Internas IVA 8%</field>
+                <field name="expression_label">internal_tax_8</field>
+            </record>
+            <record id="ve_vat_purchase_col_internal_base_15" model="account.report.column">
+                <field name="name">Compras Internas Base 15%</field>
+                <field name="expression_label">internal_base_15</field>
+            </record>
+            <record id="ve_vat_purchase_col_internal_rate_15" model="account.report.column">
+                <field name="name">Compras Internas % 15%</field>
+                <field name="expression_label">internal_rate_15</field>
+                <field name="figure_type">string</field>
+            </record>
+            <record id="ve_vat_purchase_col_internal_tax_15" model="account.report.column">
+                <field name="name">Compras Internas IVA 15%</field>
+                <field name="expression_label">internal_tax_15</field>
+            </record>
+            <record id="ve_vat_purchase_col_withholding" model="account.report.column">
+                <field name="name">IVA Retenido por el comprador</field>
                 <field name="expression_label">withholding</field>
+            </record>
+            <record id="ve_vat_purchase_col_igtf" model="account.report.column">
+                <field name="name">IGTF Pagado</field>
+                <field name="expression_label">igtf</field>
             </record>
         </field>
     </record>

@@ -14,10 +14,6 @@ class L10nVeVatReportHandler(models.AbstractModel):
     _inherit = 'account.tax.report.handler'
     _description = 'Venezuela VAT Report Handler'
 
-    _NUMERIC_LABELS = {
-        'base_16', 'tax_16', 'base_8', 'tax_8', 'base_15', 'tax_15', 'exempt', 'amount_total', 'withholding',
-    }
-
     def _custom_options_initializer(self, report, options, previous_options):
         super()._custom_options_initializer(report, options, previous_options)
         ledger_type = self._get_ledger_type(report)
@@ -34,18 +30,24 @@ class L10nVeVatReportHandler(models.AbstractModel):
         ledger_type = self._get_ledger_type(report)
         service_options = self._build_service_options(report, options, ledger_type)
         ledger_data = self.env['l10n_ve.vat.ledger.service'].build_ledger_data(ledger_type, service_options)
+        numeric_labels = set(ledger_data['header'].get('numeric_fields', []))
 
         lines = []
         for line_vals in ledger_data['lines']:
-            columns = [
-                report._build_column_dict(line_vals.get(column['expression_label']), column, options=options)
-                for column in options['columns']
-            ]
+            columns = []
+            for column in options['columns']:
+                expression_label = column['expression_label']
+                value = line_vals.get(expression_label)
+                if value is None and expression_label in numeric_labels:
+                    value = 0.0
+                elif value is None:
+                    value = ''
+                columns.append(report._build_column_dict(value, column, options=options))
 
             lines.append((0, {
                 'id': report._get_generic_line_id('account.move', line_vals['move_id']),
                 'caret_options': 'account.move',
-                'name': line_vals.get('move_name') or line_vals.get('move_ref') or '/',
+                'name': line_vals.get('document_number') or line_vals.get('move_name') or line_vals.get('move_ref') or '/',
                 'level': 2,
                 'columns': columns,
             }))
@@ -54,10 +56,10 @@ class L10nVeVatReportHandler(models.AbstractModel):
         total_columns = []
         for column in options['columns']:
             expression_label = column['expression_label']
-            if expression_label in self._NUMERIC_LABELS:
+            if expression_label in numeric_labels:
                 total_columns.append(report._build_column_dict(totals.get(expression_label, 0.0), column, options=options))
             else:
-                total_columns.append(report._build_column_dict(None, column, options=options))
+                total_columns.append(report._build_column_dict('', column, options=options))
 
         lines.append((0, {
             'id': report._get_generic_line_id(None, None, markup='total'),
