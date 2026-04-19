@@ -31,9 +31,10 @@ class L10nVeVatReportHandler(models.AbstractModel):
         service_options = self._build_service_options(report, options, ledger_type)
         ledger_data = self.env['l10n_ve.vat.ledger.service'].build_ledger_data(ledger_type, service_options)
         numeric_labels = set(ledger_data['header'].get('numeric_fields', []))
+        data_lines, hidden_lines = self._split_preview_lines(report, options, ledger_data['lines'])
 
         lines = []
-        for line_vals in ledger_data['lines']:
+        for line_vals in data_lines:
             columns = []
             for column in options['columns']:
                 expression_label = column['expression_label']
@@ -51,6 +52,9 @@ class L10nVeVatReportHandler(models.AbstractModel):
                 'level': 2,
                 'columns': columns,
             }))
+
+        if hidden_lines:
+            lines.append(self._build_hidden_preview_line(report, options, hidden_lines, numeric_labels))
 
         totals = ledger_data['totals']
         total_columns = []
@@ -70,6 +74,43 @@ class L10nVeVatReportHandler(models.AbstractModel):
         }))
 
         return lines
+
+    def _split_preview_lines(self, report, options, raw_lines):
+        """Limit UI preview rows before column formatting for performance."""
+        if options.get('export_mode'):
+            return raw_lines, []
+
+        limit = report.load_more_limit or 0
+        if not limit:
+            return raw_lines, []
+
+        if len(raw_lines) <= limit:
+            return raw_lines, []
+
+        return raw_lines[:limit], raw_lines[limit:]
+
+    def _build_hidden_preview_line(self, report, options, hidden_lines, numeric_labels):
+        hidden_count = len(hidden_lines)
+        numeric_sums = {}
+        for column in options['columns']:
+            label = column['expression_label']
+            if label in numeric_labels:
+                numeric_sums[label] = sum((line.get(label) or 0.0) for line in hidden_lines)
+
+        placeholder_columns = []
+        for column in options['columns']:
+            label = column['expression_label']
+            if label in numeric_sums:
+                placeholder_columns.append(report._build_column_dict(numeric_sums[label], column, options=options))
+            else:
+                placeholder_columns.append(report._build_column_dict('', column, options=options))
+
+        return (0, {
+            'id': report._get_generic_line_id(None, None, markup='placeholder'),
+            'name': _("+%s líneas no previsualizadas", hidden_count),
+            'level': 2,
+            'columns': placeholder_columns,
+        })
 
     def _build_service_options(self, report, options, ledger_type):
         company_ids = report.get_report_company_ids(options)

@@ -57,6 +57,8 @@ class L10nVeVatLedgerService(models.AbstractModel):
         normalized = self._normalize_options(ledger_type, options or {})
         move_domain = self._get_move_domain(ledger_type, normalized)
         moves = self.env['account.move'].search(move_domain, order='invoice_date, date, id')
+        move_ids = moves.ids
+        tax_buckets_by_move = self._get_tax_buckets_by_move(move_ids)
 
         withholding_map = self._get_withholding_amount_by_move(ledger_type, normalized)
         numeric_fields = self._SALE_NUMERIC_FIELDS if ledger_type == 'sale' else self._PURCHASE_NUMERIC_FIELDS
@@ -64,7 +66,12 @@ class L10nVeVatLedgerService(models.AbstractModel):
         lines = []
         totals = defaultdict(float)
         for sequence, move in enumerate(moves, start=1):
-            tax_buckets = self._compute_tax_buckets(move)
+            tax_buckets = dict(tax_buckets_by_move.get(move.id, self._empty_tax_buckets()))
+            untaxed_abs = abs(move.amount_untaxed_signed or move.amount_untaxed or 0.0)
+            tracked_base = tax_buckets['base_16'] + tax_buckets['base_8'] + tax_buckets['base_15']
+            estimated_exempt = max(untaxed_abs - tracked_base, 0.0)
+            if estimated_exempt > tax_buckets['exempt']:
+                tax_buckets['exempt'] = estimated_exempt
             sign = self._get_sign(move)
             move_total = abs(move.amount_total_signed or move.amount_total or 0.0)
             withholding_amount = withholding_map.get(move.id, 0.0)
@@ -124,6 +131,61 @@ class L10nVeVatLedgerService(models.AbstractModel):
             'totals': dict(totals),
             'warnings': [],
         }
+
+    @api.model
+    def _empty_tax_buckets(self):
+        return {
+            'base_16': 0.0,
+            'tax_16': 0.0,
+            'base_8': 0.0,
+            'tax_8': 0.0,
+            'base_15': 0.0,
+            'tax_15': 0.0,
+            'exempt': 0.0,
+        }
+
+    @api.model
+    def _get_tax_buckets_by_move(self, move_ids):
+        if not move_ids:
+            return {}
+
+        result = {}
+        for move_id in move_ids:
+            result[move_id] = self._empty_tax_buckets()
+
+        self._cr.execute(
+            """
+                SELECT
+                    aml.move_id,
+                    ABS(ROUND(COALESCE(at.amount, 0)::numeric, 2)) AS tax_rate,
+                    SUM(ABS(COALESCE(aml.tax_base_amount, 0))) AS base_amount,
+                    SUM(ABS(COALESCE(aml.balance, 0))) AS tax_amount
+                FROM account_move_line aml
+                JOIN account_tax at ON at.id = aml.tax_line_id
+                WHERE aml.move_id IN %s
+                GROUP BY aml.move_id, ABS(ROUND(COALESCE(at.amount, 0)::numeric, 2))
+            """,
+            [tuple(move_ids)],
+        )
+
+        for move_id, rate, base_amount, tax_amount in self._cr.fetchall():
+            rate = float(rate or 0.0)
+            base_amount = float(base_amount or 0.0)
+            tax_amount = float(tax_amount or 0.0)
+
+            if self._is_zero_rate(rate):
+                result[move_id]['exempt'] += base_amount
+                continue
+
+            rate_match = self._match_supported_rate(rate)
+            if not rate_match:
+                continue
+
+            base_key, tax_key = self._TRACKED_RATES[rate_match]
+            result[move_id][base_key] += base_amount
+            result[move_id][tax_key] += tax_amount
+
+        return result
 
     @api.model
     def _fill_sale_columns(self, line_vals, tax_buckets, sign, move):

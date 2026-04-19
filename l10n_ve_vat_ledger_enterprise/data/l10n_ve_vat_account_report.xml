@@ -11,7 +11,7 @@
         <field name="filter_journals" eval="True"/>
         <field name="filter_date_range" eval="True"/>
         <field name="search_bar" eval="True"/>
-        <field name="load_more_limit" eval="4000"/>
+        <field name="load_more_limit" eval="1000"/>
         <field name="column_ids">
             <record id="ve_vat_sales_col_sequence" model="account.report.column">
                 <field name="name">Nro Oper.</field>
@@ -191,7 +191,7 @@
         <field name="filter_journals" eval="True"/>
         <field name="filter_date_range" eval="True"/>
         <field name="search_bar" eval="True"/>
-        <field name="load_more_limit" eval="4000"/>
+        <field name="load_more_limit" eval="1000"/>
         <field name="column_ids">
             <record id="ve_vat_purchase_col_sequence" model="account.report.column">
                 <field name="name">Nro Oper.</field>
