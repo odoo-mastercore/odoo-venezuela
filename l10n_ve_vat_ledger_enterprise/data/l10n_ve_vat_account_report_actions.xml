@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="action_account_report_ve_vat_sales" model="ir.actions.client">
+        <field name="name">Libro IVA Ventas (Dinámico)</field>
+        <field name="tag">account_report</field>
+        <field name="context" eval="{'report_id': ref('l10n_ve_vat_ledger_enterprise.ve_vat_sales_report')}"/>
+    </record>
+
+    <record id="action_account_report_ve_vat_purchase" model="ir.actions.client">
+        <field name="name">Libro IVA Compras (Dinámico)</field>
+        <field name="tag">account_report</field>
+        <field name="context" eval="{'report_id': ref('l10n_ve_vat_ledger_enterprise.ve_vat_purchase_report')}"/>
+    </record>
+
+    <menuitem
+        id="menu_account_sale_vat_ledger_dynamic"
+        name="Libro IVA Ventas (Dinámico)"
+        parent="l10n_ve_vat_ledger.menu_seniat_reports"
+        action="action_account_report_ve_vat_sales"
+        sequence="10"
+    />
+
+    <menuitem
+        id="menu_account_purchase_vat_ledger_dynamic"
+        name="Libro IVA Compras (Dinámico)"
+        parent="l10n_ve_vat_ledger.menu_seniat_reports"
+        action="action_account_report_ve_vat_purchase"
+        sequence="11"
+    />
+</odoo>

@@ -1,2 +1,4 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_account_vat_ledger,account_vat_ledger,model_account_vat_ledger,base.group_user,1,1,1,1
+access_l10n_ve_vat_ledger_pilot_wizard,l10n_ve_vat_ledger_pilot_wizard,model_l10n_ve_vat_ledger_pilot_wizard,base.group_user,1,1,1,1
+access_l10n_ve_vat_ledger_pilot_wizard_line,l10n_ve_vat_ledger_pilot_wizard_line,model_l10n_ve_vat_ledger_pilot_wizard_line,base.group_user,1,1,1,1

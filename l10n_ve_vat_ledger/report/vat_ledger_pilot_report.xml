@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="action_vat_ledger_pilot_xlsx" model="ir.actions.report">
+        <field name="name">Libro IVA Piloto XLSX</field>
+        <field name="model">l10n_ve.vat.ledger.pilot.wizard</field>
+        <field name="report_type">xlsx</field>
+        <field name="report_name">l10n_ve_vat_ledger.vat_ledger_pilot_xlsx</field>
+        <field name="report_file">libro_iva_piloto</field>
+    </record>
+
+    <record id="action_vat_ledger_pilot_pdf" model="ir.actions.report">
+        <field name="name">Libro IVA Piloto PDF</field>
+        <field name="model">l10n_ve.vat.ledger.pilot.wizard</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">l10n_ve_vat_ledger.report_vat_ledger_pilot_document</field>
+        <field name="report_file">l10n_ve_vat_ledger.report_vat_ledger_pilot_document</field>
+    </record>
+
+    <template id="report_vat_ledger_pilot_document">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2>
+                            <span t-if="o.ledger_type == 'sale'">Libro IVA Ventas (Piloto)</span>
+                            <span t-else="">Libro IVA Compras (Piloto)</span>
+                        </h2>
+                        <p>
+                            <strong>Compañía:</strong>
+                            <span t-field="o.company_id"/>
+                            <br/>
+                            <strong>Período:</strong>
+                            <span t-field="o.date_from"/> - <span t-field="o.date_to"/>
+                        </p>
+
+                        <table class="table table-sm table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Fecha</th>
+                                    <th>Tipo</th>
+                                    <th>Número</th>
+                                    <th>Control</th>
+                                    <th>Partner</th>
+                                    <th>RIF</th>
+                                    <th class="text-end">Base 16%</th>
+                                    <th class="text-end">IVA 16%</th>
+                                    <th class="text-end">Base 8%</th>
+                                    <th class="text-end">IVA 8%</th>
+                                    <th class="text-end">Base 15%</th>
+                                    <th class="text-end">IVA 15%</th>
+                                    <th class="text-end">Exento</th>
+                                    <th class="text-end">Total</th>
+                                    <th class="text-end">Retención</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="o.line_ids" t-as="line">
+                                    <td><span t-field="line.sequence"/></td>
+                                    <td><span t-field="line.invoice_date"/></td>
+                                    <td><span t-field="line.note_type"/></td>
+                                    <td><span t-field="line.move_name"/></td>
+                                    <td><span t-field="line.control_number"/></td>
+                                    <td><span t-field="line.partner_name"/></td>
+                                    <td><span t-field="line.partner_vat"/></td>
+                                    <td class="text-end"><span t-field="line.base_16"/></td>
+                                    <td class="text-end"><span t-field="line.tax_16"/></td>
+                                    <td class="text-end"><span t-field="line.base_8"/></td>
+                                    <td class="text-end"><span t-field="line.tax_8"/></td>
+                                    <td class="text-end"><span t-field="line.base_15"/></td>
+                                    <td class="text-end"><span t-field="line.tax_15"/></td>
+                                    <td class="text-end"><span t-field="line.exempt"/></td>
+                                    <td class="text-end"><span t-field="line.amount_total"/></td>
+                                    <td class="text-end"><span t-field="line.withholding"/></td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th colspan="7" class="text-end">Totales</th>
+                                    <th class="text-end"><span t-field="o.total_base_16"/></th>
+                                    <th class="text-end"><span t-field="o.total_tax_16"/></th>
+                                    <th class="text-end"><span t-field="o.total_base_8"/></th>
+                                    <th class="text-end"><span t-field="o.total_tax_8"/></th>
+                                    <th class="text-end"><span t-field="o.total_base_15"/></th>
+                                    <th class="text-end"><span t-field="o.total_tax_15"/></th>
+                                    <th class="text-end"><span t-field="o.total_exempt"/></th>
+                                    <th class="text-end"><span t-field="o.total_amount"/></th>
+                                    <th class="text-end"><span t-field="o.total_withholding"/></th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

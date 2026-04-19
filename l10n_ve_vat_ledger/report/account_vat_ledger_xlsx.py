@@ -521,9 +521,11 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                                     except ValueError:
                                         pass
                                     try:
-                                        retenciones_by_date[reten.name].remove(reten)
-                                        if not retenciones_by_date[reten.name]:
-                                            del retenciones_by_date[reten.name]
+                                        key = date_reference
+                                        if key in retenciones_by_date:
+                                            retenciones_by_date[key].remove(reten)
+                                            if not retenciones_by_date[key]:
+                                                del retenciones_by_date[key]
                                     except Exception:
                                         pass
                                     row +=1
@@ -534,7 +536,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     # contador de la factura
                     sheet.write(row, 0, i, line)
                     # codigo fecha
-                    sheet.write(row, 1, invoice.invoice_date or 'FALSE', date_time_line if obj.type == 'pruchase' else date_line)
+                    sheet.write(row, 1, invoice.invoice_date or 'FALSE', date_time_line if obj.type == 'purchase' else date_line)
                     # tipo de documento
                     if invoice.move_type == 'out_invoice':
                         sheet.write(row, 2, 'Factura', line)
@@ -796,8 +798,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                                     sheet.write(row, 35, '', line)
                                     retenciones.remove(reten)
                                     row +=1
-                            else:
-                                date_reference += timedelta(days=1)
+                            date_reference += timedelta(days=1)
                     
                     i += 1
 

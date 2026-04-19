@@ -7,6 +7,7 @@ Odoo Venezuela
 - **l10n_ve_base**: Configuración base, datos maestros y reglas fiscales para Venezuela.
 - **l10n_ve_account**: Adaptaciones contables y modelos de facturación local.
 - **l10n_ve_vat_ledger**: Libro de IVA, reportes fiscales y exportación XLSX.
+- **l10n_ve_vat_ledger_enterprise**: Reportes dinámicos de libro IVA en `account.report` (Enterprise).
 - **l10n_ve_withholding**: Retenciones de IVA, certificados y lógica de cálculo.
 
 

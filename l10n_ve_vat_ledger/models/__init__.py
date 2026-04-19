@@ -7,3 +7,4 @@
 ###############################################################################
 from . import account_vat_ledger
 from . import account_move
+from . import vat_ledger_service

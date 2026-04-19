@@ -31,7 +31,9 @@
         # 'security/security.xml',
         'security/ir.model.access.csv',
         'views/account_vat_ledger.xml',
+        'views/account_vat_ledger_pilot.xml',
         'report/account_vat_ledger_report.xml',
+        'report/vat_ledger_pilot_report.xml',
     ],
 
 }
