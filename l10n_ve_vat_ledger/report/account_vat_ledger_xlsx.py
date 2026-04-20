@@ -96,6 +96,50 @@ class AccountVatLedgerXlsx(models.AbstractModel):
             return -amount
         return amount
 
+    def _get_withholding_related_moves(self, withholding):
+        """Return related invoices/credit notes linked to a withholding.
+
+        Priority:
+        1) VAT tax move lines linked to the withholding (`l10n_ve_move_line_taxes_ids`)
+        2) Explicit M2M link invoice<->withholding (`account.move.l10n_ve_withholding_ids`)
+        3) Payment invoices as compatibility fallback.
+        """
+        related_moves = self.env["account.move"]
+
+        # Primary relation in l10n_ve_withholding for VAT flows.
+        if "l10n_ve_move_line_taxes_ids" in withholding._fields:
+            related_moves |= withholding.l10n_ve_move_line_taxes_ids.mapped("move_id")
+
+        # Explicit linkage persisted when posting payments with withholdings.
+        related_moves |= self.env["account.move"].search(
+            [("l10n_ve_withholding_ids", "in", withholding.id)]
+        )
+
+        # Backward compatibility with older data models.
+        if "reconciled_invoice_ids" in withholding._fields:
+            related_moves |= withholding.reconciled_invoice_ids
+        if "invoice_ids" in withholding.payment_id._fields:
+            related_moves |= withholding.payment_id.invoice_ids
+
+        return related_moves.filtered(
+            lambda move: move.move_type in ("in_invoice", "in_refund", "out_invoice", "out_refund")
+        )
+
+    def _get_withholding_docs_text(self, withholding, preferred_field="name"):
+        """Return a safe string for affected documents in reports."""
+        moves = self._get_withholding_related_moves(withholding)
+        if not moves:
+            return ""
+
+        values = [value for value in moves.mapped(preferred_field) if value]
+        if not values:
+            fallback_field = "ref" if preferred_field == "name" else "name"
+            values = [value for value in moves.mapped(fallback_field) if value]
+        if not values:
+            return ""
+        # Keep insertion order while removing duplicates.
+        return ", ".join(dict.fromkeys(values))
+
     def _get_sale_withholding_signed_amount(self, withholding):
         """Return withholding amount with sign for sales VAT ledger.
 
@@ -466,7 +510,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                                     # Numero de comprobante
                                     sheet.write(row, 5, reten.name, line)
                                     # Documento afectado
-                                    sheet.write(row, 6, reten.payment_id.invoice_ids.ref or '', line)
+                                    sheet.write(row, 6, self._get_withholding_docs_text(reten, "ref"), line)
                                     sheet.write(row, 7, '', line)
                                     sheet.write(row, 8, '', line)
                                     # Nombre
@@ -763,10 +807,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                                     # Numero de comrpobante
                                     sheet.write(row, 5, reten.name, line)
                                     # Documento afectado
-                                    if len(reten.reconciled_invoice_ids) > 1:
-                                        sheet.write(row, 6, reten.reconciled_invoice_ids[0].name, line)
-                                    else:
-                                        sheet.write(row, 6, reten.reconciled_invoice_ids.name, line)
+                                    sheet.write(row, 6, self._get_withholding_docs_text(reten, "name"), line)
                                     # nombre del partner
                                     sheet.write(row, 7, reten.partner_id.name or 'FALSE', line)
                                     # Rif del cliente
@@ -1068,7 +1109,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     # Numero de comrpobante
                     sheet.write(row, 5, reten.name, line)
                     # Documento afectado
-                    sheet.write(row, 6, reten.payment_id.invoice_ids.ref or '', line)
+                    sheet.write(row, 6, self._get_withholding_docs_text(reten, "ref"), line)
                     sheet.write(row, 7, '', line)
                     sheet.write(row, 8, '', line)
                     # Nombre
@@ -1138,7 +1179,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     # Numero de comrpobante
                     sheet.write(row, 5, reten.name, line)
                     # Documento afectado
-                    sheet.write(row, 6, reten.payment_id.invoice_ids.name, line)
+                    sheet.write(row, 6, self._get_withholding_docs_text(reten, "name"), line)
                     # nombre del partner
                     sheet.write(row, 7, reten.payment_id.partner_id.name or 'FALSE', line)
                     # Rif del cliente
