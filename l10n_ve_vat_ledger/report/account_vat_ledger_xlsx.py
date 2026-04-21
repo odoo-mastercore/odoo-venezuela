@@ -565,9 +565,9 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                                     except ValueError:
                                         pass
                                     try:
-                                        retenciones_by_date[reten.name].remove(reten)
-                                        if not retenciones_by_date[reten.name]:
-                                            del retenciones_by_date[reten.name]
+                                        retenciones_by_date[date_reference].remove(reten)
+                                        if not retenciones_by_date[date_reference]:
+                                            del retenciones_by_date[date_reference]
                                     except Exception:
                                         pass
                                     row +=1
@@ -791,7 +791,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                             # usar índice por fecha cuando esté disponible
                             coincident_date = retenciones_by_date.get(date_reference, []) if 'retenciones_by_date' in locals() else [tup for tup in retenciones if date_reference == tup.date]
                             if coincident_date:
-                                for reten in coincident_date:
+                                for reten in list(coincident_date):
                                     amount_reten = self._get_sale_withholding_signed_amount(reten)
                                     total_iva_16_retenido += amount_reten
                                     i += 1
@@ -835,10 +835,21 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                                     sheet.write(row, 27, '', line)
                                     sheet.write(row, 34, amount_reten, line)
                                     sheet.write(row, 35, '', line)
-                                    retenciones.remove(reten)
+                                    # mantener listas sincronizadas sin fallar si el elemento
+                                    # ya fue eliminado por otra rama del flujo
+                                    try:
+                                        retenciones.remove(reten)
+                                    except ValueError:
+                                        pass
+                                    try:
+                                        retenciones_by_date[date_reference].remove(reten)
+                                        if not retenciones_by_date[date_reference]:
+                                            del retenciones_by_date[date_reference]
+                                    except Exception:
+                                        pass
                                     row +=1
-                            else:
-                                date_reference += timedelta(days=1)
+                            # avanzar la fecha siempre para no reprocesar el mismo día
+                            date_reference += timedelta(days=1)
                     
                     i += 1
 
