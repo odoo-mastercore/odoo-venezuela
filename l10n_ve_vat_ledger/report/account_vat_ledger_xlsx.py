@@ -833,7 +833,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                                     sheet.write(row, 25, '', line)
                                     sheet.write(row, 26, '', line)
                                     sheet.write(row, 27, '', line)
-                                    sheet.write(row, 34, amount_reten, line)
+                                    sheet.write(row, 34, amount_reten, line_number)
                                     sheet.write(row, 35, '', line)
                                     # mantener listas sincronizadas sin fallar si el elemento
                                     # ya fue eliminado por otra rama del flujo
@@ -1227,6 +1227,12 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     row +=1
 
             if obj.type == 'sale':
+                # Totales de "Ventas por cuenta de terceros" (K, L, N)
+                # usando los acumulados de contribuyentes y no contribuyentes.
+                sheet.write((row), 10, 0, line_total)
+                sheet.write((row), 11, 0, line_total)
+                sheet.write((row), 13, 0, line_total)
+
                 sheet.write((row), 14, total_base_exento_contribuyente, line_total)
                 sheet.write((row), 15, total_base_imponible_contribuyente_16, line_total)
                 sheet.write((row), 17, total_iva_contribuyente_16, line_total)
@@ -1242,6 +1248,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                 sheet.write((row), 30, total_iva_no_contribuyente_8, line_total)
                 sheet.write((row), 31, total_base_imponible_no_contribuyente_15, line_total)
                 sheet.write((row), 33, total_iva_no_contribuyente_15, line_total)
+                sheet.write((row), 34, total_iva_16_retenido, line_total)
                 sheet.write((row), 35, total_igtf, line_total)
                 
                 # RESUMEN DE LOS TOTALES VENTAS
