@@ -295,6 +295,8 @@ class AccountTax(models.Model):
                     if vals.get('currency_id') == payment_group.company_id.currency_id.id:
                         vals['amount'] = computed_withholding_amount
                     vals['computed_withholding_amount'] = computed_withholding_amount
+                    if 'force_amount_company_currency' in self.env['account.payment']._fields:
+                        vals['force_amount_company_currency'] = computed_withholding_amount
 
                     # por ahora no imprimimos el comment, podemos ver de llevarlo a
                     # otro campo si es de utilidad
@@ -378,6 +380,8 @@ class AccountTax(models.Model):
                 if vals.get('currency_id') == payment_group.company_id.currency_id.id:
                     vals['amount'] = computed_withholding_amount
                 vals['computed_withholding_amount'] = computed_withholding_amount
+                if 'force_amount_company_currency' in self.env['account.payment']._fields:
+                    vals['force_amount_company_currency'] = computed_withholding_amount
 
                 # por ahora no imprimimos el comment, podemos ver de llevarlo a
                 # otro campo si es de utilidad
