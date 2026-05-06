@@ -5,7 +5,7 @@
         <xpath expr="//h3" position="before">
             <div class="mb-2">
                 <div class="small text-muted mb-1">
-                    según la Providencia SNAT/2024/000121, emitida en diciembre de 2024
+                    Según la providencia SNAT/2024/000121, emitida en diciembre de 2024
                 </div>
                 <span class="badge text-bg-warning o_l10n_ve_homologation_badge">Esta versión no está homologada</span>
             </div>
