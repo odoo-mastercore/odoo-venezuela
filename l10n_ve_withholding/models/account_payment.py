@@ -280,7 +280,7 @@ class AccountPayment(models.Model):
                 # TODO: Revisar si esto es correcto y funcional
                 to_pay.move_id.write({"matched_payment_ids": [Command.link(payment.id)]})
             commands = []
-            for line in payment.l10n_ve_withholding_line_ids if self.partner_type == 'supplier' else []:
+            for line in payment.l10n_ve_withholding_line_ids if payment.partner_type == 'supplier' else []:
                 if not line.name or line.name == "/":
                     if line.tax_id.l10n_ve_withholding_sequence_id:
                         commands.append(
