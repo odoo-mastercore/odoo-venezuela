@@ -22,5 +22,10 @@
     ],
     'data': [
         'views/account_move.xml'
-    ]
+    ],
+    'assets': {
+        'web.assets_backend': [
+            'l10n_ve_account/static/src/xml/res_config_edition.xml'
+        ]
+    }
 }
