@@ -58,7 +58,8 @@
     ],
     'assets': {
         'web.assets_backend': [
-            'l10n_ve_base/static/src/scss/style.scss'
+            'l10n_ve_base/static/src/scss/style.scss',
+            'l10n_ve_base/static/src/xml/res_config_edition.xml'
         ]
     },
     'installable': True,

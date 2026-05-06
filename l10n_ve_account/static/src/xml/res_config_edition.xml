@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-inherit="res_config_edition" t-inherit-mode="extension">
+        <xpath expr="//span[hasclass('o_l10n_ve_homologation_badge')]" position="replace">
+            <span class="badge text-bg-success o_l10n_ve_homologation_badge">Versión homologada</span>
+        </xpath>
+    </t>
+
+</templates>
