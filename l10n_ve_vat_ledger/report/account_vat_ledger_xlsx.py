@@ -512,6 +512,8 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     if invoice.move_type == 'in_refund' or invoice.move_type == 'out_refund':
                         inv_info = invoice.reversed_entry_id
                         sheet.write(row, 6, inv_info.ref, line)
+                    elif invoice.debit_origin_id:
+                        sheet.write(row, 6, invoice.debit_origin_id.ref, line)
                     else:
                         sheet.write(row, 6, '', line)
 
