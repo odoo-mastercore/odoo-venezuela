@@ -55,17 +55,16 @@ class AccountMove(models.Model):
         """
         if 'skip_check_price' in self._context:
             return True
-        for move in self:
-            for line in move.invoice_line_ids:
+        for record in self:
+            for line in record.invoice_line_ids.filtered(lambda x: x.product_id and x.display_type == 'product'):
                 if line.price_unit <= 0 and\
-                    move.move_type in ['out_invoice'] and not\
+                    record.move_type in ['out_invoice'] and not\
                     re.search(FORBIDDEN_PATTER, line.product_id.name or '', re.IGNORECASE):
                     raise ValidationError(
                         _("No se permiten precios cero o negativos en las líneas de factura. Línea con producto: %s")
                         % line.product_id.display_name
                     )
-            
-    
+
     @api.onchange('ref','partner_id')
     def _onchange_ref(self):
         if self.move_type == 'in_invoice' and self.partner_id and self.ref:
@@ -83,7 +82,6 @@ class AccountMove(models.Model):
                     _("Ya existe una nota de crédito con el mismo número: %s")
                     % move_exist.ref
                 )
-
 
     @api.model
     def create(self, vals):
