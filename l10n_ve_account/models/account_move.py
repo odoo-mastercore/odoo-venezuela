@@ -56,7 +56,7 @@ class AccountMove(models.Model):
         if 'skip_check_price' in self._context:
             return True
         for move in self:
-            for line in move.invoice_line_ids:
+            for line in move.invoice_line_ids.filtered(lambda x: x.product_id and x.display_type == 'product'):
                 if line.price_unit <= 0 and\
                     move.move_type in ['out_invoice'] and not\
                     re.search(FORBIDDEN_PATTER, line.product_id.name or '', re.IGNORECASE):
