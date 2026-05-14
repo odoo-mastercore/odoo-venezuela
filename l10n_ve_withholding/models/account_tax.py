@@ -60,16 +60,19 @@ class AccountTax(models.Model):
                             tax_amount = abg.debit if abg.debit else abg.credit
                             alic = alicuota
                             withholding_amount = abg.debit*alicuota if abg.debit else abg.credit*alicuota
-                            # Use the tax line base to avoid duplicating the same invoice
-                            # amount when the same VAT is split in multiple tax lines.
+                            tax = abg.name.split('(')[1].split('%')[0]
+                            tax_key = float(tax)
+                            # Use tax_base_amount first. If it is not available, infer
+                            # the base from tax amount and alicuota to avoid empty bases.
                             invoice_amount = abs(abg.tax_base_amount)
+                            if not invoice_amount and tax_key:
+                                invoice_amount = abs(tax_amount / (tax_key / 100.0))
                             withholdable_invoiced_amount += invoice_amount
 
                             if foreign_currency:
                                 selected_debt_taxed += abg.amount_currency if abg.amount_currency  >= 0 else -abg.amount_currency
                             else:
                                 selected_debt_taxed += tax_amount
-                            tax = abg.name.split('(')[1].split('%')[0]
                             exent_amount_ids = to_pay.move_id.line_ids\
                                 .filtered(lambda x: x.tax_ids\
                                           .filtered(lambda y: y.amount == 0.00))
@@ -80,7 +83,6 @@ class AccountTax(models.Model):
                                         base_exento += exent.debit
                                         if exent.credit:
                                             base_exento += (exent.credit * -1.00)
-                            tax_key = float(tax)
                             if tax_key not in distribution_by_alic:
                                 distribution_by_alic[tax_key] = {
                                     'invoice_amount': 0.0,
@@ -293,6 +295,8 @@ class AccountTax(models.Model):
                     if vals.get('currency_id') == payment_group.company_id.currency_id.id:
                         vals['amount'] = computed_withholding_amount
                     vals['computed_withholding_amount'] = computed_withholding_amount
+                    if 'force_amount_company_currency' in self.env['account.payment']._fields:
+                        vals['force_amount_company_currency'] = computed_withholding_amount
 
                     # por ahora no imprimimos el comment, podemos ver de llevarlo a
                     # otro campo si es de utilidad
@@ -376,6 +380,8 @@ class AccountTax(models.Model):
                 if vals.get('currency_id') == payment_group.company_id.currency_id.id:
                     vals['amount'] = computed_withholding_amount
                 vals['computed_withholding_amount'] = computed_withholding_amount
+                if 'force_amount_company_currency' in self.env['account.payment']._fields:
+                    vals['force_amount_company_currency'] = computed_withholding_amount
 
                 # por ahora no imprimimos el comment, podemos ver de llevarlo a
                 # otro campo si es de utilidad
