@@ -354,8 +354,8 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                 sheet.write(4, 2, 'Tipo de Documento', cell_format)
                 sheet.write(4, 3, 'Factura o Número de Documento', cell_format)
                 sheet.write(4, 4, 'Número de Control', cell_format)
-                sheet.write(4, 5, 'N° comprobante', cell_format)
-                sheet.write(4, 6, 'Número Factura Afectada', cell_format)
+                sheet.write(4, 5, 'Número Factura Afectada', cell_format)
+                sheet.write(4, 6, 'N° comprobante', cell_format)
                 sheet.write(4, 7, 'Nombre o Razón Social', cell_format)
                 sheet.write(4, 8, 'RIF', cell_format)
                 sheet.write(4, 9, 'Total Ventas  Bs. Incluyendo IVA.', cell_format)
@@ -804,10 +804,10 @@ class AccountVatLedgerXlsx(models.AbstractModel):
 
                                     sheet.write(row, 3, '', line)
                                     sheet.write(row, 4, '', line)
-                                    # Numero de comrpobante
-                                    sheet.write(row, 5, reten.name, line)
                                     # Documento afectado
-                                    sheet.write(row, 6, self._get_withholding_docs_text(reten, "name"), line)
+                                    sheet.write(row, 5, self._get_withholding_docs_text(reten, "name"), line)
+                                    # Numero de comrpobante
+                                    sheet.write(row, 6, reten.name, line)
                                     # nombre del partner
                                     sheet.write(row, 7, reten.partner_id.name or 'FALSE', line)
                                     # Rif del cliente
@@ -885,17 +885,17 @@ class AccountVatLedgerXlsx(models.AbstractModel):
 
                     
                     else:
-                        sheet.write(row, 5, '', line)
                         # Número Factura Afectada si es de debito o credito
                         if invoice.move_type == 'out_refund':
                             if invoice.reversed_entry_id:
-                                sheet.write(row, 6, invoice._get_reverse_name_vat_ledger(), line)
+                                sheet.write(row, 5, invoice._get_reverse_name_vat_ledger(), line)
                             else:
-                                sheet.write(row, 6, '', line)
+                                sheet.write(row, 5, '', line)
                         elif invoice.debit_origin_id:
-                            sheet.write(row, 6, invoice._get_debit_name_vat_ledger(), line)
+                            sheet.write(row, 5, invoice._get_debit_name_vat_ledger(), line)
                         else:
-                            sheet.write(row, 6, '', line)
+                            sheet.write(row, 5, '', line)
+                        sheet.write(row, 6, '', line)
                         # nombre del partner
                         sheet.write(row, 7, invoice.partner_id.name or 'FALSE', line)
                         # Rif del cliente
