@@ -354,8 +354,8 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                 sheet.write(4, 2, 'Tipo de Documento', cell_format)
                 sheet.write(4, 3, 'Factura o Número de Documento', cell_format)
                 sheet.write(4, 4, 'Número de Control', cell_format)
-                sheet.write(4, 5, 'N° comprobante', cell_format)
-                sheet.write(4, 6, 'Número Factura Afectada', cell_format)
+                sheet.write(4, 5, 'Número Factura Afectada', cell_format)
+                sheet.write(4, 6, 'N° comprobante', cell_format)
                 sheet.write(4, 7, 'Nombre o Razón Social', cell_format)
                 sheet.write(4, 8, 'RIF', cell_format)
                 sheet.write(4, 9, 'Total Ventas  Bs. Incluyendo IVA.', cell_format)
@@ -488,72 +488,6 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                 invoices = sorted(invoices, key=lambda x: x.invoice_date)
             
             date_reference = obj.date_from
-
-            if obj.type == 'sale' and retenciones:
-                # Show carry-over withholdings first when their withholding date
-                # is before the ledger period but they were included by payment date.
-                previous_retenciones = sorted(
-                    [reten for reten in retenciones if reten.date and reten.date < obj.date_from],
-                    key=lambda x: (x.date, x.payment_id.date or x.date),
-                )
-                for reten in previous_retenciones:
-                    amount_reten = self._get_sale_withholding_signed_amount(reten)
-                    total_iva_16_retenido += amount_reten
-                    i += 1
-                    # contador de la factura
-                    sheet.write(row, 0, i, line)
-                    # codigo fecha
-                    sheet.write(row, 1, reten.date or 'FALSE', date_line)
-                    # tipo de documento
-                    sheet.write(row, 2, 'Retención', line)
-
-                    sheet.write(row, 3, '', line)
-                    sheet.write(row, 4, '', line)
-                    # Numero de comrpobante
-                    sheet.write(row, 5, reten.name, line)
-                    # Documento afectado
-                    sheet.write(row, 6, self._get_withholding_docs_text(reten, "name"), line)
-                    # nombre del partner
-                    sheet.write(row, 7, reten.partner_id.name or 'FALSE', line)
-                    # Rif del cliente
-                    sheet.write(row, 8, '%s-%s' % (reten.partner_id. \
-                        l10n_latam_identification_type_id.l10n_ve_code or 'FALSE',
-                        reten.partner_id.vat or 'FALSE'), line)
-                    sheet.write(row, 9, '', line)
-                    sheet.write(row, 10, '', line)
-                    sheet.write(row, 11, '', line)
-                    sheet.write(row, 12, '', line)
-                    sheet.write(row, 13, '', line)
-                    sheet.write(row, 14, '', line)
-                    sheet.write(row, 15, '', line)
-                    sheet.write(row, 16, '', line)
-                    sheet.write(row, 17, '', line)
-                    sheet.write(row, 18, '', line)
-                    sheet.write(row, 19, '', line)
-                    sheet.write(row, 20, '', line)
-                    sheet.write(row, 21, '', line)
-                    sheet.write(row, 22, '', line)
-                    sheet.write(row, 23, '', line)
-                    sheet.write(row, 24, '', line)
-                    sheet.write(row, 25, '', line)
-                    sheet.write(row, 26, '', line)
-                    sheet.write(row, 27, '', line)
-                    sheet.write(row, 34, amount_reten, line_number)
-                    sheet.write(row, 35, '', line)
-
-                    try:
-                        retenciones.remove(reten)
-                    except ValueError:
-                        pass
-                    try:
-                        coincident_list = retenciones_by_date.get(reten.date, [])
-                        if reten in coincident_list:
-                            coincident_list.remove(reten)
-                        if not coincident_list and reten.date in retenciones_by_date:
-                            del retenciones_by_date[reten.date]
-                    except Exception:
-                        pass
-                    row += 1
             
             for idx, invoice in enumerate(invoices):
                 if obj.type == 'purchase':
@@ -870,10 +804,10 @@ class AccountVatLedgerXlsx(models.AbstractModel):
 
                                     sheet.write(row, 3, '', line)
                                     sheet.write(row, 4, '', line)
-                                    # Numero de comrpobante
-                                    sheet.write(row, 5, reten.name, line)
                                     # Documento afectado
-                                    sheet.write(row, 6, self._get_withholding_docs_text(reten, "name"), line)
+                                    sheet.write(row, 5, self._get_withholding_docs_text(reten, "name"), line)
+                                    # Numero de comrpobante
+                                    sheet.write(row, 6, reten.name, line)
                                     # nombre del partner
                                     sheet.write(row, 7, reten.partner_id.name or 'FALSE', line)
                                     # Rif del cliente
@@ -951,17 +885,17 @@ class AccountVatLedgerXlsx(models.AbstractModel):
 
                     
                     else:
-                        sheet.write(row, 5, '', line)
                         # Número Factura Afectada si es de debito o credito
                         if invoice.move_type == 'out_refund':
                             if invoice.reversed_entry_id:
-                                sheet.write(row, 6, invoice._get_reverse_name_vat_ledger(), line)
+                                sheet.write(row, 5, invoice._get_reverse_name_vat_ledger(), line)
                             else:
-                                sheet.write(row, 6, '', line)
+                                sheet.write(row, 5, '', line)
                         elif invoice.debit_origin_id:
-                            sheet.write(row, 6, invoice._get_debit_name_vat_ledger(), line)
+                            sheet.write(row, 5, invoice._get_debit_name_vat_ledger(), line)
                         else:
-                            sheet.write(row, 6, '', line)
+                            sheet.write(row, 5, '', line)
+                        sheet.write(row, 6, '', line)
                         # nombre del partner
                         sheet.write(row, 7, invoice.partner_id.name or 'FALSE', line)
                         # Rif del cliente
