@@ -258,6 +258,44 @@ class AccountPayment(models.Model):
     def _format_miles_number(self, number):
         return '{:,.2f}'.format(number).replace(",", "@").replace(".", ",").replace("@", ".")
 
+    def _needs_withholding_draft_bypass(self):
+        """Detect payments likely to hit unbalanced-move on reset-to-draft."""
+        self.ensure_one()
+
+        if not self.l10n_ve_withholding_line_ids:
+            return False
+        if not self.move_id or self.move_id.state not in ("posted", "cancel"):
+            return False
+
+        payment_move_lines = self.move_id.line_ids.filtered(lambda line: line.payment_id == self)
+        if not payment_move_lines:
+            payment_move_lines = self.move_id.line_ids
+        tax_payment_lines = payment_move_lines.filtered("tax_line_id")
+        if not tax_payment_lines:
+            return False
+        return True
+
+    def action_draft(self):
+        if self.env.context.get("skip_withholding_draft_guard"):
+            return super(AccountPayment, self).action_draft()
+
+        risky_payments = self.filtered(lambda p: p._needs_withholding_draft_bypass())
+        safe_payments = self - risky_payments
+
+        if safe_payments:
+            super(AccountPayment, safe_payments).action_draft()
+
+        if risky_payments:
+            super(
+                AccountPayment,
+                risky_payments.with_context(
+                    check_move_validity=False,
+                    skip_withholding_draft_guard=True,
+                ),
+            ).action_draft()
+
+        return True
+
     def action_post(self):
         for payment in self:
             if payment.to_pay_move_line_ids:
