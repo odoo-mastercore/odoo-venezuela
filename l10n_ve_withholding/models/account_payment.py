@@ -106,7 +106,9 @@ class AccountPayment(models.Model):
         if not moves or not tax:
             return moves
         return moves.filtered(
-            lambda move: tax.id not in move.l10n_ve_withholding_ids.tax_id.ids
+            lambda move: tax.id not in move.l10n_ve_withholding_ids.filtered(
+                lambda withholding: withholding.payment_id != self
+            ).tax_id.ids
         )
 
     def _has_l10n_ve_moves_without_withholding_tax(self, tax):
@@ -379,7 +381,9 @@ class AccountPayment(models.Model):
                     # Relacionamos las retenciones con la factura para uso de reportes
                     wth_to_add = [
                         wth.id for wth in payment.l10n_ve_withholding_line_ids \
-                            if wth.tax_id.id not in move.l10n_ve_withholding_ids.tax_id.ids]
+                            if wth.tax_id.id not in move.l10n_ve_withholding_ids.filtered(
+                                lambda withholding: withholding.payment_id != payment
+                            ).tax_id.ids]
                     current_ids = move.l10n_ve_withholding_ids.ids
                     all_ids = list(set(current_ids + wth_to_add))
                     move.l10n_ve_withholding_ids = [Command.set(all_ids)]
