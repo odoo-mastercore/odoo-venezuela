@@ -34,3 +34,26 @@ class L10nVePartnerTax(models.Model):
     company_id = fields.Many2one(
         related='tax_id.company_id', store=True,
     )
+
+    @api.constrains('partner_id', 'tax_id')
+    def _check_unique_partner_tax(self):
+        for record in self:
+            domain = [
+                ('id', '!=', record.id),
+                ('partner_id', '=', record.partner_id.id),
+                ('tax_id', '=', record.tax_id.id),
+            ]
+            if self.search_count(domain):
+                raise ValidationError(_(
+                    'No puede configurar dos veces el mismo impuesto de retención '
+                    'para el mismo contacto.'
+                ))
+
+    @api.constrains('tax_id')
+    def _check_supplier_withholding_tax(self):
+        for record in self:
+            if record.tax_id.l10n_ve_withholding_payment_type != 'supplier':
+                raise ValidationError(_(
+                    'El impuesto configurado en el contacto debe ser una '
+                    'retención de pago a proveedor.'
+                ))

@@ -220,6 +220,7 @@ class l10nVePaymentWithholding(models.Model):
 
     def _get_partner_alicuot(self, partner):
         self.ensure_one()
+        partner = partner.commercial_partner_id
         if partner.l10n_ve_vat_retention:
             alicuot = partner.l10n_ve_vat_retention
         else:
