@@ -72,6 +72,9 @@ class l10nVePaymentWithholding(models.Model):
         "payment_id.l10n_ve_withholding_untaxed",
         "payment_id.l10n_ve_withholdable_advanced_amount",
         "payment_id.unreconciled_amount",
+        "payment_id.date",
+        "move_line_id.price_subtotal",
+        "move_line_id.currency_id",
     )
     def _compute_base_amount(self):
         self.payment_id._compute_to_pay_amount()
@@ -110,7 +113,17 @@ class l10nVePaymentWithholding(models.Model):
                 if wth.calc_islr == 'all':
                     wth.base_amount = wth.payment_id.l10n_ve_withholding_untaxed + advance_amount
                 elif wth.calc_islr == 'line' and wth.move_line_id:
-                    wth.base_amount = abs(wth.move_line_id.price_subtotal) + advance_amount
+                    line_base_amount = abs(wth.move_line_id.price_subtotal)
+                    line_currency = wth.move_line_id.currency_id
+                    company_currency = wth.company_id.currency_id
+                    if line_currency and line_currency != company_currency:
+                        line_base_amount = line_currency._convert(
+                            line_base_amount,
+                            company_currency,
+                            wth.company_id,
+                            wth.payment_id.date or fields.Date.context_today(wth),
+                        )
+                    wth.base_amount = line_base_amount + advance_amount
 
     @api.depends("base_amount", "tax_id", "l10n_ve_regimen_islr_id")
     def _compute_amount(self):
@@ -207,6 +220,7 @@ class l10nVePaymentWithholding(models.Model):
 
     def _get_partner_alicuot(self, partner):
         self.ensure_one()
+        partner = partner.commercial_partner_id
         if partner.l10n_ve_vat_retention:
             alicuot = partner.l10n_ve_vat_retention
         else:
@@ -282,6 +296,19 @@ class l10nVePaymentWithholding(models.Model):
         self.ensure_one()
         return self.tax_id
 
+    def _get_move_total_without_igtf(self, move):
+        """Return move total excluding IGTF amounts when present."""
+        total_amount = abs(move.amount_total_signed)
+        igtf_amount = 0.0
+        if 'igtf_amount_purchase' in move._fields:
+            igtf_amount = abs(move.igtf_amount_purchase or 0.0)
+        elif 'igtf_purchase' in self.env['account.move.line']._fields:
+            igtf_lines = move.line_ids.filtered(
+                lambda line: line.display_type == 'tax' and line.igtf_purchase
+            )
+            igtf_amount = abs(sum(igtf_lines.mapped('balance')))
+        return max(total_amount - igtf_amount, 0.0)
+
     def _get_withholding_lines(self):
         lines = []
         total_base = 0.0
@@ -301,7 +328,9 @@ class l10nVePaymentWithholding(models.Model):
                     'move_id': True if tax.move_id else False,
                     'reserved_entry': True if tax.move_id.reversed_entry_id else False,
                     'reserved_entry_ref': tax.move_id.reversed_entry_id.ref or '',
-                    'amount_total': self.payment_id._format_miles_number(round(abs(tax.move_id.amount_total_signed), 2)),
+                    'amount_total': self.payment_id._format_miles_number(
+                        round(self._get_move_total_without_igtf(tax.move_id), 2)
+                    ),
                     'amount_untaxed_formated': self.payment_id._format_miles_number(tax.move_id.get_exempt_amount()),
                     'amount_untaxed': tax.move_id.get_exempt_amount(),
                     'tax_base_amount_formated': self.payment_id._format_miles_number(tax.tax_base_amount),
