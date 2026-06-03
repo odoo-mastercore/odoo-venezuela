@@ -98,7 +98,21 @@ class AccountPayment(models.Model):
 
     def _get_l10n_ve_to_pay_moves(self):
         self.ensure_one()
-        return self.to_pay_move_line_ids._origin.mapped('move_id')
+        lines = self.to_pay_move_line_ids._origin or self.to_pay_move_line_ids
+        return lines.mapped('move_id')
+
+    def _move_has_l10n_ve_withholding_tax(self, move, tax):
+        self.ensure_one()
+        if not move or not tax:
+            return False
+        withholdings = move.l10n_ve_withholding_ids.filtered(
+            lambda withholding: withholding.payment_id != self
+        )
+        if tax.l10n_ve_tax_type == 'partner_tax':
+            return bool(withholdings.filtered(
+                lambda withholding: withholding.tax_id.l10n_ve_tax_type == 'partner_tax'
+            ))
+        return tax.id in withholdings.tax_id.ids
 
     def _get_l10n_ve_moves_without_withholding_tax(self, tax):
         self.ensure_one()
@@ -106,9 +120,7 @@ class AccountPayment(models.Model):
         if not moves or not tax:
             return moves
         return moves.filtered(
-            lambda move: tax.id not in move.l10n_ve_withholding_ids.filtered(
-                lambda withholding: withholding.payment_id != self
-            ).tax_id.ids
+            lambda move: not self._move_has_l10n_ve_withholding_tax(move, tax)
         )
 
     def _has_l10n_ve_moves_without_withholding_tax(self, tax):
@@ -118,8 +130,9 @@ class AccountPayment(models.Model):
 
     @api.depends(
         "partner_id",
-        "partner_id.l10n_ve_partner_tax_ids.tax_id",
-        "partner_id.l10n_ve_partner_tax_ids.company_id",
+        "partner_id.commercial_partner_id.l10n_ve_partner_tax_ids.tax_id",
+        "partner_id.commercial_partner_id.l10n_ve_partner_tax_ids.company_id",
+        "to_pay_move_line_ids",
         "to_pay_move_line_ids.move_id.l10n_ve_withholding_ids.tax_id",
         "company_id",
         "date",
@@ -127,6 +140,13 @@ class AccountPayment(models.Model):
     )
     def _compute_l10n_ve_withholding_line_ids(self):
         for rec in self:
+            if rec.state != "draft" and rec.l10n_ve_withholding_line_ids:
+                rec.l10n_ve_withholding_islr = any(
+                    line.l10n_ve_tax_type == 'tabla_islr'
+                    for line in rec.l10n_ve_withholding_line_ids
+                )
+                rec.l10n_ve_withholding_line_ids = rec.l10n_ve_withholding_line_ids
+                continue
             withholdings = [Command.clear()]
             wth_islr = False
             if rec.partner_type == "supplier":
@@ -198,7 +218,8 @@ class AccountPayment(models.Model):
                 ref = self.env.ref(f'account.{company_id}_{key}', raise_if_not_found=False)
                 if ref:
                     tax_list.append(ref.id)
-            for line_to_pay in payment.to_pay_move_line_ids._origin:
+            lines_to_pay = payment.to_pay_move_line_ids._origin or payment.to_pay_move_line_ids
+            for line_to_pay in lines_to_pay:
                 if withholding_taxes and not any(
                     payment._get_l10n_ve_moves_without_withholding_tax(tax) & line_to_pay.move_id
                     for tax in withholding_taxes
@@ -228,7 +249,8 @@ class AccountPayment(models.Model):
             withholding_taxes = payment.l10n_ve_withholding_line_ids.filtered(
                 lambda line: line.tax_id.l10n_ve_tax_type == 'tabla_islr'
             ).tax_id
-            for line_to_pay in payment.to_pay_move_line_ids._origin:
+            lines_to_pay = payment.to_pay_move_line_ids._origin or payment.to_pay_move_line_ids
+            for line_to_pay in lines_to_pay:
                 if withholding_taxes and not any(
                     payment._get_l10n_ve_moves_without_withholding_tax(tax) & line_to_pay.move_id
                     for tax in withholding_taxes
@@ -377,20 +399,6 @@ class AccountPayment(models.Model):
                     payment.write({
                         'payment_type': 'inbound',
                     })
-                for move in to_pay_moves:
-                    # Relacionamos las retenciones con la factura para uso de reportes
-                    wth_to_add = [
-                        wth.id for wth in payment.l10n_ve_withholding_line_ids \
-                            if wth.tax_id.id not in move.l10n_ve_withholding_ids.filtered(
-                                lambda withholding: withholding.payment_id != payment
-                            ).tax_id.ids]
-                    current_ids = move.l10n_ve_withholding_ids.ids
-                    all_ids = list(set(current_ids + wth_to_add))
-                    move.l10n_ve_withholding_ids = [Command.set(all_ids)]
-
-                    # Relacionamos los pagos a la factura (User Ux)
-                    # TODO: Revisar si esto es correcto y funcional
-                    move.write({"matched_payment_ids": [Command.link(payment.id)]})
             commands = []
             for line in payment.l10n_ve_withholding_line_ids if payment.partner_type == 'supplier' else []:
                 if not line.name or line.name == "/":
@@ -410,9 +418,26 @@ class AccountPayment(models.Model):
                             _("Please enter withholding number for tax %s or configure a sequence on that tax")
                             % line.tax_id.name
                         )
-                if commands:
-                    payment.l10n_ve_withholding_line_ids = commands
+            if commands:
+                payment.l10n_ve_withholding_line_ids = commands
         res = super(AccountPayment, self).action_post()
+        for payment in self:
+            if not payment.to_pay_move_line_ids:
+                continue
+            for move in payment.to_pay_move_line_ids.mapped('move_id'):
+                # Link withholdings after posting so the computed draft suggestions
+                # do not wipe the lines that were just confirmed on this payment.
+                wth_to_add = [
+                    wth.id for wth in payment.l10n_ve_withholding_line_ids
+                    if not payment._move_has_l10n_ve_withholding_tax(move, wth.tax_id)
+                ]
+                current_ids = move.l10n_ve_withholding_ids.ids
+                all_ids = list(set(current_ids + wth_to_add))
+                move.l10n_ve_withholding_ids = [Command.set(all_ids)]
+
+                # Relacionamos los pagos a la factura (User Ux)
+                # TODO: Revisar si esto es correcto y funcional
+                move.write({"matched_payment_ids": [Command.link(payment.id)]})
         # if self.l10n_ve_withholding_line_ids and self.matched_move_line_ids and self.payment_type == 'outbound':
         #     invoice_id = self.mapped('matched_move_line_ids.move_id').filtered(lambda m: m.move_type == 'in_invoice')
         #     if self.date != invoice_id.invoice_date:
