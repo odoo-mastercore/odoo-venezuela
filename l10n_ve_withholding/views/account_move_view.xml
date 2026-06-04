@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='UTF-8'?>
+<?xml version="1.0" encoding="UTF-8"?>
 <odoo>
     <record id="view_move_form" model="ir.ui.view">
         <field name="name">account.move.form.inherit</field>
@@ -15,7 +15,6 @@
                 <field
                     name="l10n_ve_control_number"
                     invisible="context.get('default_move_type') not in ('in_invoice', 'in_refund','in_receipt')"
-                    readonly="state != 'draft'"
                     string="Control Number"
                     />
             </xpath>
@@ -23,7 +22,7 @@
                 <page name="withholdings_page" string="Retenciones" invisible="move_type not in ('in_invoice','in_refund','out_invoice','out_refund')">
                     <field name="l10n_ve_withholding_ids" nolabel="1" colspan="2" readonly="1">
                         <list>
-                            <field name="l10n_ve_tax_type" invisible="1"/>
+                            <field name="l10n_ve_tax_type" column_invisible="True"/>
                             <field name="withholding_sequence_id" column_invisible="True"/>
                             <field name="company_id" column_invisible="True"/>
                             <field name="currency_id" column_invisible="True"/>
@@ -35,7 +34,7 @@
                             <field name="amount" readonly="1" force_save="1"/>
                             <field name="ref" optional="hide"/>
                             <button name="%(action_report_withholding_certificate_iva)d" invisible="l10n_ve_tax_type != 'partner_tax'" type="action" string="Imprimir comprobante IVA" icon="fa-print" />
-                            <button name="%(action_report_withholding_certificate)d" invisible="l10n_ve_tax_type != 'tabla_islr'" icon="fa-print " title="Imprimir comprobante ISLR" type="action" />
+                            <button name="%(action_report_withholding_certificate)d" invisible="l10n_ve_tax_type != 'tabla_islr'" type="action" string="Imprimir comprobante ISLR" icon="fa-print" />
                         </list>
                     </field>
                 </page>
