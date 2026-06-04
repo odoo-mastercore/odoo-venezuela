@@ -31,6 +31,17 @@ class AccountMove(models.Model):
         copy=False,
     )
 
+    def action_register_payment(self):
+        action = super().action_register_payment()
+        supplier_moves = self.filtered(
+            lambda move: move.move_type in ('in_invoice', 'in_refund')
+        )
+        if supplier_moves and isinstance(action, dict):
+            context = dict(action.get('context') or {})
+            context['l10n_ve_auto_withhold_move_ids'] = supplier_moves.ids
+            action['context'] = context
+        return action
+
     def _post(self, soft=True):
         moves_posted = super(AccountMove, self)._post(soft)
         for move in moves_posted:

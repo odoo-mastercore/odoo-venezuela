@@ -108,10 +108,6 @@ class AccountPayment(models.Model):
         withholdings = move.l10n_ve_withholding_ids.filtered(
             lambda withholding: withholding.payment_id != self
         )
-        if tax.l10n_ve_tax_type == 'partner_tax':
-            return bool(withholdings.filtered(
-                lambda withholding: withholding.tax_id.l10n_ve_tax_type == 'partner_tax'
-            ))
         return tax.id in withholdings.tax_id.ids
 
     def _get_l10n_ve_moves_without_withholding_tax(self, tax):
@@ -126,12 +122,33 @@ class AccountPayment(models.Model):
     def _has_l10n_ve_moves_without_withholding_tax(self, tax):
         self.ensure_one()
         moves = self._get_l10n_ve_to_pay_moves()
-        return not moves or bool(self._get_l10n_ve_moves_without_withholding_tax(tax))
+        return bool(moves) and bool(self._get_l10n_ve_moves_without_withholding_tax(tax))
+
+    def _allow_l10n_ve_auto_withholding(self):
+        self.ensure_one()
+        auto_move_ids = self.env.context.get('l10n_ve_auto_withhold_move_ids')
+        if not auto_move_ids:
+            return False
+        auto_moves = self.env['account.move'].browse(auto_move_ids)
+        return bool(auto_moves & self._get_l10n_ve_to_pay_moves())
+
+    def _prepare_l10n_ve_auto_withholding_values(self, partner_tax):
+        self.ensure_one()
+        values = {'tax_id': partner_tax.tax_id.id}
+        if partner_tax.tax_id.l10n_ve_tax_type == 'tabla_islr':
+            partner = self.partner_id.commercial_partner_id
+            regimen = partner.l10n_ve_seniat_regimen_islr_ids[:1]
+            values.update({
+                'calc_islr': 'all',
+                'l10n_ve_regimen_islr_id': regimen.id,
+            })
+        return values
 
     @api.depends(
         "partner_id",
         "partner_id.commercial_partner_id.l10n_ve_partner_tax_ids.tax_id",
         "partner_id.commercial_partner_id.l10n_ve_partner_tax_ids.company_id",
+        "partner_id.commercial_partner_id.l10n_ve_seniat_regimen_islr_ids",
         "to_pay_move_line_ids",
         "to_pay_move_line_ids.move_id.l10n_ve_withholding_ids.tax_id",
         "company_id",
@@ -147,23 +164,35 @@ class AccountPayment(models.Model):
                 )
                 rec.l10n_ve_withholding_line_ids = rec.l10n_ve_withholding_line_ids
                 continue
-            withholdings = [Command.clear()]
+            if not rec._allow_l10n_ve_auto_withholding():
+                rec.l10n_ve_withholding_islr = any(
+                    line.l10n_ve_tax_type == 'tabla_islr'
+                    for line in rec.l10n_ve_withholding_line_ids
+                )
+                rec.l10n_ve_withholding_line_ids = rec.l10n_ve_withholding_line_ids
+                continue
+            withholdings = []
             wth_islr = False
             if rec.partner_type == "supplier":
                 partner_taxes = rec._get_l10n_ve_partner_withholding_taxes()
                 partner_taxes = partner_taxes.filtered(
                     lambda partner_tax: rec._has_l10n_ve_moves_without_withholding_tax(partner_tax.tax_id)
                 )
+                existing_tax_ids = set(rec.l10n_ve_withholding_line_ids.tax_id.ids)
                 wth_islr = any(
                     tax.tax_id.l10n_ve_tax_type == 'tabla_islr'
                     for tax in partner_taxes
                 )
                 withholdings += [
-                    Command.create({'tax_id': tax.tax_id.id})
+                    Command.create(rec._prepare_l10n_ve_auto_withholding_values(tax))
                     for tax in partner_taxes
+                    if tax.tax_id.id not in existing_tax_ids
                 ]
             rec.l10n_ve_withholding_islr = wth_islr
-            rec.l10n_ve_withholding_line_ids = withholdings
+            if withholdings:
+                rec.l10n_ve_withholding_line_ids = withholdings
+            else:
+                rec.l10n_ve_withholding_line_ids = rec.l10n_ve_withholding_line_ids
 
     @api.depends("l10n_ve_withholding_line_ids.amount")
     def _compute_l10n_ve_withholdings_amount(self):
