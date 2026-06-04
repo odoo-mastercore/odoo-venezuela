@@ -149,6 +149,7 @@ class l10nVePaymentWithholding(models.Model):
                 % tax.name
             )
         amount = 0.0
+        selected_band = False
         if self.tax_id.l10n_ve_tax_type == 'partner_tax' and self.payment_id.partner_type == 'supplier':
             alicuota_retencion = self._get_partner_alicuot(self.payment_id.partner_id)
             alicuota = int(alicuota_retencion) / 100.0
@@ -170,9 +171,11 @@ class l10nVePaymentWithholding(models.Model):
                     else:
                         base_ut = base
                     if base_ut >= band.amount_minimum and base_ut <= band.amount_maximum:
+                        selected_band = band
                         withholding_percentage = band.withholding_percentage / 100
 
                     elif base_ut > band.amount_minimum and band.amount_maximum == 0.0:
+                        selected_band = band
                         withholding_percentage = band.withholding_percentage / 100
                     if regimen_id.type_subtracting == 'amount' and \
                         band.type_amount == 'ut':
@@ -214,7 +217,13 @@ class l10nVePaymentWithholding(models.Model):
         if self.payment_id.partner_type == 'supplier':
             if tax.l10n_ve_tax_type == 'partner_tax':
                 ref = f"({self.base_amount} * {alicuota_retencion}%)"
-            #TODO: Aplicar ref para islr
+            elif tax.l10n_ve_tax_type == 'tabla_islr' and regimen_id and selected_band:
+                ref = (
+                    f"(({self.base_amount} * {regimen_id.withholding_base_percentage}%) "
+                    f"* {selected_band.withholding_percentage}%)"
+                )
+                if subtracting > 0.0:
+                    ref = f"{ref} - {subtracting}"
 
         return tax_amount, tax_account_id, tax_repartition_line_id, ref
 
