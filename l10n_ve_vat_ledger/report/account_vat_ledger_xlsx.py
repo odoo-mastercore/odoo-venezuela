@@ -203,33 +203,34 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                 sheet.write(4, 4, 'Número de Control', cell_format)
                 sheet.write(4, 5, 'Número de Comprobante', cell_format)
                 sheet.write(4, 6, 'Número Factura Afectada', cell_format)
-                sheet.write(4, 7, 'Nª planilla de Importaciòn', cell_format)
-                sheet.write(4, 8, 'Nª de Expediente de Importaciòn', cell_format)
-                sheet.write(4, 9, 'Nombre o Razón Social', cell_format)
-                sheet.write(4, 10, 'RIF', cell_format)
-                sheet.write(4, 11, 'Total Compras  Bs. Incluyendo IVA.', cell_format)
-                sheet.write(4, 12, 'Compras sin Derecho a Crédito I.V.A.', cell_format)
+                sheet.write(4, 7, 'Fecha de Nacionalización', cell_format)
+                sheet.write(4, 8, 'Nª planilla de Importaciòn', cell_format)
+                sheet.write(4, 9, 'Nª de Expediente de Importaciòn', cell_format)
+                sheet.write(4, 10, 'Nombre o Razón Social', cell_format)
+                sheet.write(4, 11, 'RIF', cell_format)
+                sheet.write(4, 12, 'Total Compras  Bs. Incluyendo IVA.', cell_format)
+                sheet.write(4, 13, 'Compras sin Derecho a Crédito I.V.A.', cell_format)
 
                 # celda adicional compras por cuenta de terceros
-                sheet.merge_range('N4:P4','Importaciones', cell_format)
-                sheet.write(4, 13, 'Base Imponible', cell_format)
-                sheet.write(4, 14, '% Alic.', cell_format)
-                sheet.write(4, 15, 'Imp. I.V.A.', cell_format)
+                sheet.merge_range('O4:Q4', 'Importaciones', cell_format)
+                sheet.write(4, 14, 'Base Imponible', cell_format)
+                sheet.write(4, 15, '% Alic.', cell_format)
+                sheet.write(4, 16, 'Imp. I.V.A.', cell_format)
 
                 # # IVA RETENIDO
-                sheet.merge_range('Q4:Z4', 'Compras Internas', cell_format)
-                sheet.write(4, 16, 'Base Imponible', cell_format)
-                sheet.write(4, 17, 'Alicuota 16%', cell_format)
-                sheet.write(4, 18, 'Imp. I.V.A.', cell_format)
-                sheet.write(4, 19, 'B. Imponible', cell_format)
-                sheet.write(4, 20, 'Alicuota 8%', cell_format)
-                sheet.write(4, 21, 'Imp. I.V.A.', cell_format)
-                sheet.write(4, 22, 'B. Imponible', cell_format)
-                sheet.write(4, 23, 'Alicuota 31%', cell_format)
-                sheet.write(4, 24, 'Imp. I.V.A.', cell_format)
+                sheet.merge_range('R4:AA4', 'Compras Internas', cell_format)
+                sheet.write(4, 17, 'Base Imponible', cell_format)
+                sheet.write(4, 18, 'Alicuota 16%', cell_format)
+                sheet.write(4, 19, 'Imp. I.V.A.', cell_format)
+                sheet.write(4, 20, 'B. Imponible', cell_format)
+                sheet.write(4, 21, 'Alicuota 8%', cell_format)
+                sheet.write(4, 22, 'Imp. I.V.A.', cell_format)
+                sheet.write(4, 23, 'B. Imponible', cell_format)
+                sheet.write(4, 24, 'Alicuota 31%', cell_format)
+                sheet.write(4, 25, 'Imp. I.V.A.', cell_format)
 
-                sheet.write(4, 25, 'I.V.A. Retenido por el comprador', cell_format)
-                sheet.write(4, 26, 'I.G.T.F Pagado  ', cell_format)
+                sheet.write(4, 26, 'I.V.A. Retenido por el comprador', cell_format)
+                sheet.write(4, 27, 'I.G.T.F Pagado  ', cell_format)
 
             elif obj.type == 'sale':
 
@@ -426,56 +427,60 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                                     sheet.write(row, 5, reten.withholding_number, line)
                                     # Documento afectado
                                     sheet.write(row, 6, reten.reconciled_bill_ids.ref, line)
+                                    # Fecha de Nacionalización (vacío para retenciones)
                                     sheet.write(row, 7, '', line)
+                                    # Planilla de importación
                                     sheet.write(row, 8, '', line)
+                                    # Expediente de importación
+                                    sheet.write(row, 9, '', line)
                                     # Nombre
-                                    sheet.write(row, 9, partner_reten.name, line)
+                                    sheet.write(row, 10, partner_reten.name, line)
                                     # RIF
-                                    sheet.write(row, 10, '%s-%s' % (partner_reten. \
+                                    sheet.write(row, 11, '%s-%s' % (partner_reten. \
                                         l10n_latam_identification_type_id.l10n_ve_code or 'FALSE',
                                         partner_reten.vat or 'FALSE'), line)
                                     #Total
-                                    sheet.write(row, 11, '', line_number)
-                                    # Compras Exento
                                     sheet.write(row, 12, '', line_number)
+                                    # Compras Exento
+                                    sheet.write(row, 13, '', line_number)
 
                                     #IMPORTACIONES
                                     # Base Imponible
-                                    sheet.write(row, 13, '', line_number)
-                                    # % Alic
                                     sheet.write(row, 14, '', line_number)
-                                    #Imp. IVA
+                                    # % Alic
                                     sheet.write(row, 15, '', line_number)
+                                    #Imp. IVA
+                                    sheet.write(row, 16, '', line_number)
 
                                     #Compras internas
                                     # Base Imponible
-                                    sheet.write(row, 16, '', line_number)
-                                    # % Alic
                                     sheet.write(row, 17, '', line_number)
-                                    #Imp. IVA
+                                    # % Alic
                                     sheet.write(row, 18, '', line_number)
+                                    #Imp. IVA
+                                    sheet.write(row, 19, '', line_number)
 
                                     #IVA 8%
                                     # Base Imponible
-                                    sheet.write(row, 19, '', line_number)
-                                    # % Alic
                                     sheet.write(row, 20, '', line_number)
-                                    #Imp. IVA
+                                    # % Alic
                                     sheet.write(row, 21, '', line_number)
+                                    #Imp. IVA
+                                    sheet.write(row, 22, '', line_number)
 
                                      #IVA 31%
                                     # Base Imponible
-                                    sheet.write(row, 22, '', line_number)
-                                    # % Alic
                                     sheet.write(row, 23, '', line_number)
-                                    #Imp. IVA
+                                    # % Alic
                                     sheet.write(row, 24, '', line_number)
+                                    #Imp. IVA
+                                    sheet.write(row, 25, '', line_number)
                                     
 
                                     #Retenciones
-                                    sheet.write(row, 25, amount_reten, line_number)
+                                    sheet.write(row, 26, amount_reten, line_number)
                                     ###### IGTF
-                                    sheet.write(row, 26, '', line_number)
+                                    sheet.write(row, 27, '', line_number)
                                     retenciones.remove(reten)
                                     row +=1
                             else:
@@ -517,23 +522,29 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     else:
                         sheet.write(row, 6, '', line)
 
+                    # Fecha de Nacionalizacion
+                    nac_date = getattr(invoice, 'importation_nationalization_date', False)
+                    if nac_date:
+                        sheet.write_datetime(row, 7, nac_date, date_line)
+                    else:
+                        sheet.write(row, 7, '', date_line)
                     # Planilla de importacion
-                    sheet.write(row, 7, '', line)
+                    sheet.write(row, 8, getattr(invoice, 'importation_planilla_number', False) or '', line)
                     # Nro Expediente de importacion
-                    sheet.write(row, 8, '', line)
+                    sheet.write(row, 9, getattr(invoice, 'importation_expediente_number', False) or '', line)
                     # nombre del partner
-                    sheet.write(row, 9, invoice.partner_id.name or 'FALSE', line)
+                    sheet.write(row, 10, invoice.partner_id.name or 'FALSE', line)
 
                     # Rif del cliente
-                    sheet.write(row, 10, '%s-%s' % (invoice.partner_id. \
+                    sheet.write(row, 11, '%s-%s' % (invoice.partner_id. \
                         l10n_latam_identification_type_id.l10n_ve_code or 'FALSE',
                         invoice.partner_id.vat or 'FALSE'), line)
                     # Tipo de Proveedor Compras
-                    # sheet.write(row, 10, invoice.partner_id.l10n_ve_responsibility_type_id.name or 'FALSE', line)
+                    # sheet.write(row, 11, invoice.partner_id.l10n_ve_responsibility_type_id.name or 'FALSE', line)
 
                     #Total Compras con IVA
                     sheet.write(
-                        row, 11, (invoice.amount_total_signed * -1.00), line_number)
+                        row, 12, (invoice.amount_total_signed * -1.00), line_number)
 
                     ####IMPUESTOS##########
                     
@@ -652,45 +663,45 @@ class AccountVatLedgerXlsx(models.AbstractModel):
 
 
                     # Compras Exento
-                    sheet.write(row, 12, base_exento, line_number)
+                    sheet.write(row, 13, base_exento, line_number)
 
                     #IMPORTACIONES
                     # Base Imponible
-                    sheet.write(row, 13, 0, line_number)
+                    sheet.write(row, 14, 0, line_number)
                     # % Alic
-                    sheet.write(row, 14, '', line_number)
+                    sheet.write(row, 15, '', line_number)
                     #Imp. IVA
-                    sheet.write(row, 15, 0, line_number)
+                    sheet.write(row, 16, 0, line_number)
 
                     #Compras internas
                     # Base Imponible
-                    sheet.write(row, 16, base_imponible, line_number)
+                    sheet.write(row, 17, base_imponible, line_number)
                     # % Alic
-                    sheet.write(row, 17, alic_16, line_number)
+                    sheet.write(row, 18, alic_16, line_number)
                     #Imp. IVA
-                    sheet.write(row, 18, iva_16, line_number)
+                    sheet.write(row, 19, iva_16, line_number)
 
                     #IVA 8%
                     # Base Imponible
-                    sheet.write(row, 19, base_imponible_8, line_number)
+                    sheet.write(row, 20, base_imponible_8, line_number)
                     # % Alic
-                    sheet.write(row, 20, alic_8, line_number)
+                    sheet.write(row, 21, alic_8, line_number)
                     #Imp. IVA
-                    sheet.write(row, 21, iva_8, line_number)
+                    sheet.write(row, 22, iva_8, line_number)
 
                     #IVA 31%
                     # Base Imponible
-                    sheet.write(row, 22, base_imponible_31, line_number)
+                    sheet.write(row, 23, base_imponible_31, line_number)
                     # % Alic
-                    sheet.write(row, 23, alic_31, line_number)
+                    sheet.write(row, 24, alic_31, line_number)
                     #Imp. IVA
-                    sheet.write(row, 24, iva_31, line_number)
+                    sheet.write(row, 25, iva_31, line_number)
                     
 
                     #Retenciones
-                    sheet.write(row, 25, 0, line_number)
+                    sheet.write(row, 26, 0, line_number)
                     ###### IGTF
-                    sheet.write(row, 26, igtf_amount, line_number)
+                    sheet.write(row, 27, igtf_amount, line_number)
 
                     
                 elif obj.type == 'sale':
@@ -1043,55 +1054,59 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     sheet.write(row, 5, reten.withholding_number, line)
                     # Documento afectado
                     sheet.write(row, 6, reten.reconciled_bill_ids.ref, line)
+                    # Fecha de Nacionalización (vacío para retenciones)
                     sheet.write(row, 7, '', line)
+                    # Planilla de importación
                     sheet.write(row, 8, '', line)
+                    # Expediente de importación
+                    sheet.write(row, 9, '', line)
                     # Nombre
-                    sheet.write(row, 9, partner_reten.name, line)
+                    sheet.write(row, 10, partner_reten.name, line)
                     # RIF
-                    sheet.write(row, 10, '%s-%s' % (partner_reten. \
+                    sheet.write(row, 11, '%s-%s' % (partner_reten. \
                         l10n_latam_identification_type_id.l10n_ve_code or 'FALSE',
                         partner_reten.vat or 'FALSE'), line)
                     #Total
-                    sheet.write(row, 11, '', line_number)
-                    # Compras Exento
                     sheet.write(row, 12, '', line_number)
+                    # Compras Exento
+                    sheet.write(row, 13, '', line_number)
 
                     #IMPORTACIONES
                     # Base Imponible
-                    sheet.write(row, 13, '', line_number)
-                    # % Alic
                     sheet.write(row, 14, '', line_number)
-                    #Imp. IVA
+                    # % Alic
                     sheet.write(row, 15, '', line_number)
+                    #Imp. IVA
+                    sheet.write(row, 16, '', line_number)
 
                     #Compras internas
                     # Base Imponible
-                    sheet.write(row, 16, '', line_number)
-                    # % Alic
                     sheet.write(row, 17, '', line_number)
-                    #Imp. IVA
+                    # % Alic
                     sheet.write(row, 18, '', line_number)
+                    #Imp. IVA
+                    sheet.write(row, 19, '', line_number)
 
                     #IVA 8%
                     # Base Imponible
-                    sheet.write(row, 19, '', line_number)
-                    # % Alic
                     sheet.write(row, 20, '', line_number)
-                    #Imp. IVA
+                    # % Alic
                     sheet.write(row, 21, '', line_number)
+                    #Imp. IVA
+                    sheet.write(row, 22, '', line_number)
 
                         #IVA 31%
                     # Base Imponible
-                    sheet.write(row, 22, '', line_number)
-                    # % Alic
                     sheet.write(row, 23, '', line_number)
-                    #Imp. IVA
+                    # % Alic
                     sheet.write(row, 24, '', line_number)
+                    #Imp. IVA
+                    sheet.write(row, 25, '', line_number)
                     
                     #Retenciones
-                    sheet.write(row, 25, amount_reten, line_number)
+                    sheet.write(row, 26, amount_reten, line_number)
                     ###### IGTF
-                    sheet.write(row, 26, '', line_number)
+                    sheet.write(row, 27, '', line_number)
                     # retenciones.remove(reten)
                     row +=1
 
@@ -1257,15 +1272,15 @@ class AccountVatLedgerXlsx(models.AbstractModel):
             # Totales de compras
             else:
                 
-                sheet.write((row), 12, c_total_base_exento, line_total)
-                sheet.write((row), 16, c_total_base_imponible_16, line_total)
-                sheet.write((row), 18, c_total_iva_16, line_total)
-                sheet.write((row), 19, c_total_base_imponible_8, line_total)
-                sheet.write((row), 21, c_total_iva_8, line_total)
-                sheet.write((row), 22, c_total_base_imponible_31, line_total)
-                sheet.write((row), 24, c_total_iva_31, line_total)
-                sheet.write((row), 25, total_iva_16_igtf, line_total)
-                sheet.write((row), 26, c_total_igtf, line_total)
+                sheet.write((row), 13, c_total_base_exento, line_total)
+                sheet.write((row), 17, c_total_base_imponible_16, line_total)
+                sheet.write((row), 19, c_total_iva_16, line_total)
+                sheet.write((row), 20, c_total_base_imponible_8, line_total)
+                sheet.write((row), 22, c_total_iva_8, line_total)
+                sheet.write((row), 23, c_total_base_imponible_31, line_total)
+                sheet.write((row), 25, c_total_iva_31, line_total)
+                sheet.write((row), 26, total_iva_16_igtf, line_total)
+                sheet.write((row), 27, c_total_igtf, line_total)
 
 
                 row += 5

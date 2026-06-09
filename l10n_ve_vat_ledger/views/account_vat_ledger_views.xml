@@ -53,6 +53,9 @@
                                     <field name="amount_tax_signed" string="Impuesto" sum="Total"/>
                                     <field name="amount_total_signed" string="Total Con Impuesto" sum="Total"/>
                                     <field name="currency_id" invisible="1"/>
+                                    <field name="importation_nationalization_date" string="Fecha de Nacionalización" column_invisible="parent.type != 'purchase'"/>
+                                    <field name="importation_planilla_number" string="Nº Planilla de Importación" column_invisible="parent.type != 'purchase'"/>
+                                    <field name="importation_expediente_number" string="Nº Expediente de Importación" column_invisible="parent.type != 'purchase'"/>
                                 </tree>
                             </field>
                         </page>
