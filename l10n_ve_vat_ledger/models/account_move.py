@@ -28,6 +28,20 @@ class AccountMove(models.Model):
 
     reversed_entry_code = fields.Char(compute='_compute_reversed_entry_code')
 
+    # Campos de importación — visibles sólo desde el Libro de Compras
+    importation_nationalization_date = fields.Date(
+        string='Fecha de Nacionalización',
+        help='Fecha de nacionalización de la importación'
+    )
+    importation_planilla_number = fields.Char(
+        string='Nº Planilla de Importación',
+        help='Número de planilla de importación'
+    )
+    importation_expediente_number = fields.Char(
+        string='Nº Expediente de Importación',
+        help='Número de expediente de importación'
+    )
+
     def invoice_rate(self, currency_id, invoice_date):
         for rec in self:
             last_rate = self.env['res.currency.rate'].search([

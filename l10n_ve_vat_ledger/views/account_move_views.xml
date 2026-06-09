@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="view_move_form_importation_fields" model="ir.ui.view">
+        <field name="name">account.move.form.importation.fields</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='other_info']" position="inside">
+                <group string="Datos de Importación"
+                       attrs="{'invisible': [('move_type', 'not in', ['in_invoice', 'in_refund'])]}"
+                       col="2">
+                    <group>
+                        <field name="importation_nationalization_date"
+                               string="Fecha de Nacionalización"/>
+                        <field name="importation_planilla_number"
+                               string="Nº Planilla de Importación"/>
+                    </group>
+                    <group>
+                        <field name="importation_expediente_number"
+                               string="Nº Expediente de Importación"/>
+                    </group>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>
