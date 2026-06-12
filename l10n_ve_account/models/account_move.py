@@ -58,6 +58,26 @@ class AccountMove(models.Model):
                     % line.product_id.display_name
                 )
 
+    @api.constrains('ref', 'partner_id', 'move_type')
+    def _check_unique_supplier_ref_by_partner(self):
+        for move in self:
+            if move.move_type != 'in_invoice' or not move.partner_id or not move.ref:
+                continue
+
+            duplicated_move = self.search([
+                ('id', '!=', move.id),
+                ('move_type', '=', 'in_invoice'),
+                ('partner_id', '=', move.partner_id.id),
+                ('ref', '=', move.ref),
+            ], limit=1)
+            if duplicated_move:
+                raise ValidationError(_(
+                    "La referencia '%(ref)s' ya existe para el proveedor %(partner)s."
+                ) % {
+                    'ref': move.ref,
+                    'partner': move.partner_id.display_name,
+                })
+
     @api.model_create_multi
     def create(self, vals_list):
         records = super(AccountMove, self).create(vals_list)
