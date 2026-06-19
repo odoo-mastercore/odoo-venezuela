@@ -31,6 +31,67 @@ class AccountVatLedgerXlsx(models.AbstractModel):
         json.loads(json_repr, object_hook=_decode_dict)
         return results
 
+    def _get_vat_book_document_kind(self, move):
+        if move.move_type in ("in_refund", "out_refund") and not move.debit_origin_id:
+            return "credit_note"
+        if move.debit_origin_id:
+            return "debit_note"
+        return "invoice"
+
+    def _round_book_amount(self, amount):
+        rounded = round(amount or 0.0, 2)
+        return 0.0 if abs(rounded) < 0.005 else rounded
+
+    def _get_move_vat_breakdown(self, move):
+        """Return signed VAT buckets from posted tax lines.
+
+        The VAT books must reflect the accounting move as posted. Using tax lines
+        avoids recomputing taxes from invoice lines with a potentially different
+        exchange rate or rounding path.
+        """
+        document_kind = self._get_vat_book_document_kind(move)
+        sign = -1 if document_kind == "credit_note" else 1
+        buckets = {
+            16.0: {"base": 0.0, "tax": 0.0, "label": "16%"},
+            8.0: {"base": 0.0, "tax": 0.0, "label": "8%"},
+            15.0: {"base": 0.0, "tax": 0.0, "label": "15%"},
+        }
+
+        for tax_line in move.line_ids.filtered(lambda line: line.tax_line_id):
+            rate = round(abs(float(tax_line.tax_line_id.amount or 0.0)), 2)
+            if rate not in buckets:
+                continue
+            buckets[rate]["base"] += abs(tax_line.tax_base_amount or 0.0) * sign
+            buckets[rate]["tax"] += abs(tax_line.balance or 0.0) * sign
+
+        untaxed_total = abs(move.amount_untaxed_signed or 0.0) * sign
+        taxable_base_total = sum(values["base"] for values in buckets.values())
+        base_exempt = untaxed_total - taxable_base_total
+
+        base_16 = self._round_book_amount(buckets[16.0]["base"])
+        iva_16 = self._round_book_amount(buckets[16.0]["tax"])
+        base_8 = self._round_book_amount(buckets[8.0]["base"])
+        iva_8 = self._round_book_amount(buckets[8.0]["tax"])
+        base_15 = self._round_book_amount(buckets[15.0]["base"])
+        iva_15 = self._round_book_amount(buckets[15.0]["tax"])
+        base_exempt = self._round_book_amount(base_exempt)
+
+        return {
+            "document_kind": document_kind,
+            "sign": sign,
+            "untaxed_total": self._round_book_amount(untaxed_total),
+            "base_exempt": base_exempt,
+            "base_16": base_16,
+            "iva_16": iva_16,
+            "alic_16": "16%" if base_16 else "",
+            "base_8": base_8,
+            "iva_8": iva_8,
+            "alic_8": "8%" if base_8 else "",
+            "base_15": base_15,
+            "iva_15": iva_15,
+            "alic_15": "15%" if base_15 else "",
+        }
+
     def get_amount_base_amount(self, line, tax=False):
         # Convertir usando la API de currency para evitar búsquedas N+1 en res.currency.rate
         base_imponible = 0
@@ -578,7 +639,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     # contador de la factura
                     sheet.write(row, 0, i, line)
                     # codigo fecha
-                    sheet.write(row, 1, invoice.invoice_date or 'FALSE', date_time_line if obj.type == 'pruchase' else date_line)
+                    sheet.write(row, 1, invoice.invoice_date or 'FALSE', date_line)
                     # tipo de documento
                     if invoice.move_type == 'out_invoice':
                         sheet.write(row, 2, 'Factura', line)
@@ -604,7 +665,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     # Número Factura Afectada si es de debito o credito
                     if invoice.move_type == 'in_refund' or invoice.move_type == 'out_refund':
                         inv_info = invoice.reversed_entry_id
-                        sheet.write(row, 6, inv_info.ref, line)
+                        sheet.write(row, 6, inv_info.ref if inv_info else '', line)
                     else:
                         sheet.write(row, 6, '', line)
 
@@ -628,101 +689,44 @@ class AccountVatLedgerXlsx(models.AbstractModel):
 
                     ####IMPUESTOS##########
                     
-                    base_exento = 0.00
-                    base_imponible = 0.00
-                    iva_16 = 0.00
-                    alic_16 = ''
-                    alic_8 = ''
-                    iva_8 = 0.00
-                    alic_15 = ''
-                    iva_15 = 0.00
-                    base_imponible_8 = 0.00
-                    base_imponible_15 = 0.00
+                    tax_breakdown = self._get_move_vat_breakdown(invoice)
+                    document_kind = tax_breakdown['document_kind']
+                    base_exento = tax_breakdown['base_exempt']
+                    base_imponible = tax_breakdown['base_16']
+                    iva_16 = tax_breakdown['iva_16']
+                    alic_16 = tax_breakdown['alic_16']
+                    base_imponible_8 = tax_breakdown['base_8']
+                    iva_8 = tax_breakdown['iva_8']
+                    alic_8 = tax_breakdown['alic_8']
+                    base_imponible_15 = tax_breakdown['base_15']
+                    iva_15 = tax_breakdown['iva_15']
+                    alic_15 = tax_breakdown['alic_15']
                     igtf_amount = invoice._get_igtf_amount_purchase()
-                    if invoice.invoice_line_ids:
-                        for linel in invoice.invoice_line_ids:
-                            if linel.tax_ids:
-                                # A line can carry multiple taxes (e.g. 15% and 16%).
-                                # We must process each one to avoid losing bases in VAT books.
-                                for tax_amount_value in linel.tax_ids.mapped("amount"):
-                                    if tax_amount_value in (16.00, 8.00, 15.00, 0.00):
-                                        amounts = self.get_amount_base_amount(linel, tax_amount_value if tax_amount_value != 0.00 else False)
-                                        base_val = amounts.get('base_imponible')
-                                        tax_val = amounts.get('tax_amount')
-                                        if base_val and tax_amount_value == 16.00:
-                                            base_imponible += base_val
-                                            iva_16 += tax_val
-                                            if invoice.move_type in ('in_refund',) or (invoice.move_type == 'in_invoice' and invoice.debit_origin_id):
-                                                base_imponible += base_val * -1
-                                                iva_16 += tax_val * -1.00
-                                                if not invoice.debit_origin_id:
-                                                    base_imponible += base_val * -1
-                                                    iva_16 += tax_val * -1.00
-                                                    total_nota_credito_16 += base_val * -1
-                                                    total_nota_credito_iva_16 += tax_val * -1
-                                                else:
-                                                    base_imponible += base_val
-                                                    iva_16 += tax_val
-                                                    total_nota_debito_16 += base_val
-                                                    total_nota_debito_iva_16 += tax_val
-                                            else:
-                                                total_base_imponible_16 += base_imponible
-                                                total_iva_16 += iva_16
-                                            alic_16 = '16%'
-                                        elif base_val and tax_amount_value == 0.00:
-                                            base_exento += base_val
-                                            if invoice.move_type in ('in_refund',) or (invoice.move_type == 'in_invoice' and invoice.debit_origin_id):
-                                                base_exento += base_val * -1
-                                                if not invoice.debit_origin_id:
-                                                    total_base_exento_credito += base_val * -1
-                                                else:
-                                                    base_exento += base_val
-                                                    total_base_exento_debito += base_val
-                                            else:
-                                                total_base_exento += base_exento
-                                        elif base_val and tax_amount_value == 8.00:
-                                            base_imponible_8 += base_val
-                                            iva_8 += tax_val
-                                            if invoice.move_type in ('in_refund',) or (invoice.move_type == 'in_invoice' and invoice.debit_origin_id):
-                                                base_imponible_8 += base_val * -1
-                                                iva_8 += tax_val * -1.00
-                                                if not invoice.debit_origin_id:
-                                                    base_imponible_8 += base_val * -1
-                                                    iva_8 += tax_val * -1.00
-                                                    total_nota_credito_8 += base_val * -1
-                                                    total_nota_credito_iva_8 += tax_val * -1
-                                                else:
-                                                    base_imponible += base_val
-                                                    iva_16 += tax_val
-                                                    total_nota_debito_8 += base_val
-                                                    total_nota_debito_iva_8 += tax_val
-                                            else:
-                                                total_base_imponible_8 += base_imponible_8
-                                                total_iva_8 += iva_8
-                                            alic_8 = '8%'
-                                        elif base_val and tax_amount_value == 15.00:
-                                            base_imponible_15 += base_val
-                                            iva_15 += tax_val
-                                            if invoice.move_type in ('in_refund',) or (invoice.move_type == 'in_invoice' and invoice.debit_origin_id):
-                                                base_imponible_15 += base_val * -1
-                                                iva_15 += tax_val * -1.00
-                                                if not invoice.debit_origin_id:
-                                                    base_imponible_15 += base_val * -1
-                                                    iva_15 += tax_val * -1.00
-                                                    total_nota_credito_15 += base_val * -1
-                                                    total_nota_credito_iva_15 += tax_val * -1
-                                                else:
-                                                    base_imponible += base_val
-                                                    iva_16 += tax_val
-                                                    total_nota_debito_15 += base_val
-                                                    total_nota_debito_iva_15 += tax_val
-                                            else:
-                                                total_base_imponible_15 += base_imponible_15
-                                                total_iva_15 += iva_15
-                                            alic_15 = '15%'
-                    # print(base_imponible)
-                    # if invoice.igtf_purchase_apply_purchase:
-                    #     igtf_amount = invoice.igtf_amount_purchase
+
+                    if document_kind == 'invoice':
+                        total_base_exento += base_exento
+                        total_base_imponible_16 += base_imponible
+                        total_iva_16 += iva_16
+                        total_base_imponible_8 += base_imponible_8
+                        total_iva_8 += iva_8
+                        total_base_imponible_15 += base_imponible_15
+                        total_iva_15 += iva_15
+                    elif document_kind == 'credit_note':
+                        total_base_exento_credito += base_exento
+                        total_nota_credito_16 += base_imponible
+                        total_nota_credito_iva_16 += iva_16
+                        total_nota_credito_8 += base_imponible_8
+                        total_nota_credito_iva_8 += iva_8
+                        total_nota_credito_15 += base_imponible_15
+                        total_nota_credito_iva_15 += iva_15
+                    else:
+                        total_base_exento_debito += base_exento
+                        total_nota_debito_16 += base_imponible
+                        total_nota_debito_iva_16 += iva_16
+                        total_nota_debito_8 += base_imponible_8
+                        total_nota_debito_iva_8 += iva_8
+                        total_nota_debito_15 += base_imponible_15
+                        total_nota_debito_iva_15 += iva_15
 
                     #########
                     """ Totales """
@@ -929,97 +933,43 @@ class AccountVatLedgerXlsx(models.AbstractModel):
 
                         ####IMPUESTOS##########
                         
-                        base_exento = 0.00
-                        base_imponible = 0.00
-                        iva_16 = 0.00
-                        alic_16 = ''
-                        alic_8 = ''
-                        iva_8 = 0.00
-                        base_imponible_8 = 0.00
-                        alic_15 = ''
-                        iva_15 = 0.00
-                        base_imponible_15 = 0.00
-                        if invoice.invoice_line_ids:
-                            for linel in invoice.invoice_line_ids:
-                                if linel.tax_ids:
-                                    # A line can carry multiple taxes (e.g. 15% and 16%).
-                                    # We must process each one to avoid losing bases in VAT books.
-                                    for tax_amount_value in linel.tax_ids.mapped("amount"):
-                                        if tax_amount_value in (16.00, 8.00, 15.00, 0.00):
-                                            amounts = self.get_amount_base_amount(linel, tax_amount_value if tax_amount_value != 0.00 else False)
-                                            base_val = amounts.get('base_imponible')
-                                            tax_val = amounts.get('tax_amount')
-                                            if base_val and tax_amount_value == 16.00:
-                                                base_imponible += base_val
-                                                iva_16 += tax_val
-                                                if invoice.move_type in ('out_refund',) or (invoice.move_type == 'out_invoice' and invoice.debit_origin_id):
-                                                    base_imponible += base_val * -1
-                                                    iva_16 += tax_val * -1.00
-                                                    if not invoice.debit_origin_id:
-                                                        base_imponible += base_val * -1
-                                                        iva_16 += tax_val * -1.00
-                                                        total_nota_credito_16 += base_val * -1
-                                                        total_nota_credito_iva_16 += tax_val * -1
-                                                    else:
-                                                        base_imponible += base_val
-                                                        iva_16 += tax_val
-                                                        total_nota_debito_16 += base_val
-                                                        total_nota_debito_iva_16 += tax_val
-                                                else:
-                                                    total_base_imponible_16 += base_imponible
-                                                    total_iva_16 += iva_16
-                                                alic_16 = '16%'
-                                            elif base_val and tax_amount_value == 0.00:
-                                                base_exento += base_val
-                                                if invoice.move_type in ('out_refund',) or (invoice.move_type == 'out_invoice' and invoice.debit_origin_id):
-                                                    base_exento += base_val * -1
-                                                    if not invoice.debit_origin_id:
-                                                        total_base_exento_credito += base_val * -1
-                                                    else:
-                                                        base_exento += base_val
-                                                        total_base_exento_debito += base_val
-                                                else:
-                                                    total_base_exento += base_exento
-                                            elif base_val and tax_amount_value == 8.00:
-                                                base_imponible_8 += base_val
-                                                iva_8 += tax_val
-                                                if invoice.move_type in ('out_refund',) or (invoice.move_type == 'out_invoice' and invoice.debit_origin_id):
-                                                    base_imponible_8 += base_val * -1
-                                                    iva_8 += tax_val * -1.00
-                                                    if not invoice.debit_origin_id:
-                                                        base_imponible_8 += base_val * -1
-                                                        iva_8 += tax_val * -1.00
-                                                        total_nota_credito_8 += base_val * -1
-                                                        total_nota_credito_iva_8 += tax_val * -1
-                                                    else:
-                                                        base_imponible += base_val
-                                                        iva_16 += tax_val
-                                                        total_nota_debito_8 += base_val
-                                                        total_nota_debito_iva_8 += tax_val
-                                                else:
-                                                    total_base_imponible_8 += base_imponible_8
-                                                    total_iva_8 += iva_8
-                                                alic_8 = '8%'
-                                            elif base_val and tax_amount_value == 15.00:
-                                                base_imponible_15 += base_val
-                                                iva_15 += tax_val
-                                                if invoice.move_type in ('out_refund',) or (invoice.move_type == 'out_invoice' and invoice.debit_origin_id):
-                                                    base_imponible_15 += base_val * -1
-                                                    iva_15 += tax_val * -1.00
-                                                    if not invoice.debit_origin_id:
-                                                        base_imponible_15 += base_val * -1
-                                                        iva_15 += tax_val * -1.00
-                                                        total_nota_credito_15 += base_val * -1
-                                                        total_nota_credito_iva_15 += tax_val * -1
-                                                    else:
-                                                        base_imponible += base_val
-                                                        iva_16 += tax_val
-                                                        total_nota_debito_15 += base_val
-                                                        total_nota_debito_iva_15 += tax_val
-                                                else:
-                                                    total_base_imponible_15 += base_imponible_15
-                                                    total_iva_15 += iva_15
-                                                alic_15 = '15%'
+                        tax_breakdown = self._get_move_vat_breakdown(invoice)
+                        document_kind = tax_breakdown['document_kind']
+                        base_exento = tax_breakdown['base_exempt']
+                        base_imponible = tax_breakdown['base_16']
+                        iva_16 = tax_breakdown['iva_16']
+                        alic_16 = tax_breakdown['alic_16']
+                        base_imponible_8 = tax_breakdown['base_8']
+                        iva_8 = tax_breakdown['iva_8']
+                        alic_8 = tax_breakdown['alic_8']
+                        base_imponible_15 = tax_breakdown['base_15']
+                        iva_15 = tax_breakdown['iva_15']
+                        alic_15 = tax_breakdown['alic_15']
+
+                        if document_kind == 'invoice':
+                            total_base_exento += base_exento
+                            total_base_imponible_16 += base_imponible
+                            total_iva_16 += iva_16
+                            total_base_imponible_8 += base_imponible_8
+                            total_iva_8 += iva_8
+                            total_base_imponible_15 += base_imponible_15
+                            total_iva_15 += iva_15
+                        elif document_kind == 'credit_note':
+                            total_base_exento_credito += base_exento
+                            total_nota_credito_16 += base_imponible
+                            total_nota_credito_iva_16 += iva_16
+                            total_nota_credito_8 += base_imponible_8
+                            total_nota_credito_iva_8 += iva_8
+                            total_nota_credito_15 += base_imponible_15
+                            total_nota_credito_iva_15 += iva_15
+                        else:
+                            total_base_exento_debito += base_exento
+                            total_nota_debito_16 += base_imponible
+                            total_nota_debito_iva_16 += iva_16
+                            total_nota_debito_8 += base_imponible_8
+                            total_nota_debito_iva_8 += iva_8
+                            total_nota_debito_15 += base_imponible_15
+                            total_nota_debito_iva_15 += iva_15
                         
                         #Contribuyentes
                         if invoice.partner_id.l10n_latam_identification_type_id.is_vat:
