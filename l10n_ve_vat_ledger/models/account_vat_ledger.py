@@ -96,8 +96,7 @@ class AccountVatLedger(models.Model):
             ]
             withholdings_domain = [
                 ('payment_id.state', 'in', ['in_process', 'paid']),
-                ('date', '>=', rec.date_from),
-                ('date', '<=', rec.date_to),
+                ('company_id', 'in', company_ids),
             ]
             if rec.type == 'sale':
                 invoices_domain += [
@@ -110,6 +109,15 @@ class AccountVatLedger(models.Model):
                 withholdings_domain += [
                     ('tax_id.l10n_ve_withholding_payment_type', '=', 'customer'),
                     ('tax_id.l10n_ve_withholding_ingoing_type', '=', 'iva'),
+                    # Include withholdings by their own date or by payment date.
+                    # This covers cases where withholding date and payment date differ.
+                    '|',
+                    '&',
+                    ('date', '>=', rec.date_from),
+                    ('date', '<=', rec.date_to),
+                    '&',
+                    ('payment_id.date', '>=', rec.date_from),
+                    ('payment_id.date', '<=', rec.date_to),
                 ]
             elif rec.type == 'purchase':
                 invoices_domain += [
@@ -122,6 +130,8 @@ class AccountVatLedger(models.Model):
                 withholdings_domain += [
                     ('tax_id.l10n_ve_withholding_payment_type', '=', 'supplier'),
                     ('tax_id', '=', withholding_tax.id),
+                    ('date', '>=', rec.date_from),
+                    ('date', '<=', rec.date_to),
                 ]
             rec.invoice_ids = rec.env['account.move'].search(
                 invoices_domain,
