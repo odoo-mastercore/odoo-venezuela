@@ -41,7 +41,7 @@
                         </group>
                     </group>
                     <field name="l10n_ve_withholding_line_ids" nolabel="1" colspan="2" invisible="is_internal_transfer" readonly="state != 'draft'">
-                        <list editable="bottom">
+                        <list editable="bottom" delete="0">
                             <field name="calc_islr" column_invisible="True" />
                             <field name="l10n_ve_tax_type" column_invisible="True" />
                             <field name="date"/>
