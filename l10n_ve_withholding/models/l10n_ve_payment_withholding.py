@@ -17,12 +17,43 @@ class l10nVePaymentWithholding(models.Model):
     _name = "l10n_ve.payment.withholding"
     _description = "Payment withholding lines"
 
-    payment_id = fields.Many2one("account.payment", required=True, ondelete="cascade")
+    payment_id = fields.Many2one("account.payment", ondelete="set null")
     partner_id = fields.Many2one(related="payment_id.partner_id")
     company_id = fields.Many2one(related="payment_id.company_id")
     currency_id = fields.Many2one(related="payment_id.company_currency_id")
     l10n_ve_tax_type = fields.Selection(related="tax_id.l10n_ve_tax_type")
+    state = fields.Selection(
+        [
+            ('draft', 'Borrador'),
+            ('posted', 'Confirmada'),
+            ('cancel', 'Anulada'),
+        ],
+        string='Estado',
+        default='draft',
+        required=True,
+        copy=False,
+        index=True,
+    )
     name = fields.Char(string="Number")
+    payment_name = fields.Char(string='Pago', copy=False)
+    payment_date = fields.Date(string='Fecha de pago', copy=False)
+    payment_type = fields.Selection(
+        [
+            ('outbound', 'Enviar'),
+            ('inbound', 'Recibir'),
+        ],
+        string='Tipo de pago',
+        copy=False,
+    )
+    partner_type = fields.Selection(
+        [
+            ('customer', 'Cliente'),
+            ('supplier', 'Proveedor'),
+        ],
+        string='Tipo de contacto',
+        copy=False,
+    )
+    cancel_date = fields.Date(string='Fecha de anulación', copy=False)
     ref = fields.Text(compute="_compute_amount", store=True, readonly=False, string="Ref")
     tax_id = fields.Many2one("account.tax", check_company=True, required=True, string="Tax")
     withholding_sequence_id = fields.Many2one(related="tax_id.l10n_ve_withholding_sequence_id")
@@ -65,6 +96,49 @@ class l10nVePaymentWithholding(models.Model):
         for rec in self:
             refs = rec.l10n_ve_move_line_taxes_ids.mapped('move_id.ref')
             rec.move_ref = ", ".join(dict.fromkeys(ref for ref in refs if ref))
+
+    def _has_control_number(self):
+        self.ensure_one()
+        return bool(self.name and self.name != "/")
+
+    def _get_payment_snapshot_values(self, state=False, cancel=False, detach=False):
+        self.ensure_one()
+        vals = {}
+        payment = self.payment_id
+        if payment:
+            vals.update({
+                'payment_name': payment.name or payment.move_id.name,
+                'payment_date': payment.date,
+                'payment_type': payment.payment_type,
+                'partner_type': payment.partner_type,
+            })
+        if state:
+            vals['state'] = state
+        if cancel:
+            vals['cancel_date'] = fields.Date.context_today(self)
+        if detach:
+            vals['payment_id'] = False
+        return vals
+
+    def _write_payment_snapshot(self, state=False, cancel=False, detach=False):
+        for withholding in self:
+            vals = withholding._get_payment_snapshot_values(
+                state=state,
+                cancel=cancel,
+                detach=detach,
+            )
+            if vals:
+                withholding.write(vals)
+
+    def unlink(self):
+        numbered_withholdings = self.filtered(lambda withholding: withholding._has_control_number())
+        if numbered_withholdings:
+            numbered_withholdings._write_payment_snapshot(
+                state='cancel',
+                cancel=True,
+                detach=True,
+            )
+        return super(l10nVePaymentWithholding, self - numbered_withholdings).unlink()
 
     @api.depends(
         "tax_id",

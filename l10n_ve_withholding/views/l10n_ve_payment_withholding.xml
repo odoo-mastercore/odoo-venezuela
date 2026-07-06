@@ -8,14 +8,21 @@
         <field name="arch" type="xml">
             <form string="model_form" create="false" delete="false" edit="false">
                 <header>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,posted,cancel"/>
                 </header>
                 <sheet>
                     <group>
                         <group>
+                            <field name="state" readonly="1"/>
                             <field name="partner_id" readonly="1"/>
                             <field name="date" readonly="1"/>
                             <field name="tax_id" options="{'no_create': True}" />
                             <field name="payment_id" readonly="1" />
+                            <field name="payment_name" readonly="1"/>
+                            <field name="payment_date" readonly="1"/>
+                            <field name="payment_type" readonly="1"/>
+                            <field name="partner_type" readonly="1"/>
+                            <field name="cancel_date" readonly="1" invisible="state != 'cancel'"/>
                             <field name="withholding_sequence_id" readonly="1"/>
                             <field name="name" readonly="1"/>
                         </group>
@@ -41,10 +48,16 @@
         <field name="arch" type="xml">
             <list string="Retenciones" create="false" delete="false" edit="false">
                 <field name="date"/>
+                <field name="state"/>
                 <field name="move_ref"/>
                 <field name="partner_id"/>
                 <field name="tax_id" />
                 <field name="payment_id" />
+                <field name="payment_name" optional="hide"/>
+                <field name="payment_date" optional="hide"/>
+                <field name="payment_type" optional="hide"/>
+                <field name="partner_type" optional="hide"/>
+                <field name="cancel_date" optional="hide"/>
                 <field name="withholding_sequence_id" />
                 <field name="name" />
                 <field name="base_amount" />
@@ -59,7 +72,9 @@
         <field name="res_model">l10n_ve.payment.withholding</field>
         <field name="view_mode">list,form</field>
         <field name="domain">[
+            '|',
             ('payment_id.payment_type', '=', 'outbound'),
+            ('payment_type', '=', 'outbound'),
             ('tax_id.l10n_ve_tax_type', '=', 'partner_tax')
         ]</field>
     </record>
@@ -78,7 +93,9 @@
         <field name="res_model">l10n_ve.payment.withholding</field>
         <field name="view_mode">list,form</field>
         <field name="domain">[
+            '|',
             ('payment_id.payment_type', '=', 'outbound'),
+            ('payment_type', '=', 'outbound'),
             ('tax_id.l10n_ve_tax_type', '=', 'tabla_islr')
         ]</field>
     </record>
@@ -96,7 +113,11 @@
         <field name="name">Retenciones de IVA</field>
         <field name="res_model">l10n_ve.payment.withholding</field>
         <field name="view_mode">list,form</field>
-        <field name="domain">[('payment_id.payment_type', '=', 'inbound')]</field>
+        <field name="domain">[
+            '|',
+            ('payment_id.payment_type', '=', 'inbound'),
+            ('payment_type', '=', 'inbound')
+        ]</field>
     </record>
 
     <menuitem
