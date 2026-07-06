@@ -1137,10 +1137,10 @@ class AccountVatLedgerXlsx(models.AbstractModel):
 
                     sheet.write(row, 3, '', line)
                     sheet.write(row, 4, '', line)
-                    # Numero de comrpobante
-                    sheet.write(row, 5, reten.name, line)
                     # Documento afectado
-                    sheet.write(row, 6, self._get_withholding_docs_text(reten, "name"), line)
+                    sheet.write(row, 5, self._get_withholding_docs_text(reten, "name"), line)
+                    # Numero de comprobante
+                    sheet.write(row, 6, reten.name, line)
                     # nombre del partner
                     sheet.write(row, 7, reten.payment_id.partner_id.name or 'FALSE', line)
                     # Rif del cliente
