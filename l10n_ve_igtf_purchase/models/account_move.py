@@ -39,11 +39,11 @@ class AccountMove(models.Model):
         for move in self:
             if move.tax_totals and move.tax_totals.get('groups_by_subtotal'):
                 base_imponible = move.tax_totals.get('groups_by_subtotal').get('Base imponible')
-                if move.igtf_purchase_apply_purchase:
+                if move.igtf_purchase_apply_purchase and isinstance(base_imponible, list):
                     igtf = self.env['account.tax'].search([('igtf_purchase','=',True)], limit=1)
                     igtf_tax = False
                     
-                    if move.currency_id.name != 'USD':
+                    if igtf and move.currency_id.name != 'USD':
                         igtf_tax = {
                             'group_key': igtf.tax_group_id.id, 
                             'tax_group_id': igtf.tax_group_id.id, 
@@ -65,8 +65,25 @@ class AccountMove(models.Model):
                         }
                     
                     if igtf_tax:
-
-                        base_imponible.append(igtf_tax)
+                        existing_group = next((
+                            group for group in base_imponible
+                            if group.get('tax_group_id') == igtf_tax['tax_group_id']
+                        ), False)
+                        if existing_group:
+                            existing_group['tax_group_amount'] += igtf_tax['tax_group_amount']
+                            existing_group['tax_group_base_amount'] += igtf_tax['tax_group_base_amount']
+                            existing_group['formatted_tax_group_amount'] = formatLang(
+                                self.env,
+                                existing_group['tax_group_amount'],
+                                currency_obj=move.currency_id,
+                            )
+                            existing_group['formatted_tax_group_base_amount'] = formatLang(
+                                self.env,
+                                existing_group['tax_group_base_amount'],
+                                currency_obj=move.currency_id,
+                            )
+                        else:
+                            base_imponible.append(igtf_tax)
     
     
     @api.constrains('partner_id','igtf_purchase_apply_purchase','igtf_amount_purchase','igtf_amount_purchase_usd')
