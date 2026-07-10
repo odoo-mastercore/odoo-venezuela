@@ -85,17 +85,7 @@ class AccountMove(models.Model):
             legacy_lines.with_context(dynamic_unlink=True).unlink()
 
     def _sync_igtf_purchase_dynamic_lines(self):
-        if self.env.context.get('skip_igtf_purchase_sync'):
-            return
-
-        draft_moves = self.filtered(lambda move: move.state == 'draft' and move.is_invoice(True))
-        if not draft_moves:
-            return
-
-        draft_moves.with_context(skip_igtf_purchase_sync=True)._recompute_dynamic_lines(
-            recompute_all_taxes=True
-        )
-        draft_moves._cleanup_legacy_igtf_purchase_lines()
+        self.filtered(lambda move: move.state == 'draft')._cleanup_legacy_igtf_purchase_lines()
 
     @api.constrains(
         'partner_id',
