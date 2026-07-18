@@ -18,7 +18,7 @@ msgstr ""
 #. module: l10n_ve_vat_ledger
 #: model:ir.model,name:l10n_ve_vat_ledger.model_account_vat_ledger
 msgid "Account VAT Ledger"
-msgstr "Libo de IVA"
+msgstr "Libro de IVA"
 
 #. module: l10n_ve_vat_ledger
 #: model:ir.actions.report,name:l10n_ve_vat_ledger.action_account_vat_ledger_report_xlsx
@@ -28,7 +28,7 @@ msgstr "Libro IVA Xlsx"
 #. module: l10n_ve_vat_ledger
 #: model:ir.model.fields,field_description:l10n_ve_vat_ledger.field_account_vat_ledger__message_needaction
 msgid "Action Needed"
-msgstr "Accion necesaria"
+msgstr "Accion Necesaria"
 
 #. module: l10n_ve_vat_ledger
 #: model:ir.model.fields,field_description:l10n_ve_vat_ledger.field_account_vat_ledger__message_attachment_count
@@ -151,7 +151,7 @@ msgstr "Ultima actualización en"
 #. module: l10n_ve_vat_ledger
 #: model:ir.model.fields,field_description:l10n_ve_vat_ledger.field_account_vat_ledger__message_main_attachment_id
 msgid "Main Attachment"
-msgstr "Accesorio principal"
+msgstr "Adjunto Principal"
 
 #. module: l10n_ve_vat_ledger
 #: model:ir.model.fields,field_description:l10n_ve_vat_ledger.field_account_vat_ledger__message_has_error
@@ -182,17 +182,17 @@ msgstr "Numero de errores"
 #. module: l10n_ve_vat_ledger
 #: model:ir.model.fields,help:l10n_ve_vat_ledger.field_account_vat_ledger__message_needaction_counter
 msgid "Number of messages which requires an action"
-msgstr ""
+msgstr "Número de mensajes que requieren una acción"
 
 #. module: l10n_ve_vat_ledger
 #: model:ir.model.fields,help:l10n_ve_vat_ledger.field_account_vat_ledger__message_has_error_counter
 msgid "Number of messages with delivery error"
-msgstr ""
+msgstr "Número de mensajes con error de entrega"
 
 #. module: l10n_ve_vat_ledger
 #: model:ir.model.fields,help:l10n_ve_vat_ledger.field_account_vat_ledger__message_unread_counter
 msgid "Number of unread messages"
-msgstr ""
+msgstr "Número de mensajes no leídos"
 
 #. module: l10n_ve_vat_ledger
 #: model_terms:ir.ui.view,arch_db:l10n_ve_vat_ledger.account_vat_ledger_form
@@ -239,7 +239,7 @@ msgstr "SENIAT"
 #. module: l10n_ve_vat_ledger
 #: model:ir.model.fields,field_description:l10n_ve_vat_ledger.field_account_vat_ledger__message_has_sms_error
 msgid "SMS Delivery error"
-msgstr ""
+msgstr "Error de Entrega de SMS"
 
 #. module: l10n_ve_vat_ledger
 #: model:ir.model.fields.selection,name:l10n_ve_vat_ledger.selection__account_vat_ledger__type__sale
@@ -281,12 +281,12 @@ msgstr "A Borrador"
 #. module: l10n_ve_vat_ledger
 #: model_terms:ir.ui.view,arch_db:l10n_ve_vat_ledger.account_vat_ledger_form
 msgid "Total"
-msgstr ""
+msgstr "Total"
 
 #. module: l10n_ve_vat_ledger
 #: model_terms:ir.ui.view,arch_db:l10n_ve_vat_ledger.account_vat_ledger_form
 msgid "Total Con Impuesto"
-msgstr ""
+msgstr "Total Con Impuesto"
 
 #. module: l10n_ve_vat_ledger
 #: model:ir.model.fields,field_description:l10n_ve_vat_ledger.field_account_vat_ledger__type
