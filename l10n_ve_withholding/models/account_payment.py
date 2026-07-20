@@ -448,6 +448,84 @@ class AccountPayment(models.Model):
                 detach=detach,
             )
 
+    def _l10n_ve_find_withholding_move_line(self, withholding):
+        """Locate the payment move line that corresponds to a withholding."""
+        self.ensure_one()
+        move = self.move_id
+        if not move:
+            return self.env["account.move.line"]
+
+        linked = move.line_ids.filtered(
+            lambda aml: aml.l10n_ve_withholding_line_id == withholding
+        )
+        if linked:
+            return linked[:1]
+
+        __, account_id, __, __ = withholding._tax_compute_all_helper()
+        company_currency = self.company_id.currency_id
+        amount = company_currency.round(withholding.amount)
+        candidates = move.line_ids.filtered(
+            lambda aml: aml.account_id.id == account_id
+            and company_currency.compare_amounts(
+                company_currency.round(abs(aml.balance)),
+                amount,
+            ) == 0
+        )
+        if len(candidates) == 1:
+            return candidates
+        named = candidates.filtered(lambda aml: aml.name == withholding.name)
+        if named:
+            return named[:1]
+        empty = candidates.filtered(lambda aml: not aml.name)
+        if empty:
+            return empty[:1]
+        return candidates[:1]
+
+    def _l10n_ve_sync_withholding_names_to_move(self, tax_types=None):
+        """Ensure withholding control numbers are visible in the general ledger.
+
+        Writes ``account.move.line.name`` (Communication) even when the move is
+        already posted, because ``_synchronize_to_moves`` skips posted moves.
+
+        :param tax_types: optional iterable of ``account.tax.l10n_ve_tax_type``
+            values to sync (e.g. ``('tabla_islr',)``). ``None`` syncs all.
+        """
+        MoveLine = self.env["account.move.line"].with_context(
+            check_move_validity=False,
+            skip_invoice_sync=True,
+        )
+        tax_types = set(tax_types) if tax_types else None
+        for payment in self:
+            if not payment.move_id:
+                continue
+            withholdings = payment._get_l10n_ve_active_withholding_lines()
+            if tax_types is not None:
+                withholdings = withholdings.filtered(
+                    lambda w: w.tax_id.l10n_ve_tax_type in tax_types
+                )
+            for withholding in withholdings:
+                if not withholding._has_control_number():
+                    continue
+                aml = payment._l10n_ve_find_withholding_move_line(withholding)
+                if not aml:
+                    _logger.warning(
+                        "Payment %s: no move line found for withholding %s (%s)",
+                        payment.name,
+                        withholding.id,
+                        withholding.name,
+                    )
+                    continue
+                __, __, tax_repartition_line_id, __ = withholding._tax_compute_all_helper()
+                vals = {}
+                if aml.name != withholding.name:
+                    vals["name"] = withholding.name
+                if aml.tax_repartition_line_id.id != tax_repartition_line_id:
+                    vals["tax_repartition_line_id"] = tax_repartition_line_id
+                if aml.l10n_ve_withholding_line_id != withholding:
+                    vals["l10n_ve_withholding_line_id"] = withholding.id
+                if vals:
+                    MoveLine.browse(aml.id).write(vals)
+
     def action_post(self):
         for payment in self:
             if payment.to_pay_move_line_ids:
@@ -480,6 +558,7 @@ class AccountPayment(models.Model):
                 payment.l10n_ve_withholding_line_ids = commands
         res = super(AccountPayment, self).action_post()
         for payment in self:
+            payment._l10n_ve_sync_withholding_names_to_move()
             payment._write_l10n_ve_numbered_withholding_snapshot(state='posted')
             if not payment.to_pay_move_line_ids:
                 continue
@@ -649,6 +728,7 @@ class AccountPayment(models.Model):
                 {
                     **self._get_withholding_move_line_default_values(),
                     "name": line.name,
+                    "l10n_ve_withholding_line_id": line.id,
                     "account_id": account_id,
                     "balance": balance,
                     "amount_currency": amount_currency,
