@@ -47,7 +47,7 @@ class AccountMove(models.Model):
           dejamos el comodin de 'skip_check_price' para que no se valide el precio
           en caso de que se necesite validar el precio en otro momento.
         """
-        if 'skip_check_price' in self._context:
+        if 'skip_check_price' in self.env.context:
             return True
         for line in self.invoice_line_ids.filtered(lambda x: x.product_id and x.display_type == 'product'):
             if line.price_unit <= 0 and\

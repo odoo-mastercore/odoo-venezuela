@@ -66,7 +66,7 @@ class AccountPayment(models.Model):
         compute="_compute_l10n_ve_withholding_line_ids",
         readonly=False,
         store=True,
-        auto_join=True
+        
     )
     l10n_ve_withholdings_amount = fields.Monetary(
         compute="_compute_l10n_ve_withholdings_amount",

@@ -26,10 +26,10 @@
                 <field name="l10n_ve_third_partner_id" invisible="not l10n_ve_third_partner_withholding"/>
                 <field name="l10n_ve_partner_regimen_islr_ids" invisible="True"/>
             </field>
-            <label for="payment_total" position="before">
+            <div name="amount_div" position="after">
                 <field name="l10n_ve_withholdings_amount" invisible="is_internal_transfer or not use_payment_pro or country_code != 'VE'"/>
-            </label>
-            <page name="latam_checks_page" position="after">
+            </div>
+            <notebook name="payment_notebook" position="inside">
                 <page name="withholdings_page" string="Withholdings" invisible="is_internal_transfer or not use_payment_pro or country_code != 'VE'">
                     <group>
                         <group>
@@ -70,7 +70,7 @@
                         </list>
                     </field>
                 </page>
-            </page>
+            </notebook>
         </field>
     </record>
 </odoo>

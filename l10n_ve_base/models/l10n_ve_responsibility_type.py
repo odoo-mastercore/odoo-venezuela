@@ -21,5 +21,5 @@ class L10nVeResponsibilityType(models.Model):
     code = fields.Char(required=True, index=True)
     active = fields.Boolean(default=True)
 
-    _sql_constraints = [('name', 'unique(name)', 'Name must be unique!'),
-                        ('code', 'unique(code)', 'Code must be unique!')]
+    _name_unique = models.Constraint('unique(name)', 'Name must be unique!')
+    _code_unique = models.Constraint('unique(code)', 'Code must be unique!')

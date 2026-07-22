@@ -21,9 +21,10 @@ class AccountVatLedger(models.Model):
     _inherit = ['mail.thread']
     _order = 'date_from desc'
 
-    _sql_constraints = [
-        ('date_range_check', 'CHECK (date_from <= date_to)', _('La fecha de inicio debe ser anterior a la fecha de fin.')),
-    ]
+    _date_range_check = models.Constraint(
+        'CHECK (date_from <= date_to)',
+        'La fecha de inicio debe ser anterior a la fecha de fin.',
+    )
 
     company_id = fields.Many2one(
         'res.company',
