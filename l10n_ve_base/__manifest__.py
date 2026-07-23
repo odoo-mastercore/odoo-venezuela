@@ -24,7 +24,7 @@
 
     'author': "SINAPSYS GLOBAL SA || MASTERCORE SAS",
     'website': "http://sinapsys.global",
-    'version': '19.0.0.1',
+    'version': '19.0.1.0.1',
     'category': 'Accounting/Localizations/Account Charts',
     'countries': ['ve'],
     'license': 'AGPL-3',

@@ -17,12 +17,12 @@
 
     'author': "SINAPSYS GLOBAL SA || MASTERCORE SAS",
     'website': "http://sinapsys.global",
-    'version': '19.0.0.1',
+    'version': '19.0.1.0.1',
     'countries': ['ve'],
     'category': 'Accounting/Localizations',
     'license': 'AGPL-3',
     'depends': [
-        'account', 
+        'account',
         'l10n_ve_account',
         'l10n_ve_withholding',
         'report_xlsx',
