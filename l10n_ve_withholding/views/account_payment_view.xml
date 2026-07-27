@@ -13,23 +13,12 @@
         </field>
     </record>
 
-    <record id="view_account_payment_form" model="ir.ui.view">
-        <field name="name">account.payment.form.inherited</field>
+    <record id="view_account_payment_pro_form" model="ir.ui.view">
+        <field name="name">account.payment.pro.form.inherited</field>
         <field name="model">account.payment</field>
-        <field name="priority" eval="30"/>
-        <field name="inherit_id" ref="account.view_account_payment_form" />
+        <field name="inherit_id" ref="account_payment_pro.latam_check_view_account_payment_form_inherited" />
         <field name="arch" type="xml">
-            <field name="memo" position="after">
-                <field name="l10n_ve_withholding_islr" invisible="partner_type == 'customer'"/>
-                <field name="l10n_ve_withholding_distribution_islr" invisible="not l10n_ve_withholding_islr" />
-                <field name="l10n_ve_third_partner_withholding" invisible="partner_type == 'customer'" />
-                <field name="l10n_ve_third_partner_id" invisible="not l10n_ve_third_partner_withholding"/>
-                <field name="l10n_ve_partner_regimen_islr_ids" invisible="True"/>
-            </field>
-            <div name="amount_div" position="after">
-                <field name="l10n_ve_withholdings_amount" invisible="is_internal_transfer or not use_payment_pro or country_code != 'VE'"/>
-            </div>
-            <notebook name="payment_notebook" position="inside">
+            <page name="paid" position="after">
                 <page name="withholdings_page" string="Withholdings" invisible="is_internal_transfer or not use_payment_pro or country_code != 'VE'">
                     <group>
                         <group>
@@ -70,7 +59,26 @@
                         </list>
                     </field>
                 </page>
-            </notebook>
+            </page>
+        </field>
+    </record>
+
+    <record id="view_account_payment_form" model="ir.ui.view">
+        <field name="name">account.payment.form.inherited</field>
+        <field name="model">account.payment</field>
+        <field name="priority" eval="30"/>
+        <field name="inherit_id" ref="account.view_account_payment_form" />
+        <field name="arch" type="xml">
+            <field name="memo" position="after">
+                <field name="l10n_ve_withholding_islr" invisible="partner_type == 'customer'"/>
+                <field name="l10n_ve_withholding_distribution_islr" invisible="not l10n_ve_withholding_islr" />
+                <field name="l10n_ve_third_partner_withholding" invisible="partner_type == 'customer'" />
+                <field name="l10n_ve_third_partner_id" invisible="not l10n_ve_third_partner_withholding"/>
+                <field name="l10n_ve_partner_regimen_islr_ids" invisible="True"/>
+            </field>
+            <div name="amount_div" position="after">
+                <field name="l10n_ve_withholdings_amount" invisible="is_internal_transfer or not use_payment_pro or country_code != 'VE'"/>
+            </div>
         </field>
     </record>
 </odoo>
