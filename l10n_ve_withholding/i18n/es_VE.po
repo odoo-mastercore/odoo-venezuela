@@ -345,12 +345,12 @@ msgid "Bolivares"
 msgstr "Bolívares"
 
 #. module: l10n_ve_withholding
-#: model_terms:ir.ui.view,arch_db:l10n_ve_withholding.view_account_payment_form
+#: model_terms:ir.ui.view,arch_db:l10n_ve_withholding.view_account_payment_pro_form
 msgid "Withholdings"
 msgstr "Retenciones"
 
 #. module: l10n_ve_withholding
-#: model_terms:ir.ui.view,arch_db:l10n_ve_withholding.view_account_payment_form
+#: model_terms:ir.ui.view,arch_db:l10n_ve_withholding.view_account_payment_pro_form
 msgid "Calcular Retenciones"
 msgstr "Calcular Retenciones"
 
@@ -466,7 +466,7 @@ msgid "Display Name"
 msgstr "Nombre"
 
 #. module: l10n_ve_withholding
-#: model_terms:ir.ui.view,arch_db:l10n_ve_withholding.view_account_payment_form
+#: model_terms:ir.ui.view,arch_db:l10n_ve_withholding.view_account_payment_pro_form
 msgid ""
 "El computar la retención realizara un solo registro por la factura correspondiente, para ello solo puede pagar una factura a "
 "la vez."
