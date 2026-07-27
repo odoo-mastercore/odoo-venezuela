@@ -31,8 +31,7 @@ class AccountVatLedger(models.Model):
         string='Company',
         required=True,
         readonly=True,
-        default=lambda self: self.env[
-            'res.company']._company_default_get('account.vat.ledger')
+        default=lambda self: self.env.company,
     )
     type = fields.Selection(
         [('sale', 'Sale'), ('purchase', 'Purchase')],
