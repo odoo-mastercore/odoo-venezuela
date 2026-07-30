@@ -78,3 +78,21 @@ class TestPaymentCurrency(AccountTestInvoicingCommon):
 
         self.assertAlmostEqual(payment.amount, expected_amount, places=6)
         self.assertAlmostEqual(payment.amount_exact, expected_amount, places=6)
+
+    def test_withholding_move_rate_uses_payment_accounting_rate(self):
+        payment = self._new_foreign_currency_payment()
+        payment._update_cache(
+            {
+                "accounting_rate": 1.0 / 744.2264,
+                "to_pay_move_line_ids": False,
+            }
+        )
+
+        currency_data = payment._get_withholding_move_currency_data()
+
+        self.assertEqual(currency_data["currency"], self.foreign_currency)
+        self.assertAlmostEqual(
+            currency_data["conversion_rate"],
+            744.2264,
+            places=4,
+        )

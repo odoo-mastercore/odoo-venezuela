@@ -578,6 +578,23 @@ class AccountPayment(models.Model):
             "conversion_rate": conversion_rate,
         }
 
+    def _get_withholding_move_currency_data(self):
+        """Return move currency and company units per move currency unit."""
+        self.ensure_one()
+        currency_data = self._get_withholding_foreign_currency_data()
+        if currency_data:
+            return currency_data
+
+        conversion_rate = (
+            1.0 / self.accounting_rate
+            if self.accounting_rate
+            else 1.0
+        )
+        return {
+            "currency": self.currency_id,
+            "conversion_rate": conversion_rate,
+        }
+
     def _prepare_move_withholding_lines(self, default_values):
         res = super()._prepare_move_withholding_lines(default_values)
         self.ensure_one()
@@ -585,12 +602,9 @@ class AccountPayment(models.Model):
         if self.payment_type == "outbound":
             sign = -1
 
-        currency_data = self._get_withholding_foreign_currency_data()
-        move_currency = currency_data["currency"] if currency_data else self.currency_id
-        conversion_rate = (
-            currency_data["conversion_rate"]
-            if currency_data else (self.exchange_rate or 1.0)
-        )
+        currency_data = self._get_withholding_move_currency_data()
+        move_currency = currency_data["currency"]
+        conversion_rate = currency_data["conversion_rate"]
         for line in self.l10n_ve_withholding_line_ids:
             __, account_id, tax_repartition_line_id, __ = line._tax_compute_all_helper()
             balance = self.company_id.currency_id.round(sign * line.amount)
