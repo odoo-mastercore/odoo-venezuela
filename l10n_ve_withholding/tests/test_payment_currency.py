@@ -96,3 +96,23 @@ class TestPaymentCurrency(AccountTestInvoicingCommon):
             744.2264,
             places=4,
         )
+
+    def test_withholding_move_uses_company_journal_currency(self):
+        company_currency = self.env.company.currency_id
+        payment = self.env["account.payment"].new(
+            {
+                "company_id": self.env.company.id,
+                "journal_id": self.company_data["default_journal_bank"].id,
+                "currency_id": company_currency.id,
+                "payment_type": "outbound",
+                "partner_type": "supplier",
+                "date": fields.Date.today(),
+                "amount": 10_000.0,
+                "amount_exact": 10_000.0,
+            }
+        )
+
+        currency_data = payment._get_withholding_move_currency_data()
+
+        self.assertEqual(currency_data["currency"], company_currency)
+        self.assertEqual(currency_data["conversion_rate"], 1.0)

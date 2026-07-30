@@ -516,9 +516,13 @@ class AccountPayment(models.Model):
                 if _same_currency_for_amount_currency(counterpart_lines[0]):
                     counterpart_lines[0]["amount_currency"] -= wth_amount_currency
 
-            # If we are generating a withholding-only payment (liquidity line dropped) against
-            # foreign debt currency, force the counterpart line to that foreign currency.
-            if not res.get("liquidity_lines") and counterpart_lines and wth_currency_id and wth_currency_id != self.company_currency_id.id:
+            # A withholding-only payment must keep the journal currency on its counterpart.
+            if (
+                not res.get("liquidity_lines")
+                and counterpart_lines
+                and wth_currency_id
+                and wth_currency_id != self.company_currency_id.id
+            ):
                 counterpart_lines[0]["currency_id"] = wth_currency_id
                 counterpart_lines[0]["amount_currency"] = -wth_amount_currency
 
@@ -530,66 +534,21 @@ class AccountPayment(models.Model):
 
         return res
 
-    def _get_withholding_foreign_currency_data(self):
-        """Detect foreign debt currency and conversion rate from invoice rate.
-
-        This is used to keep debit/credit in company currency while setting
-        amount_currency/currency_id in invoice foreign currency (e.g. USD).
-        """
-        self.ensure_one()
-        company_currency = self.company_id.currency_id
-        debt_lines = self.to_pay_move_line_ids._origin
-        if not debt_lines:
-            return None
-
-        foreign_lines = debt_lines.filtered(
-            lambda l: l.currency_id
-            and l.currency_id != company_currency
-            and not l.currency_id.is_zero(l.amount_residual_currency)
-        )
-        foreign_currencies = foreign_lines.mapped("currency_id")
-        if len(foreign_currencies) != 1:
-            return None
-
-        total_foreign = sum(abs(line.amount_residual_currency) for line in foreign_lines)
-        if foreign_currencies.is_zero(total_foreign):
-            return None
-
-        # Main rule: withholding amount_currency = withholding amount / invoice rate.
-        weighted_rate_sum = 0.0
-        for line in foreign_lines:
-            move = line.move_id
-            invoice_rate = getattr(move, "inverse_invoice_currency_rate", 0.0) or 0.0
-            if invoice_rate:
-                weighted_rate_sum += abs(line.amount_residual_currency) * invoice_rate
-
-        conversion_rate = 0.0
-        if weighted_rate_sum:
-            conversion_rate = weighted_rate_sum / total_foreign
-        else:
-            # Fallback: implied rate from current residual amounts.
-            total_company = sum(abs(line.amount_residual) for line in foreign_lines)
-            if company_currency.is_zero(total_company):
-                return None
-            conversion_rate = total_company / total_foreign
-
-        return {
-            "currency": foreign_currencies,
-            "conversion_rate": conversion_rate,
-        }
-
     def _get_withholding_move_currency_data(self):
-        """Return move currency and company units per move currency unit."""
+        """Return journal currency and company units per journal currency unit."""
         self.ensure_one()
-        currency_data = self._get_withholding_foreign_currency_data()
-        if currency_data:
-            return currency_data
-
-        conversion_rate = (
-            1.0 / self.accounting_rate
-            if self.accounting_rate
-            else 1.0
-        )
+        company_currency = self.company_currency_id
+        if self.currency_id == company_currency:
+            conversion_rate = 1.0
+        elif self.accounting_rate:
+            conversion_rate = 1.0 / self.accounting_rate
+        else:
+            conversion_rate = self.env["res.currency"]._get_conversion_rate(
+                from_currency=self.currency_id,
+                to_currency=company_currency,
+                company=self.company_id,
+                date=self.date or fields.Date.context_today(self),
+            )
         return {
             "currency": self.currency_id,
             "conversion_rate": conversion_rate,
