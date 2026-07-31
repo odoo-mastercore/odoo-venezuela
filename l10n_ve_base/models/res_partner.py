@@ -53,15 +53,14 @@ class ResPartner(models.Model):
         'responsibilities that a person or a legal entity could have and that '
         'impacts in the type of operations and requirements they need.')
 
-    @api.constrains('vat', 'l10n_latam_identification_type_id')
-    def check_vat(self):
+    def _check_vat(self, validation='error'):
         """Skip generic VAT validation for Venezuelan document types."""
-        l10n_ve_partners = self.filtered(lambda x: x.l10n_latam_identification_type_id)
-        partners = self - l10n_ve_partners
-        parent = super(ResPartner, partners)
-        if hasattr(parent, 'check_vat'):
-            return parent.check_vat()
-        return True
+        l10n_ve_partners = self.filtered(
+            lambda partner: partner.l10n_latam_identification_type_id.country_id.code == 'VE'
+        )
+        return super(ResPartner, self - l10n_ve_partners)._check_vat(
+            validation=validation
+        )
 
     def _check_unique_vat(self):
         company_partner_ids = self.env['res.company'].sudo().search([]).mapped('partner_id').ids
