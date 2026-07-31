@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="l10n_latam_base.latam" model="res.country.group">
+        <field name="country_ids" eval="[Command.link(ref('base.ve'))]"/>
+    </record>
+</odoo>
