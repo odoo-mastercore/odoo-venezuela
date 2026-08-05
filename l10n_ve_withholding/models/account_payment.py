@@ -77,12 +77,30 @@ class AccountPayment(models.Model):
     @api.constrains("currency_id", "company_id", "l10n_ve_withholding_line_ids")
     def _check_withholdings_and_currency(self):
         for rec in self:
-            if rec._get_l10n_ve_active_withholding_lines() and rec.currency_id != rec.company_id.currency_id:
+            if (
+                rec.state == "canceled"
+                or not rec._get_l10n_ve_effective_withholding_lines()
+                or rec.currency_id == rec.company_id.currency_id
+            ):
+                continue
+            currency_data = rec._get_withholding_foreign_currency_data()
+            compatible_foreign_currency = (
+                currency_data and currency_data["currency"] == rec.currency_id
+            )
+            if not compatible_foreign_currency:
                 raise UserError(_('Withholdings must be done in "%s" currency') % rec.company_id.currency_id.name)
 
     def _get_l10n_ve_active_withholding_lines(self):
         return self.l10n_ve_withholding_line_ids.filtered(
             lambda withholding: withholding.state != 'cancel'
+        )
+
+    def _get_l10n_ve_effective_withholding_lines(self):
+        self.ensure_one()
+        company_currency = self.company_id.currency_id
+        return self._get_l10n_ve_active_withholding_lines().filtered(
+            lambda withholding: withholding.payment_id == self
+            and not company_currency.is_zero(withholding.amount)
         )
 
     @api.depends("l10n_ve_withholding_line_ids.amount", "l10n_ve_withholding_line_ids.state")
@@ -280,14 +298,11 @@ class AccountPayment(models.Model):
             payment.l10n_ve_move_line_taxes_ids = [Command.set(move_line_tax_ids)]
 
     @api.depends(
-        'to_pay_move_line_ids.move_id.amount_untaxed',
-        'to_pay_move_line_ids.currency_id',
+        'to_pay_move_line_ids.move_id.amount_untaxed_signed',
         'to_pay_move_line_ids.move_id',
         'to_pay_move_line_ids.move_id.l10n_ve_withholding_ids.tax_id',
         'l10n_ve_withholding_line_ids.tax_id',
-        'l10n_ve_withholding_line_ids.state',
-        'date',
-        'currency_id')
+        'l10n_ve_withholding_line_ids.state')
     def _compute_l10n_ve_withholding_untaxed(self):
         for payment in self:
             withholding_untaxed = 0.0
@@ -295,29 +310,113 @@ class AccountPayment(models.Model):
                 lambda line: line.tax_id.l10n_ve_tax_type == 'tabla_islr'
             ).tax_id
             lines_to_pay = payment.to_pay_move_line_ids._origin or payment.to_pay_move_line_ids
-            for line_to_pay in lines_to_pay:
+            for move in lines_to_pay.mapped('move_id'):
                 if withholding_taxes and not any(
-                    payment._get_l10n_ve_moves_without_withholding_tax(tax) & line_to_pay.move_id
+                    payment._get_l10n_ve_moves_without_withholding_tax(tax) & move
                     for tax in withholding_taxes
                 ):
                     continue
-                amount_untaxed = line_to_pay.move_id.amount_untaxed
-                if line_to_pay.move_id.currency_id != payment.company_id.currency_id:
-                    amount_untaxed = line_to_pay.move_id.currency_id._convert(
-                        line_to_pay.move_id.amount_untaxed,
-                        payment.company_id.currency_id,
-                        payment.company_id,
-                        payment.date
-                    )
-                withholding_untaxed += amount_untaxed
+                withholding_untaxed += abs(move.amount_untaxed_signed)
             payment.l10n_ve_withholding_untaxed = withholding_untaxed
 
     @api.onchange("l10n_ve_withholdings_amount")
     def _onchange_withholdings(self):
         # con esto evitamos el importe negativo en pagos a proveedores
         for rec in self.filtered(lambda x: not x._is_latam_check_payment()):
+            if rec.company_currency_id.is_zero(rec.l10n_ve_withholdings_amount):
+                continue
+            has_foreign_debt = any(
+                line.currency_id
+                and line.currency_id != rec.company_currency_id
+                for line in rec.to_pay_move_line_ids._origin
+            )
+            if rec.to_pay_move_line_ids and (
+                rec.currency_id != rec.company_currency_id or has_foreign_debt
+            ):
+                rec._l10n_ve_adjust_foreign_payment_for_withholdings()
+                continue
             amount = rec.amount + rec.payment_difference
             rec.amount = amount if amount > 0 else 0
+
+    def _l10n_ve_get_gross_payment_amount(self):
+        self.ensure_one()
+        company_currency = self.company_currency_id
+        payment_currency = self.currency_id
+        amount = 0.0
+        for line in self.to_pay_move_line_ids._origin:
+            if line.currency_id == payment_currency:
+                amount += line.amount_residual_currency
+            elif line.currency_id and line.currency_id != company_currency:
+                amount += line.currency_id._convert(
+                    line.amount_residual_currency,
+                    payment_currency,
+                    self.company_id,
+                    self.date,
+                    round=False,
+                )
+            else:
+                amount += company_currency._convert(
+                    line.amount_residual,
+                    payment_currency,
+                    self.company_id,
+                    self.date,
+                    round=False,
+                )
+        amount *= -1.0 if self.partner_type == "supplier" else 1.0
+        amount += company_currency._convert(
+            self.unreconciled_amount,
+            payment_currency,
+            self.company_id,
+            self.date,
+            round=False,
+        )
+        return amount
+
+    def _l10n_ve_get_withholding_amount_in_payment_currency(self):
+        self.ensure_one()
+        currency_data = self._get_withholding_foreign_currency_data()
+        if (
+            currency_data
+            and currency_data["currency"] == self.currency_id
+            and currency_data["conversion_rate"]
+        ):
+            return self.l10n_ve_withholdings_amount / currency_data["conversion_rate"]
+        return self.company_currency_id._convert(
+            self.l10n_ve_withholdings_amount,
+            self.currency_id,
+            self.company_id,
+            self.date,
+            round=False,
+        )
+
+    def _l10n_ve_adjust_foreign_payment_for_withholdings(self):
+        self.ensure_one()
+        amount_exact = max(
+            self._l10n_ve_get_gross_payment_amount()
+            - self._l10n_ve_get_withholding_amount_in_payment_currency(),
+            0.0,
+        )
+        self.amount = self.currency_id.round(amount_exact)
+        if "amount_exact" in self._fields:
+            self.amount_exact = amount_exact
+        else:
+            amount_exact = self.amount
+        if self.currency_id != self.company_currency_id:
+            self.force_amount_company_currency = self.company_currency_id.round(
+                self.currency_id._convert(
+                    amount_exact,
+                    self.company_currency_id,
+                    self.company_id,
+                    self.date,
+                    round=False,
+                )
+            )
+        else:
+            self.force_amount_company_currency = False
+        if "l10n_ve_last_computed_amount" in self._fields:
+            self.l10n_ve_last_computed_amount = self.amount
+            self.l10n_ve_has_computed_amount = True
+        self._compute_amount_company_currency()
 
     @api.onchange('l10n_ve_withholding_islr')
     def _onchange_l10n_ve_withholding_islr(self):
