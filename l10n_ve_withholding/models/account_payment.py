@@ -289,14 +289,11 @@ class AccountPayment(models.Model):
             payment.l10n_ve_move_line_taxes_ids = [Command.set(move_line_tax_ids)]
 
     @api.depends(
-        'to_pay_move_line_ids.move_id.amount_untaxed',
-        'to_pay_move_line_ids.currency_id',
+        'to_pay_move_line_ids.move_id.amount_untaxed_signed',
         'to_pay_move_line_ids.move_id',
         'to_pay_move_line_ids.move_id.l10n_ve_withholding_ids.tax_id',
         'l10n_ve_withholding_line_ids.tax_id',
-        'l10n_ve_withholding_line_ids.state',
-        'date',
-        'currency_id')
+        'l10n_ve_withholding_line_ids.state')
     def _compute_l10n_ve_withholding_untaxed(self):
         for payment in self:
             withholding_untaxed = 0.0
@@ -304,21 +301,13 @@ class AccountPayment(models.Model):
                 lambda line: line.tax_id.l10n_ve_tax_type == 'tabla_islr'
             ).tax_id
             lines_to_pay = payment.to_pay_move_line_ids._origin or payment.to_pay_move_line_ids
-            for line_to_pay in lines_to_pay:
+            for move in lines_to_pay.mapped('move_id'):
                 if withholding_taxes and not any(
-                    payment._get_l10n_ve_moves_without_withholding_tax(tax) & line_to_pay.move_id
+                    payment._get_l10n_ve_moves_without_withholding_tax(tax) & move
                     for tax in withholding_taxes
                 ):
                     continue
-                amount_untaxed = line_to_pay.move_id.amount_untaxed
-                if line_to_pay.move_id.currency_id != payment.company_id.currency_id:
-                    amount_untaxed = line_to_pay.move_id.currency_id._convert(
-                        line_to_pay.move_id.amount_untaxed,
-                        payment.company_id.currency_id,
-                        payment.company_id,
-                        payment.date
-                    )
-                withholding_untaxed += amount_untaxed
+                withholding_untaxed += abs(move.amount_untaxed_signed)
             payment.l10n_ve_withholding_untaxed = withholding_untaxed
 
     @api.onchange("l10n_ve_withholdings_amount")

@@ -9,6 +9,7 @@
 ##############################################################################
 from unittest.mock import patch
 
+from odoo import Command, fields
 from odoo.addons.account.tests.common import AccountTestInvoicingCommon
 from odoo.tests import tagged
 
@@ -69,3 +70,32 @@ class TestPaymentCurrency(AccountTestInvoicingCommon):
 
         self.assertAlmostEqual(payment.amount, 195.62, places=6)
         self.assertAlmostEqual(payment.amount_exact, expected_amount_exact, places=6)
+
+    def test_islr_base_uses_invoice_accounting_amount(self):
+        invoice = self.init_invoice(
+            "in_invoice",
+            invoice_date=fields.Date.from_string("2017-01-01"),
+            post=True,
+            amounts=[600.0],
+            currency=self.currency_data["currency"],
+        )
+        payable_line = invoice.line_ids.filtered(
+            lambda line: line.account_id.account_type == "liability_payable"
+        )
+        payment = self.env["account.payment"].new(
+            {
+                "company_id": self.env.company.id,
+                "partner_id": invoice.partner_id.id,
+                "partner_type": "supplier",
+                "payment_type": "outbound",
+                "date": fields.Date.from_string("2019-01-01"),
+                "to_pay_move_line_ids": [Command.set(payable_line.ids)],
+            }
+        )
+
+        payment._compute_l10n_ve_withholding_untaxed()
+
+        self.assertEqual(
+            payment.l10n_ve_withholding_untaxed,
+            abs(invoice.amount_untaxed_signed),
+        )
