@@ -316,6 +316,8 @@ class AccountPayment(models.Model):
     def _onchange_withholdings(self):
         # con esto evitamos el importe negativo en pagos a proveedores
         for rec in self.filtered(lambda x: not x._is_latam_check_payment()):
+            if rec.company_currency_id.is_zero(rec.l10n_ve_withholdings_amount):
+                continue
             amount = rec.amount + rec.payment_difference
             rec.amount = amount if amount > 0 else 0
 
