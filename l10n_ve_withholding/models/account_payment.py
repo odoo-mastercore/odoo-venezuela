@@ -316,7 +316,14 @@ class AccountPayment(models.Model):
         for rec in self.filtered(lambda x: not x._is_latam_check_payment()):
             if rec.company_currency_id.is_zero(rec.l10n_ve_withholdings_amount):
                 continue
-            if rec.currency_id != rec.company_currency_id and rec.to_pay_move_line_ids:
+            has_foreign_debt = any(
+                line.currency_id
+                and line.currency_id != rec.company_currency_id
+                for line in rec.to_pay_move_line_ids._origin
+            )
+            if rec.to_pay_move_line_ids and (
+                rec.currency_id != rec.company_currency_id or has_foreign_debt
+            ):
                 rec._l10n_ve_adjust_foreign_payment_for_withholdings()
                 continue
             amount = rec.amount + rec.payment_difference
@@ -336,6 +343,7 @@ class AccountPayment(models.Model):
                     payment_currency,
                     self.company_id,
                     self.date,
+                    round=False,
                 )
             else:
                 amount += company_currency._convert(
@@ -343,6 +351,7 @@ class AccountPayment(models.Model):
                     payment_currency,
                     self.company_id,
                     self.date,
+                    round=False,
                 )
         amount *= -1.0 if self.partner_type == "supplier" else 1.0
         amount += company_currency._convert(
@@ -350,6 +359,7 @@ class AccountPayment(models.Model):
             payment_currency,
             self.company_id,
             self.date,
+            round=False,
         )
         return amount
 
@@ -382,15 +392,21 @@ class AccountPayment(models.Model):
             self.amount_exact = amount_exact
         else:
             amount_exact = self.amount
-        self.force_amount_company_currency = self.company_currency_id.round(
-            self.currency_id._convert(
-                amount_exact,
-                self.company_currency_id,
-                self.company_id,
-                self.date,
-                round=False,
+        if self.currency_id != self.company_currency_id:
+            self.force_amount_company_currency = self.company_currency_id.round(
+                self.currency_id._convert(
+                    amount_exact,
+                    self.company_currency_id,
+                    self.company_id,
+                    self.date,
+                    round=False,
+                )
             )
-        )
+        else:
+            self.force_amount_company_currency = False
+        if "l10n_ve_last_computed_amount" in self._fields:
+            self.l10n_ve_last_computed_amount = self.amount
+            self.l10n_ve_has_computed_amount = True
         self._compute_amount_company_currency()
 
     @api.onchange('l10n_ve_withholding_islr')
