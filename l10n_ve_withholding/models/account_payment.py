@@ -78,7 +78,8 @@ class AccountPayment(models.Model):
     def _check_withholdings_and_currency(self):
         for rec in self:
             if (
-                not rec._get_l10n_ve_active_withholding_lines()
+                rec.state == "canceled"
+                or not rec._get_l10n_ve_effective_withholding_lines()
                 or rec.currency_id == rec.company_id.currency_id
             ):
                 continue
@@ -92,6 +93,14 @@ class AccountPayment(models.Model):
     def _get_l10n_ve_active_withholding_lines(self):
         return self.l10n_ve_withholding_line_ids.filtered(
             lambda withholding: withholding.state != 'cancel'
+        )
+
+    def _get_l10n_ve_effective_withholding_lines(self):
+        self.ensure_one()
+        company_currency = self.company_id.currency_id
+        return self._get_l10n_ve_active_withholding_lines().filtered(
+            lambda withholding: withholding.payment_id == self
+            and not company_currency.is_zero(withholding.amount)
         )
 
     @api.depends("l10n_ve_withholding_line_ids.amount", "l10n_ve_withholding_line_ids.state")

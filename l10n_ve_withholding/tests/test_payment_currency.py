@@ -11,11 +11,39 @@ from unittest.mock import patch
 
 from odoo import Command, fields
 from odoo.addons.account.tests.common import AccountTestInvoicingCommon
+from odoo.exceptions import UserError
 from odoo.tests import tagged
 
 
 @tagged("post_install", "-at_install")
 class TestPaymentCurrency(AccountTestInvoicingCommon):
+
+    def test_foreign_payment_ignores_zero_withholding_suggestion(self):
+        payment = self.env["account.payment"].new(
+            {
+                "company_id": self.env.company.id,
+                "currency_id": self.currency_data["currency"].id,
+                "payment_type": "inbound",
+                "partner_type": "customer",
+            }
+        )
+        withholding = self.env["l10n_ve.payment.withholding"].new(
+            {
+                "payment_id": payment,
+                "tax_id": self.company_data["default_tax_sale"].id,
+                "amount": 0.0,
+            }
+        )
+        payment.l10n_ve_withholding_line_ids = withholding
+
+        payment._check_withholdings_and_currency()
+
+        withholding._update_cache({"amount": 1.0})
+        with self.assertRaises(UserError):
+            payment._check_withholdings_and_currency()
+
+        payment._update_cache({"state": "canceled"})
+        payment._check_withholdings_and_currency()
 
     def test_zero_withholding_does_not_change_payment_amount(self):
         payment = self.env["account.payment"].new(

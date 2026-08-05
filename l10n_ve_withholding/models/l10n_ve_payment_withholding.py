@@ -200,6 +200,13 @@ class l10nVePaymentWithholding(models.Model):
                 line.amount = tax_amount
                 line.ref = ref
 
+    @api.constrains("amount", "state", "payment_id")
+    def _check_payment_withholding_currency(self):
+        payments = self.mapped("payment_id").filtered(
+            lambda payment: payment.company_id and payment.currency_id
+        )
+        payments._check_withholdings_and_currency()
+
     def _tax_compute_all_helper(self):
         """practicamente mismo codigo que en l10n_ar.payment.register.withholding"""
         self.ensure_one()
