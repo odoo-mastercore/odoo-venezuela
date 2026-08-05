@@ -372,31 +372,35 @@ class AccountPayment(models.Model):
             and currency_data["currency"] == self.currency_id
             and currency_data["conversion_rate"]
         ):
-            return self.currency_id.round(
-                self.l10n_ve_withholdings_amount / currency_data["conversion_rate"]
-            )
+            return self.l10n_ve_withholdings_amount / currency_data["conversion_rate"]
         return self.company_currency_id._convert(
             self.l10n_ve_withholdings_amount,
             self.currency_id,
             self.company_id,
             self.date,
+            round=False,
         )
 
     def _l10n_ve_adjust_foreign_payment_for_withholdings(self):
         self.ensure_one()
-        amount = max(
+        amount_exact = max(
             self._l10n_ve_get_gross_payment_amount()
             - self._l10n_ve_get_withholding_amount_in_payment_currency(),
             0.0,
         )
-        self.amount = amount
+        self.amount = self.currency_id.round(amount_exact)
         if "amount_exact" in self._fields:
-            self.amount_exact = amount
-        self.force_amount_company_currency = self.currency_id._convert(
-            amount,
-            self.company_currency_id,
-            self.company_id,
-            self.date,
+            self.amount_exact = amount_exact
+        else:
+            amount_exact = self.amount
+        self.force_amount_company_currency = self.company_currency_id.round(
+            self.currency_id._convert(
+                amount_exact,
+                self.company_currency_id,
+                self.company_id,
+                self.date,
+                round=False,
+            )
         )
         self._compute_amount_company_currency()
 

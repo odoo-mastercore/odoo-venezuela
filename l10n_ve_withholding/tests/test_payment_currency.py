@@ -51,6 +51,8 @@ class TestPaymentCurrency(AccountTestInvoicingCommon):
             }
         )
         payment._update_cache({"l10n_ve_withholdings_amount": 9000.0})
+        withholding_amount = 9000.0 / 748.7864
+        expected_amount_exact = 207.64 - withholding_amount
 
         with patch.object(
             payment.__class__,
@@ -61,9 +63,9 @@ class TestPaymentCurrency(AccountTestInvoicingCommon):
             payment.__class__,
             "_l10n_ve_get_withholding_amount_in_payment_currency",
             autospec=True,
-            return_value=12.02,
+            return_value=withholding_amount,
         ):
             payment._l10n_ve_adjust_foreign_payment_for_withholdings()
 
         self.assertAlmostEqual(payment.amount, 195.62, places=6)
-        self.assertAlmostEqual(payment.amount_exact, 195.62, places=6)
+        self.assertAlmostEqual(payment.amount_exact, expected_amount_exact, places=6)
