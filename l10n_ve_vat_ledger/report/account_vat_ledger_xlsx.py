@@ -42,6 +42,12 @@ class AccountVatLedgerXlsx(models.AbstractModel):
         rounded = round(amount or 0.0, 2)
         return 0.0 if abs(rounded) < 0.005 else rounded
 
+    def _get_sale_invoice_ledger_date(self, invoice):
+        invoice_date = invoice.l10n_ve_invoice_date or invoice.invoice_date
+        if isinstance(invoice_date, datetime):
+            return invoice_date.date()
+        return invoice_date
+
     def _get_move_vat_breakdown(self, move):
         """Return signed VAT buckets from posted tax lines.
 
@@ -542,8 +548,8 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     retenciones_by_date.setdefault(r.date, []).append(r)
                 retenciones = list(retens)
             if obj.type == 'sale':
-                invoices = [inv for inv in obj.invoice_ids if inv.l10n_ve_invoice_date]
-                invoices = sorted(invoices, key=lambda x: x.l10n_ve_invoice_date)
+                invoices = [inv for inv in obj.invoice_ids if self._get_sale_invoice_ledger_date(inv)]
+                invoices = sorted(invoices, key=lambda x: self._get_sale_invoice_ledger_date(x))
             elif obj.type == 'purchase':
                 invoices = [inv for inv in obj.invoice_ids if inv.invoice_date]
                 invoices = sorted(invoices, key=lambda x: x.invoice_date)
@@ -785,9 +791,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     
                 elif obj.type == 'sale':
                     # Asegurar que comparamos fechas con fechas (invoice puede tener datetime)
-                    inv_date = invoice.l10n_ve_invoice_date
-                    if isinstance(inv_date, datetime):
-                        inv_date = inv_date.date()
+                    inv_date = self._get_sale_invoice_ledger_date(invoice)
                     if not inv_date:
                         continue  # Salta facturas sin fecha válida
                     if date_reference <= inv_date:
@@ -860,7 +864,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     # contador de la factura
                     sheet.write(row, 0, i, line)
                     # codigo fecha
-                    sheet.write(row, 1, invoice.l10n_ve_invoice_date or 'FALSE', date_time_line)
+                    sheet.write(row, 1, invoice.l10n_ve_invoice_date or invoice.invoice_date or 'FALSE', date_time_line)
                     # tipo de documento
                     
                     if invoice.move_type == 'out_invoice' and not invoice.debit_origin_id:
