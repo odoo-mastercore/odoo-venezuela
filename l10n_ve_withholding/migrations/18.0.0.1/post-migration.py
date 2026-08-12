@@ -174,9 +174,27 @@ def _migrate_partner_tax_config(cr):
     _logger.info("Created partner VAT withholding tax config rows: %s", cr.rowcount)
 
 
-def _principal_filter(alias="payment"):
+def _target_payment_filter(alias="payment"):
+    """Select normal payments, or one fallback for withholding-only groups."""
     if _column_exists_cached("account_payment", "tax_withholding_id"):
-        return "%s.tax_withholding_id IS NULL" % alias
+        return """
+            (
+                %(alias)s.tax_withholding_id IS NULL
+                OR (
+                    %(alias)s.id = (
+                        SELECT MIN(fallback.id)
+                          FROM account_payment fallback
+                         WHERE fallback.payment_group_id = %(alias)s.payment_group_id
+                    )
+                    AND NOT EXISTS (
+                        SELECT 1
+                          FROM account_payment normal_payment
+                         WHERE normal_payment.payment_group_id = %(alias)s.payment_group_id
+                           AND normal_payment.tax_withholding_id IS NULL
+                    )
+                )
+            )
+        """ % {"alias": alias}
     return "TRUE"
 
 
@@ -254,7 +272,7 @@ def _migrate_payment_group_data(cr):
         """
         % {
             "assignments": ", ".join(assignments),
-            "principal_filter": _principal_filter("payment"),
+            "principal_filter": _target_payment_filter("payment"),
         }
     )
     _logger.info("Migrated old payment group header data to account.payment: %s rows", cr.rowcount)
@@ -290,7 +308,7 @@ def _migrate_to_pay_lines(cr):
                   AND existing.to_pay_line_id = old_rel.to_pay_line_id
            )
         """
-        % {"principal_filter": _principal_filter("payment")},
+        % {"principal_filter": _target_payment_filter("payment")},
     )
 
 
@@ -417,7 +435,7 @@ def _insert_existing_withholding_map(cr):
          GROUP BY withholding_payment.id
         """
         % {
-            "principal_filter": _principal_filter("payment"),
+            "principal_filter": _target_payment_filter("payment"),
             "name_match": name_match,
             "amount_expr": amount_expr,
         }
@@ -522,7 +540,7 @@ def _migrate_withholding_lines(cr):
          )
         """
         % {
-            "principal_filter": _principal_filter("payment"),
+            "principal_filter": _target_payment_filter("payment"),
             "select_exprs": ", ".join(select_exprs),
             "insert_columns": ", ".join(insert_columns),
         }
@@ -622,7 +640,7 @@ def _link_vat_tax_lines(cr):
            )
         """
         % {
-            "principal_filter": _principal_filter("payment"),
+            "principal_filter": _target_payment_filter("payment"),
             "tax_type_filter": tax_type_filter,
         }
     )
@@ -638,7 +656,7 @@ def _log_preflight_gaps(cr):
         return
     _log_count(
         cr,
-        "Old payment groups without principal payment",
+        "Old payment groups without a target payment",
         """
         SELECT COUNT(*)
           FROM account_payment_group payment_group
@@ -649,11 +667,11 @@ def _log_preflight_gaps(cr):
                 AND %(principal_filter)s
          )
         """
-        % {"principal_filter": _principal_filter("payment")},
+        % {"principal_filter": _target_payment_filter("payment")},
     )
     _log_count(
         cr,
-        "Old payment groups with multiple principal payments",
+        "Old payment groups with multiple normal payments",
         """
         SELECT COUNT(*)
           FROM (
@@ -665,12 +683,12 @@ def _log_preflight_gaps(cr):
               HAVING COUNT(*) > 1
           ) grouped
         """
-        % {"principal_filter": _principal_filter("payment")},
+        % {"principal_filter": _target_payment_filter("payment")},
     )
     if _column_exists(cr, "account_payment", "tax_withholding_id"):
         _log_count(
             cr,
-            "Old withholding payments without principal payment",
+            "Old withholding payments without a target payment",
             """
             SELECT COUNT(*)
               FROM account_payment withholding_payment
@@ -682,7 +700,7 @@ def _log_preflight_gaps(cr):
                       AND %(principal_filter)s
                )
             """
-            % {"principal_filter": _principal_filter("payment")},
+            % {"principal_filter": _target_payment_filter("payment")},
         )
 
 
