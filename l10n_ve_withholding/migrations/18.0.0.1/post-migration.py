@@ -155,8 +155,10 @@ def _migrate_partner_tax_config(cr):
         SELECT %(select_columns)s
           FROM res_partner partner
           JOIN account_tax tax
-            ON tax.id = partner.l10n_ve_vat_retention
+            ON tax.l10n_ve_tax_type = 'partner_tax'
+           AND tax.l10n_ve_withholding_payment_type = 'supplier'
          WHERE partner.l10n_ve_vat_retention IS NOT NULL
+           AND partner.l10n_ve_vat_retention <> ''
            %(company_filter)s
            AND NOT EXISTS (
                SELECT 1
