@@ -55,8 +55,8 @@ msgstr "% Base Retención"
 #. module: l10n_ve_withholding
 #: model:ir.actions.report,print_report_name:l10n_ve_withholding.action_report_withholding_certificate
 #: model:ir.actions.report,print_report_name:l10n_ve_withholding.action_report_withholding_certificate_iva
-msgid "'Certificado de Retención - %s' % (object.name or '')"
-msgstr "'Certificado de Retención - %s' % (object.name or '')"
+msgid "'Comprobante de Retención - %s' % (object.name or '')"
+msgstr "'Comprobante de Retención - %s' % (object.name or '')"
 
 #. module: l10n_ve_withholding
 #: model_terms:ir.ui.view,arch_db:l10n_ve_withholding.report_withholding_certificate_document_iva
