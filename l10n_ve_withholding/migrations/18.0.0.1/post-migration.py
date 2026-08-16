@@ -79,6 +79,51 @@ def _update_renamed_column(cr, table, old, new, where=None):
     _logger.info("Migrated %s.%s -> %s: %s rows", table, old, new, cr.rowcount)
 
 
+def _clean_invalid_tax_type(cr):
+    """Leave l10n_ve_tax_type with values that exist in the 18 selection.
+
+    withholding_type in 15 was a selection_add on top of account_withholding,
+    a module that 18 no longer has, so it carried values -- 'none' among them
+    -- that the new selection (tabla_islr, partner_tax) does not define.
+    Copying the column verbatim brings them over and the field ends up holding
+    something Odoo cannot render.
+
+    They are cleared instead of guessed: 'none' means the tax was never typed
+    in 15, and inferring a type from the tax name would be a coin flip. The
+    ones affected are logged so somebody can type them by hand -- withholding
+    on sales, which Conext receives rather than issues, so no certificate of
+    ours depends on them.
+    """
+    if not _column_exists(cr, "account_tax", "l10n_ve_tax_type"):
+        return
+
+    cr.execute(
+        """
+        SELECT id, name->>'en_US', l10n_ve_tax_type
+          FROM account_tax
+         WHERE l10n_ve_tax_type IS NOT NULL
+           AND l10n_ve_tax_type NOT IN ('tabla_islr', 'partner_tax')
+        """
+    )
+    rows = cr.fetchall()
+    if not rows:
+        return
+
+    cr.execute(
+        """
+        UPDATE account_tax
+           SET l10n_ve_tax_type = NULL
+         WHERE l10n_ve_tax_type IS NOT NULL
+           AND l10n_ve_tax_type NOT IN ('tabla_islr', 'partner_tax')
+        """
+    )
+    _logger.warning(
+        "Cleared l10n_ve_tax_type on %s tax(es) whose 15 value is not in the "
+        "18 selection: %s", len(rows),
+        ", ".join("%s (id %s, was '%s')" % (name, tax_id, old)
+                  for tax_id, name, old in rows))
+
+
 def _migrate_renamed_fields(cr):
     _update_renamed_column(cr, "res_partner", "vat_retention", "l10n_ve_vat_retention")
     _update_renamed_column(
@@ -94,6 +139,7 @@ def _migrate_renamed_fields(cr):
     _update_renamed_column(cr, "product_template", "disable_islr", "l10n_ve_disable_islr")
     _update_renamed_column(cr, "account_tax", "withholding_sequence_id", "l10n_ve_withholding_sequence_id")
     _update_renamed_column(cr, "account_tax", "withholding_type", "l10n_ve_tax_type")
+    _clean_invalid_tax_type(cr)
 
     if not _table_exists(cr, "account_tax"):
         return
@@ -602,11 +648,19 @@ def _link_vat_tax_lines(cr):
         _logger.info("Skipping VAT tax line links: required structures are unavailable")
         return
 
+    # 'iva' no es un valor de este campo, ni en 15 ni en 18: la seleccion es
+    # tabla_islr / partner_tax. La retencion de IVA es la que toma la alicuota
+    # del partner -- el 75 o el 100 de res_partner.l10n_ve_vat_retention --, o
+    # sea partner_tax; tabla_islr es la de ISLR.
+    #
+    # Con 'iva' el INSERT no casaba ninguna fila, la relacion
+    # move_account_payment_wth_line_rel quedaba vacia y el comprobante de
+    # retencion salia impreso pero sin detalle, con TOTALES en 0,00.
     tax_type_filter = "FALSE"
     if _column_exists(cr, "account_tax", "l10n_ve_tax_type"):
-        tax_type_filter = "withholding_tax.l10n_ve_tax_type = 'iva'"
+        tax_type_filter = "withholding_tax.l10n_ve_tax_type = 'partner_tax'"
     elif _column_exists(cr, "account_tax", "withholding_type"):
-        tax_type_filter = "withholding_tax.withholding_type = 'iva'"
+        tax_type_filter = "withholding_tax.withholding_type = 'partner_tax'"
 
     cr.execute(
         """
