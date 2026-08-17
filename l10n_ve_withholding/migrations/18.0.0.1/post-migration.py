@@ -760,50 +760,11 @@ def _log_preflight_gaps(cr):
         )
 
 
-def _drop_stale_report_name_translations(cr):
-    """Purge translations of print_report_name that still name 15 fields.
-
-    print_report_name is a translatable Char, so it is stored as a jsonb of
-    one value per language. Updating the module rewrites the source term
-    (en_US) but leaves every other language alone, which is right for prose
-    and wrong here: the value is code.
-
-    A database coming from 15 keeps the Spanish value pointing at
-    withholding_number, a field that in 18 is called name and lives on
-    l10n_ve.payment.withholding instead of account.payment. Printing in
-    Spanish then dies in safe_eval:
-
-      AttributeError: 'l10n_ve.payment.withholding' object has no attribute
-      'withholding_number'
-
-    Dropping the stale language leaves the record with en_US only, and Odoo
-    falls back to it. Nothing is lost: what the user sees is the file name.
-    """
-    if not _column_exists(cr, "ir_act_report_xml", "print_report_name"):
-        return
-
-    cr.execute(
-        """
-        UPDATE ir_act_report_xml
-           SET print_report_name = jsonb_build_object(
-                   'en_US', print_report_name ->> 'en_US')
-         WHERE print_report_name ? 'en_US'
-           AND print_report_name::text LIKE %s
-           AND (print_report_name ->> 'en_US') NOT LIKE %s
-        """,
-        ('%withholding_number%', '%withholding_number%'),
-    )
-    _logger.info(
-        "Dropped stale print_report_name translations naming withholding_number: "
-        "%s rows", cr.rowcount)
-
-
 def migrate(cr, version):
     if version is None:
         return
 
     _logger.info("Running l10n_ve_withholding data migration from Odoo 15 payment groups")
-    _drop_stale_report_name_translations(cr)
     _prime_column_cache(cr)
     _log_preflight_gaps(cr)
     _migrate_renamed_fields(cr)
