@@ -17,7 +17,7 @@
 
     'author': "SINAPSYS GLOBAL SA || MASTERCORE SAS",
     'website': "http://sinapsys.global",
-    'version': '18.0.0.1',
+    'version': '18.0.0.2',
     'countries': ['ve'],
     'category': 'Accounting/Localizations',
     'license': 'AGPL-3',
