@@ -26,20 +26,37 @@
 
                         <!-- IDENTIFICACION (SUJETO A RETENCIÓN) -->
 
-                        <!-- (1) Apellido uy Nombre: Denominicacion o Razon Soclial -->
-                        <strong>Sujeto a Retención: </strong><span t-field="o.partner_id.name"/>
-                        <!-- (2) RIF -->
-                        <t t-if="o.partner_id.vat and o.partner_id.l10n_latam_identification_type_id.name">
-                            <br/>
-                            <strong>R.I.F:</strong> <span t-field="o.partner_id.l10n_latam_identification_type_id.l10n_ve_code"/>-<span t-field="o.partner_id.vat"/>
-
+                        <t t-if="not o.payment_id.l10n_ve_third_partner_withholding">
+                            <!-- (1) Apellido uy Nombre: Denominicacion o Razon Social -->
+                            <strong>Sujeto a Retención: </strong><span t-field="o.partner_id.name"/>
+                            <!-- (2) RIF -->
+                            <t t-if="o.partner_id.vat and o.partner_id.l10n_latam_identification_type_id.name">
+                                <br/>
+                                <strong>R.I.F:</strong> 
+                                <span t-field="o.partner_id.l10n_latam_identification_type_id.l10n_ve_code"/>-<span t-field="o.partner_id.vat"/>
+                            </t>
                         </t>
+                        <t t-else="">
+                            <!-- (1) Apellido uy Nombre: Denominicacion o Razon Social -->
+                            <strong>Sujeto a Retención: </strong><span t-field="o.payment_id.l10n_ve_third_partner_id.name"/>
+                            <!-- (2) RIF -->
+                            <t t-if="o.payment_id.l10n_ve_third_partner_id.vat and o.payment_id.l10n_ve_third_partner_id.l10n_latam_identification_type_id.name">
+                                <br/>
+                                <strong>R.I.F:</strong> 
+                                <span t-field="o.payment_id.l10n_ve_third_partner_id.l10n_latam_identification_type_id.l10n_ve_code"/>-<span t-field="o.payment_id.l10n_ve_third_partner_id.vat"/>
+                            </t>
+                        </t>  
                         <!-- (3) Responsabilidad -->
                         <br/>
                         <strong>Tipo de Contribuyente: </strong><span t-field="o.partner_id.l10n_ve_responsibility_type_id"/>
                         <!-- (4) Domicilio Comercial -->
                         <br/>
-                        <span t-esc="o.partner_id" t-options='{"widget": "contact", "fields": ["address"], "no_marker": True, "no_tag_br": True}'/>
+                        <t t-if="not o.payment_id.l10n_ve_third_partner_withholding">
+                            <span t-esc="o.partner_id" t-options="{'widget': 'contact', 'fields': ['address'], 'no_marker': True, 'no_tag_br': True}"/>
+                        </t>
+                        <t t-else="">
+                            <span t-esc="o.payment_id.l10n_ve_third_partner_id" t-options="{'widget': 'contact', 'fields': ['address'], 'no_marker': True, 'no_tag_br': True}"/>
+                        </t>
 
                     </div>
                 </div>
@@ -174,6 +191,22 @@
         <field name="report_type">qweb-pdf</field>
         <field name="paperformat_id" ref="base.paperformat_us"/>
         <field name="print_report_name">'Comprobante de Retención - %s' % (object.name or '')</field>
+        <!-- En 15 este registro traia attachment con la expresion
+             "object.withholding_number", y el campo se llamaba asi sobre
+             account.payment. Aqui el informe es de l10n_ve.payment.withholding
+             y el numero es 'name'.
+
+             Hay que declararlo vacio, no basta con omitirlo: al actualizar el
+             modulo Odoo solo escribe los campos que el XML declara, asi que en
+             una base venida de 15 la columna conserva la expresion vieja y
+             cualquier impresion muere en safe_eval con
+
+               AttributeError: 'l10n_ve.payment.withholding' object has no
+               attribute 'withholding_number'
+
+             Se deja vacio a proposito: en 18 el nombre del PDF sale de
+             print_report_name y el informe no se guarda como adjunto. -->
+        <field name="attachment"></field>
         <field name="report_name">l10n_ve_withholding.report_withholding_certificate</field>
         <field name="report_file">l10n_ve_withholding.report_withholding_certificate</field>
     </record>
