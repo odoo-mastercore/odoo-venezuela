@@ -126,10 +126,16 @@ class AccountVatLedger(models.Model):
                     ('date', '<=', rec.date_to),
                     ('state', '!=', 'cancel'),
                 ]
-                withholding_tax = self.env.ref('account.%s_tax_retencion_iva' % rec.company_id.id)
+                # Se filtra por las caracteristicas del impuesto, igual que la
+                # rama de ventas de arriba, y no por un xmlid concreto.
+                # account.<id_compania>_tax_retencion_iva lo creaba la plantilla
+                # contable de 15 al instanciarla; en 18 ese registro puede no
+                # existir, y env.ref sin raise_if_not_found=False dentro de un
+                # compute no devuelve un vacio: revienta la carga entera del
+                # registro.
                 withholdings_domain += [
                     ('tax_id.l10n_ve_withholding_payment_type', '=', 'supplier'),
-                    ('tax_id', '=', withholding_tax.id),
+                    ('tax_id.l10n_ve_withholding_ingoing_type', '=', 'iva'),
                     ('date', '>=', rec.date_from),
                     ('date', '<=', rec.date_to),
                 ]
