@@ -167,6 +167,106 @@ def _migrate_renamed_fields(cr):
         )
         _logger.info("Normalized withholding tax type_tax_use: %s rows", cr.rowcount)
 
+    # Al final a proposito: se apoya en l10n_ve_withholding_payment_type, que
+    # se acaba de poblar justo arriba.
+    _set_withholding_ingoing_type(cr)
+
+
+def _set_withholding_ingoing_type(cr):
+    """Type each withholding tax as IVA or ISLR, which 15 never stored.
+
+    18 asks what kind of withholding a tax is through
+    account_tax.l10n_ve_withholding_ingoing_type (iva / islr / other), and the
+    VAT ledger filters both of its branches by it:
+
+        ('tax_id.l10n_ve_withholding_payment_type', '=', 'customer'),
+        ('tax_id.l10n_ve_withholding_ingoing_type', '=', 'iva'),
+
+    Nothing fills that column on an upgraded database, so it is NULL on every
+    tax and both branches come back empty. That is why the "IVA retenido"
+    column of the sales VAT ledger, which had figures in 15, is blank in 18
+    even though the entries did migrate.
+
+    15 had no such field and worked it out twice over, in
+    report/account_vat_ledger_xlsx.py:
+
+        purchases -> type_tax_use = 'supplier' and withholding_type = 'partner_tax'
+        sales     -> type_tax_use = 'customer' and name like 'IVA'
+
+    Those are the two criteria reproduced here. The first one translates
+    cleanly, since withholding_type is today l10n_ve_tax_type and partner_tax
+    is precisely the IVA withholding -- the one whose rate comes from the
+    partner, 75 or 100. The second one does not translate at all: on the sales
+    taxes withholding_type was 'none', so 15 fell back to the tax name. It is
+    reproduced as it was, because there is nothing else in the record that
+    tells IVA from ISLR.
+
+    Typing them here and not in the domain is deliberate: this runs once and
+    leaves the database saying what each tax is, instead of spreading a match
+    on tax names through the code that reads it.
+    """
+    if not (
+        _column_exists(cr, "account_tax", "l10n_ve_withholding_ingoing_type")
+        and _column_exists(cr, "account_tax", "l10n_ve_withholding_payment_type")
+    ):
+        _logger.info(
+            "Skipping withholding ingoing type: required columns are unavailable")
+        return
+
+    # Retention taxes only. The ordinary IVA taxes leave
+    # l10n_ve_withholding_payment_type empty and must stay untyped.
+    scope = """
+         WHERE l10n_ve_withholding_ingoing_type IS NULL
+           AND l10n_ve_withholding_payment_type IN ('supplier', 'customer')
+    """
+
+    if _column_exists(cr, "account_tax", "l10n_ve_tax_type"):
+        cr.execute(
+            """
+            UPDATE account_tax
+               SET l10n_ve_withholding_ingoing_type = CASE l10n_ve_tax_type
+                       WHEN 'partner_tax' THEN 'iva'
+                       WHEN 'tabla_islr' THEN 'islr'
+                   END
+            """
+            + scope
+            + " AND l10n_ve_tax_type IN ('partner_tax', 'tabla_islr')"
+        )
+        _logger.info(
+            "Typed withholding taxes from l10n_ve_tax_type: %s rows", cr.rowcount)
+
+    # Whatever is left carries no type at all -- the withholding on sales,
+    # which in 15 was only told apart by its name.
+    cr.execute(
+        """
+        UPDATE account_tax
+           SET l10n_ve_withholding_ingoing_type = CASE
+                   WHEN name->>'en_US' ILIKE %s THEN 'islr'
+                   WHEN name->>'en_US' ILIKE %s THEN 'iva'
+                   ELSE 'other'
+               END
+        """
+        + scope,
+        ('%ISLR%', '%IVA%'),
+    )
+    _logger.info(
+        "Typed withholding taxes by name, as 15 did: %s rows", cr.rowcount)
+
+    cr.execute(
+        """
+        SELECT l10n_ve_withholding_payment_type,
+               l10n_ve_withholding_ingoing_type,
+               string_agg(name->>'en_US', ', ' ORDER BY id)
+          FROM account_tax
+         WHERE l10n_ve_withholding_payment_type IN ('supplier', 'customer')
+      GROUP BY 1, 2
+      ORDER BY 1, 2
+        """
+    )
+    for payment_type, ingoing_type, names in cr.fetchall():
+        _logger.info("Withholding taxes %s/%s: %s",
+                     payment_type, ingoing_type or 'sin tipo', names)
+
 
 def _migrate_partner_tax_config(cr):
     required = [
