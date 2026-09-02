@@ -18,6 +18,46 @@ from odoo.tests import tagged
 @tagged("post_install", "-at_install")
 class TestPaymentCurrency(AccountTestInvoicingCommon):
 
+    def _create_customer_payment_with_numbered_withholding(self):
+        self.env.company.use_payment_pro = True
+        journal = self.company_data["default_journal_bank"]
+        journal.currency_id = False
+        withholding_tax = self.company_data["default_tax_sale"].copy(
+            {
+                "name": "Customer payment withholding",
+                "type_tax_use": "none",
+                "l10n_ve_tax_type": "partner_tax",
+                "l10n_ve_withholding_payment_type": "customer",
+            }
+        )
+        tax_repartition_lines = (
+            withholding_tax.invoice_repartition_line_ids
+            | withholding_tax.refund_repartition_line_ids
+        ).filtered(lambda line: line.repartition_type == "tax")
+        tax_repartition_lines.account_id = self.company_data["default_account_revenue"]
+
+        payment = self.env["account.payment"].create(
+            {
+                "company_id": self.env.company.id,
+                "partner_id": self.partner_a.id,
+                "partner_type": "customer",
+                "payment_type": "inbound",
+                "journal_id": journal.id,
+                "currency_id": self.env.company.currency_id.id,
+                "amount": 900.0,
+            }
+        )
+        withholding = self.env["l10n_ve.payment.withholding"].create(
+            {
+                "payment_id": payment.id,
+                "tax_id": withholding_tax.id,
+                "name": "TEST-WH-0001",
+                "base_amount": 1000.0,
+                "amount": 100.0,
+            }
+        )
+        return payment, withholding
+
     def test_foreign_payment_ignores_zero_withholding_suggestion(self):
         payment = self.env["account.payment"].new(
             {
@@ -167,3 +207,31 @@ class TestPaymentCurrency(AccountTestInvoicingCommon):
             payment.l10n_ve_withholding_untaxed,
             abs(invoice.amount_untaxed_signed),
         )
+
+    def test_numbered_withholding_survives_payment_reset_and_cancel(self):
+        payment, withholding = self._create_customer_payment_with_numbered_withholding()
+        payment.action_post()
+
+        move = payment.move_id
+        original_line_ids = move.line_ids.ids
+        withholding_move_line = move.line_ids.filtered(
+            lambda line: line.l10n_ve_withholding_line_id == withholding
+        )
+        self.assertTrue(withholding_move_line)
+        self.assertTrue(payment._needs_withholding_draft_bypass())
+
+        payment.action_draft()
+
+        self.assertEqual(payment.state, "draft")
+        self.assertEqual(move.state, "draft")
+        self.assertEqual(move.line_ids.ids, original_line_ids)
+        self.assertTrue(self.env.company.currency_id.is_zero(sum(move.line_ids.mapped("balance"))))
+        self.assertTrue(withholding.exists())
+        self.assertEqual(withholding.state, "posted")
+        self.assertEqual(withholding.name, "TEST-WH-0001")
+
+        payment.action_cancel()
+
+        self.assertTrue(withholding.exists())
+        self.assertEqual(withholding.state, "cancel")
+        self.assertTrue(withholding.cancel_date)

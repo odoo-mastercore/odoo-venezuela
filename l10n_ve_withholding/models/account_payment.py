@@ -497,10 +497,11 @@ class AccountPayment(models.Model):
         return '{:,.2f}'.format(number).replace(",", "@").replace(".", ",").replace("@", ".")
 
     def _needs_withholding_draft_bypass(self):
-        """Detect payments likely to hit unbalanced-move on reset-to-draft."""
+        """Detect payments whose withholding lines must be preserved in draft."""
         self.ensure_one()
 
-        if not self._get_l10n_ve_active_withholding_lines():
+        withholdings = self._get_l10n_ve_effective_withholding_lines()
+        if not withholdings:
             return False
         if not self.move_id or self.move_id.state not in ("posted", "cancel"):
             return False
@@ -508,10 +509,20 @@ class AccountPayment(models.Model):
         payment_move_lines = self.move_id.line_ids.filtered(lambda line: line.payment_id == self)
         if not payment_move_lines:
             payment_move_lines = self.move_id.line_ids
-        tax_payment_lines = payment_move_lines.filtered("tax_line_id")
-        if not tax_payment_lines:
-            return False
-        return True
+        linked_withholding_lines = payment_move_lines.filtered(
+            lambda line: line.l10n_ve_withholding_line_id in withholdings
+        )
+        if linked_withholding_lines:
+            return True
+
+        # Compatibility with entries posted before the explicit withholding link.
+        withholding_taxes = withholdings.mapped("tax_id")
+        company_currency = self.company_id.currency_id
+        return any(
+            line.tax_line_id in withholding_taxes
+            and not company_currency.is_zero(line.balance)
+            for line in payment_move_lines
+        )
 
     def action_draft(self):
         if self.env.context.get("skip_withholding_draft_guard"):
@@ -527,7 +538,7 @@ class AccountPayment(models.Model):
             super(
                 AccountPayment,
                 risky_payments.with_context(
-                    check_move_validity=False,
+                    skip_invoice_sync=True,
                     skip_withholding_draft_guard=True,
                 ),
             ).action_draft()
