@@ -355,6 +355,8 @@ class AccountVatLedgerXlsx(models.AbstractModel):
             c_total_base_exento = 0.00
             c_total_base_imponible_16 = 0.00
             c_total_iva_16 = 0.00
+            c_total_base_imponible_16_positive = 0.00
+            c_total_iva_16_positive = 0.00
             c_total_base_imponible_8 = 0.00
             c_total_iva_8 = 0.00
             c_total_base_imponible_31 = 0.00
@@ -653,8 +655,13 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     #########
                     """ Totales """
                     c_total_base_exento += base_exento if base_exento else 0.00
+                    # El total del detalle conserva el neto; el resumen separa
+                    # las compras positivas de las notas de crédito.
                     c_total_base_imponible_16 += base_imponible if base_imponible else 0.00
                     c_total_iva_16 += iva_16 if iva_16 else 0.00
+                    if base_imponible > 0:
+                        c_total_base_imponible_16_positive += base_imponible
+                        c_total_iva_16_positive += iva_16
                     c_total_base_imponible_8 += base_imponible_8 if base_imponible_8 else 0.00
                     c_total_iva_8 += iva_8 if iva_8 else 0.00
                     c_total_base_imponible_31 += base_imponible_31 if base_imponible_31 else 0.00
@@ -1320,8 +1327,8 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                 sheet.write((row + 4), 17, 0, line_number)
                 sheet.merge_range('J%s:M%s' % (str(row + 6), str(row + 6)),
                                   'Total Compras Internas afectadas sólo alícuota general 16.00%', title_style)
-                sheet.write((row + 5), 13, round(c_total_base_imponible_16,2), line_number)
-                sheet.write((row + 5), 14, c_total_iva_16, line_number)
+                sheet.write((row + 5), 13, round(c_total_base_imponible_16_positive,2), line_number)
+                sheet.write((row + 5), 14, c_total_iva_16_positive, line_number)
                 sheet.write((row + 5), 15, total_iva_16_retenido, line_number)
                 sheet.write((row + 5), 16, total_iva_16_igtf, line_number)
                 sheet.write((row + 5), 17, 0, line_number)
@@ -1376,12 +1383,12 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                 sheet.write((row+13), 16, 0, line_number)
                 sheet.write((row +13), 17, 0, line_number)
                 sheet.merge_range('J%s:M%s' % (str(row+15), str(row+15)), 'Total:', title_style)
-                sheet.write((row+14), 13, round(c_total_base_exento + c_total_base_imponible_16 \
+                sheet.write((row+14), 13, round(c_total_base_exento + c_total_base_imponible_16_positive \
                     + c_total_base_imponible_8+c_total_base_imponible_31+total_nota_credito_16+\
                         + total_nota_credito_8 + total_nota_credito_31 +total_nota_debito_16 + \
                             + total_nota_debito_8 + total_nota_debito_31 + total_base_exento_credito +\
                                 total_base_exento_debito ,2), line_number)
-                sheet.write((row+14), 14, (c_total_iva_16 + c_total_iva_8 + c_total_iva_31 + \
+                sheet.write((row+14), 14, (c_total_iva_16_positive + c_total_iva_8 + c_total_iva_31 + \
                     total_nota_credito_iva_16 + total_nota_credito_iva_8 + total_nota_credito_iva_31 + \
                         total_nota_debito_iva_16 + total_nota_debito_iva_8 + total_nota_debito_iva_31), line_number)
                 sheet.write((row+14), 15, total_iva_16_retenido, line_number)
