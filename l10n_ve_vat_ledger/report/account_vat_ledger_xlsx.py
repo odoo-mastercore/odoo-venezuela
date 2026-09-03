@@ -653,8 +653,11 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     #########
                     """ Totales """
                     c_total_base_exento += base_exento if base_exento else 0.00
-                    c_total_base_imponible_16 += base_imponible if base_imponible else 0.00
-                    c_total_iva_16 += iva_16 if iva_16 else 0.00
+                    # Las notas de crédito se exponen en su renglón propio del
+                    # resumen; no deben descontarse también de compras internas.
+                    if base_imponible > 0:
+                        c_total_base_imponible_16 += base_imponible
+                        c_total_iva_16 += iva_16
                     c_total_base_imponible_8 += base_imponible_8 if base_imponible_8 else 0.00
                     c_total_iva_8 += iva_8 if iva_8 else 0.00
                     c_total_base_imponible_31 += base_imponible_31 if base_imponible_31 else 0.00
