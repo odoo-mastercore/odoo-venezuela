@@ -27,14 +27,22 @@ class AccountVatLedgerXlsx(models.AbstractModel):
         amount_reten = reten.amount if reten.currency_id.id == reten.company_id.currency_id.id else reten.amount_company_currency
         amount_reten = amount_reten * -1 if reten.total_amount < 0 else amount_reten
         if report_type == 'purchase':
-            is_credit_note = False
-            if 'reten_move_type_id' in self.env['account.payment']._fields and reten.reten_move_type_id:
-                is_credit_note = reten.reten_move_type_id == 'in_refund'
-            elif 'reconciled_bill_ids' in self.env['account.payment']._fields and reten.reconciled_bill_ids:
-                is_credit_note = any(
-                    bill.move_type == 'in_refund' and not bill.debit_origin_id
-                    for bill in reten.reconciled_bill_ids
-                )
+            is_credit_note = (
+                'reten_move_type_id' in self.env['account.payment']._fields
+                and reten.reten_move_type_id == 'in_refund'
+            )
+            related_moves = self.env['account.move']
+            if 'reconciled_bill_ids' in self.env['account.payment']._fields:
+                related_moves |= reten.reconciled_bill_ids
+            if (
+                reten.payment_group_id
+                and 'to_pay_move_line_ids' in reten.payment_group_id._fields
+            ):
+                related_moves |= reten.payment_group_id.to_pay_move_line_ids.move_id
+            is_credit_note |= any(
+                move.move_type == 'in_refund' and not move.debit_origin_id
+                for move in related_moves
+            )
             if is_credit_note:
                 amount_reten = -abs(amount_reten)
         return amount_reten
