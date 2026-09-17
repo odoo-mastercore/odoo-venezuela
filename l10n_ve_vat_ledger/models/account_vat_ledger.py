@@ -97,6 +97,7 @@ class AccountVatLedger(models.Model):
             withholdings_domain = [
                 ('payment_id.state', 'in', ['in_process', 'paid']),
                 ('company_id', 'in', company_ids),
+                ('state', '!=', 'cancel'),
             ]
             if rec.type == 'sale':
                 invoices_domain += [
