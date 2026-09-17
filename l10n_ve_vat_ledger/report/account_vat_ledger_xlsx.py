@@ -250,6 +250,12 @@ class AccountVatLedgerXlsx(models.AbstractModel):
             return -amount
         return amount
 
+    def _get_report_withholdings(self, ledger):
+        """Exclude canceled withholdings, including stale stored relations."""
+        return ledger.withholding_ids.filtered(
+            lambda withholding: withholding.state != 'cancel'
+        )
+
     def generate_xlsx_report(self, workbook, data, account_vat):
         for obj in account_vat:
             report_name = obj.name
@@ -544,7 +550,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                 Retenciones
              """
             tax_withholding_id = []
-            retens = obj.withholding_ids
+            retens = self._get_report_withholdings(obj)
             # Índice por fecha de retenciones (si no hay retenciones quedará vacío)
             retenciones_by_date = {}
             retenciones = []
@@ -1468,7 +1474,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
         row = 5
         date_reference = ledger.date_from
         retentions_by_date = {}
-        retentions = list(ledger.withholding_ids)
+        retentions = list(self._get_report_withholdings(ledger))
         for retention in retentions:
             retentions_by_date.setdefault(retention.date, []).append(retention)
         invoices = sorted(
