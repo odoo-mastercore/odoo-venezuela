@@ -107,7 +107,12 @@ class AccountPaymentGroup(models.Model):
             for line in rec.to_pay_move_line_ids._origin:
                 #this is conditional used to vat retention
                 for li in line.move_id.line_ids:
-                    if li.name in ['IVA (16.0%) compras','IVA (8.0%) compras','IVA (31.0%) compras']:
+                    if li.name in [
+                        'IVA (16.0%) compras',
+                        'IVA (8.0%) compras',
+                        'IVA (31.0%) compras',
+                        'IVA (15.0%) compras',
+                    ]:
                         if line.move_id.move_type == 'in_refund':
                             selected_debt_taxed += li.credit
                         else:
@@ -177,4 +182,3 @@ class AccountPaymentGroup(models.Model):
                 rec.unreconciled_amount = rec.to_pay_amount - rec.selected_finacial_debt
             else:
                 rec.unreconciled_amount = rec.to_pay_amount - rec.selected_debt
-
