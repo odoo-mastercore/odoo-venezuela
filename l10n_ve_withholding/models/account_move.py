@@ -60,16 +60,9 @@ class AccountMove(models.Model):
             pass
         return super().get_taxes_values()
 
-    def _l10n_ve_should_assign_control_number(self):
-        """Allow integrations to opt out before consuming a control sequence."""
-        self.ensure_one()
-        return True
-
     def _post(self, soft=True):
         res = super(AccountMove, self)._post(soft)
         for rec in self:
-            if not rec._l10n_ve_should_assign_control_number():
-                continue
             if (rec.state == 'posted' and rec.\
                 l10n_ve_document_number == False) or rec.\
                     move_type == 'out_refund' and rec.l10n_ve_document_number == '':
