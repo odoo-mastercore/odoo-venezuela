@@ -52,7 +52,7 @@ class AccountTax(models.Model):
                     foreign_currency =True
                 taxes = [
                     'IVA (16.0%) compras','IVA (8.0%) compras',
-                    'IVA (31.0%) compras'
+                    'IVA (31.0%) compras','IVA (15.0%) compras'
                 ]
                 if to_pay.move_id.line_ids:
                     for abg in to_pay.move_id.line_ids:
