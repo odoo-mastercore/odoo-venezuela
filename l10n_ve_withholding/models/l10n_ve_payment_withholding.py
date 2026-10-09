@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
-###############################################################################
-# Author: SINAPSYS GLOBAL SA || MASTERCORE SAS
-# Copyleft: 2020-Present.
-# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
+##############################################################################
+# Author: Mastercore Sinapsys Global®
+# Copyright: 2019-Present.
+# License OPL-1 (Odoo Proprietary License v1.0)
+# See https://www.odoo.com/documentation/master/legal/licenses.html
 #
 #
-###############################################################################
+##############################################################################
 from datetime import datetime
 
 from dateutil.relativedelta import relativedelta
@@ -17,12 +18,43 @@ class l10nVePaymentWithholding(models.Model):
     _name = "l10n_ve.payment.withholding"
     _description = "Payment withholding lines"
 
-    payment_id = fields.Many2one("account.payment", required=True, ondelete="cascade")
+    payment_id = fields.Many2one("account.payment", ondelete="set null")
     partner_id = fields.Many2one(related="payment_id.partner_id")
     company_id = fields.Many2one(related="payment_id.company_id")
     currency_id = fields.Many2one(related="payment_id.company_currency_id")
     l10n_ve_tax_type = fields.Selection(related="tax_id.l10n_ve_tax_type")
+    state = fields.Selection(
+        [
+            ('draft', 'Borrador'),
+            ('posted', 'Confirmada'),
+            ('cancel', 'Anulada'),
+        ],
+        string='Estado',
+        default='draft',
+        required=True,
+        copy=False,
+        index=True,
+    )
     name = fields.Char(string="Number")
+    payment_name = fields.Char(string='Pago', copy=False)
+    payment_date = fields.Date(string='Fecha de pago', copy=False)
+    payment_type = fields.Selection(
+        [
+            ('outbound', 'Enviar'),
+            ('inbound', 'Recibir'),
+        ],
+        string='Tipo de pago',
+        copy=False,
+    )
+    partner_type = fields.Selection(
+        [
+            ('customer', 'Cliente'),
+            ('supplier', 'Proveedor'),
+        ],
+        string='Tipo de contacto',
+        copy=False,
+    )
+    cancel_date = fields.Date(string='Fecha de anulacion', copy=False)
     ref = fields.Text(compute="_compute_amount", store=True, readonly=False, string="Ref")
     tax_id = fields.Many2one("account.tax", check_company=True, required=True, string="Tax")
     withholding_sequence_id = fields.Many2one(related="tax_id.l10n_ve_withholding_sequence_id")
@@ -66,6 +98,51 @@ class l10nVePaymentWithholding(models.Model):
             refs = rec.l10n_ve_move_line_taxes_ids.mapped('move_id.ref')
             rec.move_ref = ", ".join(dict.fromkeys(ref for ref in refs if ref))
 
+    def _has_control_number(self):
+        self.ensure_one()
+        return bool(self.name and self.name != "/")
+
+    def _get_payment_snapshot_values(self, state=False, cancel=False, detach=False):
+        self.ensure_one()
+        vals = {}
+        payment = self.payment_id
+        if payment:
+            vals.update({
+                'payment_name': payment.name or payment.move_id.name,
+                'payment_date': payment.date,
+                'payment_type': payment.payment_type,
+                'partner_type': payment.partner_type,
+            })
+        if state:
+            vals['state'] = state
+        if cancel:
+            vals['cancel_date'] = fields.Date.context_today(self)
+        if detach:
+            vals['payment_id'] = False
+        return vals
+
+    def _write_payment_snapshot(self, state=False, cancel=False, detach=False):
+        for withholding in self:
+            vals = withholding._get_payment_snapshot_values(
+                state=state,
+                cancel=cancel,
+                detach=detach,
+            )
+            if vals:
+                withholding.write(vals)
+
+    def unlink(self):
+        numbered_withholdings = self.filtered(
+            lambda withholding: withholding._has_control_number()
+        )
+        if numbered_withholdings:
+            numbered_withholdings._write_payment_snapshot(
+                state='cancel',
+                cancel=True,
+                detach=True,
+            )
+        return super(l10nVePaymentWithholding, self - numbered_withholdings).unlink()
+
     @api.depends(
         "tax_id",
         "payment_id.l10n_ve_withholding_taxed",
@@ -73,8 +150,7 @@ class l10nVePaymentWithholding(models.Model):
         "payment_id.l10n_ve_withholdable_advanced_amount",
         "payment_id.unreconciled_amount",
         "payment_id.date",
-        "move_line_id.price_subtotal",
-        "move_line_id.currency_id",
+        "move_line_id.balance",
     )
     def _compute_base_amount(self):
         self.payment_id._compute_to_pay_amount()
@@ -113,17 +189,7 @@ class l10nVePaymentWithholding(models.Model):
                 if wth.calc_islr == 'all':
                     wth.base_amount = wth.payment_id.l10n_ve_withholding_untaxed + advance_amount
                 elif wth.calc_islr == 'line' and wth.move_line_id:
-                    line_base_amount = abs(wth.move_line_id.price_subtotal)
-                    line_currency = wth.move_line_id.currency_id
-                    company_currency = wth.company_id.currency_id
-                    if line_currency and line_currency != company_currency:
-                        line_base_amount = line_currency._convert(
-                            line_base_amount,
-                            company_currency,
-                            wth.company_id,
-                            wth.payment_id.date or fields.Date.context_today(wth),
-                        )
-                    wth.base_amount = line_base_amount + advance_amount
+                    wth.base_amount = abs(wth.move_line_id.balance) + advance_amount
 
     @api.depends("base_amount", "tax_id", "l10n_ve_regimen_islr_id")
     def _compute_amount(self):
@@ -136,6 +202,13 @@ class l10nVePaymentWithholding(models.Model):
                 tax_amount, __, __, ref = line._tax_compute_all_helper()
                 line.amount = tax_amount
                 line.ref = ref
+
+    @api.constrains("amount", "state", "payment_id")
+    def _check_payment_withholding_currency(self):
+        payments = self.mapped("payment_id").filtered(
+            lambda payment: payment.company_id and payment.currency_id
+        )
+        payments._check_withholdings_and_currency()
 
     def _tax_compute_all_helper(self):
         """practicamente mismo codigo que en l10n_ar.payment.register.withholding"""

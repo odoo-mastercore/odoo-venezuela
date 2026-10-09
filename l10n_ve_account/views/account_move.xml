@@ -9,7 +9,7 @@
                 <field name="l10n_ve_invoice_date" />
             </xpath>
             <xpath expr="//header/button[@name='button_draft']" position="attributes">
-                <attribute name="invisible">move_type in ['out_invoice','out_refund','in_invoice','in_refund']</attribute>
+                <attribute name="invisible">move_type in ['out_invoice','out_refund']</attribute>
             </xpath>
             <xpath expr="//header//button[@name='action_reverse']" position="attributes">
                 <attribute name="string">Añadir nota de crédito</attribute>

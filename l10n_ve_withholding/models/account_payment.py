@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
 ##############################################################################
-# Author: SINAPSYS GLOBAL SA || MASTERCORE SAS
-# Copyleft: 2022-Present.
+# Author: Mastercore Sinapsys Global®
+# Copyright: 2019-Present.
+# License OPL-1 (Odoo Proprietary License v1.0)
+# See https://www.odoo.com/documentation/master/legal/licenses.html
 #
 #
-###############################################################################
+##############################################################################
 from odoo import models, fields, api, _, Command
 from odoo.exceptions import UserError
 import logging
@@ -66,7 +68,7 @@ class AccountPayment(models.Model):
         compute="_compute_l10n_ve_withholding_line_ids",
         readonly=False,
         store=True,
-        
+        auto_join=True,
     )
     l10n_ve_withholdings_amount = fields.Monetary(
         compute="_compute_l10n_ve_withholdings_amount",
@@ -77,14 +79,36 @@ class AccountPayment(models.Model):
     @api.constrains("currency_id", "company_id", "l10n_ve_withholding_line_ids")
     def _check_withholdings_and_currency(self):
         for rec in self:
-            if rec.l10n_ve_withholding_line_ids and rec.currency_id != rec.company_id.currency_id:
+            if (
+                rec.state == "canceled"
+                or not rec._get_l10n_ve_effective_withholding_lines()
+                or rec.currency_id == rec.company_id.currency_id
+            ):
+                continue
+            currency_data = rec._get_withholding_move_currency_data()
+            if not currency_data or not currency_data["conversion_rate"]:
                 raise UserError(_('Withholdings must be done in "%s" currency') % rec.company_id.currency_id.name)
 
-    @api.depends("l10n_ve_withholding_line_ids.amount")
+    def _get_l10n_ve_active_withholding_lines(self):
+        return self.l10n_ve_withholding_line_ids.filtered(
+            lambda withholding: withholding.state != 'cancel'
+        )
+
+    def _get_l10n_ve_effective_withholding_lines(self):
+        self.ensure_one()
+        company_currency = self.company_id.currency_id
+        return self._get_l10n_ve_active_withholding_lines().filtered(
+            lambda withholding: withholding.payment_id == self
+            and not company_currency.is_zero(withholding.amount)
+        )
+
+    @api.depends("l10n_ve_withholding_line_ids.amount", "l10n_ve_withholding_line_ids.state")
     def _compute_payment_total(self):
         super()._compute_payment_total()
         for rec in self:
-            rec.payment_total += sum(rec.l10n_ve_withholding_line_ids.mapped("amount"))
+            rec.payment_total += sum(
+                rec._get_l10n_ve_active_withholding_lines().mapped("amount")
+            )
 
     def _get_l10n_ve_partner_withholding_taxes(self):
         self.ensure_one()
@@ -107,6 +131,7 @@ class AccountPayment(models.Model):
             return False
         withholdings = move.l10n_ve_withholding_ids.filtered(
             lambda withholding: withholding.payment_id != self
+            and withholding.state != 'cancel'
         )
         return tax.id in withholdings.tax_id.ids
 
@@ -151,6 +176,8 @@ class AccountPayment(models.Model):
         "partner_id.commercial_partner_id.l10n_ve_seniat_regimen_islr_ids",
         "to_pay_move_line_ids",
         "to_pay_move_line_ids.move_id.l10n_ve_withholding_ids.tax_id",
+        "to_pay_move_line_ids.move_id.l10n_ve_withholding_ids.state",
+        "l10n_ve_withholding_line_ids.state",
         "company_id",
         "date",
         "partner_type",
@@ -160,14 +187,14 @@ class AccountPayment(models.Model):
             if rec.state != "draft" and rec.l10n_ve_withholding_line_ids:
                 rec.l10n_ve_withholding_islr = any(
                     line.l10n_ve_tax_type == 'tabla_islr'
-                    for line in rec.l10n_ve_withholding_line_ids
+                    for line in rec._get_l10n_ve_active_withholding_lines()
                 )
                 rec.l10n_ve_withholding_line_ids = rec.l10n_ve_withholding_line_ids
                 continue
             if not rec._allow_l10n_ve_auto_withholding():
                 rec.l10n_ve_withholding_islr = any(
                     line.l10n_ve_tax_type == 'tabla_islr'
-                    for line in rec.l10n_ve_withholding_line_ids
+                    for line in rec._get_l10n_ve_active_withholding_lines()
                 )
                 rec.l10n_ve_withholding_line_ids = rec.l10n_ve_withholding_line_ids
                 continue
@@ -178,7 +205,9 @@ class AccountPayment(models.Model):
                 partner_taxes = partner_taxes.filtered(
                     lambda partner_tax: rec._has_l10n_ve_moves_without_withholding_tax(partner_tax.tax_id)
                 )
-                existing_tax_ids = set(rec.l10n_ve_withholding_line_ids.tax_id.ids)
+                existing_tax_ids = set(
+                    rec._get_l10n_ve_active_withholding_lines().tax_id.ids
+                )
                 wth_islr = any(
                     tax.tax_id.l10n_ve_tax_type == 'tabla_islr'
                     for tax in partner_taxes
@@ -194,10 +223,12 @@ class AccountPayment(models.Model):
             else:
                 rec.l10n_ve_withholding_line_ids = rec.l10n_ve_withholding_line_ids
 
-    @api.depends("l10n_ve_withholding_line_ids.amount")
+    @api.depends("l10n_ve_withholding_line_ids.amount", "l10n_ve_withholding_line_ids.state")
     def _compute_l10n_ve_withholdings_amount(self):
         for payment in self:
-            payment.l10n_ve_withholdings_amount = sum(payment.l10n_ve_withholding_line_ids.mapped("amount"))
+            payment.l10n_ve_withholdings_amount = sum(
+                payment._get_l10n_ve_active_withholding_lines().mapped("amount")
+            )
 
     @api.depends("unreconciled_amount")
     def _compute_withholdable_advanced_amount(self):
@@ -230,13 +261,14 @@ class AccountPayment(models.Model):
         'to_pay_move_line_ids.move_id',
         'to_pay_move_line_ids.move_id.l10n_ve_withholding_ids.tax_id',
         'l10n_ve_withholding_line_ids.tax_id',
+        'l10n_ve_withholding_line_ids.state',
         'date',
         'currency_id')
     def _compute_l10n_ve_withholding_taxed(self):
         for payment in self:
             withholding_taxed = 0.0
             move_line_tax_ids = []
-            withholding_taxes = payment.l10n_ve_withholding_line_ids.filtered(
+            withholding_taxes = payment._get_l10n_ve_active_withholding_lines().filtered(
                 lambda line: line.tax_id.l10n_ve_tax_type == 'partner_tax'
             ).tax_id
             company_id = payment.company_id.id if not payment.company_id.parent_id \
@@ -265,35 +297,25 @@ class AccountPayment(models.Model):
             payment.l10n_ve_move_line_taxes_ids = [Command.set(move_line_tax_ids)]
 
     @api.depends(
-        'to_pay_move_line_ids.move_id.amount_untaxed',
-        'to_pay_move_line_ids.currency_id',
+        'to_pay_move_line_ids.move_id.amount_untaxed_signed',
         'to_pay_move_line_ids.move_id',
         'to_pay_move_line_ids.move_id.l10n_ve_withholding_ids.tax_id',
         'l10n_ve_withholding_line_ids.tax_id',
-        'date',
-        'currency_id')
+        'l10n_ve_withholding_line_ids.state')
     def _compute_l10n_ve_withholding_untaxed(self):
         for payment in self:
             withholding_untaxed = 0.0
-            withholding_taxes = payment.l10n_ve_withholding_line_ids.filtered(
+            withholding_taxes = payment._get_l10n_ve_active_withholding_lines().filtered(
                 lambda line: line.tax_id.l10n_ve_tax_type == 'tabla_islr'
             ).tax_id
             lines_to_pay = payment.to_pay_move_line_ids._origin or payment.to_pay_move_line_ids
-            for line_to_pay in lines_to_pay:
+            for move in lines_to_pay.mapped('move_id'):
                 if withholding_taxes and not any(
-                    payment._get_l10n_ve_moves_without_withholding_tax(tax) & line_to_pay.move_id
+                    payment._get_l10n_ve_moves_without_withholding_tax(tax) & move
                     for tax in withholding_taxes
                 ):
                     continue
-                amount_untaxed = line_to_pay.move_id.amount_untaxed
-                if line_to_pay.move_id.currency_id != payment.company_id.currency_id:
-                    amount_untaxed = line_to_pay.move_id.currency_id._convert(
-                        line_to_pay.move_id.amount_untaxed,
-                        payment.company_id.currency_id,
-                        payment.company_id,
-                        payment.date
-                    )
-                withholding_untaxed += amount_untaxed
+                withholding_untaxed += abs(move.amount_untaxed_signed)
             payment.l10n_ve_withholding_untaxed = withholding_untaxed
 
     @api.onchange("l10n_ve_withholdings_amount")
@@ -382,10 +404,11 @@ class AccountPayment(models.Model):
         return '{:,.2f}'.format(number).replace(",", "@").replace(".", ",").replace("@", ".")
 
     def _needs_withholding_draft_bypass(self):
-        """Detect payments likely to hit unbalanced-move on reset-to-draft."""
+        """Detect payments whose withholding lines must be preserved in draft."""
         self.ensure_one()
 
-        if not self.l10n_ve_withholding_line_ids:
+        withholdings = self._get_l10n_ve_effective_withholding_lines()
+        if not withholdings:
             return False
         if not self.move_id or self.move_id.state not in ("posted", "cancel"):
             return False
@@ -393,10 +416,19 @@ class AccountPayment(models.Model):
         payment_move_lines = self.move_id.line_ids.filtered(lambda line: line.payment_id == self)
         if not payment_move_lines:
             payment_move_lines = self.move_id.line_ids
-        tax_payment_lines = payment_move_lines.filtered("tax_line_id")
-        if not tax_payment_lines:
-            return False
-        return True
+        linked_withholding_lines = payment_move_lines.filtered(
+            lambda line: line.l10n_ve_withholding_line_id in withholdings
+        )
+        if linked_withholding_lines:
+            return True
+
+        withholding_taxes = withholdings.mapped("tax_id")
+        company_currency = self.company_id.currency_id
+        return any(
+            line.tax_line_id in withholding_taxes
+            and not company_currency.is_zero(line.balance)
+            for line in payment_move_lines
+        )
 
     def action_draft(self):
         if self.env.context.get("skip_withholding_draft_guard"):
@@ -412,12 +444,91 @@ class AccountPayment(models.Model):
             super(
                 AccountPayment,
                 risky_payments.with_context(
-                    check_move_validity=False,
+                    skip_invoice_sync=True,
                     skip_withholding_draft_guard=True,
                 ),
             ).action_draft()
 
         return True
+
+    def _get_l10n_ve_numbered_withholding_lines(self):
+        return self.l10n_ve_withholding_line_ids.filtered(
+            lambda withholding: withholding._has_control_number()
+        )
+
+    def _write_l10n_ve_numbered_withholding_snapshot(
+        self, state=False, cancel=False, detach=False
+    ):
+        for payment in self:
+            payment._get_l10n_ve_numbered_withholding_lines()._write_payment_snapshot(
+                state=state,
+                cancel=cancel,
+                detach=detach,
+            )
+
+    def _l10n_ve_find_withholding_move_line(self, withholding):
+        self.ensure_one()
+        move = self.move_id
+        if not move:
+            return self.env["account.move.line"]
+
+        linked = move.line_ids.filtered(
+            lambda aml: aml.l10n_ve_withholding_line_id == withholding
+        )
+        if linked:
+            return linked[:1]
+
+        __, account_id, __, __ = withholding._tax_compute_all_helper()
+        company_currency = self.company_id.currency_id
+        amount = company_currency.round(withholding.amount)
+        candidates = move.line_ids.filtered(
+            lambda aml: aml.account_id.id == account_id
+            and company_currency.compare_amounts(
+                company_currency.round(abs(aml.balance)),
+                amount,
+            ) == 0
+        )
+        if len(candidates) == 1:
+            return candidates
+        named = candidates.filtered(lambda aml: aml.name == withholding.name)
+        if named:
+            return named[:1]
+        empty = candidates.filtered(lambda aml: not aml.name)
+        if empty:
+            return empty[:1]
+        return candidates[:1]
+
+    def _l10n_ve_sync_withholding_names_to_move(self):
+        """Ensure the control number and retention link reach the journal item."""
+        move_lines = self.env["account.move.line"].with_context(
+            check_move_validity=False,
+            skip_invoice_sync=True,
+        )
+        for payment in self:
+            if not payment.move_id or payment.move_id.state != 'draft':
+                continue
+            for withholding in payment._get_l10n_ve_active_withholding_lines():
+                if not withholding._has_control_number():
+                    continue
+                line = payment._l10n_ve_find_withholding_move_line(withholding)
+                if not line:
+                    _logger.warning(
+                        "Payment %s: no move line found for withholding %s (%s)",
+                        payment.name,
+                        withholding.id,
+                        withholding.name,
+                    )
+                    continue
+                __, __, tax_repartition_line_id, __ = withholding._tax_compute_all_helper()
+                vals = {}
+                if line.name != withholding.name:
+                    vals["name"] = withholding.name
+                if line.tax_repartition_line_id.id != tax_repartition_line_id:
+                    vals["tax_repartition_line_id"] = tax_repartition_line_id
+                if line.l10n_ve_withholding_line_id != withholding:
+                    vals["l10n_ve_withholding_line_id"] = withholding.id
+                if vals:
+                    move_lines.browse(line.id).write(vals)
 
     def action_post(self):
         for payment in self:
@@ -429,7 +540,7 @@ class AccountPayment(models.Model):
                         'payment_type': 'inbound',
                     })
             commands = []
-            for line in payment.l10n_ve_withholding_line_ids if payment.partner_type == 'supplier' else []:
+            for line in payment._get_l10n_ve_active_withholding_lines() if payment.partner_type == 'supplier' else []:
                 if not line.name or line.name == "/":
                     if line.tax_id.l10n_ve_withholding_sequence_id:
                         commands.append(
@@ -449,15 +560,17 @@ class AccountPayment(models.Model):
                         )
             if commands:
                 payment.l10n_ve_withholding_line_ids = commands
+            payment._l10n_ve_sync_withholding_names_to_move()
         res = super(AccountPayment, self).action_post()
         for payment in self:
+            payment._write_l10n_ve_numbered_withholding_snapshot(state='posted')
             if not payment.to_pay_move_line_ids:
                 continue
             for move in payment.to_pay_move_line_ids.mapped('move_id'):
                 # Link withholdings after posting so the computed draft suggestions
                 # do not wipe the lines that were just confirmed on this payment.
                 wth_to_add = [
-                    wth.id for wth in payment.l10n_ve_withholding_line_ids
+                    wth.id for wth in payment._get_l10n_ve_active_withholding_lines()
                     if not payment._move_has_l10n_ve_withholding_tax(move, wth.tax_id)
                 ]
                 current_ids = move.l10n_ve_withholding_ids.ids
@@ -480,6 +593,30 @@ class AccountPayment(models.Model):
         #               % invoice_id.invoice_date.strftime('%Y-%m-%d')
         #         )
         return res
+
+    def action_cancel(self):
+        res = super().action_cancel()
+        self._write_l10n_ve_numbered_withholding_snapshot(
+            state='cancel',
+            cancel=True,
+        )
+        return res
+
+    def unlink(self):
+        for payment in self:
+            numbered_withholdings = payment._get_l10n_ve_numbered_withholding_lines()
+            unnumbered_withholdings = (
+                payment.l10n_ve_withholding_line_ids - numbered_withholdings
+            )
+            if unnumbered_withholdings:
+                unnumbered_withholdings.unlink()
+            if numbered_withholdings:
+                numbered_withholdings._write_payment_snapshot(
+                    state='cancel',
+                    cancel=True,
+                    detach=True,
+                )
+        return super().unlink()
 
     def _prepare_move_lines_per_type(self, write_off_line_vals=None, force_balance=None):
         res = super()._prepare_move_lines_per_type(write_off_line_vals=write_off_line_vals, force_balance=force_balance)
@@ -564,7 +701,8 @@ class AccountPayment(models.Model):
         currency_data = self._get_withholding_move_currency_data()
         move_currency = currency_data["currency"]
         conversion_rate = currency_data["conversion_rate"]
-        for line in self.l10n_ve_withholding_line_ids:
+        active_withholding_lines = self._get_l10n_ve_active_withholding_lines()
+        for line in active_withholding_lines:
             __, account_id, tax_repartition_line_id, __ = line._tax_compute_all_helper()
             balance = self.company_id.currency_id.round(sign * line.amount)
             amount_currency = move_currency.round(balance / conversion_rate)
@@ -572,6 +710,7 @@ class AccountPayment(models.Model):
                 {
                     **self._get_withholding_move_line_default_values(),
                     "name": line.name,
+                    "l10n_ve_withholding_line_id": line.id,
                     "account_id": account_id,
                     "balance": balance,
                     "amount_currency": amount_currency,
@@ -582,8 +721,10 @@ class AccountPayment(models.Model):
             )
         account_id = self.company_id.l10n_ve_tax_base_account_id.id
         if account_id:
-            for base_amount in list(set(self.l10n_ve_withholding_line_ids.mapped("base_amount"))):
-                withholding_lines = self.l10n_ve_withholding_line_ids.filtered(lambda x: x.base_amount == base_amount)
+            for base_amount in list(set(active_withholding_lines.mapped("base_amount"))):
+                withholding_lines = active_withholding_lines.filtered(
+                    lambda line: line.base_amount == base_amount
+                )
                 nice_base_label = ",".join(withholding_lines.filtered("name").mapped("name"))
                 account_id = self.company_id.l10n_ve_tax_base_account_id.id
                 balance = self.company_id.currency_id.round(sign * base_amount)

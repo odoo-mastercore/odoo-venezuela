@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="res_config_settings_view_form_inherit_vat_ledger" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.vat.ledger</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="l10n_ve_base.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <div id="venezuela_localization_section" position="attributes">
+                <attribute name="invisible">0</attribute>
+            </div>
+            <xpath expr="//block[@id='venezuela_localization']" position="inside">
+                <setting
+                    id="l10n_ve_vat_ledger_import_columns"
+                    string="Libro IVA de compras"
+                    help="Agrega columnas de importacion y segmenta las facturas de los proveedores configurados como compras de importacion."
+                    company_dependent="1"
+                >
+                    <field name="l10n_ve_vat_ledger_show_import_columns"/>
+                </setting>
+            </xpath>
+        </field>
+    </record>
+</odoo>
