@@ -47,6 +47,14 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                 amount_reten = -abs(amount_reten)
         return amount_reten
 
+    def _is_import_purchase_move(self, move):
+        partner = move.partner_id.with_company(move.company_id)
+        commercial_partner = partner.commercial_partner_id.with_company(move.company_id)
+        return bool(
+            partner.l10n_ve_vat_ledger_import_purchase
+            or commercial_partner.l10n_ve_vat_ledger_import_purchase
+        )
+
     def find_values(self, id, json_repr):
         results = []
 
@@ -91,6 +99,10 @@ class AccountVatLedgerXlsx(models.AbstractModel):
         for obj in account_vat:
             report_name = obj.name
             sheet = workbook.add_worksheet(report_name[:31])
+            show_import_columns = (
+                obj.type == 'purchase'
+                and obj.company_id.l10n_ve_vat_ledger_show_import_columns
+            )
             title = workbook.add_format({'bold': True})
             bold = workbook.add_format({'bold': True, 'border':1})
 
@@ -370,6 +382,8 @@ class AccountVatLedgerXlsx(models.AbstractModel):
             c_total_base_imponible_31 = 0.00
             c_total_iva_31 = 0.00
             c_total_igtf = 0.00
+            c_total_import_base = 0.00
+            c_total_import_tax = 0.00
           
             i = 0
             
@@ -569,6 +583,19 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     base_imponible_8 = 0.00
                     base_imponible_31 = 0.00
                     igtf_amount = 0.00
+                    import_base = 0.00
+                    import_tax = 0.00
+                    import_rate_label = ''
+                    is_import_purchase = show_import_columns and self._is_import_purchase_move(invoice)
+                    # Notas de crédito/débito de esta factura. Se suman a los
+                    # totales del resumen solo si no es compra de importación.
+                    inv_nota_credito_16 = inv_nota_credito_iva_16 = 0.00
+                    inv_nota_credito_8 = inv_nota_credito_iva_8 = 0.00
+                    inv_nota_credito_31 = inv_nota_credito_iva_31 = 0.00
+                    inv_nota_debito_16 = inv_nota_debito_iva_16 = 0.00
+                    inv_nota_debito_8 = inv_nota_debito_iva_8 = 0.00
+                    inv_nota_debito_31 = inv_nota_debito_iva_31 = 0.00
+                    inv_base_exento_credito = inv_base_exento_debito = 0.00
                     if invoice.invoice_line_ids:
                         for linel in invoice.invoice_line_ids:
                             if linel.tax_ids:
@@ -584,13 +611,13 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                                             if not invoice.debit_origin_id:
                                                 base_imponible += amounts.get('base_imponible') * -1
                                                 iva_16 += amounts.get('tax_amount') * -1.00
-                                                total_nota_credito_16 += amounts.get('base_imponible') * -1
-                                                total_nota_credito_iva_16 += amounts.get('tax_amount') * -1
+                                                inv_nota_credito_16 += amounts.get('base_imponible') * -1
+                                                inv_nota_credito_iva_16 += amounts.get('tax_amount') * -1
                                             else:
                                                 base_imponible += amounts.get('base_imponible')
                                                 iva_16 += amounts.get('tax_amount')
-                                                total_nota_debito_16 += amounts.get('base_imponible')
-                                                total_nota_debito_iva_16 += amounts.get('tax_amount')
+                                                inv_nota_debito_16 += amounts.get('base_imponible')
+                                                inv_nota_debito_iva_16 += amounts.get('tax_amount')
                                         else:
                                             total_base_imponible_16 += base_imponible
                                             total_iva_16 += iva_16
@@ -603,10 +630,10 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                                                 and invoice.debit_origin_id):
                                             base_exento += amounts.get('base_imponible') * -1
                                             if not invoice.debit_origin_id:
-                                                total_base_exento_credito += amounts.get('base_imponible') * -1
+                                                inv_base_exento_credito += amounts.get('base_imponible') * -1
                                             else:
                                                 base_exento += amounts.get('base_imponible')
-                                                total_base_exento_debito += amounts.get('base_imponible')
+                                                inv_base_exento_debito += amounts.get('base_imponible')
                                         else:
                                             total_base_exento += base_exento
 
@@ -622,13 +649,13 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                                             if not invoice.debit_origin_id:
                                                 base_imponible_8 += amounts.get('base_imponible') * -1
                                                 iva_8 += amounts.get('tax_amount') * -1.00
-                                                total_nota_credito_8 += amounts.get('base_imponible') * -1
-                                                total_nota_credito_iva_8 += amounts.get('tax_amount') * -1
+                                                inv_nota_credito_8 += amounts.get('base_imponible') * -1
+                                                inv_nota_credito_iva_8 += amounts.get('tax_amount') * -1
                                             else:
                                                 base_imponible += amounts.get('base_imponible')
                                                 iva_16 += amounts.get('tax_amount')
-                                                total_nota_debito_8 += amounts.get('base_imponible')
-                                                total_nota_debito_iva_8 += amounts.get('tax_amount')
+                                                inv_nota_debito_8 += amounts.get('base_imponible')
+                                                inv_nota_debito_iva_8 += amounts.get('tax_amount')
                                         else:
                                             total_base_imponible_8 += base_imponible_8
                                             total_iva_8 += iva_8
@@ -645,13 +672,13 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                                             if not invoice.debit_origin_id:
                                                 base_imponible_31 += amounts.get('base_imponible') * -1
                                                 iva_31 += amounts.get('tax_amount') * -1.00
-                                                total_nota_credito_31 += amounts.get('base_imponible') * -1
-                                                total_nota_credito_iva_31 += amounts.get('tax_amount') * -1
+                                                inv_nota_credito_31 += amounts.get('base_imponible') * -1
+                                                inv_nota_credito_iva_31 += amounts.get('tax_amount') * -1
                                             else:
                                                 base_imponible += amounts.get('base_imponible')
                                                 iva_16 += amounts.get('tax_amount')
-                                                total_nota_debito_31 += amounts.get('base_imponible')
-                                                total_nota_debito_iva_31 += amounts.get('tax_amount')
+                                                inv_nota_debito_31 += amounts.get('base_imponible')
+                                                inv_nota_debito_iva_31 += amounts.get('tax_amount')
                                         else:
                                             total_base_imponible_31 += base_imponible_31
                                             total_iva_31 += iva_31
@@ -659,6 +686,47 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     print(base_imponible)
                     if invoice.igtf_purchase_apply_purchase:
                         igtf_amount = invoice.igtf_amount_purchase
+
+                    if is_import_purchase:
+                        # Compra de importación: la base (incluido el exento)
+                        # y el IVA van al bloque Importaciones y salen de
+                        # compras internas y de los totales de notas.
+                        import_base = (
+                            base_exento + inv_base_exento_credito
+                            + base_imponible + base_imponible_8 + base_imponible_31
+                        )
+                        import_tax = iva_16 + iva_8 + iva_31
+                        import_rates = [
+                            rate for rate, base, tax in (
+                                ('16%', base_imponible, iva_16),
+                                ('8%', base_imponible_8, iva_8),
+                                ('31%', base_imponible_31, iva_31),
+                            ) if base or tax
+                        ]
+                        if len(import_rates) == 1:
+                            import_rate_label = import_rates[0]
+                        elif import_rates:
+                            import_rate_label = 'Varias'
+                        c_total_import_base += import_base
+                        c_total_import_tax += import_tax
+                        base_exento = base_imponible = base_imponible_8 = base_imponible_31 = 0.00
+                        iva_16 = iva_8 = iva_31 = 0.00
+                        alic_16 = alic_8 = alic_31 = ''
+                    else:
+                        total_nota_credito_16 += inv_nota_credito_16
+                        total_nota_credito_iva_16 += inv_nota_credito_iva_16
+                        total_nota_credito_8 += inv_nota_credito_8
+                        total_nota_credito_iva_8 += inv_nota_credito_iva_8
+                        total_nota_credito_31 += inv_nota_credito_31
+                        total_nota_credito_iva_31 += inv_nota_credito_iva_31
+                        total_nota_debito_16 += inv_nota_debito_16
+                        total_nota_debito_iva_16 += inv_nota_debito_iva_16
+                        total_nota_debito_8 += inv_nota_debito_8
+                        total_nota_debito_iva_8 += inv_nota_debito_iva_8
+                        total_nota_debito_31 += inv_nota_debito_31
+                        total_nota_debito_iva_31 += inv_nota_debito_iva_31
+                        total_base_exento_credito += inv_base_exento_credito
+                        total_base_exento_debito += inv_base_exento_debito
 
                     #########
                     """ Totales """
@@ -682,11 +750,11 @@ class AccountVatLedgerXlsx(models.AbstractModel):
 
                     #IMPORTACIONES
                     # Base Imponible
-                    sheet.write(row, 14, 0, line_number)
+                    sheet.write(row, 14, import_base, line_number)
                     # % Alic
-                    sheet.write(row, 15, '', line_number)
+                    sheet.write(row, 15, import_rate_label, line_number)
                     #Imp. IVA
-                    sheet.write(row, 16, 0, line_number)
+                    sheet.write(row, 16, import_tax, line_number)
 
                     #Compras internas
                     # Base Imponible
@@ -1288,6 +1356,9 @@ class AccountVatLedgerXlsx(models.AbstractModel):
             else:
                 
                 sheet.write((row), 13, c_total_base_exento, line_total)
+                if show_import_columns:
+                    sheet.write((row), 14, c_total_import_base, line_total)
+                    sheet.write((row), 16, c_total_import_tax, line_total)
                 sheet.write((row), 17, c_total_base_imponible_16, line_total)
                 sheet.write((row), 19, c_total_iva_16, line_total)
                 sheet.write((row), 20, c_total_base_imponible_8, line_total)
@@ -1328,8 +1399,8 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                 sheet.write((row + 3), 16, 0, line_number)
                 sheet.write((row + 3), 17, 0, line_number)
                 sheet.merge_range('J%s:M%s' % (str(row + 5), str(row + 5)), 'Total Compras de Importaciòn', title_style)
-                sheet.write((row + 4), 13, 0, line_number)
-                sheet.write((row + 4), 14, 0, line_number)
+                sheet.write((row + 4), 13, c_total_import_base, line_number)
+                sheet.write((row + 4), 14, c_total_import_tax, line_number)
                 sheet.write((row + 4), 15, 0, line_number)
                 sheet.write((row + 4), 16, 0, line_number)
                 sheet.write((row + 4), 17, 0, line_number)
@@ -1395,10 +1466,11 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     + c_total_base_imponible_8+c_total_base_imponible_31+total_nota_credito_16+\
                         + total_nota_credito_8 + total_nota_credito_31 +total_nota_debito_16 + \
                             + total_nota_debito_8 + total_nota_debito_31 + total_base_exento_credito +\
-                                total_base_exento_debito ,2), line_number)
+                                total_base_exento_debito + c_total_import_base ,2), line_number)
                 sheet.write((row+14), 14, (c_total_iva_16_positive + c_total_iva_8 + c_total_iva_31 + \
                     total_nota_credito_iva_16 + total_nota_credito_iva_8 + total_nota_credito_iva_31 + \
-                        total_nota_debito_iva_16 + total_nota_debito_iva_8 + total_nota_debito_iva_31), line_number)
+                        total_nota_debito_iva_16 + total_nota_debito_iva_8 + total_nota_debito_iva_31 + \
+                            c_total_import_tax), line_number)
                 sheet.write((row+14), 15, total_iva_16_retenido, line_number)
                 sheet.write((row+14), 16, total_iva_16_igtf, line_number)
                 sheet.write((row+14), 17, c_total_igtf, line_number)

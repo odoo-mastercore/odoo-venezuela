@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="res_partner_view_form_inherit_vat_ledger_imports" model="ir.ui.view">
+        <field name="name">res.partner.view.form.inherit.vat.ledger.imports</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="account.view_partner_property_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='accounting_entries']" position="after">
+                <group string="Libro IVA" name="l10n_ve_vat_ledger_imports">
+                    <field name="l10n_ve_vat_ledger_import_purchase"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>
