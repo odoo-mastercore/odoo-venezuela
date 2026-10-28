@@ -7,6 +7,8 @@
 #
 #
 ##############################################################################
+from itertools import zip_longest
+
 from odoo import models, fields, api, _, Command
 from odoo.exceptions import UserError
 import logging
@@ -102,13 +104,81 @@ class AccountPayment(models.Model):
             and not company_currency.is_zero(withholding.amount)
         )
 
-    @api.depends("l10n_ve_withholding_line_ids.amount", "l10n_ve_withholding_line_ids.state")
+    @api.depends(
+        "l10n_ve_withholding_line_ids.amount", "l10n_ve_withholding_line_ids.state",
+        "destination_currency_id", "date", "to_pay_move_line_ids",
+    )
     def _compute_payment_total(self):
         super()._compute_payment_total()
         for rec in self:
-            rec.payment_total += sum(
-                rec._get_l10n_ve_active_withholding_lines().mapped("amount")
+            rec.payment_total += rec._get_l10n_ve_withholding_amount_in_currency(
+                rec.destination_currency_id or rec.company_currency_id,
             )
+
+    def _get_l10n_ve_withholding_allocations(self, withholding):
+        """Allocate a supplier retention to the historical bases of its invoices."""
+        self.ensure_one()
+        company_currency = self.company_currency_id
+        if (
+            self.partner_type != 'supplier'
+            or company_currency.is_zero(withholding.amount)
+            or not company_currency.is_zero(self.l10n_ve_withholdable_advanced_amount)
+        ):
+            return []
+        moves = self._get_l10n_ve_moves_without_withholding_tax(withholding.tax_id)
+        bases = []
+        for move in moves:
+            if move.move_type not in ('in_invoice', 'in_refund'):
+                continue
+            if withholding.tax_id.l10n_ve_tax_type == 'partner_tax':
+                base = sum(abs(line.balance) for line in self.l10n_ve_move_line_taxes_ids
+                           if line.move_id == move)
+            elif withholding.calc_islr == 'line':
+                base = abs(withholding.move_line_id.balance) if withholding.move_line_id.move_id == move else 0.0
+            else:
+                base = abs(move.amount_untaxed_signed)
+            if base:
+                bases.append((move, base))
+        total_base = sum(base for move, base in bases)
+        if not total_base:
+            return []
+        result = []
+        remaining = withholding.amount
+        for index, (move, base) in enumerate(bases):
+            amount = remaining if index == len(bases) - 1 else company_currency.round(
+                withholding.amount * base / total_base
+            )
+            remaining -= amount
+            currency = move.currency_id
+            rate = move.invoice_currency_rate if currency != company_currency else 1.0
+            if not rate:
+                return []
+            result.append({
+                'move': move,
+                'withholding': withholding,
+                'currency': currency,
+                'amount': amount,
+                'amount_currency': currency.round(amount * rate),
+                'base_amount': withholding.base_amount * base / total_base,
+                'base_amount_currency': currency.round(withholding.base_amount * base / total_base * rate),
+            })
+        return result
+
+    def _get_l10n_ve_withholding_amount_in_currency(self, currency):
+        self.ensure_one()
+        amount = 0.0
+        for withholding in self._get_l10n_ve_active_withholding_lines():
+            allocations = self._get_l10n_ve_withholding_allocations(withholding)
+            if not allocations or currency == self.company_currency_id:
+                amount += self.company_currency_id._convert(
+                    withholding.amount, currency, self.company_id, self.date, round=False,
+                )
+                continue
+            for allocation in allocations:
+                amount += allocation['currency']._convert(
+                    allocation['amount_currency'], currency, self.company_id, self.date, round=False,
+                )
+        return currency.round(amount)
 
     def _get_l10n_ve_partner_withholding_taxes(self):
         self.ensure_one()
@@ -130,7 +200,7 @@ class AccountPayment(models.Model):
         if not move or not tax:
             return False
         withholdings = move.l10n_ve_withholding_ids.filtered(
-            lambda withholding: withholding.payment_id != self
+            lambda withholding: withholding.payment_id != (self._origin or self)
             and withholding.state != 'cancel'
         )
         return tax.id in withholdings.tax_id.ids
@@ -618,6 +688,59 @@ class AccountPayment(models.Model):
                 )
         return super().unlink()
 
+    def _synchronize_to_moves(self, changed_fields):
+        if not set(changed_fields) & set(self._get_trigger_fields_to_synchronize()):
+            return
+        historical = self.filtered(lambda payment: payment.move_id.state == 'draft' and (
+            any(
+                allocation['currency'] != payment.company_currency_id
+                for withholding in payment._get_l10n_ve_active_withholding_lines()
+                for allocation in payment._get_l10n_ve_withholding_allocations(withholding)
+            ) or (
+                len(payment.move_id.line_ids.filtered(
+                    lambda line: line.account_id == payment.destination_account_id
+                )) > 1 and payment.move_id.line_ids.filtered(
+                    lambda line: line.tax_line_id.l10n_ve_tax_type in ('partner_tax', 'tabla_islr')
+                )
+            )
+        ))
+        super(AccountPayment, self - historical)._synchronize_to_moves(changed_fields)
+        for payment in historical:
+            # Core synchronization assumes one counterpart; a historical retention has its own.
+            liquidity = payment.move_id.line_ids.filtered(
+                lambda line: line.account_id in payment._get_valid_liquidity_accounts()
+            )
+            counterparts = payment.move_id.line_ids.filtered(
+                lambda line: line.account_id == payment.destination_account_id
+            )
+            extras = payment.move_id.line_ids - liquidity - counterparts
+            if 'amount' in changed_fields and len(liquidity) > 1:
+                raise UserError(_("You cannot change the amount of a payment with multiple liquidity lines."))
+            values = payment._prepare_move_lines_per_type()
+            commands = []
+            for old_lines, key in ((liquidity, 'liquidity_lines'), (counterparts, 'counterpart_lines')):
+                for line, new_values in zip_longest(old_lines, values.get(key, [])):
+                    if line and new_values:
+                        commands.append(Command.update(line.id, new_values))
+                    elif line:
+                        commands.append(Command.delete(line.id))
+                    else:
+                        commands.append(Command.create(new_values))
+            commands += [Command.delete(line.id) for line in extras]
+            commands += [Command.create(line) for line in (
+                values.get('write_off_lines', []) + values.get('withholding_lines', [])
+            )]
+            move_values = {
+                'date': payment.date,
+                'partner_id': payment.partner_id.id,
+                'currency_id': payment.currency_id.id,
+                'partner_bank_id': payment.partner_bank_id.id,
+                'line_ids': commands,
+            }
+            if 'journal_id' in changed_fields:
+                move_values.update(name='/', journal_id=payment.journal_id.id)
+            payment.move_id.with_context(skip_invoice_sync=True).write(move_values)
+
     def _prepare_move_lines_per_type(self, write_off_line_vals=None, force_balance=None):
         res = super()._prepare_move_lines_per_type(write_off_line_vals=write_off_line_vals, force_balance=force_balance)
         wth_lines = res.get("withholding_lines", [])
@@ -626,6 +749,12 @@ class AccountPayment(models.Model):
             wth_amount_currency = sum(line["amount_currency"] for line in wth_lines)
             wth_currency_ids = {line.get("currency_id") for line in wth_lines if line.get("currency_id")}
             wth_currency_id = next(iter(wth_currency_ids), False) if len(wth_currency_ids) == 1 else False
+            historical = [
+                allocation
+                for withholding in self._get_l10n_ve_active_withholding_lines()
+                for allocation in self._get_l10n_ve_withholding_allocations(withholding)
+                if allocation['currency'] != self.company_currency_id
+            ]
 
             def _same_currency_for_amount_currency(line_vals):
                 line_currency_id = line_vals.get("currency_id")
@@ -643,6 +772,16 @@ class AccountPayment(models.Model):
                     # Super already subtracts withholding_amount_currency from liquidity amount_currency.
                     # If currencies differ, undo that subtraction to avoid cross-currency corruption.
                     liquidity_lines[0]["amount_currency"] += wth_amount_currency
+                if historical and self.currency_id != self.company_currency_id and self.accounting_rate and force_balance is None:
+                    liquidity_lines[0]["balance"] = self.company_currency_id.round(
+                        liquidity_lines[0]["amount_currency"] / self.accounting_rate
+                    )
+                if historical and len(liquidity_lines) == 1 and force_balance is None:
+                    sign = -1 if self.payment_type == 'outbound' else 1
+                    liquidity_lines[0]['amount_currency'] = sign * (self.amount_exact or self.amount)
+                    liquidity_lines[0]['balance'] = self.company_currency_id.round(
+                        liquidity_lines[0]['amount_currency'] / (self.accounting_rate or 1.0)
+                    )
                 if self.company_currency_id.is_zero(liquidity_lines[0]["balance"]):
                     res["liquidity_lines"] = []
 
@@ -669,7 +808,67 @@ class AccountPayment(models.Model):
                 if not line_currency_id or line_currency_id == self.company_currency_id.id:
                     line_vals["amount_currency"] = line_vals["balance"]
 
+            if historical and counterpart_lines:
+                counterpart = counterpart_lines[0]
+                counterpart['balance'] = -sum(
+                    line['balance'] for line in (
+                        res.get('liquidity_lines', []) + res.get('write_off_lines', [])
+                        + wth_lines + counterpart_lines[1:]
+                    )
+                )
+                sign = -1 if self.payment_type == 'outbound' else 1
+                # Keep retention debt separate from cash debt so it reconciles at its invoice rate.
+                for allocation in historical:
+                    balance = self.company_currency_id.round(-sign * allocation['amount'])
+                    counterpart['balance'] -= balance
+                    counterpart_lines.append({
+                        **counterpart,
+                        'name': allocation['withholding'].name,
+                        'balance': balance,
+                        'currency_id': allocation['currency'].id,
+                        'amount_currency': -sign * allocation['amount_currency'],
+                    })
+                currency = self.env['res.currency'].browse(counterpart.get('currency_id')) or self.company_currency_id
+                if currency == self.company_currency_id:
+                    counterpart['amount_currency'] = counterpart['balance']
+                elif currency == self.currency_id and self.accounting_rate:
+                    counterpart['amount_currency'] = currency.round(counterpart['balance'] * self.accounting_rate)
+                elif currency == self.counterpart_currency_id:
+                    counterpart['amount_currency'] = -sign * (
+                        self.counterpart_currency_amount + self.write_off_amount
+                    )
+                else:
+                    counterpart['amount_currency'] = self.company_currency_id._convert(
+                        counterpart['balance'], currency, self.company_id, self.date,
+                    )
+                if self.company_currency_id.is_zero(counterpart['balance']) and currency.is_zero(
+                    counterpart['amount_currency']
+                ):
+                    counterpart_lines.remove(counterpart)
+
         return res
+
+    def _reconcile_after_post(self):
+        for payment in self.filtered(lambda p: p.company_id.use_payment_pro and not p.is_internal_transfer):
+            for withholding in payment._get_l10n_ve_active_withholding_lines():
+                for allocation in payment._get_l10n_ve_withholding_allocations(withholding):
+                    currency = allocation['currency']
+                    if currency == payment.company_currency_id:
+                        continue
+                    sign = -1 if payment.payment_type == 'outbound' else 1
+                    counterparts = payment.move_id.line_ids.filtered(
+                        lambda line: not line.reconciled
+                        and line.account_id == payment.destination_account_id
+                        and line.currency_id == currency
+                        and currency.is_zero(line.amount_currency + sign * allocation['amount_currency'])
+                        and payment.company_currency_id.is_zero(line.balance + sign * allocation['amount'])
+                    )[:1]
+                    debt = payment.to_pay_move_line_ids.filtered(
+                        lambda line: line.move_id == allocation['move'] and not line.reconciled
+                    )
+                    if counterparts and debt:
+                        (counterparts + debt).reconcile()
+        return super()._reconcile_after_post()
 
     def _get_withholding_move_currency_data(self):
         """Return journal currency and company units per journal currency unit."""
@@ -702,34 +901,42 @@ class AccountPayment(models.Model):
         move_currency = currency_data["currency"]
         conversion_rate = currency_data["conversion_rate"]
         active_withholding_lines = self._get_l10n_ve_active_withholding_lines()
+        bases = {}
         for line in active_withholding_lines:
             __, account_id, tax_repartition_line_id, __ = line._tax_compute_all_helper()
-            balance = self.company_id.currency_id.round(sign * line.amount)
-            amount_currency = move_currency.round(balance / conversion_rate)
-            res.append(
-                {
+            allocations = self._get_l10n_ve_withholding_allocations(line) or [{
+                'move': self.env['account.move'],
+                'currency': move_currency,
+                'amount': line.amount,
+                'amount_currency': move_currency.round(line.amount / conversion_rate),
+                'base_amount': line.base_amount,
+                'base_amount_currency': move_currency.round(line.base_amount / conversion_rate),
+            }]
+            for allocation in allocations:
+                currency = allocation['currency']
+                balance = self.company_currency_id.round(sign * allocation['amount'])
+                res.append({
                     **self._get_withholding_move_line_default_values(),
                     "name": line.name,
                     "l10n_ve_withholding_line_id": line.id,
                     "account_id": account_id,
                     "balance": balance,
-                    "amount_currency": amount_currency,
-                    "currency_id": move_currency.id,
-                    "tax_base_amount": sign * line.base_amount,
+                    "amount_currency": sign * allocation['amount_currency'],
+                    "currency_id": currency.id,
+                    "tax_base_amount": sign * allocation['base_amount'],
                     "tax_repartition_line_id": tax_repartition_line_id,
-                }
-            )
+                })
+                key = (allocation['move'].id, currency.id, allocation['base_amount'])
+                if key not in bases:
+                    bases[key] = (allocation, self.env['l10n_ve.payment.withholding'])
+                bases[key] = (allocation, bases[key][1] | line)
         account_id = self.company_id.l10n_ve_tax_base_account_id.id
         if account_id:
-            for base_amount in list(set(active_withholding_lines.mapped("base_amount"))):
-                withholding_lines = active_withholding_lines.filtered(
-                    lambda line: line.base_amount == base_amount
-                )
+            for allocation, withholding_lines in bases.values():
                 nice_base_label = ",".join(withholding_lines.filtered("name").mapped("name"))
-                account_id = self.company_id.l10n_ve_tax_base_account_id.id
-                balance = self.company_id.currency_id.round(sign * base_amount)
+                balance = self.company_currency_id.round(sign * allocation['base_amount'])
                 # informamos el amount_currency para que Odoo no resetee el balance a 0.0 por inconsistencia de moneda
-                amount_currency = move_currency.round(balance / conversion_rate)
+                amount_currency = sign * allocation['base_amount_currency']
                 res.append(
                     {
                         **self._get_withholding_move_line_default_values(),
@@ -738,7 +945,7 @@ class AccountPayment(models.Model):
                         "account_id": account_id,
                         "balance": balance,
                         "amount_currency": amount_currency,
-                        "currency_id": move_currency.id,
+                        "currency_id": allocation['currency'].id,
                     }
                 )
                 res.append(
@@ -748,7 +955,7 @@ class AccountPayment(models.Model):
                         "account_id": account_id,
                         "balance": -balance,
                         "amount_currency": -amount_currency,
-                        "currency_id": move_currency.id,
+                        "currency_id": allocation['currency'].id,
                     }
                 )
 
