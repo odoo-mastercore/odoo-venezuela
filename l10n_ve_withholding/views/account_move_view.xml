@@ -27,6 +27,7 @@
                             <field name="company_id" column_invisible="True"/>
                             <field name="currency_id" column_invisible="True"/>
                             <field name="date" readonly="0" force_save="1"/>
+                            <field name="state" readonly="1"/>
                             <field name="tax_id" domain="[('l10n_ve_withholding_payment_type', '=', parent.move_type in ('in_invoice','in_refund') and 'supplier' or 'customer'), ('company_id', 'parent_of', parent.company_id)]" options="{'no_create': True}"/>
                             <field name="name" readonly="withholding_sequence_id"/>
                             <field name="base_amount" column_invisible="parent.move_type in ('in_invoice','in_refund')" optional="hide"/>

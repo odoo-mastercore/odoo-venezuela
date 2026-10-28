@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 ##############################################################################
-# Author: SINAPSYS GLOBAL SA || MASTERCORE SAS
-# Copyleft: 2020-Present.
-# License LGPL-3.0 or later (http: //www.gnu.org/licenses/lgpl.html).
+# Author: Mastercore Sinapsys Global®
+# Copyright: 2019-Present.
+# License OPL-1 (Odoo Proprietary License v1.0)
+# See https://www.odoo.com/documentation/master/legal/licenses.html
 #
 #
-###############################################################################
-from odoo import models, fields, api, _
+##############################################################################
+from odoo import Command, _, api, fields, models
 from odoo.tools import format_date
 import logging
 
@@ -97,6 +98,7 @@ class AccountVatLedger(models.Model):
             withholdings_domain = [
                 ('payment_id.state', 'in', ['in_process', 'paid']),
                 ('company_id', 'in', company_ids),
+                ('state', '!=', 'cancel'),
             ]
             if rec.type == 'sale':
                 invoices_domain += [
@@ -126,10 +128,9 @@ class AccountVatLedger(models.Model):
                     ('date', '<=', rec.date_to),
                     ('state', '!=', 'cancel'),
                 ]
-                withholding_tax = self.env.ref('account.%s_tax_retencion_iva' % rec.company_id.id)
                 withholdings_domain += [
                     ('tax_id.l10n_ve_withholding_payment_type', '=', 'supplier'),
-                    ('tax_id', '=', withholding_tax.id),
+                    ('tax_id.l10n_ve_withholding_ingoing_type', '=', 'iva'),
                     ('date', '>=', rec.date_from),
                     ('date', '<=', rec.date_to),
                 ]
@@ -179,7 +180,7 @@ class AccountVatLedger(models.Model):
         else:
             domain.append(('company_id', '=', self.company_id.id))
         journals = self.env['account.journal'].search(domain)
-        self.journal_ids = [(6, 0, journals.ids)]
+        self.journal_ids = [Command.set(journals.ids)]
 
     def action_present(self):
         self.write({'state': 'presented'})

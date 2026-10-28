@@ -1,6 +1,11 @@
+# -*- coding: utf-8 -*-
 ##############################################################################
-# For copyright and license notices, see __manifest__.py file in module root
-# directory
+# Author: Mastercore Sinapsys Global®
+# Copyright: 2019-Present.
+# License OPL-1 (Odoo Proprietary License v1.0)
+# See https://www.odoo.com/documentation/master/legal/licenses.html
+#
+#
 ##############################################################################
 from re import search
 from datetime import datetime, timedelta
@@ -41,6 +46,12 @@ class AccountVatLedgerXlsx(models.AbstractModel):
     def _round_book_amount(self, amount):
         rounded = round(amount or 0.0, 2)
         return 0.0 if abs(rounded) < 0.005 else rounded
+
+    def _get_sale_invoice_ledger_date(self, invoice):
+        invoice_date = invoice.l10n_ve_invoice_date or invoice.invoice_date
+        if isinstance(invoice_date, datetime):
+            return invoice_date.date()
+        return invoice_date
 
     def _get_move_vat_breakdown(self, move):
         """Return signed VAT buckets from posted tax lines.
@@ -244,10 +255,22 @@ class AccountVatLedgerXlsx(models.AbstractModel):
             return -amount
         return amount
 
+    def _get_report_withholdings(self, ledger):
+        """Exclude canceled withholdings, including stale stored relations."""
+        return ledger.withholding_ids.filtered(
+            lambda withholding: withholding.state != 'cancel'
+        )
+
     def generate_xlsx_report(self, workbook, data, account_vat):
         for obj in account_vat:
             report_name = obj.name
             sheet = workbook.add_worksheet(report_name[:31])
+            show_import_columns = (
+                obj.type == 'purchase'
+                and obj.company_id.l10n_ve_vat_ledger_show_import_columns
+            )
+            if show_import_columns:
+                self._wrap_purchase_sheet(sheet)
             title = workbook.add_format({'bold': True})
             bold = workbook.add_format({'bold': True, 'border':1})
 
@@ -532,7 +555,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                 Retenciones
              """
             tax_withholding_id = []
-            retens = obj.withholding_ids
+            retens = self._get_report_withholdings(obj)
             # Índice por fecha de retenciones (si no hay retenciones quedará vacío)
             retenciones_by_date = {}
             retenciones = []
@@ -542,8 +565,15 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     retenciones_by_date.setdefault(r.date, []).append(r)
                 retenciones = list(retens)
             if obj.type == 'sale':
-                invoices = [inv for inv in obj.invoice_ids if inv.l10n_ve_invoice_date]
-                invoices = sorted(invoices, key=lambda x: x.l10n_ve_invoice_date)
+                invoices = [
+                    invoice
+                    for invoice in obj.invoice_ids
+                    if self._get_sale_invoice_ledger_date(invoice)
+                ]
+                invoices = sorted(
+                    invoices,
+                    key=lambda invoice: self._get_sale_invoice_ledger_date(invoice),
+                )
             elif obj.type == 'purchase':
                 invoices = [inv for inv in obj.invoice_ids if inv.invoice_date]
                 invoices = sorted(invoices, key=lambda x: x.invoice_date)
@@ -785,9 +815,7 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     
                 elif obj.type == 'sale':
                     # Asegurar que comparamos fechas con fechas (invoice puede tener datetime)
-                    inv_date = invoice.l10n_ve_invoice_date
-                    if isinstance(inv_date, datetime):
-                        inv_date = inv_date.date()
+                    inv_date = self._get_sale_invoice_ledger_date(invoice)
                     if not inv_date:
                         continue  # Salta facturas sin fecha válida
                     if date_reference <= inv_date:
@@ -860,7 +888,12 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                     # contador de la factura
                     sheet.write(row, 0, i, line)
                     # codigo fecha
-                    sheet.write(row, 1, invoice.l10n_ve_invoice_date or 'FALSE', date_time_line)
+                    sheet.write(
+                        row,
+                        1,
+                        invoice.l10n_ve_invoice_date or invoice.invoice_date or 'FALSE',
+                        date_time_line,
+                    )
                     # tipo de documento
                     
                     if invoice.move_type == 'out_invoice' and not invoice.debit_origin_id:
@@ -1137,10 +1170,10 @@ class AccountVatLedgerXlsx(models.AbstractModel):
 
                     sheet.write(row, 3, '', line)
                     sheet.write(row, 4, '', line)
-                    # Numero de comrpobante
-                    sheet.write(row, 5, reten.name, line)
                     # Documento afectado
-                    sheet.write(row, 6, self._get_withholding_docs_text(reten, "name"), line)
+                    sheet.write(row, 5, self._get_withholding_docs_text(reten, "name"), line)
+                    # Numero de comprobante
+                    sheet.write(row, 6, reten.name, line)
                     # nombre del partner
                     sheet.write(row, 7, reten.payment_id.partner_id.name or 'FALSE', line)
                     # Rif del cliente
@@ -1404,3 +1437,290 @@ class AccountVatLedgerXlsx(models.AbstractModel):
                 sheet.write((row+14), 15, total_iva_16_retenido, line_number)
                 sheet.write((row+14), 16, total_iva_16_igtf, line_number)
                 sheet.write((row+14), 17, c_total_igtf, line_number)
+
+            if show_import_columns:
+                self._apply_purchase_import_segmentation(
+                    sheet,
+                    obj,
+                    line_number,
+                    date_line,
+                    line_total,
+                )
+
+    def _wrap_purchase_sheet(self, sheet):
+        """Insertar la columna "Fecha de planilla de Importación" en el
+        Libro IVA de compras, recorriendo hacia la derecha las columnas de
+        importaciones/compras internas que ya existen en el reporte base."""
+        state = {"summary_started": False}
+        original_write = sheet.write
+        original_merge_range = sheet.merge_range
+
+        def write(row, col, *args):
+            if isinstance(row, int) and isinstance(col, int) and args:
+                value = args[0]
+                if row == 4 and col == 8:
+                    original_write(
+                        4,
+                        8,
+                        "Fecha de planilla de Importaciòn",
+                        *args[1:],
+                    )
+                    return original_write(4, 9, value, *args[1:])
+                if row == 4 and col >= 9:
+                    return original_write(row, col + 1, *args)
+                if not state["summary_started"] and row >= 5 and col >= 8:
+                    return original_write(row, col + 1, *args)
+            return original_write(row, col, *args)
+
+        def merge_range(*args):
+            if args and isinstance(args[0], str):
+                if args[0] == "N4:P4":
+                    return original_merge_range("O4:Q4", *args[1:])
+                if args[0] == "Q4:Z4":
+                    return original_merge_range("R4:AA4", *args[1:])
+                if len(args) > 1 and args[1] == "RESUMEN GENERAL":
+                    state["summary_started"] = True
+            return original_merge_range(*args)
+
+        sheet.write = write
+        sheet.merge_range = merge_range
+
+    def _is_import_purchase_move(self, move):
+        partner = move.partner_id.with_company(move.company_id)
+        commercial_partner = partner.commercial_partner_id.with_company(move.company_id)
+        return bool(
+            partner.l10n_ve_vat_ledger_import_purchase
+            or commercial_partner.l10n_ve_vat_ledger_import_purchase
+        )
+
+    def _purchase_invoice_rows(self, ledger):
+        row = 5
+        date_reference = ledger.date_from
+        retentions_by_date = {}
+        retentions = list(self._get_report_withholdings(ledger))
+        for retention in retentions:
+            retentions_by_date.setdefault(retention.date, []).append(retention)
+        invoices = sorted(
+            [move for move in ledger.invoice_ids if move.invoice_date],
+            key=lambda move: move.invoice_date,
+        )
+        invoice_rows = []
+
+        for invoice in invoices:
+            if date_reference <= invoice.invoice_date:
+                while date_reference < invoice.invoice_date:
+                    for retention in list(retentions_by_date.get(date_reference, [])):
+                        if retention in retentions:
+                            retentions.remove(retention)
+                        row += 1
+                    date_reference += timedelta(days=1)
+            invoice_rows.append((invoice, row))
+            row += 1
+
+        row += len(retentions)
+        return invoice_rows, row
+
+    def _get_import_purchase_amounts(self, breakdown):
+        tax_amount = (
+            breakdown["iva_16"] + breakdown["iva_8"] + breakdown["iva_15"]
+        )
+        rates = []
+        for rate, base_key, tax_key in (
+            ("16%", "base_16", "iva_16"),
+            ("8%", "base_8", "iva_8"),
+            ("15%", "base_15", "iva_15"),
+        ):
+            if breakdown[base_key] or breakdown[tax_key]:
+                rates.append(rate)
+        if len(rates) == 1:
+            rate_label = rates[0]
+        elif rates:
+            rate_label = "Varias"
+        else:
+            rate_label = ""
+        return breakdown["untaxed_total"], tax_amount, rate_label
+
+    def _get_import_purchase_references(self, invoice):
+        return (
+            invoice.l10n_ve_importation_form_number or "",
+            invoice.l10n_ve_importation_form_date,
+            invoice.l10n_ve_importation_file_number or "",
+        )
+
+    def _get_purchase_totals(self, invoices):
+        totals = {
+            "internal_exempt": 0.0,
+            "internal_base_16": 0.0,
+            "internal_iva_16": 0.0,
+            "internal_base_8": 0.0,
+            "internal_iva_8": 0.0,
+            "internal_base_15": 0.0,
+            "internal_iva_15": 0.0,
+            "import_base": 0.0,
+            "import_tax": 0.0,
+            "igtf": 0.0,
+            "credit_base_16": 0.0,
+            "credit_iva_16": 0.0,
+            "credit_base_8": 0.0,
+            "credit_iva_8": 0.0,
+            "credit_base_15": 0.0,
+            "credit_iva_15": 0.0,
+            "credit_exempt": 0.0,
+            "debit_base_16": 0.0,
+            "debit_iva_16": 0.0,
+            "debit_base_8": 0.0,
+            "debit_iva_8": 0.0,
+            "debit_base_15": 0.0,
+            "debit_iva_15": 0.0,
+            "debit_exempt": 0.0,
+        }
+
+        for invoice in invoices:
+            breakdown = self._get_move_vat_breakdown(invoice)
+            totals["igtf"] += invoice._get_igtf_amount_purchase() or 0.0
+
+            if self._is_import_purchase_move(invoice):
+                import_base, import_tax, __ = self._get_import_purchase_amounts(
+                    breakdown
+                )
+                totals["import_base"] += import_base
+                totals["import_tax"] += import_tax
+                continue
+
+            totals["internal_exempt"] += breakdown["base_exempt"]
+            totals["internal_base_16"] += breakdown["base_16"]
+            totals["internal_iva_16"] += breakdown["iva_16"]
+            totals["internal_base_8"] += breakdown["base_8"]
+            totals["internal_iva_8"] += breakdown["iva_8"]
+            totals["internal_base_15"] += breakdown["base_15"]
+            totals["internal_iva_15"] += breakdown["iva_15"]
+
+            if breakdown["document_kind"] == "credit_note":
+                totals["credit_exempt"] += breakdown["base_exempt"]
+                totals["credit_base_16"] += breakdown["base_16"]
+                totals["credit_iva_16"] += breakdown["iva_16"]
+                totals["credit_base_8"] += breakdown["base_8"]
+                totals["credit_iva_8"] += breakdown["iva_8"]
+                totals["credit_base_15"] += breakdown["base_15"]
+                totals["credit_iva_15"] += breakdown["iva_15"]
+            elif breakdown["document_kind"] == "debit_note":
+                totals["debit_exempt"] += breakdown["base_exempt"]
+                totals["debit_base_16"] += breakdown["base_16"]
+                totals["debit_iva_16"] += breakdown["iva_16"]
+                totals["debit_base_8"] += breakdown["base_8"]
+                totals["debit_iva_8"] += breakdown["iva_8"]
+                totals["debit_base_15"] += breakdown["base_15"]
+                totals["debit_iva_15"] += breakdown["iva_15"]
+
+        return totals
+
+    def _apply_purchase_import_segmentation(
+        self, sheet, ledger, line_number, date_line, line_total
+    ):
+        invoice_rows, total_row = self._purchase_invoice_rows(ledger)
+        invoices = [invoice for invoice, __ in invoice_rows]
+        totals = self._get_purchase_totals(invoices)
+
+        for invoice, row in invoice_rows:
+            if not self._is_import_purchase_move(invoice):
+                continue
+
+            breakdown = self._get_move_vat_breakdown(invoice)
+            import_base, import_tax, rate_label = self._get_import_purchase_amounts(
+                breakdown
+            )
+            import_form_number, import_form_date, import_file_number = (
+                self._get_import_purchase_references(invoice)
+            )
+
+            sheet.write(row, 7, import_form_number, line_number)
+            if import_form_date:
+                sheet.write_datetime(row, 8, import_form_date, date_line)
+            else:
+                sheet.write(row, 8, "", line_number)
+            sheet.write(row, 9, import_file_number, line_number)
+            sheet.write(row, 13, 0, line_number)
+            sheet.write(row, 14, import_base, line_number)
+            sheet.write(row, 15, rate_label, line_number)
+            sheet.write(row, 16, import_tax, line_number)
+            sheet.write(row, 17, 0, line_number)
+            sheet.write(row, 18, "", line_number)
+            sheet.write(row, 19, 0, line_number)
+            sheet.write(row, 20, 0, line_number)
+            sheet.write(row, 21, "", line_number)
+            sheet.write(row, 22, 0, line_number)
+            sheet.write(row, 23, 0, line_number)
+            sheet.write(row, 24, "", line_number)
+            sheet.write(row, 25, 0, line_number)
+
+        sheet.write(total_row, 13, totals["internal_exempt"], line_total)
+        sheet.write(total_row, 14, totals["import_base"], line_total)
+        sheet.write(total_row, 15, "", line_total)
+        sheet.write(total_row, 16, totals["import_tax"], line_total)
+        sheet.write(total_row, 17, totals["internal_base_16"], line_total)
+        sheet.write(total_row, 19, totals["internal_iva_16"], line_total)
+        sheet.write(total_row, 20, totals["internal_base_8"], line_total)
+        sheet.write(total_row, 22, totals["internal_iva_8"], line_total)
+        sheet.write(total_row, 23, totals["internal_base_15"], line_total)
+        sheet.write(total_row, 25, totals["internal_iva_15"], line_total)
+        sheet.write(total_row, 27, totals["igtf"], line_total)
+
+        summary_row = total_row + 5
+        sheet.write(summary_row + 1, 13, totals["internal_exempt"], line_number)
+        sheet.write(summary_row + 2, 13, totals["credit_exempt"], line_number)
+        sheet.write(summary_row + 3, 13, totals["debit_exempt"], line_number)
+        sheet.write(summary_row + 4, 13, totals["import_base"], line_number)
+        sheet.write(summary_row + 4, 14, totals["import_tax"], line_number)
+        sheet.write(summary_row + 5, 13, round(totals["internal_base_16"], 2), line_number)
+        sheet.write(summary_row + 5, 14, totals["internal_iva_16"], line_number)
+        sheet.write(summary_row + 6, 13, totals["internal_base_8"], line_number)
+        sheet.write(summary_row + 6, 14, totals["internal_iva_8"], line_number)
+        sheet.write(summary_row + 7, 13, totals["internal_base_15"], line_number)
+        sheet.write(summary_row + 7, 14, totals["internal_iva_15"], line_number)
+
+        self._write_purchase_note_summary(sheet, summary_row, totals, line_number)
+
+    def _write_purchase_note_summary(self, sheet, summary_row, totals, line_number):
+        sheet.write(summary_row + 8, 13, totals["credit_base_16"], line_number)
+        sheet.write(summary_row + 8, 14, totals["credit_iva_16"], line_number)
+        sheet.write(summary_row + 9, 13, totals["credit_base_8"], line_number)
+        sheet.write(summary_row + 9, 14, totals["credit_iva_8"], line_number)
+        sheet.write(summary_row + 10, 13, totals["credit_base_15"], line_number)
+        sheet.write(summary_row + 10, 14, totals["credit_iva_15"], line_number)
+        sheet.write(summary_row + 11, 13, totals["debit_base_16"], line_number)
+        sheet.write(summary_row + 11, 14, totals["debit_iva_16"], line_number)
+        sheet.write(summary_row + 12, 13, totals["debit_base_8"], line_number)
+        sheet.write(summary_row + 12, 14, totals["debit_iva_8"], line_number)
+        sheet.write(summary_row + 13, 13, totals["debit_base_15"], line_number)
+        sheet.write(summary_row + 13, 14, totals["debit_iva_15"], line_number)
+
+        total_base = (
+            totals["internal_exempt"]
+            + totals["internal_base_16"]
+            + totals["internal_base_8"]
+            + totals["internal_base_15"]
+            + totals["import_base"]
+            + totals["credit_base_16"]
+            + totals["credit_base_8"]
+            + totals["credit_base_15"]
+            + totals["debit_base_16"]
+            + totals["debit_base_8"]
+            + totals["debit_base_15"]
+            + totals["credit_exempt"]
+            + totals["debit_exempt"]
+        )
+        total_tax = (
+            totals["internal_iva_16"]
+            + totals["internal_iva_8"]
+            + totals["internal_iva_15"]
+            + totals["import_tax"]
+            + totals["credit_iva_16"]
+            + totals["credit_iva_8"]
+            + totals["credit_iva_15"]
+            + totals["debit_iva_16"]
+            + totals["debit_iva_8"]
+            + totals["debit_iva_15"]
+        )
+        sheet.write(summary_row + 14, 13, round(total_base, 2), line_number)
+        sheet.write(summary_row + 14, 14, total_tax, line_number)
+        sheet.write(summary_row + 14, 17, totals["igtf"], line_number)
