@@ -258,6 +258,22 @@ intervengan en operaciones gravadas con el impuesto establecido en este decreto 
              omitirlo dejaria viva la expresion de 15 sobre withholding_number,
              campo que en 18 se llama name. -->
         <field name="attachment"></field>
+        <!-- En 15 este registro se anclaba al formulario de pago:
+                 <field name="binding_model_id" ref="model_account_payment"/>
+             y de ahi salia la entrada "Certificado de Retencion" del menu
+             Imprimir. En 18 el informe ya no es de account.payment sino de
+             l10n_ve.payment.withholding, asi que ese anclaje manda el id del
+             PAGO a un informe que espera el de la RETENCION:
+
+               MissingError: El registro no existe o fue eliminado.
+               (Registro: l10n_ve.payment.withholding(299735,))
+
+             Vacio y no omitido, por lo mismo que attachment: actualizar el
+             modulo no borra lo que el XML no declara. En 18 se imprime desde
+             el boton de impresora de la linea de retencion
+             (views/account_payment_view.xml), que si corre sobre el registro
+             correcto. -->
+        <field name="binding_model_id" eval="False"/>
         <field name="report_name">l10n_ve_withholding.report_withholding_certificate_iva</field>
         <field name="report_file">l10n_ve_withholding.report_withholding_certificate_iva</field>
     </record>
