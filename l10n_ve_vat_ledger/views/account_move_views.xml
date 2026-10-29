@@ -7,8 +7,9 @@
         <field name="inherit_id" ref="account.view_move_form"/>
         <field name="arch" type="xml">
             <xpath expr="//page[@name='other_info']" position="inside">
+                <field name="l10n_ve_show_vat_ledger_import_fields" invisible="1"/>
                 <group string="Datos de Importación"
-                       attrs="{'invisible': [('move_type', 'not in', ['in_invoice', 'in_refund'])]}"
+                       attrs="{'invisible': ['|', ('move_type', 'not in', ['in_invoice', 'in_refund']), ('l10n_ve_show_vat_ledger_import_fields', '=', False)]}"
                        col="2">
                     <group>
                         <field name="importation_nationalization_date"

@@ -41,6 +41,22 @@ class AccountMove(models.Model):
         string='Nº Expediente de Importación',
         help='Número de expediente de importación'
     )
+    l10n_ve_show_vat_ledger_import_fields = fields.Boolean(
+        compute='_compute_l10n_ve_show_vat_ledger_import_fields',
+    )
+
+    @api.depends('partner_id', 'company_id', 'company_id.l10n_ve_vat_ledger_show_import_columns')
+    def _compute_l10n_ve_show_vat_ledger_import_fields(self):
+        for move in self:
+            if not move.company_id.l10n_ve_vat_ledger_show_import_columns or not move.partner_id:
+                move.l10n_ve_show_vat_ledger_import_fields = False
+                continue
+            partner = move.partner_id.with_company(move.company_id)
+            commercial_partner = partner.commercial_partner_id.with_company(move.company_id)
+            move.l10n_ve_show_vat_ledger_import_fields = bool(
+                partner.l10n_ve_vat_ledger_import_purchase
+                or commercial_partner.l10n_ve_vat_ledger_import_purchase
+            )
 
     def invoice_rate(self, currency_id, invoice_date):
         for rec in self:
