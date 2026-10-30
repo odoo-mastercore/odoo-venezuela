@@ -404,6 +404,7 @@ class l10nVePaymentWithholding(models.Model):
                     'move_ref': tax.move_id.ref or '',
                     'l10n_ve_control_number': tax.move_id.l10n_ve_control_number,
                     'move_type': tax.move_id.move_type or '',
+                    'is_debit_note': bool(tax.move_id.debit_origin_id),
                     'move_id': True if tax.move_id else False,
                     'reserved_entry': True if tax.move_id.reversed_entry_id else False,
                     'reserved_entry_ref': tax.move_id.reversed_entry_id.ref or '',
