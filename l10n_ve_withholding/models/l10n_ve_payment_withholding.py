@@ -395,6 +395,11 @@ class l10nVePaymentWithholding(models.Model):
         total_retenido = 0.0
         if self.l10n_ve_move_line_taxes_ids:
             for idx, tax in enumerate(self.l10n_ve_move_line_taxes_ids, start=1):
+                affected_move = (
+                    tax.move_id.reversed_entry_id
+                    if tax.move_id.move_type in ('in_refund', 'out_refund')
+                    else tax.move_id.debit_origin_id
+                )
                 total_base += tax.tax_base_amount
                 total_iva += tax.debit if tax.move_id.move_type == 'in_invoice' else tax.credit
                 total_retenido += tax.debit * int(self._get_partner_alicuot(self.payment_id.partner_id)) / 100 if tax.debit else tax.credit * int(self._get_partner_alicuot(self.payment_id.partner_id)) / 100
@@ -405,6 +410,7 @@ class l10nVePaymentWithholding(models.Model):
                     'l10n_ve_control_number': tax.move_id.l10n_ve_control_number,
                     'move_type': tax.move_id.move_type or '',
                     'is_debit_note': bool(tax.move_id.debit_origin_id),
+                    'affected_document_number': affected_move.ref or '',
                     'move_id': True if tax.move_id else False,
                     'reserved_entry': True if tax.move_id.reversed_entry_id else False,
                     'reserved_entry_ref': tax.move_id.reversed_entry_id.ref or '',
